@@ -5,7 +5,7 @@
  *
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of version 2.1 of 
+ * modify it under the terms of version 2.1 of
  * the GNU Lesser General Public
  * License as published by the Free Software Foundation.
  *
@@ -14,7 +14,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the 
+ * You should have received a copy of the
  * GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
@@ -22,6 +22,9 @@
  *
  *See COPYRIGHTS file for copyright information
  */
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
 
 #include "cr-fonts.h"
 #include <string.h>
@@ -408,8 +411,8 @@ cr_font_size_copy (CRFontSize * a_dst, CRFontSize const * a_src)
  *
  * Returns CR_OK upon successful completion, an error code otherwise.
  */
-enum CRStatus 
-cr_font_size_set_predefined_absolute_font_size (CRFontSize *a_this, 
+enum CRStatus
+cr_font_size_set_predefined_absolute_font_size (CRFontSize *a_this,
                                                 enum CRPredefinedAbsoluteFontSize a_predefined)
 {
         g_return_val_if_fail (a_this, CR_BAD_PARAM_ERROR) ;
@@ -430,7 +433,7 @@ cr_font_size_set_predefined_absolute_font_size (CRFontSize *a_this,
  *
  * Returns CR_OK upon successful completion, an error code otherwise.
  */
-enum CRStatus 
+enum CRStatus
 cr_font_size_set_relative_font_size (CRFontSize *a_this,
                                      enum CRRelativeFontSize a_relative)
 {
@@ -438,7 +441,7 @@ cr_font_size_set_relative_font_size (CRFontSize *a_this,
         g_return_val_if_fail (a_relative >= FONT_SIZE_LARGER
                               && a_relative < NB_RELATIVE_FONT_SIZE,
                               CR_BAD_PARAM_ERROR) ;
-        
+
         a_this->type = RELATIVE_FONT_SIZE ;
         a_this->value.relative = a_relative ;
         return CR_OK ;
@@ -452,7 +455,7 @@ cr_font_size_set_relative_font_size (CRFontSize *a_this,
  *
  * Returns CR_OK upon successful completion, an error code otherwise.
  */
-enum CRStatus 
+enum CRStatus
 cr_font_size_set_absolute_font_size (CRFontSize *a_this,
                                      enum CRNumType a_num_type,
                                      gdouble a_value)
@@ -464,13 +467,13 @@ cr_font_size_set_absolute_font_size (CRFontSize *a_this,
 
         a_this->type = ABSOLUTE_FONT_SIZE ;
         cr_num_set (&a_this->value.absolute,
-                    a_value, a_num_type) ;        
+                    a_value, a_num_type) ;
         return CR_OK ;
 }
 
 /**
  * cr_font_size_set_to_inherit:
- * @a_this: the current instance of #CRFontSize 
+ * @a_this: the current instance of #CRFontSize
  *
  * Returns CR_OK upon successful completion, an error code otherwise.
  */
@@ -489,7 +492,7 @@ cr_font_size_set_to_inherit (CRFontSize *a_this)
  * cr_font_size_is_set_to_inherit:
  * @a_this: the current instance of #CRFontSize.
  *
- * Returns TRUE if the current instance is set to 'inherit'. 
+ * Returns TRUE if the current instance is set to 'inherit'.
  */
 gboolean
 cr_font_size_is_set_to_inherit (CRFontSize const *a_this)
@@ -540,10 +543,10 @@ cr_font_size_to_string (CRFontSize const * a_this)
 /**
  * cr_font_size_get_smaller_predefined:
  * @a_font_size: the font size to consider.
- * @a_smaller_size: out parameter. The a smaller value than @a_font_size. 
+ * @a_smaller_size: out parameter. The a smaller value than @a_font_size.
  */
-void 
-cr_font_size_get_smaller_predefined_font_size 
+void
+cr_font_size_get_smaller_predefined_font_size
 				(enum CRPredefinedAbsoluteFontSize a_font_size,
 			         enum CRPredefinedAbsoluteFontSize *a_smaller_size)
 {
@@ -576,7 +579,7 @@ cr_font_size_get_smaller_predefined_font_size
                 result =  FONT_SIZE_XX_LARGE;
                 break ;
 	case FONT_SIZE_INHERIT:
-                cr_utils_trace_info ("can't return a smaller size for FONT_SIZE_INHERIT") ;                
+                cr_utils_trace_info ("can't return a smaller size for FONT_SIZE_INHERIT") ;
                 result =  FONT_SIZE_MEDIUM ;
                 break ;
         default:
@@ -595,15 +598,15 @@ cr_font_size_get_smaller_predefined_font_size
  * @a_font_size.
  *
  */
-void 
-cr_font_size_get_larger_predefined_font_size 
+void
+cr_font_size_get_larger_predefined_font_size
 			(enum CRPredefinedAbsoluteFontSize a_font_size,
 		         enum CRPredefinedAbsoluteFontSize *a_larger_size)
 {
         enum CRPredefinedAbsoluteFontSize result = FONT_SIZE_MEDIUM ;
-        
+
         g_return_if_fail (a_larger_size) ;
-        g_return_if_fail (a_font_size >= FONT_SIZE_XX_SMALL 
+        g_return_if_fail (a_font_size >= FONT_SIZE_XX_SMALL
                           && a_font_size < NB_PREDEFINED_ABSOLUTE_FONT_SIZES) ;
 
         switch (a_font_size) {
@@ -629,7 +632,7 @@ cr_font_size_get_larger_predefined_font_size
                 result =  FONT_SIZE_XX_LARGE;
                 break ;
 	case FONT_SIZE_INHERIT:
-                cr_utils_trace_info ("can't return a bigger size for FONT_SIZE_INHERIT") ;                
+                cr_utils_trace_info ("can't return a bigger size for FONT_SIZE_INHERIT") ;
                 result =  FONT_SIZE_MEDIUM ;
                 break ;
         default:
@@ -648,7 +651,7 @@ cr_font_size_get_larger_predefined_font_size
  * otherwise.
  */
 gboolean
-cr_font_size_is_predefined_absolute_font_size 
+cr_font_size_is_predefined_absolute_font_size
 				(enum CRPredefinedAbsoluteFontSize a_font_size)
 {
         if (a_font_size >= FONT_SIZE_XX_SMALL
@@ -940,3 +943,5 @@ cr_font_size_adjust_destroy (CRFontSizeAdjust * a_this)
                 a_this->num = NULL;
         }
 }
+
+#pragma GCC diagnostic pop

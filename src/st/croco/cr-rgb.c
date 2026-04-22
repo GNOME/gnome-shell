@@ -16,10 +16,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli
  * See COPYRIGHTS file for copyrights information.
  */
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
 
 #include "config.h"
 
@@ -505,7 +508,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
                                 (a_this,
                                  (const guchar *) a_value->content.str->stryng->str) ;
                 } else {
-                        cr_utils_trace_info 
+                        cr_utils_trace_info
                                 ("a_value has NULL string value") ;
                 }
 		break ;
@@ -514,7 +517,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
                     && a_value->content.str->stryng
                     && a_value->content.str->stryng->str) {
                         status = cr_rgb_set_from_hex_str
-                                (a_this, 
+                                (a_this,
                                  (const guchar *) a_value->content.str->stryng->str) ;
                 } else {
                         cr_utils_trace_info
@@ -527,7 +530,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
         return status ;
 }
 
-enum CRStatus 
+enum CRStatus
 cr_rgb_copy (CRRgb *a_dest, CRRgb const *a_src)
 {
         g_return_val_if_fail (a_dest && a_src,
@@ -568,9 +571,9 @@ cr_rgb_parse_from_buf (const guchar *a_str,
 	CRTerm *value = NULL ;
 	CRParser * parser = NULL;
 	CRRgb *result = NULL;
-	
+
 	g_return_val_if_fail (a_str, NULL);
-	
+
 	parser = cr_parser_new_from_buf ((guchar *) a_str, strlen ((const char *) a_str), a_enc, FALSE);
 
 	g_return_val_if_fail (parser, NULL);
@@ -601,3 +604,4 @@ cleanup:
 	return result ;
 }
 
+#pragma GCC diagnostic pop

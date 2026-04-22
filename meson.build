@@ -224,6 +224,7 @@ if buildtype != 'plain'
     '-Werror=pointer-to-int-cast',
     '-Werror=empty-body',
     '-Werror=write-strings',
+    '-Wswitch-enum',
   ]
 
 

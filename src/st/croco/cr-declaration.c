@@ -21,6 +21,8 @@
  * See COPYRIGHTS file for copyright information.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
 
 #include <string.h>
 #include "cr-declaration.h"
@@ -790,3 +792,5 @@ cr_declaration_destroy (CRDeclaration * a_this)
 
         g_free (a_this);
 }
+
+#pragma GCC diagnostic pop

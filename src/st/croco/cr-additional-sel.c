@@ -22,6 +22,9 @@
  *
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
 #include "cr-additional-sel.h"
 #include "string.h"
 
@@ -32,7 +35,7 @@
  * An additional selector is the selector part
  * that comes after the combination of type selectors.
  * It can be either "a class selector (the .class part),
- * a pseudo class selector, an attribute selector 
+ * a pseudo class selector, an attribute selector
  * or an id selector.
  */
 
@@ -61,7 +64,7 @@ cr_additional_sel_new (void)
 
 /**
  * cr_additional_sel_new_with_type:
- * @a_sel_type: the type of the newly built instance 
+ * @a_sel_type: the type of the newly built instance
  * of #CRAdditionalSel.
  *
  * Constructor of #CRAdditionalSel.
@@ -152,7 +155,7 @@ cr_additional_sel_set_pseudo (CRAdditionalSel * a_this, CRPseudo * a_pseudo)
  * of #CRAdditionalSel .
  * @a_sel: the new instance of #CRAttrSel to set.
  *
- * Sets a new instance of #CRAttrSel to 
+ * Sets a new instance of #CRAttrSel to
  * a ATTRIBUTE additional selector.
  */
 void
@@ -330,7 +333,7 @@ cr_additional_sel_to_string (CRAdditionalSel const * a_this)
         return result;
 }
 
-guchar * 
+guchar *
 cr_additional_sel_one_to_string (CRAdditionalSel const *a_this)
 {
         guchar *result = NULL;
@@ -495,3 +498,5 @@ cr_additional_sel_destroy (CRAdditionalSel * a_this)
 
         g_free (a_this);
 }
+
+#pragma GCC diagnostic pop

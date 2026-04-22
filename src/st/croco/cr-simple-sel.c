@@ -21,6 +21,9 @@
  * See COPYRIGHTS file for copyright information.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
 #include <string.h>
 #include <glib.h>
 #include "cr-simple-sel.h"
@@ -249,7 +252,7 @@ cr_simple_sel_compute_specificity (CRSimpleSel * a_this)
         for (cur_sel = a_this; cur_sel; cur_sel = cur_sel->next) {
                 if (cur_sel->type_mask & TYPE_SELECTOR) {
                         c++;    /*hmmh, is this a new language ? */
-                } else if (!cur_sel->name 
+                } else if (!cur_sel->name
                            || !cur_sel->name->stryng
                            || !cur_sel->name->stryng->str) {
                         if (cur_sel->add_sel->type ==
@@ -314,3 +317,5 @@ cr_simple_sel_destroy (CRSimpleSel * a_this)
 
         g_free (a_this);
 }
+
+#pragma GCC diagnostic pop

@@ -22,6 +22,9 @@
  * See COPYRIGHTS file for copyrights information.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
 /**
  *@CRNum:
  *
@@ -61,7 +64,7 @@ cr_num_new (void)
  * cr_num_new_with_val:
  * @a_val: the numerical value of the number.
  * @a_type: the type of number.
- * 
+ *
  * A constructor of #CRNum.
  *
  * Returns the newly built instance of #CRNum or
@@ -290,7 +293,7 @@ cr_num_is_fixed_length (CRNum const * a_this)
 
         g_return_val_if_fail (a_this, FALSE);
 
-        if (a_this->type >= NUM_LENGTH_EM 
+        if (a_this->type >= NUM_LENGTH_EM
             && a_this->type <= NUM_LENGTH_PC) {
                 result = TRUE ;
         }
@@ -311,3 +314,5 @@ cr_num_destroy (CRNum * a_this)
 
         g_free (a_this);
 }
+
+#pragma GCC diagnostic pop

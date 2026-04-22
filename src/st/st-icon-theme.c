@@ -2240,8 +2240,9 @@ string_from_suffix (IconSuffix suffix)
       return ".png";
     case ICON_SUFFIX_SYMBOLIC_PNG:
       return ".symbolic.png";
-    default:
-      g_assert_not_reached();
+    case ICON_SUFFIX_NONE:
+    case HAS_ICON_FILE:
+      return NULL;
     }
   return NULL;
 }

@@ -20,6 +20,9 @@
  * See COPYRIGHTS file for copyrights information.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
 #include <stdio.h>
 #include "cr-attr-sel.h"
 
@@ -226,3 +229,4 @@ cr_attr_sel_destroy (CRAttrSel * a_this)
         g_clear_pointer (&a_this, g_free);
 }
 
+#pragma GCC diagnostic pop

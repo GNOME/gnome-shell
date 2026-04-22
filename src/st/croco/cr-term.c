@@ -21,6 +21,9 @@
  * See COPYRIGHTS file for copyright information.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-enum"
+
 #include <stdio.h>
 #include <string.h>
 #include "cr-term.h"
@@ -359,7 +362,7 @@ cr_term_to_string (CRTerm const * a_this)
                                                  ext_content.func_param);
 
                                         if (tmp_str) {
-                                                g_string_append (str_buf, 
+                                                g_string_append (str_buf,
 								 (const gchar *) tmp_str);
                                                 g_free (tmp_str);
                                                 tmp_str = NULL;
@@ -782,3 +785,5 @@ cr_term_destroy (CRTerm * a_this)
         g_free (a_this);
 
 }
+
+#pragma GCC diagnostic pop
