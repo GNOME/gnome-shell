@@ -92,9 +92,6 @@ st_box_layout_get_property (GObject    *object,
       orientation = clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout));
       g_value_set_boolean (value, orientation == CLUTTER_ORIENTATION_VERTICAL);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -116,9 +113,6 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       st_box_layout_set_vertical (box, g_value_get_boolean (value));
 G_GNUC_END_IGNORE_DEPRECATIONS
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 

@@ -259,10 +259,8 @@ st_button_set_property (GObject      *gobject,
     case PROP_CHECKED:
       st_button_set_checked (button, g_value_get_boolean (value));
       break;
-
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    case PROP_PRESSED:
+      g_assert_not_reached ();
       break;
     }
 }
@@ -294,10 +292,6 @@ st_button_get_property (GObject    *gobject,
       break;
     case PROP_PRESSED:
       g_value_set_boolean (value, st_button_get_pressed (ST_BUTTON (gobject)));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

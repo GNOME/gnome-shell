@@ -302,10 +302,6 @@ shell_edge_drag_gesture_set_property (GObject      *gobject,
     case PROP_SIDE:
       shell_edge_drag_gesture_set_side (self, g_value_get_enum (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -321,10 +317,6 @@ shell_edge_drag_gesture_get_property (GObject      *gobject,
     {
     case PROP_SIDE:
       g_value_set_enum (value, shell_edge_drag_gesture_get_side (self));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

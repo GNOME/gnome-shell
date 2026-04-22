@@ -143,10 +143,6 @@ st_scroll_bar_get_property (GObject    *gobject,
     case PROP_ORIENTATION:
       g_value_set_enum (value, priv->orientation);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -166,10 +162,6 @@ st_scroll_bar_set_property (GObject      *gobject,
 
     case PROP_ORIENTATION:
       st_scroll_bar_set_orientation (bar, g_value_get_enum (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

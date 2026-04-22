@@ -354,9 +354,6 @@ st_scroll_view_fade_set_property (GObject *object,
     case PROP_EXTEND_FADE_AREA:
       st_scroll_view_fade_set_extend_fade_area (self, g_value_get_boolean (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -378,9 +375,6 @@ st_scroll_view_fade_get_property (GObject *object,
       break;
     case PROP_EXTEND_FADE_AREA:
       g_value_set_boolean (value, self->extend_fade_area);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

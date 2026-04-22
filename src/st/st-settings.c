@@ -245,8 +245,36 @@ st_settings_set_property (GObject      *object,
     case PROP_SLOW_DOWN_FACTOR:
       st_settings_set_slow_down_factor (settings, g_value_get_double (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    case PROP_ENABLE_ANIMATIONS:
+      g_assert_not_reached ();
+      break;
+    case PROP_PRIMARY_PASTE:
+      g_assert_not_reached ();
+      break;
+    case PROP_DRAG_THRESHOLD:
+      g_assert_not_reached ();
+      break;
+    case PROP_FONT_NAME:
+      g_assert_not_reached ();
+      break;
+    case PROP_COLOR_SCHEME:
+      g_assert_not_reached ();
+      break;
+    case PROP_ACCENT_COLOR:
+      g_assert_not_reached ();
+      break;
+    case PROP_HIGH_CONTRAST:
+      g_assert_not_reached ();
+      break;
+    case PROP_GTK_ICON_THEME:
+      g_assert_not_reached ();
+      break;
+    case PROP_MAGNIFIER_ACTIVE:
+      g_assert_not_reached ();
+      break;
+    case PROP_DISABLE_SHOW_PASSWORD:
+      g_assert_not_reached ();
+      break;
     }
 }
 
@@ -293,8 +321,6 @@ st_settings_get_property (GObject    *object,
     case PROP_DISABLE_SHOW_PASSWORD:
       g_value_set_boolean (value, settings->disable_show_password);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 

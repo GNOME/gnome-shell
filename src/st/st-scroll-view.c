@@ -146,8 +146,6 @@ st_scroll_view_get_property (GObject    *object,
     case PROP_OVERLAY_SCROLLBARS:
       g_value_set_boolean (value, priv->overlay_scrollbars);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -227,8 +225,18 @@ st_scroll_view_set_property (GObject      *object,
                                  priv->hscrollbar_policy,
                                  g_value_get_enum (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    case PROP_HADJUSTMENT:
+      g_assert_not_reached ();
+      break;
+    case PROP_VADJUSTMENT:
+      g_assert_not_reached ();
+      break;
+    case PROP_HSCROLLBAR_VISIBLE:
+      g_assert_not_reached ();
+      break;
+    case PROP_VSCROLLBAR_VISIBLE:
+      g_assert_not_reached ();
+      break;
     }
 }
 

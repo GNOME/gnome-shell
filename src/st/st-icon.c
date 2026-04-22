@@ -120,9 +120,8 @@ st_icon_set_property (GObject      *gobject,
     case PROP_FALLBACK_ICON_NAME:
       st_icon_set_fallback_icon_name (icon, g_value_get_string (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    case PROP_IS_SYMBOLIC:
+      g_assert_not_reached ();
       break;
     }
 }
@@ -159,10 +158,6 @@ st_icon_get_property (GObject    *gobject,
 
     case PROP_IS_SYMBOLIC:
       g_value_set_boolean (value, st_icon_get_is_symbolic (icon));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

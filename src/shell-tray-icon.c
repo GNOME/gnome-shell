@@ -126,10 +126,6 @@ shell_tray_icon_get_property (GObject         *object,
     case PROP_WM_CLASS:
       g_value_set_string (value, icon->wm_class);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 

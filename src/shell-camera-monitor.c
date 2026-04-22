@@ -400,9 +400,6 @@ shell_camera_monitor_get_property (GObject    *object,
     case PROP_CAMERAS_IN_USE:
       g_value_set_boolean (value, monitor->cameras_in_use);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 

@@ -234,8 +234,53 @@ shell_global_set_property(GObject         *object,
     case PROP_AUTOMATION_SCRIPT:
       g_set_object (&global->automation_script, g_value_get_object (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    case PROP_BACKEND:
+      g_assert_not_reached ();
+      break;
+    case PROP_CONTEXT:
+      g_assert_not_reached ();
+      break;
+    case PROP_DISPLAY:
+      g_assert_not_reached ();
+      break;
+    case PROP_COMPOSITOR:
+      g_assert_not_reached ();
+      break;
+    case PROP_WORKSPACE_MANAGER:
+      g_assert_not_reached ();
+      break;
+    case PROP_SCREEN_WIDTH:
+      g_assert_not_reached ();
+      break;
+    case PROP_SCREEN_HEIGHT:
+      g_assert_not_reached ();
+      break;
+    case PROP_STAGE:
+      g_assert_not_reached ();
+      break;
+    case PROP_WINDOW_GROUP:
+      g_assert_not_reached ();
+      break;
+    case PROP_TOP_WINDOW_GROUP:
+      g_assert_not_reached ();
+      break;
+    case PROP_WINDOW_MANAGER:
+      g_assert_not_reached ();
+      break;
+    case PROP_SETTINGS:
+      g_assert_not_reached ();
+      break;
+    case PROP_DATADIR:
+      g_assert_not_reached ();
+      break;
+    case PROP_USERDATADIR:
+      g_assert_not_reached ();
+      break;
+    case PROP_FOCUS_MANAGER:
+      g_assert_not_reached ();
+      break;
+    case PROP_SWITCHEROO_CONTROL:
+      g_assert_not_reached ();
       break;
     }
 }
@@ -313,9 +358,6 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_AUTOMATION_SCRIPT:
       g_value_set_object (value, global->automation_script);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

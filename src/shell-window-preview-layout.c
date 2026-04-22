@@ -52,9 +52,6 @@ shell_window_preview_layout_get_property (GObject      *object,
     case PROP_BOUNDING_BOX:
       g_value_set_boxed (value, &priv->bounding_box);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 

@@ -138,9 +138,6 @@ shell_app_get_property (GObject    *gobject,
       if (app->info)
         g_value_set_object (value, app->info);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -157,8 +154,20 @@ shell_app_set_property (GObject      *gobject,
     case PROP_APP_INFO:
       _shell_app_set_app_info (app, g_value_get_object (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    case PROP_STATE:
+      g_assert_not_reached ();
+      break;
+    case PROP_BUSY:
+      g_assert_not_reached ();
+      break;
+    case PROP_ID:
+      g_assert_not_reached ();
+      break;
+    case PROP_ACTION_GROUP:
+      g_assert_not_reached ();
+      break;
+    case PROP_ICON:
+      g_assert_not_reached ();
       break;
     }
 }

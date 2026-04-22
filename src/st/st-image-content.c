@@ -88,10 +88,6 @@ st_image_content_get_property (GObject    *object,
     case PROP_PREFERRED_HEIGHT:
       g_value_set_int (value, self->height);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -111,10 +107,6 @@ st_image_content_set_property (GObject      *object,
 
     case PROP_PREFERRED_HEIGHT:
       st_image_content_set_preferred_height (self, g_value_get_int (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

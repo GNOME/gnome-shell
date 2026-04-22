@@ -205,9 +205,6 @@ st_theme_context_set_property (GObject      *object,
     case PROP_SCALE_FACTOR:
       st_theme_context_set_scale_factor (context, g_value_get_int (value));
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -223,9 +220,6 @@ st_theme_context_get_property (GObject    *object,
     {
     case PROP_SCALE_FACTOR:
       g_value_set_int (value, context->scale_factor);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

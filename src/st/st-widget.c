@@ -186,10 +186,6 @@ st_widget_set_property (GObject      *gobject,
     case PROP_LABEL_ACTOR:
       st_widget_set_label_actor (actor, g_value_get_object (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -229,10 +225,6 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_LABEL_ACTOR:
       g_value_set_object (value, priv->label_actor);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

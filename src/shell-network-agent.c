@@ -870,10 +870,6 @@ shell_network_agent_set_property (GObject      *object,
     case PROP_FORCE_ALWAYS_ASK:
       self->force_always_ask = g_value_get_boolean (value);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -889,10 +885,6 @@ shell_network_agent_get_property (GObject    *object,
     {
     case PROP_FORCE_ALWAYS_ASK:
       g_value_set_boolean (value, self->force_always_ask);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

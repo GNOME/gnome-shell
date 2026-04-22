@@ -134,9 +134,6 @@ shell_workspace_background_get_property (GObject      *gobject,
     case PROP_STATE_ADJUSTMENT_VALUE:
       g_value_set_double (value, self->state_adjustment_value);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, property_id, pspec);
     }
 }
 
@@ -157,9 +154,6 @@ shell_workspace_background_set_property (GObject      *gobject,
     case PROP_STATE_ADJUSTMENT_VALUE:
       shell_workspace_background_set_state_adjustment_value (self, g_value_get_double (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, property_id, pspec);
     }
 }
 

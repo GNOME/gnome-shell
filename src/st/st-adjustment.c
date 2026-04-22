@@ -162,10 +162,6 @@ st_adjustment_get_property (GObject    *gobject,
     case PROP_PAGE_SIZE:
       g_value_set_double (value, priv->page_size);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -265,10 +261,6 @@ st_adjustment_set_property (GObject      *gobject,
 
     case PROP_PAGE_SIZE:
       st_adjustment_set_page_size (adj, g_value_get_double (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

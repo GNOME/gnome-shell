@@ -692,9 +692,6 @@ na_xembed_set_property (GObject      *object,
     case PROP_X11_DISPLAY:
       priv->x11_display = g_value_get_object (value);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -711,9 +708,6 @@ na_xembed_get_property (GObject    *object,
     {
     case PROP_X11_DISPLAY:
       g_value_set_object (value, priv->x11_display);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

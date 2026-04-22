@@ -185,10 +185,6 @@ st_dnd_start_gesture_set_property (GObject      *gobject,
     case PROP_TIMEOUT_THRESHOLD:
       st_dnd_start_gesture_set_timeout_threshold (self, g_value_get_uint (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -208,10 +204,6 @@ st_dnd_start_gesture_get_property (GObject      *gobject,
 
     case PROP_TIMEOUT_THRESHOLD:
       g_value_set_uint (value, st_dnd_start_gesture_get_timeout_threshold (self));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

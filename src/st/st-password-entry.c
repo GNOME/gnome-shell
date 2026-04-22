@@ -91,10 +91,6 @@ st_password_entry_get_property (GObject    *gobject,
     case PROP_SHOW_PEEK_ICON:
       g_value_set_boolean (value, st_password_entry_get_show_peek_icon (entry));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
@@ -114,10 +110,6 @@ st_password_entry_set_property (GObject      *gobject,
 
     case PROP_SHOW_PEEK_ICON:
       st_password_entry_set_show_peek_icon (entry, g_value_get_boolean (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

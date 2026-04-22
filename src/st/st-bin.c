@@ -152,9 +152,6 @@ st_bin_set_property (GObject      *gobject,
     case PROP_CHILD:
       st_bin_set_child (bin, g_value_get_object (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
 }
 
@@ -171,9 +168,6 @@ st_bin_get_property (GObject    *gobject,
     case PROP_CHILD:
       g_value_set_object (value, priv->child);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
 }
 

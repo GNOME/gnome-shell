@@ -208,9 +208,6 @@ na_tray_manager_set_property (GObject      *object,
     case PROP_X11_DISPLAY:
       manager->x11_display = g_value_get_object (value);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -226,9 +223,6 @@ na_tray_manager_get_property (GObject    *object,
     {
     case PROP_X11_DISPLAY:
       g_value_set_object (value, manager->x11_display);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

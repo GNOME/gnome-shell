@@ -85,9 +85,8 @@ st_label_set_property (GObject      *gobject,
     case PROP_TEXT:
       st_label_set_text (label, g_value_get_string (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+    case PROP_CLUTTER_TEXT:
+      g_assert_not_reached ();
       break;
     }
 }
@@ -108,10 +107,6 @@ st_label_get_property (GObject    *gobject,
 
     case PROP_TEXT:
       g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->label)));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
 }

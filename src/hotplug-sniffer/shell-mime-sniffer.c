@@ -491,9 +491,6 @@ shell_mime_sniffer_get_property (GObject *object,
   case PROP_FILE:
     g_value_set_object (value, self->file);
     break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    break;
   }
 }
 
@@ -508,9 +505,6 @@ shell_mime_sniffer_set_property (GObject *object,
   switch ((ShellMimeSnifferProps) prop_id) {
   case PROP_FILE:
     shell_mime_sniffer_set_file (self, g_value_get_object (value));
-    break;
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     break;
   }
 }

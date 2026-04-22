@@ -736,9 +736,6 @@ shell_blur_effect_get_property (GObject    *object,
     case PROP_MODE:
       g_value_set_enum (value, self->mode);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -763,9 +760,6 @@ shell_blur_effect_set_property (GObject      *object,
     case PROP_MODE:
       shell_blur_effect_set_mode (self, g_value_get_enum (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 

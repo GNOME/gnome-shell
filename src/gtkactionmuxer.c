@@ -610,9 +610,6 @@ gtk_action_muxer_get_property (GObject    *object,
     case PROP_PARENT:
       g_value_set_object (value, gtk_action_muxer_get_parent (muxer));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -629,9 +626,6 @@ gtk_action_muxer_set_property (GObject      *object,
     case PROP_PARENT:
       gtk_action_muxer_set_parent (muxer, g_value_get_object (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 

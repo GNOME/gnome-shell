@@ -32,9 +32,6 @@ shell_window_preview_get_property (GObject      *gobject,
     case PROP_WINDOW_CONTAINER:
       g_value_set_object (value, self->window_container);
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, property_id, pspec);
     }
 }
 
@@ -51,9 +48,6 @@ shell_window_preview_set_property (GObject      *gobject,
     case PROP_WINDOW_CONTAINER:
       g_set_object (&self->window_container, g_value_get_object (value));
       break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, property_id, pspec);
     }
 }
 

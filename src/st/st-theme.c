@@ -451,9 +451,6 @@ st_theme_set_property (GObject      *object,
 
         break;
       }
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
     }
 }
 
@@ -475,9 +472,6 @@ st_theme_get_property (GObject    *object,
       break;
     case PROP_DEFAULT_STYLESHEET:
       g_value_set_object (value, theme->default_stylesheet);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

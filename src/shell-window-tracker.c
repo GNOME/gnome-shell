@@ -84,9 +84,6 @@ shell_window_tracker_get_property (GObject    *gobject,
     case PROP_FOCUS_APP:
       g_value_set_object (value, tracker->focus_app);
       break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
-      break;
     }
 }
 
