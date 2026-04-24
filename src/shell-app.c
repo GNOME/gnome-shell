@@ -1308,7 +1308,7 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
         continue;
 
       env_s = g_variant_get_strv (env, NULL);
-      for (j = 0; env_s[j] != NULL; j = j + 2)
+      for (j = 0; env_s[j] != NULL && env_s[j+1] != NULL; j = j + 2)
         g_app_launch_context_setenv (context, env_s[j], env_s[j+1]);
       return;
     }
