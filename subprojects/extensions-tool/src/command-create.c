@@ -128,7 +128,7 @@ escape_json_string (const char *string)
         }
     }
 
-  return g_string_free (escaped, FALSE);
+  return g_string_free_and_steal (escaped);
 }
 
 static gboolean
