@@ -1636,21 +1636,6 @@ cr_tknzr_new_from_buf (guchar * a_buf, gulong a_len,
         return result;
 }
 
-CRTknzr *
-cr_tknzr_new_from_uri (const guchar * a_file_uri, 
-                       enum CREncoding a_enc)
-{
-        CRTknzr *result = NULL;
-        CRInput *input = NULL;
-
-        input = cr_input_new_from_uri ((const gchar *) a_file_uri, a_enc);
-        g_return_val_if_fail (input != NULL, NULL);
-
-        result = cr_tknzr_new (input);
-
-        return result;
-}
-
 void
 cr_tknzr_ref (CRTknzr * a_this)
 {
@@ -1817,28 +1802,6 @@ cr_tknzr_peek_byte2 (CRTknzr * a_this, gulong a_offset, gboolean * a_eof)
                               && PRIVATE (a_this)->input, 0);
 
         return cr_input_peek_byte2 (PRIVATE (a_this)->input, a_offset, a_eof);
-}
-
-/**
- *Gets the number of bytes left in the topmost input stream
- *associated to this parser.
- *@param a_this the current instance of #CRTknzr
- *@return the number of bytes left or -1 in case of error.
- */
-glong
-cr_tknzr_get_nb_bytes_left (CRTknzr * a_this)
-{
-        g_return_val_if_fail (a_this && PRIVATE (a_this)
-                              && PRIVATE (a_this)->input, CR_BAD_PARAM_ERROR);
-
-        if (PRIVATE (a_this)->token_cache) {
-                cr_input_set_cur_pos (PRIVATE (a_this)->input,
-                                      &PRIVATE (a_this)->prev_pos);
-                cr_token_destroy (PRIVATE (a_this)->token_cache);
-                PRIVATE (a_this)->token_cache = NULL;
-        }
-
-        return cr_input_get_nb_bytes_left (PRIVATE (a_this)->input);
 }
 
 enum CRStatus
