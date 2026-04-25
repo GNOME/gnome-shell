@@ -32,6 +32,8 @@ class Spinner extends St.Widget {
     }
 
     play() {
+        if (this._playing)
+            return;
         this.remove_all_transitions();
         this.set_content(new St.SpinnerContent());
         this.show();
@@ -49,6 +51,8 @@ class Spinner extends St.Widget {
     }
 
     stop() {
+        if (!this._playing)
+            return;
         this.remove_all_transitions();
 
         if (this._animate) {
@@ -69,5 +73,9 @@ class Spinner extends St.Widget {
             if (this._hideOnStop)
                 this.hide();
         }
+    }
+
+    get _playing() {
+        return this.visible && this.content !== null;
     }
 });
