@@ -28,7 +28,6 @@
 #include "cr-attr-sel.h"
 #include "cr-simple-sel.h"
 #include "cr-selector.h"
-#include "cr-enc-handler.h"
 #include "cr-doc-handler.h"
 #include "cr-input.h"
 #include "cr-parser.h"
