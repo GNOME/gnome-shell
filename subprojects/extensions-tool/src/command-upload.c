@@ -16,18 +16,18 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include "config.h"
+
 #include <termios.h>
 
-#include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <gio/gunixinputstream.h>
-
-#include <libsoup/soup.h>
+#include <glib/gi18n.h>
 #include <json-glib/json-glib.h>
+#include <libsoup/soup.h>
 
 #include "commands.h"
 #include "common.h"
-#include "config.h"
 
 #define EGO_URL_BASE "https://extensions.gnome.org/api/v1"
 

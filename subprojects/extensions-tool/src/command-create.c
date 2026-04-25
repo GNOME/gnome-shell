@@ -19,16 +19,17 @@
  */
 
 #define _GNU_SOURCE /* for strcasestr */
+#include "config.h"
+
 #include <string.h>
 
-#include <glib/gi18n.h>
-#include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
+#include <gio/gio.h>
 #include <gio/gunixinputstream.h>
+#include <glib/gi18n.h>
 
 #include "commands.h"
 #include "common.h"
-#include "config.h"
 
 #define TEMPLATES_PATH "/org/gnome/extensions-tool/templates"
 #define TEMPLATE_KEY "Path"
