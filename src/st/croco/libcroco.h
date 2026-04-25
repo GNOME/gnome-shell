@@ -35,5 +35,4 @@
 #include "cr-statement.h"
 #include "cr-stylesheet.h"
 #include "cr-om-parser.h"
-#include "cr-prop-list.h"
 #include "cr-string.h"
