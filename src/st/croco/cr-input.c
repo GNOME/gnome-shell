@@ -180,95 +180,6 @@ cr_input_new_from_buf (guchar * a_buf,
 }
 
 /**
- * cr_input_new_from_uri:
- *@a_file_uri: the file to create *the input stream from.
- *@a_enc: the encoding of the file *to create the input from.
- *
- *Creates a new input stream from
- *a file.
- *
- *Returns the newly created input stream if
- *this method could read the file and create it,
- *NULL otherwise.
- */
-
-CRInput *
-cr_input_new_from_uri (const gchar * a_file_uri, enum CREncoding a_enc)
-{
-        CRInput *result = NULL;
-        enum CRStatus status = CR_OK;
-        FILE *file_ptr = NULL;
-        guchar tmp_buf[CR_INPUT_MEM_CHUNK_SIZE] = { 0 };
-        gulong nb_read = 0,
-                len = 0;
-        gboolean loop = TRUE;
-        guchar *buf = NULL;
-
-        g_return_val_if_fail (a_file_uri, NULL);
-
-        file_ptr = fopen (a_file_uri, "r");
-
-        if (file_ptr == NULL) {
-
-#ifdef CR_DEBUG
-                cr_utils_trace_debug ("could not open file");
-#endif
-                g_warning ("Could not open file %s\n", a_file_uri);
-
-                return NULL;
-        }
-
-        /*load the file */
-        while (loop) {
-                nb_read = fread (tmp_buf, 1 /*read bytes */ ,
-                                 CR_INPUT_MEM_CHUNK_SIZE /*nb of bytes */ ,
-                                 file_ptr);
-
-                if (nb_read != CR_INPUT_MEM_CHUNK_SIZE) {
-                        /*we read less chars than we wanted */
-                        if (feof (file_ptr)) {
-                                /*we reached eof */
-                                loop = FALSE;
-                        } else {
-                                /*a pb occurred !! */
-                                cr_utils_trace_debug ("an io error occurred");
-                                status = CR_ERROR;
-                                goto cleanup;
-                        }
-                }
-
-                if (status == CR_OK) {
-                        /*read went well */
-                        buf = g_realloc (buf, len + CR_INPUT_MEM_CHUNK_SIZE);
-                        memcpy (buf + len, tmp_buf, nb_read);
-                        len += nb_read;
-                }
-        }
-
-        if (status == CR_OK) {
-                result = cr_input_new_from_buf (buf, len, a_enc, TRUE);
-                if (!result) {
-                        goto cleanup;
-                }
-                /*
-                 *we should  free buf here because it's own by CRInput.
-                 *(see the last parameter of cr_input_new_from_buf().
-                 */
-                buf = NULL;
-        }
-
- cleanup:
-        if (file_ptr) {
-                fclose (file_ptr);
-                file_ptr = NULL;
-        }
-
-        g_clear_pointer (&buf, g_free);
-
-        return result;
-}
-
-/**
  * cr_input_destroy:
  *@a_this: the current instance of #CRInput.
  *
@@ -332,32 +243,6 @@ cr_input_unref (CRInput * a_this)
                 return TRUE;
         }
         return FALSE;
-}
-
-/**
- * cr_input_end_of_input:
- *@a_this: the current instance of #CRInput.
- *@a_end_of_input: out parameter. Is set to TRUE if
- *the current instance has reached the end of its input buffer,
- *FALSE otherwise.
- *
- *Tests whether the current instance of
- *#CRInput has reached its input buffer.
- *
- * Returns CR_OK upon successful completion, an error code otherwise.
- * Note that all the out parameters of this method are valid if
- * and only if this method returns CR_OK.
- */
-enum CRStatus
-cr_input_end_of_input (CRInput const * a_this, gboolean * a_end_of_input)
-{
-        g_return_val_if_fail (a_this && PRIVATE (a_this)
-                              && a_end_of_input, CR_BAD_PARAM_ERROR);
-
-        *a_end_of_input = (PRIVATE (a_this)->next_byte_index
-                           >= PRIVATE (a_this)->in_buf_size) ? TRUE : FALSE;
-
-        return CR_OK;
 }
 
 /**
