@@ -58,9 +58,6 @@ CRParser * cr_parser_new_from_buf (guchar *a_buf, gulong a_len,
                         enum CREncoding a_enc, 
                         gboolean a_free_buf) ;
 
-CRParser * cr_parser_new_from_file (const guchar *a_file_uri, 
-                                    enum CREncoding a_enc) ;
-
 CRParser * cr_parser_new_from_input (CRInput *a_input) ;
 
 enum CRStatus cr_parser_set_tknzr (CRParser *a_this, CRTknzr *a_tknzr) ;
@@ -84,10 +81,6 @@ enum CRStatus cr_parser_get_use_core_grammar (CRParser const *a_this,
                                               gboolean *a_use_core_grammar) ;
 
 enum CRStatus cr_parser_parse (CRParser *a_this) ;
-        
-enum CRStatus cr_parser_parse_file (CRParser *a_this, 
-                                    const guchar *a_file_uri, 
-                                    enum CREncoding a_enc) ;
 
 enum CRStatus cr_parser_parse_buf (CRParser *a_this, const guchar *a_buf, 
                                    gulong a_len, enum CREncoding a_enc) ;
