@@ -174,7 +174,7 @@ read_password_file (const char  *filename,
   g_autoptr (GDataInputStream) istream = NULL;
   char *line = NULL;
 
-  if (strcmp (filename, "-") == 0)
+  if (g_strcmp0 (filename, "-") == 0)
     {
       g_autoptr (GInputStream) stdin = NULL;
 
