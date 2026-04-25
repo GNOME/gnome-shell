@@ -18,11 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <gio/gio.h>
-#include <glib/gi18n.h>
+#include "config.h"
+
 #include <locale.h>
 
-#include "config.h"
+#include <gio/gio.h>
+#include <glib/gi18n.h>
+
 #include "commands.h"
 #include "common.h"
 
