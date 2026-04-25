@@ -37,7 +37,7 @@ typedef enum {
   LIST_FLAGS_INACTIVE = 1 << 5,
   LIST_FLAGS_NO_PREFS = 1 << 6,
   LIST_FLAGS_NO_UPDATES = 1 << 7,
-} ListFilterFlags;
+} G_GNUC_FLAG_ENUM ListFilterFlags;
 
 static gboolean
 list_extensions (ListFilterFlags filter, DisplayFormat format)
