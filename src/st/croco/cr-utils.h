@@ -209,16 +209,10 @@ cr_utils_utf8_str_to_ucs4 (const guchar * a_in,
  *****************************************/
 
 gboolean
-cr_utils_is_newline (guint32 a_char) ;
-
-gboolean
 cr_utils_is_white_space (guint32 a_char) ;
 
 gboolean
 cr_utils_is_nonascii (guint32 a_char) ;
-
-gboolean
-cr_utils_is_hexa_char (guint32 a_char) ;
 
 
 /**********************************

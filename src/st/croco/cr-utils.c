@@ -1194,43 +1194,6 @@ cr_utils_is_white_space (guint32 a_char)
 }
 
 /**
- *Returns true if the character is a newline
- *as defined in the css spec in the chap 4.1.1.
- *
- *nl ::= \n|\r\n|\r|\f
- *
- *@param a_char the character to test.
- *@return TRUE if the character is a newline, FALSE otherwise.
- */
-gboolean
-cr_utils_is_newline (guint32 a_char)
-{
-        switch (a_char) {
-        case '\n':
-        case '\r':
-        case '\f':
-                return TRUE;
-                break;
-        default:
-                return FALSE;
-        }
-}
-
-/**
- *returns TRUE if the char is part of an hexa num char:
- *i.e hexa_char ::= [0-9A-F]
- */
-gboolean
-cr_utils_is_hexa_char (guint32 a_char)
-{
-        if ((a_char >= '0' && a_char <= '9')
-            || (a_char >= 'A' && a_char <= 'F')) {
-                return TRUE;
-        }
-        return FALSE;
-}
-
-/**
  *Returns true if the character is a nonascii
  *character (as defined in the css spec chap 4.1.1):
  *
