@@ -555,15 +555,13 @@ cr_rgb_destroy (CRRgb * a_this)
 /**
  * cr_rgb_parse_from_buf:
  *@a_str: a string that contains a color description
- *@a_enc: the encoding of a_str
  *
  *Parses a text buffer that contains a rgb color
  *
  *Returns the parsed color, or NULL in case of error
  */
 CRRgb *
-cr_rgb_parse_from_buf (const guchar *a_str,
-                              enum CREncoding a_enc)
+cr_rgb_parse_from_buf (const guchar *a_str)
 {
 	enum CRStatus status = CR_OK ;
 	CRTerm *value = NULL ;
@@ -572,7 +570,7 @@ cr_rgb_parse_from_buf (const guchar *a_str,
 	
 	g_return_val_if_fail (a_str, NULL);
 	
-	parser = cr_parser_new_from_buf ((guchar *) a_str, strlen ((const char *) a_str), a_enc, FALSE);
+	parser = cr_parser_new_from_buf ((guchar *) a_str, strlen ((const char *) a_str), FALSE);
 
 	g_return_val_if_fail (parser, NULL);
 

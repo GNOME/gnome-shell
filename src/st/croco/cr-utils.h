@@ -77,20 +77,6 @@ enum CRSeekPos {
         CR_SEEK_END
 } ;
 
-/**
- *Encoding values.
- */
-enum CREncoding 
-{
-        CR_UCS_4 = 1/*Must be not NULL*/,
-        CR_UCS_1,
-        CR_ISO_8859_1,
-        CR_ASCII,
-        CR_UTF_8,
-        CR_UTF_16,
-        CR_AUTO/*should be the last one*/
-} ;
-
 
 
 

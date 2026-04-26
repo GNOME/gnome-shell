@@ -2767,7 +2767,6 @@ cr_parser_new (CRTknzr * a_tknzr)
  * cr_parser_new_from_buf:
  *@a_buf: the buffer to parse.
  *@a_len: the length of the data in the buffer.
- *@a_enc: the encoding of the input buffer a_buf.
  *@a_free_buf: if set to TRUE, a_buf will be freed
  *during the destruction of the newly built instance 
  *of #CRParser. If set to FALSE, it is up to the caller to
@@ -2780,7 +2779,6 @@ cr_parser_new (CRTknzr * a_tknzr)
 CRParser *
 cr_parser_new_from_buf (guchar * a_buf,
                         gulong a_len,
-                        enum CREncoding a_enc, 
                         gboolean a_free_buf)
 {
         CRParser *result = NULL;
@@ -2788,7 +2786,7 @@ cr_parser_new_from_buf (guchar * a_buf,
 
         g_return_val_if_fail (a_buf && a_len, NULL);
 
-        input = cr_input_new_from_buf (a_buf, a_len, a_enc, a_free_buf);
+        input = cr_input_new_from_buf (a_buf, a_len, a_free_buf);
         g_return_val_if_fail (input, NULL);
 
         result = cr_parser_new_from_input (input);
@@ -4379,7 +4377,6 @@ cr_parser_get_parsing_location (CRParser const *a_this,
  *@a_this: the current instance of #CRparser
  *@a_buf: the input buffer
  *@a_len: the length of the input buffer
- *@a_enc: the encoding of the buffer
  *
  *Parses a stylesheet from a buffer
  *
@@ -4388,7 +4385,7 @@ cr_parser_get_parsing_location (CRParser const *a_this,
 enum CRStatus
 cr_parser_parse_buf (CRParser * a_this,
                      const guchar * a_buf,
-                     gulong a_len, enum CREncoding a_enc)
+                     gulong a_len)
 {
         enum CRStatus status = CR_ERROR;
         CRTknzr *tknzr = NULL;
@@ -4396,7 +4393,7 @@ cr_parser_parse_buf (CRParser * a_this,
         g_return_val_if_fail (a_this && PRIVATE (a_this)
                               && a_buf, CR_BAD_PARAM_ERROR);
 
-        tknzr = cr_tknzr_new_from_buf ((guchar*)a_buf, a_len, a_enc, FALSE);
+        tknzr = cr_tknzr_new_from_buf ((guchar*)a_buf, a_len, FALSE);
 
         g_return_val_if_fail (tknzr != NULL, CR_ERROR);
 

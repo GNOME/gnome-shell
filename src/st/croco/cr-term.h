@@ -144,8 +144,7 @@ struct _CRTerm
         CRParsingLocation location ;
 } ;
 
-CRTerm * cr_term_parse_expression_from_buf (const guchar *a_buf, 
-                                            enum CREncoding a_encoding) ;
+CRTerm * cr_term_parse_expression_from_buf (const guchar *a_buf) ;
 CRTerm * cr_term_new (void) ;
 
 enum CRStatus cr_term_set_number (CRTerm *a_this, CRNum *a_num) ;

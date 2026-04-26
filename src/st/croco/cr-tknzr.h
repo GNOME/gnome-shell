@@ -54,7 +54,6 @@ struct _CRTknzr
 CRTknzr * cr_tknzr_new (CRInput *a_input) ;
 
 CRTknzr * cr_tknzr_new_from_buf (guchar *a_buf, gulong a_len,
-                                 enum CREncoding a_enc,
                                  gboolean a_free_at_destroy) ;
 
 gboolean cr_tknzr_unref (CRTknzr *a_this) ;

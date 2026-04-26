@@ -187,7 +187,6 @@ parse_stylesheet (GFile   *file,
 
   status = cr_om_parser_simply_parse_buf ((const guchar *) contents,
                                           length,
-                                          CR_UTF_8,
                                           &stylesheet);
   g_free (contents);
 
@@ -209,8 +208,7 @@ parse_stylesheet (GFile   *file,
 CRDeclaration *
 _st_theme_parse_declaration_list (const char *str)
 {
-  return cr_declaration_parse_list_from_buf ((const guchar *)str,
-                                             CR_UTF_8);
+  return cr_declaration_parse_list_from_buf ((const guchar *)str);
 }
 
 /* Just g_warning for now until we have something nicer to do */

@@ -116,7 +116,6 @@ cr_input_new_real (void)
  *@a_buf: the memory buffer to create the input stream from.
  *The #CRInput keeps this pointer so user should not free it !.
  *@a_len: the size of the input buffer.
- *@a_enc: the buffer's encoding.
  *@a_free_buf: if set to TRUE, this a_buf will be freed
  *at the destruction of this instance. If set to false, it is up
  *to the caller to free it.
@@ -127,13 +126,11 @@ cr_input_new_real (void)
 CRInput *
 cr_input_new_from_buf (guchar * a_buf,
                        gulong a_len,
-                       enum CREncoding a_enc,
                        gboolean a_free_buf)
 {
         CRInput *result = NULL;
 
         g_return_val_if_fail (a_buf, NULL);
-        g_return_val_if_fail (a_enc != CR_UTF_8, NULL);
 
         result = cr_input_new_real ();
         g_return_val_if_fail (result, NULL);

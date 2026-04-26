@@ -51,8 +51,7 @@ CRRgb * cr_rgb_new (void) ;
 CRRgb * cr_rgb_new_with_vals (gulong a_red, gulong a_green, 
                               gulong a_blue, gboolean a_is_percentage) ;
 
-CRRgb *cr_rgb_parse_from_buf(const guchar *a_str,
-                             enum CREncoding a_enc);
+CRRgb *cr_rgb_parse_from_buf(const guchar *a_str) ;
 
 enum CRStatus cr_rgb_compute_from_percentage (CRRgb *a_this) ;
 

@@ -108,7 +108,6 @@ cr_declaration_new (CRStatement * a_statement,
  *this declaration. Must be non NULL and of type
  *RULESET_STMT (must be a ruleset).
  *@a_str: the string that contains the statement.
- *@a_enc: the encoding of a_str.
  *
  *Parses a text buffer that contains
  *a css declaration.
@@ -116,7 +115,7 @@ cr_declaration_new (CRStatement * a_statement,
  */
 CRDeclaration *
 cr_declaration_parse_from_buf (CRStatement * a_statement,
-                               const guchar * a_str, enum CREncoding a_enc)
+                               const guchar * a_str)
 {
         enum CRStatus status = CR_OK;
         CRTerm *value = NULL;
@@ -130,7 +129,7 @@ cr_declaration_parse_from_buf (CRStatement * a_statement,
                 g_return_val_if_fail (a_statement->type == RULESET_STMT,
                                       NULL);
 
-        parser = cr_parser_new_from_buf ((guchar*)a_str, strlen ((const char *) a_str), a_enc, FALSE);
+        parser = cr_parser_new_from_buf ((guchar*)a_str, strlen ((const char *) a_str), FALSE);
         g_return_val_if_fail (parser, NULL);
 
         status = cr_parser_try_to_skip_spaces_and_comments (parser);
@@ -173,14 +172,12 @@ cr_declaration_parse_from_buf (CRStatement * a_statement,
  * cr_declaration_parse_list_from_buf:
  *@a_str: the input buffer that contains the list of declaration to
  *parse.
- *@a_enc: the encoding of a_str
  *
  *Parses a ';' separated list of properties declaration.
  *Returns the parsed list of declaration, NULL if parsing failed.
  */
 CRDeclaration *
-cr_declaration_parse_list_from_buf (const guchar * a_str,
-                                    enum CREncoding a_enc)
+cr_declaration_parse_list_from_buf (const guchar * a_str)
 {
 
         enum CRStatus status = CR_OK;
@@ -194,7 +191,7 @@ cr_declaration_parse_list_from_buf (const guchar * a_str,
 
         g_return_val_if_fail (a_str, NULL);
 
-        parser = cr_parser_new_from_buf ((guchar*)a_str, strlen ((const char *) a_str), a_enc, FALSE);
+        parser = cr_parser_new_from_buf ((guchar*)a_str, strlen ((const char *) a_str), FALSE);
         g_return_val_if_fail (parser, NULL);
         status = cr_parser_get_tknzr (parser, &tokenizer);
         if (status != CR_OK || !tokenizer) {

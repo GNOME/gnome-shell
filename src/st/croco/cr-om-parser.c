@@ -832,7 +832,6 @@ cr_om_parser_new (CRInput * a_input)
  *@a_this: the current instance of #CROMParser.
  *@a_buf: the in memory buffer to parse.
  *@a_len: the length of the in memory buffer in number of bytes.
- *@a_enc: the encoding of the in memory buffer.
  *@a_result: out parameter the resulting style sheet
  *
  *Parses the content of an in memory  buffer.
@@ -843,7 +842,7 @@ enum CRStatus
 cr_om_parser_parse_buf (CROMParser * a_this,
                         const guchar * a_buf,
                         gulong a_len,
-                        enum CREncoding a_enc, CRStyleSheet ** a_result)
+                        CRStyleSheet ** a_result)
 {
 
         enum CRStatus status = CR_OK;
@@ -855,7 +854,7 @@ cr_om_parser_parse_buf (CROMParser * a_this,
         }
 
         status = cr_parser_parse_buf (PRIVATE (a_this)->parser,
-                                      a_buf, a_len, a_enc);
+                                      a_buf, a_len);
 
         if (status == CR_OK) {
                 CRStyleSheet *result = NULL;
@@ -881,7 +880,6 @@ cr_om_parser_parse_buf (CROMParser * a_this,
  * cr_om_parser_simply_parse_buf:
  *@a_buf: the css2 in memory buffer.
  *@a_len: the length of the in memory buffer.
- *@a_enc: the encoding of the in memory buffer.
  *@a_result: out parameter. The resulting css2 style sheet.
  *
  *The simpler way to parse an in memory css2 buffer.
@@ -891,7 +889,6 @@ cr_om_parser_parse_buf (CROMParser * a_this,
 enum CRStatus
 cr_om_parser_simply_parse_buf (const guchar * a_buf,
                                gulong a_len,
-                               enum CREncoding a_enc,
                                CRStyleSheet ** a_result)
 {
         CROMParser *parser = NULL;
@@ -905,7 +902,7 @@ cr_om_parser_simply_parse_buf (const guchar * a_buf,
         }
 
         status = cr_om_parser_parse_buf (parser, a_buf, a_len,
-                                         a_enc, a_result);
+                                         a_result);
 
         if (parser) {
                 cr_om_parser_destroy (parser);

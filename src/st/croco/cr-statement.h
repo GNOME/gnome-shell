@@ -233,19 +233,16 @@ struct _CRStatement
 
 
 gboolean
-cr_statement_does_buf_parses_against_core (const guchar *a_buf,
-                                           enum CREncoding a_encoding) ;
+cr_statement_does_buf_parses_against_core (const guchar *a_buf) ;
 CRStatement *
-cr_statement_parse_from_buf (const guchar *a_buf,
-			     enum CREncoding a_encoding) ;
+cr_statement_parse_from_buf (const guchar *a_buf) ;
 CRStatement*
 cr_statement_new_ruleset (CRStyleSheet *a_sheet,
                           CRSelector *a_sel_list,
 			  CRDeclaration *a_decl_list,
 			  CRStatement *a_media_rule) ;
 CRStatement *
-cr_statement_ruleset_parse_from_buf (const guchar * a_buf,
-				     enum CREncoding a_enc) ;
+cr_statement_ruleset_parse_from_buf (const guchar * a_buf) ;
 
 CRStatement*
 cr_statement_new_at_import_rule (CRStyleSheet *a_container_sheet,
@@ -254,31 +251,27 @@ cr_statement_new_at_import_rule (CRStyleSheet *a_container_sheet,
 				 CRStyleSheet *a_imported_sheet) ;
 
 CRStatement *
-cr_statement_at_import_rule_parse_from_buf (const guchar * a_buf,
-                                            enum CREncoding a_encoding) ;
+cr_statement_at_import_rule_parse_from_buf (const guchar * a_buf) ;
 
 CRStatement *
 cr_statement_new_at_media_rule (CRStyleSheet *a_sheet,
                                 CRStatement *a_ruleset,
 				GList *a_media) ;
 CRStatement *
-cr_statement_at_media_rule_parse_from_buf (const guchar *a_buf,
-					   enum CREncoding a_enc) ;
+cr_statement_at_media_rule_parse_from_buf (const guchar *a_buf) ;
 
 CRStatement *
 cr_statement_new_at_charset_rule (CRStyleSheet *a_sheet,
                                   CRString *a_charset) ;
 CRStatement *
-cr_statement_at_charset_rule_parse_from_buf (const guchar *a_buf,
-					     enum CREncoding a_encoding);
+cr_statement_at_charset_rule_parse_from_buf (const guchar *a_buf);
 
 
 CRStatement *
 cr_statement_new_at_font_face_rule (CRStyleSheet *a_sheet,
                                     CRDeclaration *a_font_decls) ;
 CRStatement *
-cr_statement_font_face_rule_parse_from_buf (const guchar *a_buf,
-					    enum CREncoding a_encoding) ;
+cr_statement_font_face_rule_parse_from_buf (const guchar *a_buf) ;
 
 CRStatement *
 cr_statement_new_at_page_rule (CRStyleSheet *a_sheet,
@@ -286,8 +279,7 @@ cr_statement_new_at_page_rule (CRStyleSheet *a_sheet,
 			       CRString *a_name,
 			       CRString *a_pseudo) ;
 CRStatement *
-cr_statement_at_page_rule_parse_from_buf (const guchar *a_buf,
-					  enum CREncoding a_encoding)  ;
+cr_statement_at_page_rule_parse_from_buf (const guchar *a_buf)  ;
 
 enum CRStatus
 cr_statement_set_parent_sheet (CRStatement *a_this,

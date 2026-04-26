@@ -61,7 +61,7 @@ struct _CRInputPos
 
 CRInput *
 cr_input_new_from_buf (guchar *a_buf, gulong a_len,
-                       enum CREncoding a_enc, gboolean a_free_buf) ;
+                       gboolean a_free_buf) ;
 
 void
 cr_input_destroy (CRInput *a_this) ;

@@ -59,13 +59,11 @@ CROMParser * cr_om_parser_new (CRInput *a_input) ;
 
 enum CRStatus cr_om_parser_simply_parse_buf (const guchar *a_buf,
                                              gulong a_len,
-                                             enum CREncoding a_enc,
                                              CRStyleSheet **a_result) ;
 
 enum CRStatus cr_om_parser_parse_buf (CROMParser *a_this,
                                       const guchar *a_buf,
                                       gulong a_len,
-                                      enum CREncoding a_enc,
                                       CRStyleSheet **a_result) ;
 
 void cr_om_parser_destroy (CROMParser *a_this) ;

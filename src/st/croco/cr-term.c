@@ -103,8 +103,7 @@ cr_term_new (void)
  *NULL if parsing failed.
  */
 CRTerm *
-cr_term_parse_expression_from_buf (const guchar * a_buf,
-                                   enum CREncoding a_encoding)
+cr_term_parse_expression_from_buf (const guchar * a_buf)
 {
         CRParser *parser = NULL;
         CRTerm *result = NULL;
@@ -113,7 +112,7 @@ cr_term_parse_expression_from_buf (const guchar * a_buf,
         g_return_val_if_fail (a_buf, NULL);
 
         parser = cr_parser_new_from_buf ((guchar*)a_buf, strlen ((const char *) a_buf),
-                                         a_encoding, FALSE);
+                                         FALSE);
         g_return_val_if_fail (parser, NULL);
 
         status = cr_parser_try_to_skip_spaces_and_comments (parser);
