@@ -68,24 +68,10 @@ CRAdditionalSel * cr_additional_sel_new_with_type  (enum AddSelectorType a_sel_t
 CRAdditionalSel * cr_additional_sel_append (CRAdditionalSel *a_this, 
                                             CRAdditionalSel *a_sel) ;
 
-void cr_additional_sel_set_class_name (CRAdditionalSel *a_this,
-                                       CRString *a_class_name) ;
-
-void cr_additional_sel_set_id_name (CRAdditionalSel *a_this,
-                                    CRString *a_id) ;
-
-void cr_additional_sel_set_pseudo (CRAdditionalSel *a_this,
-                                   CRPseudo *a_pseudo) ;
-
-void cr_additional_sel_set_attr_sel (CRAdditionalSel *a_this,
-                                     CRAttrSel *a_sel) ;
-
 CRAdditionalSel * cr_additional_sel_prepend (CRAdditionalSel *a_this, 
                                              CRAdditionalSel *a_sel) ;
 
 guchar * cr_additional_sel_to_string (CRAdditionalSel const *a_this) ;
-
-guchar * cr_additional_sel_one_to_string (CRAdditionalSel const *a_this) ;
 
 void cr_additional_sel_dump (CRAdditionalSel const *a_this, FILE *a_fp) ;
 
