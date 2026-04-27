@@ -88,6 +88,10 @@ class FocusGrabber {
 
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
+        this._prevKeyFocusActor?.connectObject('destroy', () => {
+            this._prevKeyFocusActor = null;
+        }, this);
+
         global.stage.connectObject('notify::key-focus',
             this._focusActorChanged.bind(this), this);
 
@@ -100,6 +104,8 @@ class FocusGrabber {
     _focusUngrabbed() {
         if (!this._focused)
             return false;
+
+        this._prevKeyFocusActor?.disconnectObject(this);
 
         global.stage.disconnectObject(this);
 
