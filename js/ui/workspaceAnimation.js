@@ -123,15 +123,20 @@ class WorkspaceGroup extends BaseWorkspaceGroup {
     }
 
     _syncStacking() {
-        const windowActors = global.get_window_actors().filter(w =>
-            this._shouldShowWindow(w.meta_window));
+        const stackIndeces = new Map(
+            global.get_window_actors().map((w, i) => [w, i]));
+
+        this._windowRecords.sort((a, b) => {
+            const seqA = a.windowActor;
+            const seqB = b.windowActor;
+
+            return stackIndeces.get(seqA) - stackIndeces.get(seqB);
+        });
 
         let lastRecord;
         const bottomActor = this._background ?? null;
 
-        for (const windowActor of windowActors) {
-            const record = this._windowRecords.find(r => r.windowActor === windowActor);
-
+        for (const record of this._windowRecords) {
             this.set_child_above_sibling(record.clone,
                 lastRecord ? lastRecord.clone : bottomActor);
             lastRecord = record;
