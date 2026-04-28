@@ -76,8 +76,18 @@ class BaseWorkspaceGroup extends Clutter.Actor {
             this._windowRecords.splice(this._windowRecords.indexOf(record), 1);
         }, this);
 
+        windowActor.meta_window.connectObject('notify::minimized',
+            () => this._syncCloneVisibility(clone),
+            this);
+        this._syncCloneVisibility(clone);
+
         this._windowRecords.push(record);
         return clone;
+    }
+
+    _syncCloneVisibility(clone) {
+        const window = clone.source.meta_window;
+        clone.visible = window.showing_on_its_workspace();
     }
 
     _removeWindows() {
@@ -102,7 +112,7 @@ class WorkspaceGroup extends BaseWorkspaceGroup {
     }
 
     _shouldShowWindow(window) {
-        if (!window.showing_on_its_workspace() || this._isDesktopWindow(window))
+        if (this._isDesktopWindow(window))
             return false;
 
         if (window.is_override_redirect())
