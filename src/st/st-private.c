@@ -105,6 +105,7 @@ static PangoAlignment
 st_text_align_to_pango (StTextAlign align) {
   switch (align)
     {
+    case ST_TEXT_ALIGN_JUSTIFY:
     case ST_TEXT_ALIGN_START:
       if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
         return PANGO_ALIGN_RIGHT;
@@ -117,7 +118,6 @@ st_text_align_to_pango (StTextAlign align) {
       else
         return PANGO_ALIGN_RIGHT;
 
-    case ST_TEXT_ALIGN_JUSTIFY:
     case ST_TEXT_ALIGN_LEFT:
       return PANGO_ALIGN_LEFT;
 
