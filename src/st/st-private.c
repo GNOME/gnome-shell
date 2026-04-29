@@ -101,6 +101,37 @@ _st_actor_get_preferred_height (ClutterActor *actor,
   clutter_actor_get_preferred_height (actor, for_width, min_height_p, natural_height_p);
 }
 
+static PangoAlignment
+st_text_align_to_pango (StTextAlign align) {
+  switch (align)
+    {
+    case ST_TEXT_ALIGN_START:
+      if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+        return PANGO_ALIGN_RIGHT;
+      else
+        return PANGO_ALIGN_LEFT;
+
+    case ST_TEXT_ALIGN_END:
+      if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+        return PANGO_ALIGN_LEFT;
+      else
+        return PANGO_ALIGN_RIGHT;
+
+    case ST_TEXT_ALIGN_JUSTIFY:
+    case ST_TEXT_ALIGN_LEFT:
+      return PANGO_ALIGN_LEFT;
+
+    case ST_TEXT_ALIGN_CENTER:
+      return PANGO_ALIGN_CENTER;
+
+    case ST_TEXT_ALIGN_RIGHT:
+      return PANGO_ALIGN_RIGHT;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 /**
  * _st_set_text_from_style:
  * @text: Target #ClutterText
@@ -120,6 +151,7 @@ _st_set_text_from_style (ClutterText *text,
   const PangoFontDescription *font;
   PangoAttribute *foreground;
   StTextAlign align;
+  PangoAlignment pango_align;
   gdouble spacing;
   gchar *font_features;
 
@@ -188,16 +220,10 @@ _st_set_text_from_style (ClutterText *text,
     pango_attr_list_unref (attribs);
 
   align = st_theme_node_get_text_align (theme_node);
-  if (align == ST_TEXT_ALIGN_JUSTIFY)
-    {
-      clutter_text_set_justify (text, TRUE);
-      clutter_text_set_line_alignment (text, PANGO_ALIGN_LEFT);
-    }
-  else
-    {
-      clutter_text_set_justify (text, FALSE);
-      clutter_text_set_line_alignment (text, (PangoAlignment) align);
-    }
+  pango_align = st_text_align_to_pango (align);
+
+  clutter_text_set_justify (text, align == ST_TEXT_ALIGN_JUSTIFY);
+  clutter_text_set_line_alignment (text, pango_align);
 }
 
 /**

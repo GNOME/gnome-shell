@@ -115,6 +115,8 @@ typedef enum {
  * @ST_TEXT_ALIGN_LEFT: Text is aligned at the left of the label.
  * @ST_TEXT_ALIGN_CENTER: Text is aligned in the middle of the label.
  * @ST_TEXT_ALIGN_RIGHT: Text is aligned at the right of the label.
+ * @ST_TEXT_ALIGN_START: Text is aligned in the beginning of the label.
+ * @ST_TEXT_ALIGN_END: Text is aligned at the end of the label.
  * @ST_GRADIENT_JUSTIFY: Text is justified in the label.
  *
  * Used to align text in a label.
@@ -123,6 +125,8 @@ typedef enum {
     ST_TEXT_ALIGN_LEFT = PANGO_ALIGN_LEFT,
     ST_TEXT_ALIGN_CENTER = PANGO_ALIGN_CENTER,
     ST_TEXT_ALIGN_RIGHT = PANGO_ALIGN_RIGHT,
+    ST_TEXT_ALIGN_START,
+    ST_TEXT_ALIGN_END,
     ST_TEXT_ALIGN_JUSTIFY
 } StTextAlign;
 
