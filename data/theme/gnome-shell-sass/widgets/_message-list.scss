@@ -131,8 +131,7 @@ $_message_list_width: 29em;
         // Add bottom padding to align the app name with the time horizontally
         padding-bottom: to_em(1px);
 
-        &:ltr { text-align: right; }
-        &:rtl { text-align: left; }
+        text-align: end;
       }
     }
 

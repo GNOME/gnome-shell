@@ -160,8 +160,8 @@ $_gdm_dialog_width: 25em;
 
 .login-dialog-auth-list-label {
   @extend %title_4;
-  &:ltr { padding-left: $base_padding * 2.5; text-align: left; }
-  &:rtl { padding-right: $base_padding * 2.5; text-align: right; }
+  &:ltr { padding-left: $base_padding * 2.5; }
+  &:rtl { padding-right: $base_padding * 2.5; }
 }
 
 
