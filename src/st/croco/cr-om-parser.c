@@ -55,14 +55,14 @@ static void unrecoverable_error (CRDocHandler * a_this);
 static void error (CRDocHandler * a_this);
 
 static void property (CRDocHandler * a_this,
-                      CRString * a_name, 
-                      CRTerm * a_expression, 
+                      CRString * a_name,
+                      CRTerm * a_expression,
                       gboolean a_important);
 
-static void end_selector (CRDocHandler * a_this, 
+static void end_selector (CRDocHandler * a_this,
                           CRSelector * a_selector_list);
 
-static void start_selector (CRDocHandler * a_this, 
+static void start_selector (CRDocHandler * a_this,
                             CRSelector * a_selector_list);
 
 static void start_font_face (CRDocHandler * a_this,
@@ -74,27 +74,27 @@ static void end_document (CRDocHandler * a_this);
 
 static void start_document (CRDocHandler * a_this);
 
-static void charset (CRDocHandler * a_this, 
+static void charset (CRDocHandler * a_this,
                      CRString * a_charset,
                      CRParsingLocation *a_location);
 
 static void start_page (CRDocHandler * a_this, CRString * a_page,
-                        CRString * a_pseudo_page, 
+                        CRString * a_pseudo_page,
                         CRParsingLocation *a_location);
 
-static void end_page (CRDocHandler * a_this, CRString * a_page, 
+static void end_page (CRDocHandler * a_this, CRString * a_page,
                       CRString * a_pseudo_page);
 
-static void start_media (CRDocHandler * a_this, 
+static void start_media (CRDocHandler * a_this,
                          GList * a_media_list,
                          CRParsingLocation *a_location);
 
-static void end_media (CRDocHandler * a_this, 
+static void end_media (CRDocHandler * a_this,
                        GList * a_media_list);
 
-static void import_style (CRDocHandler * a_this, 
+static void import_style (CRDocHandler * a_this,
                           GList * a_media_list,
-                          CRString * a_uri, 
+                          CRString * a_uri,
                           CRString * a_uri_default_ns,
                           CRParsingLocation *a_location);
 
@@ -333,8 +333,8 @@ charset (CRDocHandler * a_this, CRString * a_charset,
 }
 
 static void
-start_page (CRDocHandler * a_this, 
-            CRString * a_page, 
+start_page (CRDocHandler * a_this,
+            CRString * a_page,
             CRString * a_pseudo,
             CRParsingLocation *a_location)
 {
@@ -375,8 +375,8 @@ start_page (CRDocHandler * a_this,
 }
 
 static void
-end_page (CRDocHandler * a_this, 
-          CRString * a_page, 
+end_page (CRDocHandler * a_this,
+          CRString * a_page,
           CRString * a_pseudo_page)
 {
         enum CRStatus status = CR_OK;
@@ -415,7 +415,7 @@ end_page (CRDocHandler * a_this,
 }
 
 static void
-start_media (CRDocHandler * a_this, 
+start_media (CRDocHandler * a_this,
              GList * a_media_list,
              CRParsingLocation *a_location)
 {
@@ -435,7 +435,7 @@ start_media (CRDocHandler * a_this,
                           && ctxt->stylesheet);
         if (a_media_list) {
                 /*duplicate the media_list */
-                media_list = cr_utils_dup_glist_of_cr_string 
+                media_list = cr_utils_dup_glist_of_cr_string
                         (a_media_list);
         }
         ctxt->cur_media_stmt =
@@ -482,9 +482,9 @@ end_media (CRDocHandler * a_this, GList * a_media_list)
 }
 
 static void
-import_style (CRDocHandler * a_this, 
+import_style (CRDocHandler * a_this,
               GList * a_media_list,
-              CRString * a_uri, 
+              CRString * a_uri,
               CRString * a_uri_default_ns,
               CRParsingLocation *a_location)
 {
@@ -629,8 +629,8 @@ end_selector (CRDocHandler * a_this, CRSelector * a_selector_list)
 
 static void
 property (CRDocHandler * a_this,
-          CRString * a_name, 
-          CRTerm * a_expression, 
+          CRString * a_name,
+          CRTerm * a_expression,
           gboolean a_important)
 {
         enum CRStatus status = CR_OK;

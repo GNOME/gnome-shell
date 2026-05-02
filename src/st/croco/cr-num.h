@@ -47,7 +47,7 @@ G_BEGIN_DECLS
  *of numbers.
  *Please, do not modify
  *the declaration order of the enum
- *members, unless you know 
+ *members, unless you know
  *what you are doing.
  */
 enum CRNumType
@@ -95,7 +95,7 @@ struct _CRNum
 
 CRNum *
 cr_num_new (void) ;
-	
+
 CRNum *
 cr_num_new_with_val (gdouble a_val,
                      enum CRNumType a_type) ;

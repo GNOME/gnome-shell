@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli.
  * See COPYRIGHTS file for copyright information.
  */
@@ -113,43 +113,13 @@ cr_string_dup2 (CRString const *a_this)
 
         g_return_val_if_fail (a_this, NULL) ;
 
-        if (a_this 
-            && a_this->stryng 
+        if (a_this
+            && a_this->stryng
             && a_this->stryng->str) {
                 result = g_strndup (a_this->stryng->str,
                                     a_this->stryng->len) ;
         }
         return result ;
-}
-
-/**
- *Returns a pointer to the internal raw NULL terminated string
- *of the current instance of #CRString.
- *@param a_this the current instance of #CRString
- */
-const gchar *
-cr_string_peek_raw_str (CRString const *a_this)
-{
-        g_return_val_if_fail (a_this, NULL) ;
-        
-        if (a_this->stryng && a_this->stryng->str)
-                return a_this->stryng->str ;
-        return NULL ;
-}
-
-/**
- *Returns the length of the internal raw NULL terminated
- *string of the current instance of #CRString.
- *@param a_this the current instance of #CRString.
- *@return the len of the internal raw NULL termninated string,
- *of -1 if no length can be returned.
- */
-gint
-cr_string_peek_raw_str_len (CRString const *a_this)
-{
-        g_return_val_if_fail (a_this && a_this->stryng,
-                              -1) ;
-        return a_this->stryng->len ;
 }
 
 /**

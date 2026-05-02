@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * see COPYRIGHTS file for copyright information.
  */
 
@@ -35,7 +35,7 @@ struct _CRRgb
 {
         /*
          *the unit of the rgb.
-         *Either NO_UNIT (integer) or 
+         *Either NO_UNIT (integer) or
          *UNIT_PERCENTAGE (percentage).
          */
         const guchar *name ;
@@ -48,10 +48,8 @@ struct _CRRgb
 
 CRRgb * cr_rgb_new (void) ;
 
-CRRgb * cr_rgb_new_with_vals (gulong a_red, gulong a_green, 
+CRRgb * cr_rgb_new_with_vals (gulong a_red, gulong a_green,
                               gulong a_blue, gboolean a_is_percentage) ;
-
-CRRgb *cr_rgb_parse_from_buf(const guchar *a_str) ;
 
 enum CRStatus cr_rgb_compute_from_percentage (CRRgb *a_this) ;
 
@@ -72,8 +70,6 @@ struct _CRTerm;
 enum CRStatus cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value);
 
 guchar * cr_rgb_to_string (CRRgb const *a_this) ;
-
-void cr_rgb_dump (CRRgb const *a_this, FILE *a_fp) ;
 
 void cr_rgb_destroy (CRRgb *a_this) ;
 

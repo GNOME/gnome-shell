@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include "cr-utils.h"
 #include "cr-simple-sel.h"
-#include "cr-parsing-location.h"
 
 /**
  *@file
@@ -74,11 +73,7 @@ CRSelector* cr_selector_append (CRSelector *a_this, CRSelector *a_new) ;
 CRSelector* cr_selector_append_simple_sel (CRSelector *a_this,
 					   CRSimpleSel *a_simple_sel) ;
 
-CRSelector* cr_selector_prepend (CRSelector *a_this, CRSelector *a_new) ;
-
 guchar * cr_selector_to_string (CRSelector const *a_this) ;
-
-void cr_selector_dump (CRSelector const *a_this, FILE *a_fp) ;
 
 void cr_selector_ref (CRSelector *a_this) ;
 

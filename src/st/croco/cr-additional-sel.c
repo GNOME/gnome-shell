@@ -32,7 +32,7 @@
  * An additional selector is the selector part
  * that comes after the combination of type selectors.
  * It can be either "a class selector (the .class part),
- * a pseudo class selector, an attribute selector 
+ * a pseudo class selector, an attribute selector
  * or an id selector.
  */
 
@@ -61,7 +61,7 @@ cr_additional_sel_new (void)
 
 /**
  * cr_additional_sel_new_with_type:
- * @a_sel_type: the type of the newly built instance 
+ * @a_sel_type: the type of the newly built instance
  * of #CRAdditionalSel.
  *
  * Constructor of #CRAdditionalSel.
@@ -115,32 +115,6 @@ cr_additional_sel_append (CRAdditionalSel * a_this, CRAdditionalSel * a_sel)
         a_sel->prev = cur_sel;
 
         return a_this;
-}
-
-/**
- * cr_additional_sel_prepend:
- * @a_this: the "this pointer" of the current instance
- * of #CRAdditionalSel .
- * @a_sel: the new instance to #CRAdditional to preappend.
- *
- * Preppends a new instance of #CRAdditional to the
- * current list of #CRAdditional.
- *
- * Returns the new list of CRAdditionalSel or NULL if an error arises.
- */
-CRAdditionalSel *
-cr_additional_sel_prepend (CRAdditionalSel * a_this, CRAdditionalSel * a_sel)
-{
-        g_return_val_if_fail (a_sel, NULL);
-
-        if (a_this == NULL) {
-                return a_sel;
-        }
-
-        a_sel->next = a_this;
-        a_this->prev = a_sel;
-
-        return a_sel;
 }
 
 guchar *
@@ -242,31 +216,6 @@ cr_additional_sel_to_string (CRAdditionalSel const * a_this)
         }
 
         return result;
-}
-
-/**
- * cr_additional_sel_dump:
- * @a_this: the "this pointer" of the current instance of
- * #CRAdditionalSel.
- * @a_fp: the destination file.
- *
- * Dumps the current instance of #CRAdditionalSel to a file
- */
-void
-cr_additional_sel_dump (CRAdditionalSel const * a_this, FILE * a_fp)
-{
-        guchar *tmp_str = NULL;
-
-        g_return_if_fail (a_fp);
-
-        if (a_this) {
-                tmp_str = cr_additional_sel_to_string (a_this);
-                if (tmp_str) {
-                        fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
-                }
-        }
 }
 
 /**

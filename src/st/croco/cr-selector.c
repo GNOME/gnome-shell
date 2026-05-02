@@ -79,29 +79,6 @@ cr_selector_append (CRSelector * a_this, CRSelector * a_new)
 }
 
 /**
- * cr_selector_prepend:
- *
- *@a_this: the current instance of #CRSelector list.
- *@a_new: the instance of #CRSelector.
- *
- *Prepends an element to the #CRSelector list.
- * 
- *Returns the new list.
- */
-CRSelector *
-cr_selector_prepend (CRSelector * a_this, CRSelector * a_new)
-{
-        CRSelector *cur = NULL;
-
-        a_new->next = a_this;
-        a_this->prev = a_new;
-
-        for (cur = a_new; cur && cur->prev; cur = cur->prev) ;
-
-        return cur;
-}
-
-/**
  * cr_selector_append_simple_sel:
  *
  *@a_this: the current instance of #CRSelector.
@@ -144,7 +121,7 @@ cr_selector_to_string (CRSelector const * a_this)
 
                                 if (tmp_str) {
                                         if (cur->prev)
-                                                g_string_append (str_buf, 
+                                                g_string_append (str_buf,
 								 ", ");
 
                                         g_string_append (str_buf, (const gchar *) tmp_str);
@@ -162,29 +139,6 @@ cr_selector_to_string (CRSelector const * a_this)
         }
 
         return result;
-}
-
-/**
- * cr_selector_dump:
- *
- *@a_this: the current instance of #CRSelector.
- *@a_fp: the destination file.
- *
- *Serializes the current instance of #CRSelector to a file.
- */
-void
-cr_selector_dump (CRSelector const * a_this, FILE * a_fp)
-{
-        guchar *tmp_buf = NULL;
-
-        if (a_this) {
-                tmp_buf = cr_selector_to_string (a_this);
-                if (tmp_buf) {
-                        fprintf (a_fp, "%s", tmp_buf);
-                        g_free (tmp_buf);
-                        tmp_buf = NULL;
-                }
-        }
 }
 
 /**

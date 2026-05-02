@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * see COPYRIGHTS file for copyright information.
  */
 
@@ -43,10 +43,10 @@ enum CRStyleOrigin
          */
         ORIGIN_UA = 0,
         ORIGIN_USER,
-	ORIGIN_AUTHOR,	
+	ORIGIN_AUTHOR,
 
         /*must always be the last one*/
-        NB_ORIGINS 
+        NB_ORIGINS
 } ;
 
 /**
@@ -82,13 +82,6 @@ struct _CRStyleSheet
 } ;
 
 CRStyleSheet * cr_stylesheet_new (CRStatement *a_stmts) ;
-
-gchar * cr_stylesheet_to_string (CRStyleSheet const *a_this) ;
-void cr_stylesheet_dump (CRStyleSheet const *a_this, FILE *a_fp) ;
-
-gint cr_stylesheet_nr_rules (CRStyleSheet const *a_this) ;
-
-CRStatement * cr_stylesheet_statement_get_from_list (CRStyleSheet *a_this, int itemnr) ;
 
 void cr_stylesheet_ref (CRStyleSheet *a_this) ;
 

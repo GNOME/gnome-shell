@@ -59,7 +59,7 @@ cr_utils_read_char_from_utf8_buf (const guchar * a_in,
         enum CRStatus status = CR_OK;
 
         /*
-         *to store the final decoded 
+         *to store the final decoded
          *unicode char
          */
         guint32 c = 0;
@@ -112,7 +112,7 @@ cr_utils_read_char_from_utf8_buf (const guchar * a_in,
                 /*
                  *up to 26 bits long char
                  *encoded over 5 bytes.
-                 *1111 10xx  10xx xxxx  10xx xxxx  
+                 *1111 10xx  10xx xxxx  10xx xxxx
                  *10xx xxxx  10xx xxxx
                  */
                 c = *a_in & 3;
@@ -122,7 +122,7 @@ cr_utils_read_char_from_utf8_buf (const guchar * a_in,
                 /*
                  *up to 31 bits long char
                  *encoded over 6 bytes:
-                 *1111 110x  10xx xxxx  10xx xxxx  
+                 *1111 110x  10xx xxxx  10xx xxxx
                  *10xx xxxx  10xx xxxx  10xx xxxx
                  */
                 c = *a_in & 1;
@@ -236,22 +236,6 @@ cr_utils_is_nonascii (guint32 a_char)
         return TRUE;
 }
 
-/**
- *Dumps a character a_nb times on a file.
- *@param a_char the char to dump
- *@param a_fp the destination file pointer
- *@param a_nb the number of times a_char is to be dumped.
- */
-void
-cr_utils_dump_n_chars (guchar a_char, FILE * a_fp, glong a_nb)
-{
-        glong i = 0;
-
-        for (i = 0; i < a_nb; i++) {
-                fprintf (a_fp, "%c", a_char);
-        }
-}
-
 void
 cr_utils_dump_n_chars2 (guchar a_char, GString * a_string, glong a_nb)
 {
@@ -262,32 +246,6 @@ cr_utils_dump_n_chars2 (guchar a_char, GString * a_string, glong a_nb)
         for (i = 0; i < a_nb; i++) {
                 g_string_append_printf (a_string, "%c", a_char);
         }
-}
-
-/**
- *Duplicates a list of GString instances.
- *@return the duplicated list of GString instances or NULL if
- *something bad happened.
- *@param a_list_of_strings the list of strings to be duplicated.
- */
-GList *
-cr_utils_dup_glist_of_string (GList const * a_list_of_strings)
-{
-        GList const *cur = NULL;
-        GList *result = NULL;
-
-        g_return_val_if_fail (a_list_of_strings, NULL);
-
-        for (cur = a_list_of_strings; cur; cur = cur->next) {
-                GString *str = NULL;
-
-                str = g_string_new_len (((GString *) cur->data)->str,
-                                        ((GString *) cur->data)->len);
-                if (str)
-                        result = g_list_append (result, str);
-        }
-
-        return result;
 }
 
 /**

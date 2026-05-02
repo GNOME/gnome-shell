@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * See COPYRIGHTS file for copyright information
  */
 
@@ -53,8 +53,6 @@ struct _CRPseudo
 CRPseudo * cr_pseudo_new (void) ;
 
 guchar * cr_pseudo_to_string (CRPseudo const *a_this) ;
-
-void cr_pseudo_dump (CRPseudo const *a_this, FILE *a_fp) ;
 
 void cr_pseudo_destroy (CRPseudo *a_this) ;
 

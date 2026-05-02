@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * See COPYRIGHTS file for copyright information.
  */
 
@@ -66,8 +66,6 @@ CRString  *cr_string_new_from_string (const gchar * a_string) ;
 CRString * cr_string_new_from_gstring (GString const *a_string) ;
 CRString *cr_string_dup (CRString const *a_this) ;
 gchar *cr_string_dup2 (CRString const *a_this) ;
-const gchar *cr_string_peek_raw_str (CRString const *a_this) ;
-gint cr_string_peek_raw_str_len (CRString const *a_this) ;
 void cr_string_destroy (CRString *a_this) ;
 
 G_END_DECLS

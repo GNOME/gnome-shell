@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli
  * See COPYRIGHTS file for copyrights information.
  */
@@ -280,31 +280,6 @@ cr_rgb_to_string (CRRgb const * a_this)
 }
 
 /**
- * cr_rgb_dump:
- *@a_this: the "this pointer" of
- *the current instance of #CRRgb.
- *@a_fp: the destination file pointer.
- *
- *Dumps the current instance of #CRRgb
- *to a file.
- */
-void
-cr_rgb_dump (CRRgb const * a_this, FILE * a_fp)
-{
-        guchar *str = NULL;
-
-        g_return_if_fail (a_this);
-
-        str = cr_rgb_to_string (a_this);
-
-        if (str) {
-                fprintf (a_fp, "%s", str);
-                g_free (str);
-                str = NULL;
-        }
-}
-
-/**
  * cr_rgb_compute_from_percentage:
  *@a_this: the current instance of #CRRgb
  *
@@ -506,7 +481,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
                                 (a_this,
                                  (const guchar *) a_value->content.str->stryng->str) ;
                 } else {
-                        cr_utils_trace_info 
+                        cr_utils_trace_info
                                 ("a_value has NULL string value") ;
                 }
 		break ;
@@ -515,7 +490,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
                     && a_value->content.str->stryng
                     && a_value->content.str->stryng->str) {
                         status = cr_rgb_set_from_hex_str
-                                (a_this, 
+                                (a_this,
                                  (const guchar *) a_value->content.str->stryng->str) ;
                 } else {
                         cr_utils_trace_info
@@ -528,7 +503,7 @@ cr_rgb_set_from_term (CRRgb *a_this, const struct _CRTerm *a_value)
         return status ;
 }
 
-enum CRStatus 
+enum CRStatus
 cr_rgb_copy (CRRgb *a_dest, CRRgb const *a_src)
 {
         g_return_val_if_fail (a_dest && a_src,
@@ -551,52 +526,3 @@ cr_rgb_destroy (CRRgb * a_this)
         g_return_if_fail (a_this);
         g_free (a_this);
 }
-
-/**
- * cr_rgb_parse_from_buf:
- *@a_str: a string that contains a color description
- *
- *Parses a text buffer that contains a rgb color
- *
- *Returns the parsed color, or NULL in case of error
- */
-CRRgb *
-cr_rgb_parse_from_buf (const guchar *a_str)
-{
-	enum CRStatus status = CR_OK ;
-	CRTerm *value = NULL ;
-	CRParser * parser = NULL;
-	CRRgb *result = NULL;
-	
-	g_return_val_if_fail (a_str, NULL);
-	
-	parser = cr_parser_new_from_buf ((guchar *) a_str, strlen ((const char *) a_str), FALSE);
-
-	g_return_val_if_fail (parser, NULL);
-
-	status = cr_parser_try_to_skip_spaces_and_comments (parser) ;
-	if (status != CR_OK)
-	    	goto cleanup;
-
-	status = cr_parser_parse_term (parser, &value);
-	if (status != CR_OK)
-	    	goto cleanup;
-
-	result = cr_rgb_new ();
-	if (!result)
-	    	goto cleanup;
-
-	status = cr_rgb_set_from_term (result, value);
-
-cleanup:
-	if (parser) {
-	    	cr_parser_destroy (parser);
-		parser = NULL;
-	}
-	if (value) {
-	    	cr_term_destroy(value);
-		value = NULL;
-	}
-	return result ;
-}
-

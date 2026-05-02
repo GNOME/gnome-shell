@@ -61,7 +61,7 @@ cr_num_new (void)
  * cr_num_new_with_val:
  * @a_val: the numerical value of the number.
  * @a_type: the type of number.
- * 
+ *
  * A constructor of #CRNum.
  *
  * Returns the newly built instance of #CRNum or

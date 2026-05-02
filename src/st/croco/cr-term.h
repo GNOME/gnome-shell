@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli
  * See COPYRIGHTS file for copyright information.
  */
@@ -63,7 +63,7 @@ enum Operator
 {
         NO_OP = 0,
         DIVIDE,
-        COMMA		
+        COMMA
 } ;
 
 struct _CRTerm ;
@@ -73,9 +73,9 @@ typedef struct _CRTerm CRTerm ;
  *An abstraction of a css2 term as
  *defined in the CSS2 spec in appendix D.1:
  *term ::=
- *[ NUMBER S* | PERCENTAGE S* | LENGTH S* | EMS S* | EXS S* 
+ *[ NUMBER S* | PERCENTAGE S* | LENGTH S* | EMS S* | EXS S*
  *| ANGLE S* | TIME S* | FREQ S* | function ]
- * | STRING S* | IDENT S* | URI S* | RGB S* 
+ * | STRING S* | IDENT S* | URI S* | RGB S*
  *| UNICODERANGE S* | hexcolor
  */
 struct _CRTerm
@@ -84,7 +84,7 @@ struct _CRTerm
          *The type of the term.
          */
         enum CRTermType type ;
-                
+
         /**
          *The unary operator associated to
          *the current term.
@@ -110,7 +110,7 @@ struct _CRTerm
         } content ;
 
         /**
-         *If the term is of type UNICODERANGE, 
+         *If the term is of type UNICODERANGE,
          *this field holds the upper bound of the range.
          *if the term is of type FUNCTION, this holds
          *an instance of CRTerm that represents
@@ -118,7 +118,7 @@ struct _CRTerm
          */
         union
         {
-                CRTerm *func_param ;                        
+                CRTerm *func_param ;
         } ext_content ;
 
         /**
@@ -130,7 +130,7 @@ struct _CRTerm
         glong ref_count ;
 
         /**
-         *A pointer to the next term, 
+         *A pointer to the next term,
          *just in case this term is part of
          *an expression.
          */
@@ -144,12 +144,11 @@ struct _CRTerm
         CRParsingLocation location ;
 } ;
 
-CRTerm * cr_term_parse_expression_from_buf (const guchar *a_buf) ;
 CRTerm * cr_term_new (void) ;
 
 enum CRStatus cr_term_set_number (CRTerm *a_this, CRNum *a_num) ;
-        
-enum CRStatus cr_term_set_function (CRTerm *a_this, 
+
+enum CRStatus cr_term_set_function (CRTerm *a_this,
                                     CRString *a_func_name,
                                     CRTerm *a_func_param) ;
 
@@ -158,24 +157,14 @@ enum CRStatus cr_term_set_string (CRTerm *a_this, CRString *a_str) ;
 enum CRStatus cr_term_set_ident (CRTerm *a_this, CRString *a_str) ;
 
 enum CRStatus cr_term_set_uri (CRTerm *a_this, CRString *a_str) ;
-        
+
 enum CRStatus cr_term_set_rgb (CRTerm *a_this, CRRgb *a_rgb) ;
-        
+
 enum CRStatus cr_term_set_hash (CRTerm *a_this, CRString *a_str) ;
-        
+
 CRTerm * cr_term_append_term (CRTerm *a_this, CRTerm *a_new_term) ;
 
-CRTerm * cr_term_prepend_term (CRTerm *a_this, CRTerm *a_new_term) ;
-
 guchar * cr_term_to_string (CRTerm const *a_this) ;
-
-guchar * cr_term_one_to_string (CRTerm const * a_this) ;
-
-void cr_term_dump (CRTerm const *a_this, FILE *a_fp) ;
-
-int cr_term_nr_values (CRTerm const *a_this) ;
-
-CRTerm * cr_term_get_from_list (CRTerm *a_this, int itemnr) ;
 
 void cr_term_ref (CRTerm *a_this) ;
 

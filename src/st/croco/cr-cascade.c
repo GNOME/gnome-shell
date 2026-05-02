@@ -6,7 +6,7 @@
  * Copyright (C) 2002-2003 Dodji Seketeli <dodji@seketeli.org>
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of version 2.1 of the 
+ * modify it under the terms of version 2.1 of the
  * GNU Lesser General Public
  * License as published by the Free Software Foundation.
  *
@@ -15,7 +15,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the 
+ * You should have received a copy of the
  * GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
@@ -149,28 +149,13 @@ cr_cascade_set_sheet (CRCascade * a_this,
 }
 
 /**
- *cr_cascade_ref:
- *@a_this: the current instance of #CRCascade
- *
- *Increases the reference counter of the current instance
- *of #CRCascade.
- */
-void
-cr_cascade_ref (CRCascade * a_this)
-{
-        g_return_if_fail (a_this && PRIVATE (a_this));
-
-        PRIVATE (a_this)->ref_count++;
-}
-
-/**
  * cr_cascade_unref:
- *@a_this: the current instance of 
+ *@a_this: the current instance of
  *#CRCascade.
  *
  *Decrements the reference counter associated
  *to this instance of #CRCascade. If the reference
- *counter reaches zero, the instance is destroyed 
+ *counter reaches zero, the instance is destroyed
  *using cr_cascade_destroy()
  */
 void

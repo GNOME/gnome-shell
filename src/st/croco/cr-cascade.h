@@ -4,7 +4,7 @@
  * This file is part of The Croco Library
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of version 2.1 of the 
+ * modify it under the terms of version 2.1 of the
  * GNU Lesser General Public
  * License as published by the Free Software Foundation.
  *
@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the 
+ * You should have received a copy of the
  * GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
@@ -62,7 +62,6 @@ enum CRStatus cr_cascade_set_sheet (CRCascade *a_this,
                                     CRStyleSheet *a_sheet,
                                     enum CRStyleOrigin a_origin) ;
 
-void cr_cascade_ref (CRCascade *a_this) ;
 
 void cr_cascade_unref (CRCascade *a_this) ;
 

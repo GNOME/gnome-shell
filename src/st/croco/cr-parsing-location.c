@@ -30,48 +30,9 @@
  *Definition of the #CRparsingLocation class.
  */
 
-
-/**
- * cr_parsing_location_new:
- *Instantiates a new parsing location.
- *
- *Returns the newly instantiated #CRParsingLocation.
- *Must be freed by cr_parsing_location_destroy()
- */
-CRParsingLocation * 
-cr_parsing_location_new (void)
-{
-	CRParsingLocation * result = NULL ;
-
-	result = g_try_malloc (sizeof (CRParsingLocation)) ;
-	if (!result) {
-		cr_utils_trace_info ("Out of memory error") ;
-		return NULL ;
-	}
-	cr_parsing_location_init (result) ;
-	return result ;
-}
-
-/**
- * cr_parsing_location_init:
- *@a_this: the current instance of #CRParsingLocation.
- *
- *Initializes the an instance of #CRparsingLocation.
- *
- *Returns CR_OK upon successful completion, an error code otherwise.
- */
-enum CRStatus 
-cr_parsing_location_init (CRParsingLocation *a_this)
-{
-	g_return_val_if_fail (a_this, CR_BAD_PARAM_ERROR) ;
-
-	memset (a_this, 0, sizeof (CRParsingLocation)) ;
-	return CR_OK ;
-}
-
 /**
  * cr_parsing_location_copy:
- *@a_to: the destination of the copy. 
+ *@a_to: the destination of the copy.
  *Must be allocated by the caller.
  *@a_from: the source of the copy.
  *
@@ -80,7 +41,7 @@ cr_parsing_location_init (CRParsingLocation *a_this)
  *Returns CR_OK upon successful completion, an error code
  *otherwise.
  */
-enum CRStatus 
+enum CRStatus
 cr_parsing_location_copy (CRParsingLocation *a_to,
 			  CRParsingLocation const *a_from)
 {
@@ -89,83 +50,3 @@ cr_parsing_location_copy (CRParsingLocation *a_to,
 	memcpy (a_to, a_from, sizeof (CRParsingLocation)) ;
 	return CR_OK ;
 }
-
-/**
- * cr_parsing_location_to_string:
- *@a_this: the current instance of #CRParsingLocation.
- *@a_mask: a bitmap that defines which parts of the
- *parsing location are to be serialized (line, column or byte offset)
- *
- *Returns the serialized string or NULL in case of an error.
- */
-gchar * 
-cr_parsing_location_to_string (CRParsingLocation const *a_this,
-			       enum CRParsingLocationSerialisationMask a_mask)
-{
-	GString *result = NULL ;
-	gchar *str = NULL ;
-
-	g_return_val_if_fail (a_this, NULL) ;
-
-	if (!a_mask) {
-		a_mask = DUMP_LINE | DUMP_COLUMN | DUMP_BYTE_OFFSET ;
-	}
-	result =g_string_new (NULL) ;
-	if (!result)
-		return NULL ;
-	if (a_mask & DUMP_LINE) {
-		g_string_append_printf (result, "line:%d ", 
-					a_this->line) ;
-	}
-	if (a_mask & DUMP_COLUMN) {
-		g_string_append_printf (result, "column:%d ", 
-					a_this->column) ;
-	}
-	if (a_mask & DUMP_BYTE_OFFSET) {
-		g_string_append_printf (result, "byte offset:%d ", 
-					a_this->byte_offset) ;
-	}
-	if (result->len) {
-		str = g_string_free_and_steal (result) ;
-	} else {
-		g_string_free (result, TRUE) ;
-	}
-	return str ;
-}
-
-/**
- * cr_parsing_location_dump:
- * @a_this: current instance of #CRParsingLocation
- * @a_mask: the serialization mask.
- * @a_fp: the file pointer to dump the parsing location to.
- */
-void
-cr_parsing_location_dump (CRParsingLocation const *a_this,
-			  enum CRParsingLocationSerialisationMask a_mask,
-			  FILE *a_fp)
-{
-	gchar *str = NULL ;
-
-	g_return_if_fail (a_this && a_fp) ;
-	str = cr_parsing_location_to_string (a_this, a_mask) ;
-	if (str) {
-		fprintf (a_fp, "%s", str) ;
-		g_free (str) ;
-		str = NULL ;
-	}
-}
-
-/**
- * cr_parsing_location_destroy:
- *@a_this: the current instance of #CRParsingLocation. Must
- *have been allocated with cr_parsing_location_new().
- *
- *Destroys the current instance of #CRParsingLocation
- */
-void 
-cr_parsing_location_destroy (CRParsingLocation *a_this)
-{
-	g_return_if_fail (a_this) ;
-	g_free (a_this) ;
-}
-

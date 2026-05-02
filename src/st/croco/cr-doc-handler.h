@@ -78,12 +78,12 @@ struct _CRDocHandler
 	 *@param a_this the document handler.
 	 *@param a_charset the declared charset.
 	 */
-	void (*charset) (CRDocHandler *a_this, 
+	void (*charset) (CRDocHandler *a_this,
 			 CRString *a_charset,
 			 CRParsingLocation *a_charset_sym_location) ;
 
 	/**
-	 *Is called to notify an import statement in 
+	 *Is called to notify an import statement in
 	 *the stylesheet.
 	 *@param a_this the current instance of #CRDocHandler.
 	 *@param a_media_list a doubly linked list of GString objects.
@@ -91,7 +91,7 @@ struct _CRDocHandler
 	 *destination media for style information.
 	 *@param a_uri the uri of the imported style sheet.
 	 *@param a_uri_default_ns the default namespace of URI
-	 *@param a_location the parsing location of the '\@import' 
+	 *@param a_location the parsing location of the '\@import'
 	 *keyword.
 	 *of the imported style sheet.
 	 */
@@ -119,7 +119,7 @@ struct _CRDocHandler
 				       CRString *a_prefix,
 				       CRString *a_uri,
 				       CRParsingLocation *a_location) ;
-		
+
 	/**
 	 *Is called to notify a comment.
 	 *@param a_this a pointer to the current instance
@@ -194,9 +194,9 @@ struct _CRDocHandler
 	 *every media statement in the style sheet. There will be
 	 *a corresponding end_media() event for every start_media()
 	 *event.
-	 *@param a_this a pointer to the current instance of 
+	 *@param a_this a pointer to the current instance of
 	 *#CRDocHandler.
-	 *@param a_media_list a double linked list of 
+	 *@param a_media_list a double linked list of
 	 #CRString * objects.
 	 *Each CRString objects is actually a destination media for
 	 *the style information.
@@ -220,7 +220,7 @@ struct _CRDocHandler
 	 *Is called to notify the beginning of a page statement.
 	 *The parser invokes this function at the beginning of
 	 *every page statement in the style sheet. There will be
-	 *a corresponding end_page() event for every single 
+	 *a corresponding end_page() event for every single
 	 *start_page() event.
 	 *@param a_this a pointer to the current instance of
 	 *#CRDocHandler.
@@ -229,7 +229,7 @@ struct _CRDocHandler
 	 *@param a_location the parsing location of the "\@page" keyword.
 	 */
 	void (*start_page) (CRDocHandler *a_this,
-			    CRString *a_name, 
+			    CRString *a_name,
 			    CRString *a_pseudo_page,
 			    CRParsingLocation *a_location) ;
 
@@ -243,7 +243,7 @@ struct _CRDocHandler
 	void (*end_page) (CRDocHandler *a_this,
 			  CRString *a_name,
 			  CRString *pseudo_page) ;
-		
+
 	/**
 	 *Is Called to notify an unknown at-rule not supported
 	 *by this parser.
@@ -254,7 +254,7 @@ struct _CRDocHandler
 	/**
 	 *Is called to notify a parsing error. After this error
 	 *the application must ignore the rule being parsed, if
-	 *any. After completion of this callback, 
+	 *any. After completion of this callback,
 	 *the parser will then try to resume the parsing,
 	 *ignoring the current error.
 	 */
@@ -283,8 +283,6 @@ enum CRStatus cr_doc_handler_get_ctxt (CRDocHandler const *a_this, gpointer * a_
 
 enum CRStatus cr_doc_handler_set_default_sac_handler (CRDocHandler *a_this) ;
 
-void cr_doc_handler_associate_a_parser (CRDocHandler *a_this,
-					gpointer a_parser) ;
 
 void cr_doc_handler_ref (CRDocHandler *a_this) ;
 

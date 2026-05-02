@@ -105,7 +105,7 @@ g_log (CROCO_LOG_DOMAIN, \
 /**
  *Traces an info message.
  *The file, line and enclosing function
- *of the message will be automatically 
+ *of the message will be automatically
  *added to the message.
  *@param a_msg the msg to trace.
  */
@@ -142,22 +142,14 @@ cr_utils_is_white_space (guint32 a_char) ;
 gboolean
 cr_utils_is_nonascii (guint32 a_char) ;
 
-
 /**********************************
  *Miscellaneous utility functions
  ***********************************/
 
 void
-cr_utils_dump_n_chars (guchar a_char, 
-                       FILE *a_fp, 
-                       glong a_nb) ;
-
-void
-cr_utils_dump_n_chars2 (guchar a_char, 
+cr_utils_dump_n_chars2 (guchar a_char,
                         GString *a_string,
                         glong a_nb) ;
-GList *
-cr_utils_dup_glist_of_string (GList const *a_list) ;
 
 GList *
 cr_utils_dup_glist_of_cr_string (GList const * a_list_of_strings) ;

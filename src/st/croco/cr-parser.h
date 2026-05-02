@@ -68,23 +68,18 @@ enum CRStatus cr_parser_get_parsing_location (CRParser const *a_this, CRParsingL
 enum CRStatus cr_parser_try_to_skip_spaces_and_comments (CRParser *a_this) ;
 
 
-enum CRStatus cr_parser_set_sac_handler (CRParser *a_this, 
+enum CRStatus cr_parser_set_sac_handler (CRParser *a_this,
                                          CRDocHandler *a_handler) ;
 
-enum CRStatus cr_parser_get_sac_handler (CRParser *a_this, 
+enum CRStatus cr_parser_get_sac_handler (CRParser *a_this,
                                          CRDocHandler **a_handler) ;
 
-enum CRStatus cr_parser_set_use_core_grammar (CRParser *a_this,
-                                              gboolean a_use_core_grammar) ;
-enum CRStatus cr_parser_get_use_core_grammar (CRParser const *a_this,
-                                              gboolean *a_use_core_grammar) ;
+
 
 enum CRStatus cr_parser_parse (CRParser *a_this) ;
 
 enum CRStatus cr_parser_parse_buf (CRParser *a_this, const guchar *a_buf,
                                    gulong a_len) ;
-
-enum CRStatus cr_parser_set_default_sac_handler (CRParser *a_this) ;
 
 enum CRStatus cr_parser_parse_term (CRParser *a_this, CRTerm **a_term) ;
 
@@ -113,5 +108,5 @@ enum CRStatus cr_parser_parse_charset (CRParser *a_this, CRString **a_value,
 enum CRStatus cr_parser_parse_font_face (CRParser *a_this) ;
 
 void cr_parser_destroy (CRParser *a_this) ;
-        
+
 G_END_DECLS

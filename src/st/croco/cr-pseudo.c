@@ -68,7 +68,7 @@ cr_pseudo_to_string (CRPseudo const * a_this)
                         goto error;
                 }
 
-                name = (guchar *) g_strndup (a_this->name->stryng->str, 
+                name = (guchar *) g_strndup (a_this->name->stryng->str,
                                   a_this->name->stryng->len);
 
                 if (name) {
@@ -83,7 +83,7 @@ cr_pseudo_to_string (CRPseudo const * a_this)
                 if (a_this->name == NULL)
                         goto error;
 
-                name = (guchar *) g_strndup (a_this->name->stryng->str, 
+                name = (guchar *) g_strndup (a_this->name->stryng->str,
                                   a_this->name->stryng->len);
 
                 if (a_this->extra) {
@@ -116,29 +116,6 @@ cr_pseudo_to_string (CRPseudo const * a_this)
       error:
         g_string_free (str_buf, TRUE);
         return NULL;
-}
-
-/**
- * cr_pseudo_dump:
- *@a_this: the current instance of pseudo
- *@a_fp: the destination file pointer.
- *
- *Dumps the pseudo to a file.
- *
- */
-void
-cr_pseudo_dump (CRPseudo const * a_this, FILE * a_fp)
-{
-        guchar *tmp_str = NULL;
-
-        if (a_this) {
-                tmp_str = cr_pseudo_to_string (a_this);
-                if (tmp_str) {
-                        fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
-                }
-        }
 }
 
 /**

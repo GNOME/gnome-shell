@@ -76,28 +76,6 @@ cr_attr_sel_append_attr_sel (CRAttrSel * a_this, CRAttrSel * a_attr_sel)
 }
 
 /**
- * cr_attr_sel_prepend_attr_sel:
- *@a_this: the "this pointer" of the current instance *of #CRAttrSel.
- *@a_attr_sel: the attribute selector to append.
- *
- *Prepends an attribute selector to the list of
- *attributes selector represented by a_this.
- *Returns CR_OK upon successful completion, an error code otherwise.
- */
-enum CRStatus
-cr_attr_sel_prepend_attr_sel (CRAttrSel * a_this,
-                              CRAttrSel * a_attr_sel)
-{
-        g_return_val_if_fail (a_this && a_attr_sel,
-                              CR_BAD_PARAM_ERROR);
-
-        a_attr_sel->next = a_this;
-        a_this->prev = a_attr_sel;
-
-        return CR_OK;
-}
-
-/**
  * cr_attr_sel_to_string:
  * @a_this: the current instance of #CRAttrSel.
  *
@@ -175,30 +153,6 @@ cr_attr_sel_to_string (CRAttrSel const * a_this)
 }
 
 /**
- * cr_attr_sel_dump:
- * @a_this: the "this pointer" of the current instance of
- * #CRAttrSel.
- * @a_fp: the destination file.
- *
- * Dumps the current instance of #CRAttrSel to a file.
- */
-void
-cr_attr_sel_dump (CRAttrSel const * a_this, FILE * a_fp)
-{
-        guchar *tmp_str = NULL;
-
-        g_return_if_fail (a_this);
-
-        tmp_str = cr_attr_sel_to_string (a_this);
-
-        if (tmp_str) {
-                fprintf (a_fp, "%s", tmp_str);
-                g_free (tmp_str);
-                tmp_str = NULL;
-        }
-}
-
-/**
  *cr_attr_sel_destroy:
  *@a_this: the "this pointer" of the current
  *instance of #CRAttrSel.
@@ -228,4 +182,3 @@ cr_attr_sel_destroy (CRAttrSel * a_this)
 
         g_clear_pointer (&a_this, g_free);
 }
-

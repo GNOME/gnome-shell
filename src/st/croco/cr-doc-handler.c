@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * See COPRYRIGHTS file for copyright information.
  */
 
@@ -38,7 +38,7 @@
 struct _CRDocHandlerPriv {
 	/**
 	 *This pointer is to hold an application parsing context.
-	 *For example, it used by the Object Model parser to 
+	 *For example, it used by the Object Model parser to
 	 *store it parsing context. #CRParser does not touch it, but
 	 *#CROMParser does. #CROMParser allocates this pointer at
 	 *the beginning of the css document, and frees it at the end
@@ -253,21 +253,4 @@ cr_doc_handler_destroy (CRDocHandler * a_this)
 
         g_clear_pointer (&a_this->priv, g_free);
         g_free (a_this);
-}
-
-/**
- * cr_doc_handler_associate_a_parser:
- *Associates a parser to the current document handler
- *
- *@a_this: the current instance of document handler.
- *@a_parser: the parser to associate.
- */
-void
-cr_doc_handler_associate_a_parser (CRDocHandler *a_this,
-				   gpointer a_parser)
-{
-	g_return_if_fail (a_this && PRIVATE (a_this) 
-			  && a_parser) ;
-
-	PRIVATE (a_this)->parser = a_parser ;
 }

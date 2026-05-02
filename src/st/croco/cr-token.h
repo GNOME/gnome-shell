@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli
  * See COPYRIGHTS file for copyright information.
  */
@@ -91,7 +91,7 @@ enum CRTokenExtraType
         FREQ_HZ_ET,
         FREQ_KHZ_ET
 } ;
- 
+
 typedef struct _CRToken CRToken ;
 
 /**
@@ -136,53 +136,53 @@ enum CRStatus cr_token_set_ident (CRToken *a_this, CRString * a_ident) ;
 enum CRStatus cr_token_set_hash (CRToken *a_this, CRString *a_hash) ;
 
 enum CRStatus cr_token_set_rgb (CRToken *a_this, CRRgb *a_rgb) ;
-        
+
 enum CRStatus cr_token_set_import_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_page_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_media_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_font_face_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_charset_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_atkeyword (CRToken *a_this, CRString *a_atname) ;
-        
+
 enum CRStatus cr_token_set_important_sym (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_ems (CRToken *a_this, CRNum *a_num) ;
-        
+
 enum CRStatus cr_token_set_exs (CRToken *a_this, CRNum *a_num) ;
-        
+
 enum CRStatus cr_token_set_length (CRToken *a_this, CRNum *a_num,
                                    enum CRTokenExtraType a_et) ;
-        
+
 enum CRStatus cr_token_set_angle (CRToken *a_this, CRNum *a_num,
                                   enum CRTokenExtraType a_et) ;
-        
+
 enum CRStatus cr_token_set_time (CRToken *a_this, CRNum *a_num,
                                  enum CRTokenExtraType a_et) ;
-        
+
 enum CRStatus cr_token_set_freq (CRToken *a_this, CRNum *a_num,
                                  enum CRTokenExtraType a_et) ;
 
 enum CRStatus cr_token_set_dimen (CRToken *a_this, CRNum *a_num,
                                   CRString *a_dim) ;
-        
+
 enum CRStatus cr_token_set_percentage (CRToken *a_this, CRNum *a_num) ;
-        
+
 enum CRStatus cr_token_set_number (CRToken *a_this, CRNum *a_num) ;
-        
+
 enum CRStatus cr_token_set_uri (CRToken *a_this, CRString *a_uri) ;
-        
-enum CRStatus cr_token_set_function (CRToken *a_this, 
+
+enum CRStatus cr_token_set_function (CRToken *a_this,
                                      CRString *a_fun_name) ;
-        
+
 enum CRStatus cr_token_set_bc (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_bo (CRToken *a_this) ;
-        
+
 enum CRStatus cr_token_set_po (CRToken *a_this) ;
 
 enum CRStatus cr_token_set_pc (CRToken *a_this) ;
@@ -195,15 +195,15 @@ enum CRStatus cr_token_set_semicolon (CRToken *a_this) ;
 
 enum CRStatus cr_token_set_delim (CRToken *a_this, guint32 a_char) ;
 
-        
+
 /*
   enum CRStatus
-  cr_token_set_unicoderange (CRToken *a_this, 
+  cr_token_set_unicoderange (CRToken *a_this,
   CRUnicodeRange *a_range) ;
 */
 
 void
 cr_token_destroy (CRToken *a_this) ;
-        
-	
+
+
 G_END_DECLS

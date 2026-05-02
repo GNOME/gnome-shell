@@ -14,7 +14,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the 
+ * You should have received a copy of the
  * GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
@@ -55,7 +55,6 @@ struct _CROMParser
 } ;
 
 CROMParser * cr_om_parser_new (CRInput *a_input) ;
-
 
 enum CRStatus cr_om_parser_simply_parse_buf (const guchar *a_buf,
                                              gulong a_len,

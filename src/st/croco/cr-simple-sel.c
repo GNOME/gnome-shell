@@ -75,30 +75,6 @@ cr_simple_sel_append_simple_sel (CRSimpleSel * a_this, CRSimpleSel * a_sel)
         return a_this;
 }
 
-/**
- * cr_simple_sel_prepend_simple_sel:
- *
- *@a_this: the this pointer of the current instance of #CRSimpleSel.
- *@a_sel: the simple selector to prepend.
- *
- *Prepends a simple selector to the current list of simple selectors.
- *
- *Returns the new list upon successful completion, an error code otherwise.
- */
-CRSimpleSel *
-cr_simple_sel_prepend_simple_sel (CRSimpleSel * a_this, CRSimpleSel * a_sel)
-{
-        g_return_val_if_fail (a_sel, NULL);
-
-        if (a_this == NULL)
-                return a_sel;
-
-        a_sel->next = a_this;
-        a_this->prev = a_sel;
-
-        return a_sel;
-}
-
 guchar *
 cr_simple_sel_to_string (CRSimpleSel const * a_this)
 {
@@ -159,77 +135,6 @@ cr_simple_sel_to_string (CRSimpleSel const * a_this)
         return result;
 }
 
-
-guchar *
-cr_simple_sel_one_to_string (CRSimpleSel const * a_this)
-{
-        GString *str_buf = NULL;
-        guchar *result = NULL;
-
-        g_return_val_if_fail (a_this, NULL);
-
-        str_buf = g_string_new (NULL);
-        if (a_this->name) {
-                guchar *str = (guchar *) g_strndup (a_this->name->stryng->str,
-                                         a_this->name->stryng->len);
-
-                if (str) {
-                        g_string_append_printf (str_buf, "%s", str);
-                        g_free (str);
-                        str = NULL;
-                }
-        }
-
-        if (a_this->add_sel) {
-                guchar *tmp_str = NULL;
-
-                tmp_str = cr_additional_sel_to_string (a_this->add_sel);
-                if (tmp_str) {
-                        g_string_append_printf
-                                (str_buf, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
-                }
-        }
-
-        if (str_buf) {
-                result = (guchar *) g_string_free_and_steal (str_buf);
-                str_buf = NULL;
-        }
-
-        return result;
-}
-
-/**
- * cr_simple_sel_dump:
- *@a_this: the current instance of #CRSimpleSel.
- *@a_fp: the destination file pointer.
- *
- *Dumps the selector to a file.
- *TODO: add the support of unicode in the dump.
- *
- *Returns CR_OK upon successful completion, an error code
- *otherwise.
- */
-enum CRStatus
-cr_simple_sel_dump (CRSimpleSel const * a_this, FILE * a_fp)
-{
-        guchar *tmp_str = NULL;
-
-        g_return_val_if_fail (a_fp, CR_BAD_PARAM_ERROR);
-
-        if (a_this) {
-                tmp_str = cr_simple_sel_to_string (a_this);
-                if (tmp_str) {
-                        fprintf (a_fp, "%s", tmp_str);
-                        g_free (tmp_str);
-                        tmp_str = NULL;
-                }
-        }
-
-        return CR_OK;
-}
-
 /**
  * cr_simple_sel_compute_specificity:
  *
@@ -254,7 +159,7 @@ cr_simple_sel_compute_specificity (CRSimpleSel * a_this)
         for (cur_sel = a_this; cur_sel; cur_sel = cur_sel->next) {
                 if (cur_sel->type_mask & TYPE_SELECTOR) {
                         c++;    /*hmmh, is this a new language ? */
-                } else if (!cur_sel->name 
+                } else if (!cur_sel->name
                            || !cur_sel->name->stryng
                            || !cur_sel->name->stryng->str) {
                         if (cur_sel->add_sel->type ==

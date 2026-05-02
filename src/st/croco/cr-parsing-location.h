@@ -48,21 +48,7 @@ enum CRParsingLocationSerialisationMask {
 	DUMP_BYTE_OFFSET = 1 << 2
 } ;
 
-CRParsingLocation * cr_parsing_location_new (void) ;
-
-enum CRStatus cr_parsing_location_init (CRParsingLocation *a_this) ;
-
 enum CRStatus cr_parsing_location_copy (CRParsingLocation *a_to,
 					CRParsingLocation const *a_from) ;
-
-gchar * cr_parsing_location_to_string (CRParsingLocation const *a_this,
-				       enum CRParsingLocationSerialisationMask a_mask) ;
-void cr_parsing_location_dump (CRParsingLocation const *a_this,
-			       enum CRParsingLocationSerialisationMask a_mask,
-			       FILE *a_fp) ;
-
-void cr_parsing_location_destroy (CRParsingLocation *a_this) ;
-
-
 
 G_END_DECLS

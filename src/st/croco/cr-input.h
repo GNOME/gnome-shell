@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
- * 
+ *
  * Author: Dodji Seketeli
  * See the COPYRIGHTS file for copyrights information.
  */
@@ -40,10 +40,10 @@ typedef struct _CRInput CRInput ;
 typedef struct _CRInputPriv CRInputPriv ;
 
 /**
- *The #CRInput class provides the abstraction of 
+ *The #CRInput class provides the abstraction of
  *an utf8-encoded character stream.
  */
-struct _CRInput 
+struct _CRInput
 {
         CRInputPriv *priv ;
 } ;
@@ -66,7 +66,7 @@ cr_input_new_from_buf (guchar *a_buf, gulong a_len,
 void
 cr_input_destroy (CRInput *a_this) ;
 
-void 
+void
 cr_input_ref (CRInput *a_this) ;
 
 gboolean
@@ -79,7 +79,7 @@ enum CRStatus
 cr_input_read_char (CRInput *a_this, guint32 *a_char) ;
 
 enum CRStatus
-cr_input_consume_chars (CRInput *a_this, guint32 a_char, 
+cr_input_consume_chars (CRInput *a_this, guint32 a_char,
                         gulong *a_nb_char) ;
 
 enum CRStatus
@@ -92,7 +92,7 @@ enum CRStatus
 cr_input_peek_byte (CRInput const *a_this, enum CRSeekPos a_origin,
                     gulong a_offset, guchar *a_byte) ;
 
-guchar 
+guchar
 cr_input_peek_byte2 (CRInput const *a_this, gulong a_offset,
                      gboolean *a_eof) ;
 
@@ -100,18 +100,15 @@ enum CRStatus
 cr_input_peek_char (CRInput const *a_this, guint32 *a_char) ;
 
 guchar *
-cr_input_get_byte_addr (CRInput *a_this, 
+cr_input_get_byte_addr (CRInput *a_this,
                         gulong a_offset) ;
 
 enum CRStatus
 cr_input_get_cur_byte_addr (CRInput *a_this, guchar ** a_offset) ;
 
 enum CRStatus
-cr_input_seek_index (CRInput *a_this, 
+cr_input_seek_index (CRInput *a_this,
                      enum CRSeekPos a_origin, gint a_pos) ;
-
-enum CRStatus
-cr_input_get_cur_index (CRInput const *a_this, glong *a_index) ;
 
 enum CRStatus
 cr_input_set_cur_index (CRInput *a_this, glong a_index) ;
@@ -127,9 +124,6 @@ cr_input_get_parsing_location (CRInput const *a_this,
                                CRParsingLocation *a_loc) ;
 
 enum CRStatus
-cr_input_get_end_of_line (CRInput const *a_this, gboolean *a_eol) ;
-
-enum CRStatus
 cr_input_set_end_of_line (CRInput *a_this, gboolean a_eol) ;
 
 enum CRStatus
@@ -142,22 +136,8 @@ enum CRStatus
 cr_input_set_line_num (CRInput *a_this, glong a_line_num) ;
 
 enum CRStatus
-cr_input_get_line_num (CRInput const *a_this, glong *a_line_num) ;
-
-enum CRStatus
 cr_input_set_column_num (CRInput *a_this, glong a_col) ;
 
-enum CRStatus
-cr_input_get_column_num (CRInput const *a_this, glong *a_col) ;
-
-enum CRStatus
-cr_input_increment_line_num (CRInput *a_this, 
-                             glong a_increment) ;
-
-enum CRStatus
-cr_input_increment_col_num (CRInput *a_this,
-                            glong a_increment) ;
-        
 glong
 cr_input_get_nb_bytes_left (CRInput const *a_this) ;
 

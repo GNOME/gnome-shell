@@ -65,15 +65,10 @@ CRAdditionalSel * cr_additional_sel_new (void) ;
 
 CRAdditionalSel * cr_additional_sel_new_with_type  (enum AddSelectorType a_sel_type) ;
 
-CRAdditionalSel * cr_additional_sel_append (CRAdditionalSel *a_this, 
+CRAdditionalSel * cr_additional_sel_append (CRAdditionalSel *a_this,
                                             CRAdditionalSel *a_sel) ;
 
-CRAdditionalSel * cr_additional_sel_prepend (CRAdditionalSel *a_this, 
-                                             CRAdditionalSel *a_sel) ;
-
 guchar * cr_additional_sel_to_string (CRAdditionalSel const *a_this) ;
-
-void cr_additional_sel_dump (CRAdditionalSel const *a_this, FILE *a_fp) ;
 
 void cr_additional_sel_destroy (CRAdditionalSel *a_this) ;
 
