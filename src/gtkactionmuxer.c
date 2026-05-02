@@ -497,43 +497,6 @@ gtk_action_muxer_weak_notify (gpointer  data,
 }
 
 static void
-gtk_action_muxer_register_observer (GtkActionObservable *observable,
-                                    const gchar         *name,
-                                    GtkActionObserver   *observer)
-{
-  GtkActionMuxer *muxer = GTK_ACTION_MUXER (observable);
-  Action *action;
-
-  action = g_hash_table_lookup (muxer->observed_actions, name);
-
-  if (action == NULL)
-    {
-      action = g_new (Action, 1);
-      action->muxer = muxer;
-      action->fullname = g_strdup (name);
-      action->watchers = NULL;
-
-      g_hash_table_insert (muxer->observed_actions, action->fullname, action);
-    }
-
-  action->watchers = g_slist_prepend (action->watchers, observer);
-  g_object_weak_ref (G_OBJECT (observer), gtk_action_muxer_weak_notify, action);
-}
-
-static void
-gtk_action_muxer_unregister_observer (GtkActionObservable *observable,
-                                      const gchar         *name,
-                                      GtkActionObserver   *observer)
-{
-  GtkActionMuxer *muxer = GTK_ACTION_MUXER (observable);
-  Action *action;
-
-  action = g_hash_table_lookup (muxer->observed_actions, name);
-  g_object_weak_unref (G_OBJECT (observer), gtk_action_muxer_weak_notify, action);
-  gtk_action_muxer_unregister_internal (action, observer);
-}
-
-static void
 gtk_action_muxer_free_group (gpointer data)
 {
   Group *group = data;
@@ -647,8 +610,6 @@ gtk_action_muxer_init (GtkActionMuxer *muxer)
 static void
 gtk_action_muxer_observable_iface_init (GtkActionObservableInterface *iface)
 {
-  iface->register_observer = gtk_action_muxer_register_observer;
-  iface->unregister_observer = gtk_action_muxer_unregister_observer;
 }
 
 static void
@@ -881,22 +842,6 @@ gtk_action_muxer_set_parent (GtkActionMuxer *muxer,
   g_object_notify_by_pspec (G_OBJECT (muxer), properties[PROP_PARENT]);
 }
 
-void
-gtk_action_muxer_set_primary_accel (GtkActionMuxer *muxer,
-                                    const gchar    *action_and_target,
-                                    const gchar    *primary_accel)
-{
-  if (!muxer->primary_accels)
-    muxer->primary_accels = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-
-  if (primary_accel)
-    g_hash_table_insert (muxer->primary_accels, g_strdup (action_and_target), g_strdup (primary_accel));
-  else
-    g_hash_table_remove (muxer->primary_accels, action_and_target);
-
-  gtk_action_muxer_primary_accel_changed (muxer, NULL, action_and_target);
-}
-
 const gchar *
 gtk_action_muxer_get_primary_accel (GtkActionMuxer *muxer,
                                     const gchar    *action_and_target)
@@ -915,31 +860,4 @@ gtk_action_muxer_get_primary_accel (GtkActionMuxer *muxer,
     return NULL;
 
   return gtk_action_muxer_get_primary_accel (muxer->parent, action_and_target);
-}
-
-gchar *
-gtk_print_action_and_target (const gchar *action_namespace,
-                             const gchar *action_name,
-                             GVariant    *target)
-{
-  GString *result;
-
-  g_return_val_if_fail (strchr (action_name, '|') == NULL, NULL);
-  g_return_val_if_fail (action_namespace == NULL || strchr (action_namespace, '|') == NULL, NULL);
-
-  result = g_string_new (NULL);
-
-  if (target)
-    g_variant_print_string (target, result, TRUE);
-  g_string_append_c (result, '|');
-
-  if (action_namespace)
-    {
-      g_string_append (result, action_namespace);
-      g_string_append_c (result, '.');
-    }
-
-  g_string_append (result, action_name);
-
-  return g_string_free_and_steal (result);
 }
