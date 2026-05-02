@@ -37,15 +37,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 #include "calendar-debug.h"
 
 typedef struct _ClientData ClientData;
-typedef struct _CalendarSourceData CalendarSourceData;
 
 struct _ClientData
 {
   ECalClient *client;
   gulong backend_died_id;
 };
-
-typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
 
 struct _CalendarSources
 {
@@ -274,12 +271,6 @@ calendar_sources_get (void)
   return calendar_sources_singleton;
 }
 
-ESourceRegistry *
-calendar_sources_get_registry (CalendarSources *sources)
-{
-  return e_source_registry_watcher_get_registry (sources->registry_watcher);
-}
-
 static void
 gather_event_clients_cb (gpointer key,
                          gpointer value,
@@ -304,30 +295,6 @@ calendar_sources_ref_clients (CalendarSources *sources)
   g_mutex_unlock (&sources->clients_lock);
 
   return list;
-}
-
-gboolean
-calendar_sources_has_clients (CalendarSources *sources)
-{
-  GHashTableIter iter;
-  gpointer value;
-  gboolean has = FALSE;
-
-  g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), FALSE);
-
-  g_mutex_lock (&sources->clients_lock);
-
-  g_hash_table_iter_init (&iter, sources->clients);
-  while (!has && g_hash_table_iter_next (&iter, NULL, &value))
-   {
-     ClientData *cd = value;
-
-     has = cd != NULL;
-   }
-
-  g_mutex_unlock (&sources->clients_lock);
-
-  return has;
 }
 
 static void

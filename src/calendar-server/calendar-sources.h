@@ -38,9 +38,7 @@ G_DECLARE_FINAL_TYPE (CalendarSources, calendar_sources,
                       CALENDAR, SOURCES, GObject)
 
 CalendarSources *calendar_sources_get                (void);
-ESourceRegistry *calendar_sources_get_registry       (CalendarSources *sources);
 GSList          *calendar_sources_ref_clients        (CalendarSources *sources);
-gboolean         calendar_sources_has_clients        (CalendarSources *sources);
 
 void             calendar_sources_connect_client     (CalendarSources *sources,
                                                       ESource *source,
