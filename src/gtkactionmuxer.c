@@ -60,8 +60,6 @@
 static void     gtk_action_muxer_group_iface_init         (GActionGroupInterface        *iface);
 static void     gtk_action_muxer_observable_iface_init    (GtkActionObservableInterface *iface);
 
-typedef GObjectClass GtkActionMuxerClass;
-
 struct _GtkActionMuxer
 {
   GObject parent_instance;
@@ -622,12 +620,14 @@ gtk_action_muxer_group_iface_init (GActionGroupInterface *iface)
 }
 
 static void
-gtk_action_muxer_class_init (GObjectClass *class)
+gtk_action_muxer_class_init (GtkActionMuxerClass *class)
 {
-  class->get_property = gtk_action_muxer_get_property;
-  class->set_property = gtk_action_muxer_set_property;
-  class->finalize = gtk_action_muxer_finalize;
-  class->dispose = gtk_action_muxer_dispose;
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->get_property = gtk_action_muxer_get_property;
+  object_class->set_property = gtk_action_muxer_set_property;
+  object_class->finalize = gtk_action_muxer_finalize;
+  object_class->dispose = gtk_action_muxer_dispose;
 
   accel_signal = g_signal_new ("primary-accel-changed", GTK_TYPE_ACTION_MUXER, G_SIGNAL_RUN_LAST,
                                0, NULL, NULL, NULL, G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
@@ -637,7 +637,7 @@ gtk_action_muxer_class_init (GObjectClass *class)
                                                  G_PARAM_READWRITE |
                                                  G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (class, NUM_PROPERTIES, properties);
+  g_object_class_install_properties (object_class, NUM_PROPERTIES, properties);
 }
 
 /**

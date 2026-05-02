@@ -24,14 +24,9 @@
 G_BEGIN_DECLS
 
 #define GTK_TYPE_ACTION_MUXER                               (gtk_action_muxer_get_type ())
-#define GTK_ACTION_MUXER(inst)                              (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
-                                                             GTK_TYPE_ACTION_MUXER, GtkActionMuxer))
-#define GTK_IS_ACTION_MUXER(inst)                           (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
-                                                             GTK_TYPE_ACTION_MUXER))
 
-typedef struct _GtkActionMuxer                              GtkActionMuxer;
+G_DECLARE_FINAL_TYPE (GtkActionMuxer, gtk_action_muxer, GTK, ACTION_MUXER, GObject)
 
-GType                   gtk_action_muxer_get_type                       (void);
 GtkActionMuxer *        gtk_action_muxer_new                            (void);
 
 void                    gtk_action_muxer_insert                         (GtkActionMuxer *muxer,

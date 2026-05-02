@@ -24,13 +24,8 @@
 G_BEGIN_DECLS
 
 #define GTK_TYPE_ACTION_OBSERVABLE                          (gtk_action_observable_get_type ())
-#define GTK_ACTION_OBSERVABLE(inst)                         (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
-                                                             GTK_TYPE_ACTION_OBSERVABLE, GtkActionObservable))
-#define GTK_IS_ACTION_OBSERVABLE(inst)                      (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
-                                                             GTK_TYPE_ACTION_OBSERVABLE))
-#define GTK_ACTION_OBSERVABLE_GET_IFACE(inst)               (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
-                                                             GTK_TYPE_ACTION_OBSERVABLE,                             \
-                                                             GtkActionObservableInterface))
+
+G_DECLARE_INTERFACE (GtkActionObservable, gtk_action_observable, GTK, ACTION_OBSERVABLE, GObject)
 
 typedef struct _GtkActionObservableInterface                GtkActionObservableInterface;
 
@@ -46,5 +41,4 @@ struct _GtkActionObservableInterface
                                 GtkActionObserver   *observer);
 };
 
-GType                   gtk_action_observable_get_type                  (void);
 G_END_DECLS

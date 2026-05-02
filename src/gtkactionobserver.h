@@ -24,16 +24,10 @@
 G_BEGIN_DECLS
 
 #define GTK_TYPE_ACTION_OBSERVER                            (gtk_action_observer_get_type ())
-#define GTK_ACTION_OBSERVER(inst)                           (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
-                                                             GTK_TYPE_ACTION_OBSERVER, GtkActionObserver))
-#define GTK_IS_ACTION_OBSERVER(inst)                        (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
-                                                             GTK_TYPE_ACTION_OBSERVER))
-#define GTK_ACTION_OBSERVER_GET_IFACE(inst)                 (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
-                                                             GTK_TYPE_ACTION_OBSERVER, GtkActionObserverInterface))
 
-typedef struct _GtkActionObserverInterface                  GtkActionObserverInterface;
+G_DECLARE_INTERFACE (GtkActionObserver, gtk_action_observer, GTK, ACTION_OBSERVER, GObject)
+
 typedef struct _GtkActionObservable                         GtkActionObservable;
-typedef struct _GtkActionObserver                           GtkActionObserver;
 
 struct _GtkActionObserverInterface
 {
@@ -62,7 +56,6 @@ struct _GtkActionObserverInterface
                                    const gchar          *action_and_target);
 };
 
-GType                   gtk_action_observer_get_type                    (void);
 void                    gtk_action_observer_action_added                (GtkActionObserver   *observer,
                                                                          GtkActionObservable *observable,
                                                                          const gchar         *action_name,
