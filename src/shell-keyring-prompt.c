@@ -32,8 +32,6 @@
 
 #include <string.h>
 
-typedef struct _ShellPasswordPromptPrivate  ShellPasswordPromptPrivate;
-
 typedef enum
 {
   PROMPTING_NONE,

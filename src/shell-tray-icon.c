@@ -22,8 +22,6 @@ enum {
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-typedef struct _ShellTrayIconPrivate ShellTrayIconPrivate;
-
 struct _ShellTrayIcon
 {
   ClutterClone parent;
