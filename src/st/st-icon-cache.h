@@ -20,15 +20,11 @@
 
 typedef struct _StIconCache StIconCache;
 
-StIconCache *st_icon_cache_new (const char  *data);
 StIconCache *st_icon_cache_new_for_path (const char  *path);
 int st_icon_cache_get_directory_index (StIconCache *cache,
                                        const char  *directory);
 gboolean st_icon_cache_has_icon (StIconCache *cache,
                                  const char  *icon_name);
-gboolean st_icon_cache_has_icon_in_directory (StIconCache *cache,
-                                              const char  *icon_name,
-                                              const char  *directory);
 gboolean st_icon_cache_has_icons (StIconCache *cache,
                                   const char  *directory);
 void st_icon_cache_add_icons (StIconCache *cache,

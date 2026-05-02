@@ -122,17 +122,6 @@ st_icon_cache_new_for_path (const char *path)
   return cache;
 }
 
-StIconCache *
-st_icon_cache_new (const char *data)
-{
-  StIconCache *cache;
-
-  cache = g_atomic_rc_box_new0 (StIconCache);
-  cache->buffer = (char *)data;
-
-  return cache;
-}
-
 static int
 get_directory_index (StIconCache *cache,
                      const char  *directory)
@@ -364,62 +353,6 @@ st_icon_cache_has_icon (StIconCache *cache,
   return FALSE;
 }
 
-gboolean
-st_icon_cache_has_icon_in_directory (StIconCache *cache,
-                                     const char  *icon_name,
-                                     const char  *directory)
-{
-  guint32 hash_offset;
-  guint32 n_buckets;
-  guint32 chain_offset;
-  int hash;
-  gboolean found_icon = FALSE;
-  int directory_index;
-
-  directory_index = get_directory_index (cache, directory);
-
-  if (directory_index == -1)
-    return FALSE;
-
-  hash_offset = GET_UINT32 (cache->buffer, 4);
-  n_buckets = GET_UINT32 (cache->buffer, hash_offset);
-
-  hash = icon_name_hash (icon_name) % n_buckets;
-
-  chain_offset = GET_UINT32 (cache->buffer, hash_offset + 4 + 4 * hash);
-  while (chain_offset != 0xffffffff)
-    {
-      guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-      char *name = cache->buffer + name_offset;
-
-      if (strcmp (name, icon_name) == 0)
-        {
-          found_icon = TRUE;
-          break;
-        }
-
-      chain_offset = GET_UINT32 (cache->buffer, chain_offset);
-    }
-
-  if (found_icon)
-    {
-      guint32 image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
-      guint32 n_images =  GET_UINT32 (cache->buffer, image_list_offset);
-      guint32 image_offset = image_list_offset + 4;
-      int i;
-      for (i = 0; i < n_images; i++)
-        {
-          guint16 index = GET_UINT16 (cache->buffer, image_offset);
-
-          if (index == directory_index)
-            return TRUE;
-          image_offset += 8;
-        }
-    }
-
-  return FALSE;
-}
-
 static void
 pixbuf_destroy_cb (guchar   *pixels,
                    gpointer  data)
@@ -491,4 +424,3 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   return pixbuf;
 }
-
