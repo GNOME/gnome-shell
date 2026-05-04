@@ -81,7 +81,6 @@ struct _ShellAppUsage
   GFile *configfile;
   GDBusProxy *session_proxy;
   GSettings *privacy_settings;
-  guint idle_focus_change_id;
   guint save_id;
   gboolean currently_idle;
   gboolean enable_monitoring;

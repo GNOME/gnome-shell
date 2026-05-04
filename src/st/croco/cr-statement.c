@@ -531,7 +531,6 @@ cr_statement_new_ruleset (CRStyleSheet * a_sheet,
         result->kind.ruleset->decl_list = a_decl_list;
 
         if (a_parent_media_rule) {
-                result->kind.ruleset->parent_media_rule = a_parent_media_rule;
                 a_parent_media_rule->kind.media_rule->rulesets =
                         cr_statement_append
                         (a_parent_media_rule->kind.media_rule->rulesets,
@@ -589,7 +588,6 @@ cr_statement_new_at_media_rule (CRStyleSheet * a_sheet,
                                              "correct ruleset statement only !");
                         goto error;
                 }
-                cur->kind.ruleset->parent_media_rule = result;
         }
 
         result->kind.media_rule->media_list = a_media;

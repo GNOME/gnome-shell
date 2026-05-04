@@ -73,7 +73,6 @@ typedef struct _CRSimpleSel CRSimpleSel ;
 struct _CRSimpleSel
 {
         enum SimpleSelectorType type_mask ;
-        gboolean is_case_sentive ;
         CRString * name ;
         /**
          *The combinator that separates

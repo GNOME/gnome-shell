@@ -24,8 +24,6 @@ typedef struct _ShellTrayManager
 } ShellTrayManager;
 
 typedef struct {
-  ShellTrayManager *manager;
-  NaTrayChild *tray_child;
   ClutterActor *actor;
 } ShellTrayManagerChild;
 
@@ -314,8 +312,6 @@ na_tray_icon_added (NaTrayManager *na_manager,
   ShellTrayManagerChild *child;
 
   child = g_new0 (ShellTrayManagerChild, 1);
-  child->manager = manager;
-  child->tray_child = tray_child;
 
   g_hash_table_insert (manager->icons, tray_child, child);
 

@@ -57,7 +57,7 @@ GParamSpec *props[N_PROPS] = { 0 };
 
 struct _StSettings
 {
-  GObject parent_object;
+  GObject parent_instance;
   GSettings *interface_settings;
   GSettings *mouse_settings;
   GSettings *a11y_applications_settings;

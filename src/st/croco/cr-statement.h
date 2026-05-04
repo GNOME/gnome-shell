@@ -66,12 +66,6 @@ struct _CRRuleSet
 
 	/**A list of instances of #CRDeclaration*/
 	CRDeclaration *decl_list ;
-
-	/**
-	 *The parent media rule, or NULL if
-	 *no parent media rule exists.
-	 */
-	CRStatement *parent_media_rule ;
 } ;
 
 /*
@@ -219,15 +213,6 @@ struct _CRStatement
          *this pointer.
          */
         gpointer app_data ;
-
-        /**
-         *a custom pointer used
-         *by the upper layers of libcroco.
-         *application should never use this
-         *pointer.
-         */
-        gpointer croco_data ;
-
 } ;
 
 

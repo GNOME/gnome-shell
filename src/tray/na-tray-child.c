@@ -29,7 +29,6 @@
 struct _NaTrayChild
 {
   NaXembed parent_instance;
-  guint parent_relative_bg : 1;
 };
 
 G_DEFINE_TYPE (NaTrayChild, na_tray_child, NA_TYPE_XEMBED)

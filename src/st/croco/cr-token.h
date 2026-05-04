@@ -101,7 +101,6 @@ struct _CRToken
 {
         enum CRTokenType type ;
         enum CRTokenExtraType extra_type ;
-        CRInputPos pos ;
 
         union
         {

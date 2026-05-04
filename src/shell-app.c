@@ -686,7 +686,6 @@ shell_app_get_state (ShellApp *app)
 }
 
 typedef struct {
-  ShellApp *app;
   MetaWorkspace *active_workspace;
 } CompareWindowsData;
 
@@ -743,7 +742,6 @@ shell_app_get_windows (ShellApp *app)
   if (app->running_state->window_sort_stale)
     {
       CompareWindowsData data;
-      data.app = app;
       data.active_workspace = get_active_workspace ();
       app->running_state->windows = g_slist_sort_with_data (app->running_state->windows, shell_app_compare_windows, &data);
       app->running_state->window_sort_stale = FALSE;

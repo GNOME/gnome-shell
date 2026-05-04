@@ -58,7 +58,6 @@ struct _NaXembedPrivate
   Atom atom__XEMBED_INFO;
   Atom atom_WM_NORMAL_HINTS;
 
-  gboolean have_size;
   gboolean need_map;
   gboolean is_mapped;
   gboolean has_alpha;
@@ -283,7 +282,6 @@ na_xembed_resize (NaXembed *xembed)
         }
     }
 
-  priv->have_size = TRUE;
   mtk_x11_error_trap_pop (xdisplay);
 
   priv->resize_id = g_idle_add_once (synchronize_size_cb, xembed);
@@ -451,7 +449,6 @@ na_xembed_add_window (NaXembed  *xembed,
         }
     }
 
-  priv->have_size = FALSE;
 
   priv->xembed_version = -1;
   if (na_xembed_get_info (xembed, priv->plug_window, &version, &flags))
@@ -519,7 +516,7 @@ xembed_filter_func (MetaX11Display *x11_display,
 {
   NaXembed *xembed = user_data;
   NaXembedPrivate *priv = na_xembed_get_instance_private (xembed);
-  Display *xdisplay = meta_x11_display_get_xdisplay (priv->x11_display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (x11_display);
 
   if (priv->socket_window == None)
     return;
@@ -608,7 +605,6 @@ xembed_filter_func (MetaX11Display *x11_display,
         {
           if (xevent->xproperty.atom == priv->atom_WM_NORMAL_HINTS)
             {
-              priv->have_size = FALSE;
               na_xembed_resize (xembed);
             }
           else if (xevent->xproperty.atom == priv->atom__XEMBED_INFO)

@@ -66,11 +66,6 @@ struct _CRDeclaration
 	glong ref_count ;
 
 	CRParsingLocation location ;
-	/*reserved for future usage*/
-	gpointer rfu0 ;
-	gpointer rfu1 ;
-	gpointer rfu2 ;
-	gpointer rfu3 ;
 } ;
 
 

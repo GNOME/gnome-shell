@@ -79,10 +79,8 @@ typedef struct _CRParserError CRParserError;
  */
 struct _CRParserError {
         guchar *msg;
-        enum CRStatus status;
         glong line;
         glong column;
-        glong byte_num;
 };
 
 enum CRParserState {
@@ -128,7 +126,6 @@ struct _CRParserPriv {
 
         enum CRParserState state;
         gboolean resolve_import;
-        gboolean is_case_sensitive;
         gboolean use_core_grammar;
 };
 
@@ -373,9 +370,6 @@ static void cr_parser_error_set_msg (CRParserError * a_this,
 
 static void cr_parser_error_dump (CRParserError * a_this);
 
-static void cr_parser_error_set_status (CRParserError * a_this,
-                                        enum CRStatus a_status);
-
 static void cr_parser_error_set_pos (CRParserError * a_this,
                                      glong a_line,
                                      glong a_column, glong a_byte_num);
@@ -416,7 +410,6 @@ cr_parser_error_new (const guchar * a_msg, enum CRStatus a_status)
         memset (result, 0, sizeof (CRParserError));
 
         cr_parser_error_set_msg (result, a_msg);
-        cr_parser_error_set_status (result, a_status);
 
         return result;
 }
@@ -439,20 +432,6 @@ cr_parser_error_set_msg (CRParserError * a_this, const guchar * a_msg)
 }
 
 /**
- *Sets the error status.
- *@param a_this the current instance of #CRParserError.
- *@param a_status the new error status.
- *
- */
-static void
-cr_parser_error_set_status (CRParserError * a_this, enum CRStatus a_status)
-{
-        g_return_if_fail (a_this);
-
-        a_this->status = a_status;
-}
-
-/**
  *Sets the position of the parser error.
  *@param a_this the current instance of #CRParserError.
  *@param a_line the line number.
@@ -467,7 +446,6 @@ cr_parser_error_set_pos (CRParserError * a_this,
 
         a_this->line = a_line;
         a_this->column = a_column;
-        a_this->byte_num = a_byte_num;
 }
 
 static void

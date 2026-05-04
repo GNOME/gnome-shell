@@ -97,7 +97,6 @@ struct _StThemeNode {
   guint box_shadow_computed : 1;
   guint background_image_shadow_computed : 1;
   guint text_shadow_computed : 1;
-  guint link_type : 2;
   guint rendered_once : 1;
   guint cached_textures : 1;
 

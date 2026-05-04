@@ -86,8 +86,6 @@ struct _StScrollViewPrivate
   gfloat        row_size;
   gfloat        column_size;
 
-  guint         row_size_set : 1;
-  guint         column_size_set : 1;
   guint         mouse_scroll : 1;
   guint         touch_scroll : 1;
   guint         overlay_scrollbars : 1;
@@ -1254,12 +1252,10 @@ st_scroll_view_set_column_size (StScrollView *scroll,
 
   if (column_size < 0)
     {
-      priv->column_size_set = FALSE;
       priv->column_size = -1;
     }
   else
     {
-      priv->column_size_set = TRUE;
       priv->column_size = column_size;
 
       g_object_set (priv->hadjustment,
@@ -1312,12 +1308,10 @@ st_scroll_view_set_row_size (StScrollView *scroll,
 
   if (row_size < 0)
     {
-      priv->row_size_set = FALSE;
       priv->row_size = -1;
     }
   else
     {
-      priv->row_size_set = TRUE;
       priv->row_size = row_size;
 
       g_object_set (priv->vadjustment,

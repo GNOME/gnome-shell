@@ -66,13 +66,7 @@ enum {
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-struct _StBoxLayoutPrivate
-{
-  StAdjustment *hadjustment;
-  StAdjustment *vadjustment;
-};
-
-G_DEFINE_TYPE_WITH_PRIVATE (StBoxLayout, st_box_layout, ST_TYPE_VIEWPORT);
+G_DEFINE_TYPE (StBoxLayout, st_box_layout, ST_TYPE_VIEWPORT);
 
 
 static void

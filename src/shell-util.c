@@ -355,8 +355,6 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
                                    (GdkPixbufDestroyNotify) g_free, NULL);
 }
 
-typedef const gchar *(*ShellGLGetString) (GLenum);
-
 #ifndef HAVE_FDWALK
 static int
 fdwalk (int  (*cb)(void *data, int fd),

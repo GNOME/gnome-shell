@@ -58,13 +58,7 @@ struct _CRStyleSheet
 	/**The css statements list*/
 	CRStatement *statements ;
 
-        enum CRStyleOrigin origin ;
-
-        /*the parent import rule, if any.*/
-        CRStatement *parent_import_rule ;
-
-	/**custom data used by libcroco*/
-	gpointer croco_data ;
+  enum CRStyleOrigin origin ;
 
 	/**
 	 *custom application data pointer
