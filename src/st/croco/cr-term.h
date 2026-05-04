@@ -56,7 +56,6 @@ enum UnaryOperator
         NO_UNARY_UOP = 0,
         PLUS_UOP,
         MINUS_UOP,
-        EMPTY_UNARY_UOP
 } ;
 
 enum Operator

@@ -42,12 +42,6 @@ struct _CRParsingLocation {
 } ;
 
 
-enum CRParsingLocationSerialisationMask {
-	DUMP_LINE = 1,
-	DUMP_COLUMN = 1 << 1,
-	DUMP_BYTE_OFFSET = 1 << 2
-} ;
-
 enum CRStatus cr_parsing_location_copy (CRParsingLocation *a_to,
 					CRParsingLocation const *a_from) ;
 
