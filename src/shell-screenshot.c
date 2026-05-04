@@ -19,13 +19,6 @@ typedef enum _ShellScreenshotFlag
   SHELL_SCREENSHOT_FLAG_INCLUDE_CURSOR,
 } ShellScreenshotFlag;
 
-typedef enum _ShellScreenshotMode
-{
-  SHELL_SCREENSHOT_SCREEN,
-  SHELL_SCREENSHOT_WINDOW,
-  SHELL_SCREENSHOT_AREA,
-} ShellScreenshotMode;
-
 enum
 {
   SCREENSHOT_TAKEN,
@@ -43,7 +36,6 @@ typedef struct _ShellScreenshot
 
   GOutputStream *stream;
   ShellScreenshotFlag flags;
-  ShellScreenshotMode mode;
 
   GDateTime *datetime;
 
