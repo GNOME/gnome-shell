@@ -79,7 +79,7 @@ CRDeclaration * cr_declaration_new (CRStatement *a_statement,
 				    CRTerm *a_value) ;
 
 
-CRDeclaration * cr_declaration_parse_list_from_buf (const guchar *a_str) ;
+CRDeclaration * cr_declaration_parse_list_from_buf (const guchar *a_str);
 
 CRDeclaration * cr_declaration_append (CRDeclaration *a_this,
 				       CRDeclaration *a_new) ;

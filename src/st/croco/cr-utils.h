@@ -46,7 +46,6 @@ enum CRStatus {
         CR_START_OF_INPUT_ERROR,
         CR_END_OF_INPUT_ERROR,
         CR_OUT_OF_BOUNDS_ERROR,
-        CR_ENCODING_ERROR,
         CR_PARSING_ERROR,
         CR_SYNTAX_ERROR,
         CR_OUT_OF_MEMORY_ERROR,
@@ -62,9 +61,6 @@ enum CRSeekPos {
         CR_SEEK_BEGIN,
         CR_SEEK_END
 } ;
-
-
-
 
 #define CROCO_LOG_DOMAIN "LIBCROCO"
 
@@ -116,7 +112,6 @@ cr_utils_trace (G_LOG_LEVEL_DEBUG, a_msg) ;
 enum CRStatus
 cr_utils_read_char_from_utf8_buf (const guchar * a_in, gulong a_in_len,
                                   guint32 *a_out, gulong *a_consumed) ;
-
 
 /*****************************************
  *CSS basic types identification utilities
