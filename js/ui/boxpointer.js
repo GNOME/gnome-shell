@@ -82,6 +82,9 @@ export const BoxPointer = GObject.registerClass({
         const rise = themeNode.get_length('-arrow-rise');
         const animationTime = animate & PopupAnimation.FULL ? POPUP_ANIMATION_TIME : 0;
 
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
         if (animate & PopupAnimation.FADE)
             this.opacity = 0;
         else
@@ -90,7 +93,7 @@ export const BoxPointer = GObject.registerClass({
         this._muteKeys = false;
         this.show();
 
-        if (animate & PopupAnimation.SLIDE) {
+        if (useMotion && animate & PopupAnimation.SLIDE) {
             this.scale_x = 0.96;
             this.scale_y = 0.96;
 
@@ -143,7 +146,10 @@ export const BoxPointer = GObject.registerClass({
         const fade = animate & PopupAnimation.FADE;
         const animationTime = animate & PopupAnimation.FULL ? POPUP_ANIMATION_TIME : 0;
 
-        if (animate & PopupAnimation.SLIDE) {
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
+        if (useMotion && animate & PopupAnimation.SLIDE) {
             scaleX = 0.96;
             scaleY = 0.96;
 
