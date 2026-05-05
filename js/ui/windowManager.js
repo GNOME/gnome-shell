@@ -1168,7 +1168,10 @@ export class WindowManager {
 
         this._minimizing.add(actor);
 
-        if (actor.meta_window.is_monitor_sized()) {
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
+        if (actor.meta_window.is_monitor_sized() || !useMotion) {
             actor.ease({
                 opacity: 0,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
@@ -1234,7 +1237,10 @@ export class WindowManager {
 
         this._unminimizing.add(actor);
 
-        if (actor.meta_window.is_monitor_sized()) {
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
+        if (actor.meta_window.is_monitor_sized() || !useMotion) {
             actor.opacity = 0;
             actor.set_scale(1.0, 1.0);
             actor.ease({
@@ -1336,9 +1342,14 @@ export class WindowManager {
         if (this._resizing.has(actor))
             return;
 
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
         const actorClone = actor.__animationInfo.clone;
-        const targetRect = actor.meta_window.get_frame_rect();
         const sourceRect = actor.__animationInfo.oldRect;
+        const targetRect = useMotion
+            ? actor.meta_window.get_frame_rect()
+            : sourceRect;
 
         const scaleX = targetRect.width / sourceRect.width;
         const scaleY = targetRect.height / sourceRect.height;
@@ -1495,11 +1506,16 @@ export class WindowManager {
             return;
         }
 
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
         switch (this._getAnimationWindowType(actor)) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 1.0);
-            actor.scale_x = 0.01;
-            actor.scale_y = 0.05;
+            if (useMotion) {
+                actor.scale_x = 0.01;
+                actor.scale_y = 0.05;
+            }
             actor.opacity = 0;
             actor.show();
             this._mapping.add(actor);
@@ -1517,8 +1533,10 @@ export class WindowManager {
         case Meta.WindowType.MODAL_DIALOG:
         case Meta.WindowType.DIALOG:
             actor.set_pivot_point(0.5, 0.5);
-            actor.scale_y = 0;
-            actor.opacity = 0;
+            if (useMotion) {
+                actor.scale_y = 0;
+                actor.opacity = 0;
+            }
             actor.show();
             this._mapping.add(actor);
 
@@ -1567,15 +1585,24 @@ export class WindowManager {
             return;
         }
 
+        const {reducedMotion} = St.Settings.get();
+        const useMotion = reducedMotion !== St.ReducedMotion.REDUCE;
+
+        let params;
+
         switch (this._getAnimationWindowType(actor)) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 0.5);
             this._destroying.add(actor);
 
-            actor.ease({
+            params = {
                 opacity: 0,
-                scale_x: 0.8,
-                scale_y: 0.8,
+                scale_x: useMotion ? 0.8 : 1.0,
+                scale_y: useMotion ? 0.8 : 1.0,
+            };
+
+            actor.ease({
+                ...params,
                 duration: DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onStopped: () => this._destroyWindowDone(shellwm, actor),
@@ -1594,8 +1621,14 @@ export class WindowManager {
                 }, actor);
             }
 
-            actor.ease({
+            params = useMotion ? {
                 scale_y: 0,
+            } : {
+                opacity: 0,
+            };
+
+            actor.ease({
+                ...params,
                 duration: DIALOG_DESTROY_WINDOW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onStopped: () => this._destroyWindowDone(shellwm, actor),
