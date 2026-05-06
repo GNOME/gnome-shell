@@ -15,6 +15,7 @@ import * as History from '../misc/history.js';
 import {ExtensionState} from '../misc/extensionUtils.js';
 import * as PopupMenu from './popupMenu.js';
 import * as ShellEntry from './shellEntry.js';
+import {Slider} from './slider.js';
 import * as Main from './main.js';
 import * as JsParse from '../misc/jsParse.js';
 
@@ -1256,6 +1257,54 @@ class DebugControlExportedDebugFlag extends DebugFlag {
     }
 });
 
+const SlowDownFactorDebugFlag = GObject.registerClass(
+class SlowDownFactorDebugFlag extends St.Button {
+    constructor() {
+        const MAX_SLOWDOWN = 8; // matches GTK inspector
+        const TOGGLE_SLOWDOWN = 5;
+
+        const box = new St.BoxLayout({x_expand: true});
+
+        const flagLabel = new St.Label({
+            text: 'slow-down-factor',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(flagLabel);
+
+        super({
+            style_class: 'lg-debug-flag-button',
+            can_focus: true,
+            child: box,
+            label_actor: flagLabel,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        const slider = new Slider(0);
+        slider.addMark(1 / MAX_SLOWDOWN);
+        box.add_child(slider);
+
+        const settings = St.Settings.get();
+        settings.bind_property_full('slow-down-factor',
+            slider, 'value',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.BIDIRECTIONAL,
+            (bind, value) => [true, Math.clamp(value / MAX_SLOWDOWN, 0, 1)],
+            (bind, value) => [true, value * MAX_SLOWDOWN]);
+
+        settings.bind_property_full('slow-down-factor',
+            this, 'checked',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, value) => [true, value !== 1],
+            null);
+
+        this.connect('clicked', () => {
+            settings.slow_down_factor = this.checked ? 1 : TOGGLE_SLOWDOWN;
+        });
+    }
+});
+
+
 const DebugFlags = GObject.registerClass(
 class DebugFlags extends St.BoxLayout {
     _init() {
@@ -1291,6 +1340,8 @@ class DebugFlags extends St.BoxLayout {
         this.add_child(new UnsafeModeDebugFlag());
         // DebugControl::exported
         this.add_child(new DebugControlExportedDebugFlag());
+        // StSettings::slow-down-factor
+        this.add_child(new SlowDownFactorDebugFlag());
     }
 
     _addHeader(title) {
