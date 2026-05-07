@@ -180,6 +180,14 @@ export class ExtensionManager extends Signals.EventEmitter {
         return false;
     }
 
+    _callExtensionDisable(extension) {
+        try {
+            extension.stateObj.disable();
+        } catch (e) {
+            this.logExtensionError(extension.uuid, e);
+        }
+    }
+
     async _callExtensionDisableWithRebase(uuid) {
         const extension = this.lookup(uuid);
         if (!extension)
@@ -204,20 +212,11 @@ export class ExtensionManager extends Signals.EventEmitter {
 
         for (let i = 0; i < orderReversed.length; i++) {
             const otherUuid = orderReversed[i];
-            try {
-                console.debug(`Temporarily disable extension ${otherUuid}`);
-                this.lookup(otherUuid).stateObj.disable();
-            } catch (e) {
-                this.logExtensionError(otherUuid, e);
-            }
+            console.debug(`Temporarily disable extension ${otherUuid}`);
+            this._callExtensionDisable(this.lookup(otherUuid));
         }
 
-        try {
-            extension.stateObj.disable();
-        } catch (e) {
-            this.logExtensionError(uuid, e);
-        }
-
+        this._callExtensionDisable(extension);
         this._unloadExtensionStylesheet(extension);
 
         for (let i = 0; i < order.length; i++) {
