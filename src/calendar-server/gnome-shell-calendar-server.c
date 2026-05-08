@@ -109,11 +109,17 @@ typedef struct
   time_t  end_time;
 } CalendarAppointment;
 
+#if ICAL_CHECK_VERSION(4, 0, 0)
+typedef ICalTime * (* GetICalPropFunc) (const ICalProperty *prop);
+#else
+typedef ICalTime * (* GetICalPropFunc) (ICalProperty *prop);
+#endif
+
 static gboolean
 get_time_from_property (ECalClient            *cal,
                         ICalComponent         *icomp,
                         ICalPropertyKind       prop_kind,
-                        ICalTime * (* get_prop_func) (ICalProperty *prop),
+                        GetICalPropFunc        get_prop_func,
                         ICalTimezone          *default_zone,
                         ICalTime              **out_itt,
                         ICalTimezone          **out_timezone)
