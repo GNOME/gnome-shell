@@ -377,6 +377,7 @@ class InputStreamSlider extends StreamSlider {
             'active-input-update', (c, id) => this._setActiveDevice(id),
             'stream-added', () => this._maybeShowInput(),
             'stream-removed', () => this._maybeShowInput(),
+            'stream-changed', () => this._maybeShowInput(),
             this);
 
         this.iconName = 'audio-input-microphone-symbolic';
@@ -415,8 +416,10 @@ class InputStreamSlider extends StreamSlider {
                 'org.PulseAudio.pavucontrol',
             ];
 
-            showInput = this._control.get_source_outputs().some(
-                output => !skippedApps.includes(output.get_application_id()));
+            showInput =
+                this._control.get_sources().some(source => source.state === Gvc.MixerStreamState.RUNNING) &&
+                this._control.get_source_outputs().some(output =>
+                    !skippedApps.includes(output.get_application_id()));
         }
 
         this._showInput = showInput;
