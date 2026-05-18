@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-04-27 21:22+0000\n"
-"PO-Revision-Date: 2026-05-12 11:57+0100\n"
+"POT-Creation-Date: 2026-05-14 18:26+0000\n"
+"PO-Revision-Date: 2026-05-18 12:13+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -631,7 +631,7 @@ msgstr "Hedhi"
 #: js/ui/shellMountOperation.js:332
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
-msgstr "Ger-Tremena"
+msgstr "Ger-tremena"
 
 #: js/gdm/loginDialog.js:327
 msgid "Choose Session"
@@ -732,19 +732,19 @@ msgstr "Omgelmyans kemerys re hir, assayewgh arta mar pleg"
 msgid "Login Window"
 msgstr "Fenester Omgelmyans"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:503
 msgid "Authentication error"
 msgstr "Error omgelmyans"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
+#: js/gdm/util.js:738
 msgid "(or swipe finger across reader)"
 msgstr "(po tevewgh bys a-dreus redyer)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
+#: js/gdm/util.js:743
 msgid "(or place finger on reader)"
 msgstr "(po lewgh bys war redyer)"
 
@@ -2273,7 +2273,7 @@ msgstr "Niver PIM"
 
 #: js/ui/shellMountOperation.js:371
 msgid "Remember Password"
-msgstr "Remembra Ger-Tremena"
+msgstr "Remembra Ger-tremena"
 
 #: js/ui/shellMountOperation.js:386
 msgid "Unlock"
