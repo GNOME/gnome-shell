@@ -140,6 +140,7 @@ export const AuthPrompt = GObject.registerClass({
         'prompted': {},
         'reset': {param_types: [GObject.TYPE_UINT]},
         'verification-complete': {},
+        'loading': {param_types: [GObject.TYPE_BOOLEAN]},
     },
 }, class AuthPrompt extends St.BoxLayout {
     _init(gdmClient, mode) {
@@ -539,7 +540,7 @@ export const AuthPrompt = GObject.registerClass({
             this._queryingService = null;
 
         this.updateSensitivity({sensitive: canRetry});
-        this.setActorInDefaultButtonWell(this._nextButton);
+        this.stopSpinning();
 
         if (!canRetry)
             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
@@ -549,7 +550,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _onVerificationComplete() {
-        this.setActorInDefaultButtonWell(this._nextButton, true);
+        this.stopSpinning({animate: true});
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
 
         this._mainBox.reactive = false;
@@ -633,12 +634,14 @@ export const AuthPrompt = GObject.registerClass({
         this._defaultButtonWellActor = actor;
     }
 
-    startSpinning() {
-        this.setActorInDefaultButtonWell(this._spinner, true);
+    startSpinning({animate = false} = {}) {
+        this.emit('loading', true);
+        this.setActorInDefaultButtonWell(this._spinner, animate);
     }
 
-    stopSpinning() {
-        this.setActorInDefaultButtonWell(null, false);
+    stopSpinning({animate = false} = {}) {
+        this.emit('loading', false);
+        this.setActorInDefaultButtonWell(this._nextButton, animate);
     }
 
     clear() {
@@ -764,7 +767,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     vfunc_hide() {
-        this.setActorInDefaultButtonWell(this._nextButton, true);
+        this.stopSpinning();
         super.vfunc_hide();
         this._message.opacity = 0;
 
