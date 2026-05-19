@@ -22,7 +22,6 @@ const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child
 const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 
 export const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-export const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
 export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
@@ -603,7 +602,6 @@ export const AuthPrompt = GObject.registerClass({
                 oldActor.ease({
                     opacity: 0,
                     duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
                     mode: Clutter.AnimationMode.LINEAR,
                     onComplete: () => {
                         if (wasSpinner) {
@@ -625,7 +623,7 @@ export const AuthPrompt = GObject.registerClass({
                 actor.ease({
                     opacity: 255,
                     duration: DEFAULT_BUTTON_WELL_ANIMATION_TIME,
-                    delay: DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                    delay: oldActor ? DEFAULT_BUTTON_WELL_ANIMATION_TIME : 0,
                     mode: Clutter.AnimationMode.LINEAR,
                 });
             }
