@@ -13,6 +13,7 @@
     <file>gdm/oVirt.js</file>
     <file>gdm/passkeyDeviceManager.js</file>
     <file>gdm/realmd.js</file>
+    <file>gdm/smartcardManager.js</file>
     <file>gdm/util.js</file>
     <file>gdm/vmware.js</file>
 
@@ -45,7 +46,6 @@
     <file>misc/permissionStore.js</file>
     <file>misc/signals.js</file>
     <file>misc/signalTracker.js</file>
-    <file>misc/smartcardManager.js</file>
     <file>misc/systemActions.js</file>
     <file>misc/timeLimitsManager.js</file>
     <file>misc/util.js</file>

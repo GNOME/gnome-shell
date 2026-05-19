@@ -12,7 +12,7 @@ import * as Vmware from './vmware.js';
 import * as Main from '../ui/main.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
-import * as SmartcardManager from '../misc/smartcardManager.js';
+import * as SmartcardManager from './smartcardManager.js';
 
 Gio._promisify(Gdm.Client.prototype, 'open_reauthentication_channel');
 Gio._promisify(Gdm.Client.prototype, 'get_user_verifier');
