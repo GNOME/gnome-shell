@@ -17,7 +17,7 @@ import * as Main from './main.js';
 import * as Overview from './overview.js';
 import * as MessageTray from './messageTray.js';
 import * as ShellDBus from './shellDBus.js';
-import * as SmartcardManager from '../misc/smartcardManager.js';
+import * as SmartcardManager from '../gdm/smartcardManager.js';
 
 import {adjustAnimationTime} from '../misc/animationUtils.js';
 

@@ -1,7 +1,7 @@
 import Gio from 'gi://Gio';
-import * as Signals from './signals.js';
+import * as Signals from '../misc/signals.js';
 
-import * as ObjectManager from './objectManager.js';
+import * as ObjectManager from '../misc/objectManager.js';
 
 const SmartcardTokenIface = `
 <node>
