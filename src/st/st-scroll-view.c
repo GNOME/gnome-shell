@@ -1032,8 +1032,7 @@ pan_update_cb (ClutterPanGesture *pan_gesture,
   gfloat delta_x, delta_y, height, width;
   gdouble h_page_size, v_page_size, h_value, v_value;
 
-  if (!priv->touch_scroll)
-    return;
+  g_return_if_fail (priv->touch_scroll);
 
   clutter_pan_gesture_get_delta (pan_gesture, &delta);
   delta_x = graphene_vec2_get_x (&delta);
@@ -1091,6 +1090,10 @@ st_scroll_view_init (StScrollView *self)
                     G_CALLBACK (pan_update_cb), self);
 
   clutter_actor_add_action (CLUTTER_ACTOR (self), CLUTTER_ACTION (priv->pan_gesture));
+
+  g_object_bind_property (G_OBJECT (self), "enable-touch-scrolling",
+                          priv->pan_gesture, "enabled",
+                          G_BINDING_DEFAULT);
 
   /* mouse/touch scroll is enabled by default, so we also need to be reactive */
   priv->mouse_scroll = TRUE;
