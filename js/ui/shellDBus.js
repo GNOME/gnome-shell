@@ -9,6 +9,7 @@ import * as ExtensionUtils from '../misc/extensionUtils.js';
 import * as Main from './main.js';
 import * as Screenshot from './screenshot.js';
 
+import {emitSignalToDestination} from '../misc/dbusUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 import {DBusSenderChecker} from '../misc/util.js';
 import {ControlsState} from './overviewControls.js';
@@ -284,9 +285,6 @@ export class GnomeShell {
         if (!destination)
             return;
 
-        const connection = this._dbusImpl.get_connection();
-        const info = this._dbusImpl.get_info();
-
         const context = global.create_app_launch_context(0, -1);
         const token = context.get_startup_notify_id(null, []);
 
@@ -300,10 +298,9 @@ export class GnomeShell {
         if (deviceNode)
             params['device-node'] = GLib.Variant.new('s', deviceNode);
 
-        connection.emit_signal(
+        emitSignalToDestination(
+            this._dbusImpl,
             destination,
-            this._dbusImpl.get_object_path(),
-            info?.name ?? null,
             signal,
             GLib.Variant.new('(ua{sv})', [action, params]));
     }

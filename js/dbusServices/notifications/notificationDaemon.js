@@ -3,7 +3,7 @@ import GLib from 'gi://GLib';
 
 import {ServiceImplementation} from './dbusService.js';
 
-import {loadInterfaceXML} from './misc/dbusUtils.js';
+import {emitSignalToDestination, loadInterfaceXML} from './misc/dbusUtils.js';
 
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 const NotificationsProxy = Gio.DBusProxy.makeProxyWrapper(NotificationsIface);
@@ -56,12 +56,7 @@ export const NotificationDaemon = class extends ServiceImplementation {
     _emitSignal(sender, signalName, params) {
         if (!sender)
             return;
-        this._dbusImpl.get_connection()?.emit_signal(
-            sender,
-            this._dbusImpl.get_object_path(),
-            'org.freedesktop.Notifications',
-            signalName,
-            params);
+        emitSignalToDestination(this._dbusImpl, sender, signalName, params);
     }
 
     _untrackSender(sender) {

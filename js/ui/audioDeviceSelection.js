@@ -10,6 +10,7 @@ import * as Dialog from './dialog.js';
 import * as ModalDialog from './modalDialog.js';
 
 import * as Main from './main.js';
+import {emitSignalToDestination} from '../misc/dbusUtils.js';
 import {loadInterfaceXML} from '../misc/fileUtils.js';
 
 const AudioDevice = {
@@ -165,15 +166,11 @@ export class AudioDeviceSelectionDBus {
     }
 
     _onDeviceSelected(dialog, device) {
-        const connection = this._dbusImpl.get_connection();
-        const info = this._dbusImpl.get_info();
         const deviceName = Object.keys(AudioDevice)
             .filter(dev => AudioDevice[dev] === device)[0].toLowerCase();
-        connection.emit_signal(
-            this._audioSelectionDialog._sender,
-            this._dbusImpl.get_object_path(),
-            info ? info.name : null,
-            'DeviceSelected',
+
+        emitSignalToDestination(this._dbusImpl,
+            this._audioSelectionDialog._sender, 'DeviceSelected',
             GLib.Variant.new('(s)', [deviceName]));
     }
 
