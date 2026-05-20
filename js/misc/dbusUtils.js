@@ -65,3 +65,22 @@ export function loadSubInterfaceXML(iface, ifaceFile) {
         xml.substring(ifaceStartIndex, ifaceEndIndex) +
         xmlFooter);
 }
+
+/**
+ * Emits a D-Bus signal to the given destination bus name.
+ *
+ * @param {Gio.DBusInterfaceSkeleton} dbusImpl - The D-Bus implementation
+ * @param {string|null} destination - The destination bus name or null
+ * @param {string} signalName - The signal name
+ * @param {GLib.Variant|null} params - The signal parameters or null
+ */
+export function emitSignalToDestination(dbusImpl, destination, signalName, params) {
+    const connection = dbusImpl.get_connection();
+    const info = dbusImpl.get_info();
+    connection.emit_signal(
+        destination,
+        dbusImpl.get_object_path(),
+        info?.name ?? null,
+        signalName,
+        params);
+}
