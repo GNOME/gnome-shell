@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-03-24 20:59+0000\n"
-"PO-Revision-Date: 2026-03-25 10:16+0100\n"
+"POT-Creation-Date: 2026-05-18 14:08+0000\n"
+"PO-Revision-Date: 2026-05-21 11:44+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -105,7 +105,7 @@ msgstr "Deschide o fereastră nouă a aplicației fixate 9"
 
 # Instantaneu=Imagine sau fotografie obținută printr-o expunere foarte scurtă. Captură=Totalitatea bunurilor materiale capturate de la inamic.
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2296
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2334
 msgid "Screenshots"
 msgstr "Instantanee de ecran"
 
@@ -130,7 +130,7 @@ msgid "Record a screencast interactively"
 msgstr "Fă o înregistrare de ecran în mod interactiv"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1319
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1325
 msgid "System"
 msgstr "Sistem"
 
@@ -746,27 +746,27 @@ msgstr "Autentificarea a durat prea mult, încearcă din nou"
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:503
 msgid "Authentication error"
 msgstr "Eroare de autentificare"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
+#: js/gdm/util.js:738
 msgid "(or swipe finger across reader)"
 msgstr "(sau treci degetul peste cititor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
+#: js/gdm/util.js:743
 msgid "(or place finger on reader)"
 msgstr "(sau așează degetul pe cititor)"
 
-#: js/misc/breakManager.js:774
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "Sunetul de la sfârșitul pauzei"
 
-#: js/misc/breakManager.js:983
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -774,7 +774,7 @@ msgstr[0] "%d secundă"
 msgstr[1] "%d secunde"
 msgstr[2] "%d de secunde"
 
-#: js/misc/breakManager.js:989
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -782,7 +782,7 @@ msgstr[0] "%d minut"
 msgstr[1] "%d minute"
 msgstr[2] "%d de minute"
 
-#: js/misc/breakManager.js:995
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -790,7 +790,7 @@ msgstr[0] "%d oră"
 msgstr[1] "%d ore"
 msgstr[2] "%d de ore"
 
-#: js/misc/breakManager.js:1001
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -799,7 +799,7 @@ msgstr[1] "%d zile"
 msgstr[2] "%d de zile"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
@@ -807,24 +807,24 @@ msgstr[0] "Va fi timpul pentru o pauză peste %s"
 msgstr[1] "Va fi timpul pentru o pauză peste %s"
 msgstr[2] "Va fi timpul pentru o pauză peste %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "Pauză de mișcare în curând"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "Pauză pentru ochi în curând"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "Pauză în curând"
 
-#: js/misc/breakManager.js:1142
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "Pauză de mișcare în curs"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1145
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
@@ -832,12 +832,12 @@ msgstr[0] "Continuă mișcarea %s"
 msgstr[1] "Continuă mișcarea %s"
 msgstr[2] "Continuă mișcarea %s"
 
-#: js/misc/breakManager.js:1151
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "Pauză pentru ochi în curs"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1154
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
@@ -845,12 +845,12 @@ msgstr[0] "Continuă să privești în altă parte %s"
 msgstr[1] "Continuă să privești în altă parte %s"
 msgstr[2] "Continuă să privești în altă parte %s"
 
-#: js/misc/breakManager.js:1160
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "Pauză în curs"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1163
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
@@ -858,12 +858,12 @@ msgstr[0] "A rămas %s din pauză"
 msgstr[1] "Au rămas %s din pauză"
 msgstr[2] "Au rămas %s din pauză"
 
-#: js/misc/breakManager.js:1202
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "E timpul pentru o pauză de mișcare"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1205
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
@@ -871,12 +871,12 @@ msgstr[0] "Lasă-ți aparatul deoparte și plimbă-te %s"
 msgstr[1] "Lasă-ți aparatul deoparte și plimbă-te %s"
 msgstr[2] "Lasă-ți aparatul deoparte și plimbă-te %s"
 
-#: js/misc/breakManager.js:1211
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "E timpul unei pauze pentru ochi"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1214
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -892,12 +892,12 @@ msgstr[2] ""
 "Nu te mai uita la ecran. Privește la cel puțin 6 metri distanță pentru cel "
 "puțin %s"
 
-#: js/misc/breakManager.js:1220
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "E timpul pentru o pauză"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1223
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -906,7 +906,7 @@ msgstr[1] "Este timpul pentru o pauză. Pleacă de lângă aparat pentru %s!"
 msgstr[2] "Este timpul pentru o pauză. Pleacă de lângă aparat pentru %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1247
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
@@ -914,11 +914,11 @@ msgstr[0] "Trebuia să iei o pauză acum %s"
 msgstr[1] "Trebuia să iei o pauză acum %s"
 msgstr[2] "Trebuia să iei o pauză acum %s"
 
-#: js/misc/breakManager.js:1253
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "Trebuia să iei o pauză"
 
-#: js/misc/breakManager.js:1269
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
@@ -926,28 +926,28 @@ msgstr[0] "A mai rămas %s din pauză"
 msgstr[1] "Au mai rămas %s din pauză"
 msgstr[2] "Au mai rămas %s din pauză"
 
-#: js/misc/breakManager.js:1275
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "Pauză întreruptă"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1353
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "Întârziere"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Omite"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1397
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "Începe"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1460
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
@@ -1225,11 +1225,11 @@ msgstr "%-e %B, %l:%M %p"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%-e %B %Y, %l:%M %p"
 
-#: js/portalHelper/main.js:98
+#: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
 msgstr "Conexiunea pare a fi sigură"
 
-#: js/portalHelper/main.js:104
+#: js/portalHelper/main.js:110
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1237,7 +1237,7 @@ msgstr ""
 "Conexiunea la acest punct de acces nu este sigură. Parolele sau alte "
 "informații introduse în această pagină pot fi văzute de cei din jur."
 
-#: js/portalHelper/main.js:115
+#: js/portalHelper/main.js:121
 msgid "Hotspot Login"
 msgstr "Autentificare Punct de acces"
 
@@ -1251,21 +1251,33 @@ msgstr "Refuză"
 msgid "Allow"
 msgstr "Permite"
 
-#: js/ui/appDisplay.js:1733
+#: js/ui/appDisplay.js:159
+msgid "App grid"
+msgstr "Grila de aplicații"
+
+#: js/ui/appDisplay.js:1737
 msgid "Unnamed Folder"
-msgstr "Dosar nedenumit"
+msgstr "Dosar fără nume"
 
-#: js/ui/appFavorites.js:89
+#: js/ui/appDisplay.js:2558
+msgid "Folder name"
+msgstr "Numele dosarului"
+
+#: js/ui/appDisplay.js:2581
+msgid "Edit folder name"
+msgstr "Modifică numele dosarului"
+
+#: js/ui/appFavorites.js:104
 #, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "%s a fost fixat în Preferate."
+msgid "%s Pinned to Dash"
+msgstr "%s a fost pusă în Preferate"
 
-#: js/ui/appFavorites.js:120
+#: js/ui/appFavorites.js:135
 #, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "%s a fost desprins din Preferate."
+msgid "%s Unpinned From Dash"
+msgstr "%s a fost scoasă din Preferate"
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:304
 msgid "Undo"
 msgstr "Anulează"
 
@@ -1286,7 +1298,7 @@ msgstr "Detalii aplicație"
 msgid "Quit"
 msgstr "Închide"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:245
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
 msgstr "Desprinde"
 
@@ -1318,7 +1330,7 @@ msgstr "Căști auriculare"
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -1460,33 +1472,33 @@ msgstr "Forțează închiderea"
 msgid "Wait"
 msgstr "Așteaptă"
 
-#: js/ui/components/automountManager.js:81
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "A fost conectat un disc extern"
 
-#: js/ui/components/automountManager.js:93
+#: js/ui/components/automountManager.js:95
 msgid "External drive disconnected"
 msgstr "A fost deconectat un disc extern"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:209
 msgid "Unable to unlock volume"
 msgstr "Nu s-a putut debloca volumul"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Versiunea instalată udisks nu poate să controleze PIM"
 
 #. Translators: %s is the name of a partition on a external drive
-#: js/ui/components/autorunManager.js:189
+#: js/ui/components/autorunManager.js:190
 #, javascript-format
 msgid "“%s” connected"
 msgstr "„%s” conectată"
 
-#: js/ui/components/autorunManager.js:190
+#: js/ui/components/autorunManager.js:191
 msgid "Disk can now be used"
 msgstr "Discul poate fi folosit acum"
 
-#: js/ui/components/autorunManager.js:202
+#: js/ui/components/autorunManager.js:203
 #, javascript-format
 msgid "Open with %s"
 msgstr "Deschide cu %s"
@@ -1589,13 +1601,13 @@ msgstr "Nu a funcționat. Încearcă din nou."
 msgid "Windows"
 msgstr "Ferestre"
 
-#: js/ui/dash.js:201 js/ui/dash.js:247
+#: js/ui/dash.js:200 js/ui/dash.js:246
 msgid "Show Apps"
 msgstr "Arată aplicațiile"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:405
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Preferate"
 
@@ -1777,11 +1789,11 @@ msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds"
 msgstr[0] ""
-"Sistemul se va reporni automat și va instala actualizările după %d secundă"
+"Sistemul va reporni automat și va instala actualizările după %d secundă"
 msgstr[1] ""
-"Sistemul se va reporni automat și va instala actualizările după %d secunde"
+"Sistemul va reporni automat și va instala actualizările după %d secunde"
 msgstr[2] ""
-"Sistemul se va reporni automat și va instala actualizările după %d de secunde"
+"Sistemul va reporni automat și va instala actualizările după %d de secunde"
 
 #: js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1818,13 +1830,13 @@ msgid "Boot Options"
 msgstr "Opțiuni de pornire"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:635
+#: js/ui/endSessionDialog.js:637
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (la distanță)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:638
+#: js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consolă)"
@@ -1930,61 +1942,61 @@ msgstr "Oprește"
 msgid "Leave Off"
 msgstr "Lasă oprit"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:896
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
 msgstr "Opțiuni tastatură"
 
-#: js/ui/lookingGlass.js:737
+#: js/ui/lookingGlass.js:738
 msgid "No extensions installed"
 msgstr "Nicio extensie instalată"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:801
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s nu a emis nicio eroare"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:807
 msgid "Hide Errors"
 msgstr "Ascunde erorile"
 
-#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+#: js/ui/lookingGlass.js:811 js/ui/lookingGlass.js:891
 msgid "Show Errors"
 msgstr "Afișează erorile"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:820
 msgid "Active"
 msgstr "Activ"
 
-#: js/ui/lookingGlass.js:822
+#: js/ui/lookingGlass.js:823
 msgid "Inactive"
 msgstr "Inactiv"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:825
 msgid "Error"
 msgstr "Eroare"
 
-#: js/ui/lookingGlass.js:826
+#: js/ui/lookingGlass.js:827
 msgid "Out of date"
 msgstr "Învechit"
 
-#: js/ui/lookingGlass.js:828
+#: js/ui/lookingGlass.js:829
 msgid "Downloading"
 msgstr "Se descarcă"
 
-#: js/ui/lookingGlass.js:830
+#: js/ui/lookingGlass.js:831
 msgid "Deactivating"
 msgstr "Se dezactivează"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:833
 msgid "Activating"
 msgstr "Se activează"
 
-#: js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:869
 msgid "View Source"
 msgstr "Arată sursa"
 
-#: js/ui/lookingGlass.js:879
+#: js/ui/lookingGlass.js:880
 msgid "Web Page"
 msgstr "Pagina Web"
 
@@ -2023,7 +2035,7 @@ msgstr "Blocarea ecranului are nevoie de administratorul de afișaj GNOME"
 msgid "Unknown App"
 msgstr "Aplicație necunoscută"
 
-#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
 msgid "Notification sound"
 msgstr "Sunet de înștiințare"
 
@@ -2133,130 +2145,130 @@ msgstr "GNOME trebuie să blocheze ecranul"
 msgid "Screen Capture"
 msgstr "Înregistrare ecran"
 
-#: js/ui/screenshot.js:1267
+#: js/ui/screenshot.js:1305
 msgid "Selection"
 msgstr "Zonă"
 
-#: js/ui/screenshot.js:1277
+#: js/ui/screenshot.js:1315
 msgid "Area Selection"
 msgstr "Alege zona"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1320
 msgid "Screen"
 msgstr "Ecran"
 
-#: js/ui/screenshot.js:1292
+#: js/ui/screenshot.js:1330
 msgid "Screen Selection"
 msgstr "Alege ecranul"
 
-#: js/ui/screenshot.js:1297
+#: js/ui/screenshot.js:1335
 msgid "Window"
 msgstr "Fereastră"
 
-#: js/ui/screenshot.js:1307
+#: js/ui/screenshot.js:1345
 msgid "Window Selection"
 msgstr "Alege fereastra"
 
-#: js/ui/screenshot.js:1332 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1370 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Instantaneu de ecran"
 
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1386
 msgid "Record Screen"
 msgstr "Înregistrează ecranul"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1365
+#: js/ui/screenshot.js:1403
 msgid "Capture"
 msgstr "Apasă"
 
-#: js/ui/screenshot.js:1387
+#: js/ui/screenshot.js:1425
 msgid "Show Pointer"
 msgstr "Arată indicatorul"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2020
+#: js/ui/screenshot.js:2058
 msgid "Screencasts"
 msgstr "Înregistrări de ecran"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2025
+#: js/ui/screenshot.js:2063
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Video %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2071
-msgid "Screencast recorded"
+#: js/ui/screenshot.js:2109
+msgid "Screencast Recorded"
 msgstr "Înregistrare de ecran efectuată"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
-msgid "Screencast failed to start"
+#: js/ui/screenshot.js:2122
+msgid "Screencast Failed to Start"
 msgstr "Înregistrarea ecranului nu a putut începe"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
-msgid "Screencast ended: Out of disk space"
-msgstr "Înregistrarea ecranului s-a terminat: nu mai există spațiu pe disc"
+#: js/ui/screenshot.js:2128
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "Înregistrarea ecranului a eșuat: nu mai există spațiu pe disc"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2096
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "Înregistrarea ecranului s-a terminat neașteptat, încearcă din nou"
+#: js/ui/screenshot.js:2134
+msgid "Screencast Failed, Please Try Again"
+msgstr "Înregistrarea ecranului a eșuat: încearcă din nou"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2099
-msgid "Screencast ended unexpectedly"
-msgstr "Înregistrarea de ecran s-a terminat neașteptat"
+#: js/ui/screenshot.js:2137
+msgid "Screencast Failed"
+msgstr "Înregistrarea ecranului a eșuat"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2112
+#: js/ui/screenshot.js:2150
 msgid "Click here to view the video"
 msgstr "Clic aici pentru a vedea înregistrarea"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2120 js/ui/screenshot.js:2363
+#: js/ui/screenshot.js:2158 js/ui/screenshot.js:2401
 msgid "Show in Files"
 msgstr "Arată în Fișiere"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2309
+#: js/ui/screenshot.js:2347
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Imagine %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2353
-msgid "Screenshot captured"
+#: js/ui/screenshot.js:2391
+msgid "Screenshot Captured"
 msgstr "Instantaneu de ecran efectuat"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2355
+#: js/ui/screenshot.js:2393
 msgid "You can paste the image from the clipboard"
 msgstr "Imaginea copiată poate fi lipită"
 
-#: js/ui/screenshot.js:2413 js/ui/screenshot.js:2575
+#: js/ui/screenshot.js:2452 js/ui/screenshot.js:2615
 msgid "Screenshot taken"
 msgstr "Instantaneu de ecran efectuat"
 
-#: js/ui/search.js:850
+#: js/ui/search.js:839
 msgid "Searching"
 msgstr "Se caută"
 
-#: js/ui/search.js:853
+#: js/ui/search.js:842
 msgid "No results"
 msgstr "Niciun rezultat"
 
-#: js/ui/search.js:989
+#: js/ui/search.js:978
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2429,7 +2441,7 @@ msgstr "Scăzută"
 msgid "High"
 msgstr "Ridicată"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:878
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Tastatură"
 
@@ -2514,7 +2526,7 @@ msgstr "Clic-dreapta"
 msgid "Dwell Click"
 msgstr "Clic prelungit"
 
-#: js/ui/status/keyboard.js:895
+#: js/ui/status/keyboard.js:894
 msgid "Show Keyboard Layout"
 msgstr "Afișează aranjamentul tastaturii"
 
@@ -2770,35 +2782,35 @@ msgstr "Eroare de autorizare Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nu s-a putut autoriza dispozitivul Thunderbolt: %s"
 
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "Volumul a fost schimbat"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "Cu sunet"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "Mut"
 
-#: js/ui/status/volume.js:297
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "Volum"
 
-#: js/ui/status/volume.js:313
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "Ieșire sunet"
 
-#: js/ui/status/volume.js:314
+#: js/ui/status/volume.js:315
 msgid "Open sound output menu"
 msgstr "Opțiuni ieșire sunet"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:390
 msgid "Sound Input"
 msgstr "Intrare sunet"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:391
 msgid "Open sound input menu"
 msgstr "Opțiuni intrare sunet"
 
@@ -2994,12 +3006,12 @@ msgstr "Enumeră modurile posibile"
 msgid "Force animations to be enabled"
 msgstr "Forțează activarea animațiilor"
 
-#: src/shell-app.c:267
+#: src/shell-app.c:266
 msgctxt "program"
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: src/shell-app.c:518
+#: src/shell-app.c:516
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nu s-a putut porni „%s”"
@@ -3021,7 +3033,7 @@ msgstr "Fereastra de autentificare a fost închisă de către utilizator"
 msgid "Icon '%s' not present in theme %s"
 msgstr "Simbolul „%s” nu este prezent în %s"
 
-#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3753
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
 msgstr "Nu s-a putut încărca simbolul"
 
@@ -3042,15 +3054,15 @@ msgstr ""
 "Exensii GNOME gestionează actualizarea extensiilor, configurarea "
 "preferințelor extensiei și eliminarea sau dezactivarea extensiilor nedorite."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:64
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 msgid "Main Window"
 msgstr "Fereastra principală"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:68
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Available Updates"
 msgstr "Actualizări disponibile"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:72
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Search View"
 msgstr "Vizualizarea căutării"
 
