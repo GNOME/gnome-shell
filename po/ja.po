@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2026-05-18 14:08+0000\n"
-"PO-Revision-Date: 2026-05-23 09:24+0900\n"
+"PO-Revision-Date: 2026-05-23 09:34+0900\n"
 "Last-Translator: Ryo Nakano <ryonakaknock3@gmail.com>\n"
 "Language-Team: Japanese <https://l10n.gnome.org/teams/ja/>\n"
 "Language: ja\n"
@@ -3100,7 +3100,7 @@ msgstr "設定(_S)"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:242
 msgid "_Remove…"
-msgstr "削除…(_R)"
+msgstr "削除(_R)…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Keyboard Shortcuts"
