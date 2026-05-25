@@ -387,6 +387,28 @@ Object.prototype.toString = function () {
     }
 };
 
+function defineCompatButtonMaskProp(oldName, newName) {
+    const prop = {};
+
+    if (Object.hasOwn(St.ButtonMask, oldName))
+        return prop;
+
+    prop[oldName] = {
+        get: () => {
+            console.warn(`St.ButtonMask.${oldName} is deprecated, ` +
+                `use St.ButtonMask.${newName} instead.`);
+            return St.ButtonMask[newName];
+        },
+    };
+
+    return prop;
+}
+Object.defineProperties(St.ButtonMask, {
+    ...defineCompatButtonMaskProp('ONE', 'PRIMARY'),
+    ...defineCompatButtonMaskProp('TWO', 'MIDDLE'),
+    ...defineCompatButtonMaskProp('THREE', 'SECONDARY'),
+});
+
 const slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
 if (slowdownEnv) {
     const factor = parseFloat(slowdownEnv);
