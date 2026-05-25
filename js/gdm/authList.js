@@ -37,7 +37,7 @@ const AuthListItem = GObject.registerClass({
 
         super._init({
             style_class: 'login-dialog-auth-list-item',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             can_focus: true,
             child: label,
             reactive: true,

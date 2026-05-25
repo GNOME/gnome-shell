@@ -55,9 +55,9 @@ export const PageIndicators = GObject.registerClass({
                 const pageIndex = this._nPages + i;
                 const indicator = new St.Button({
                     style_class: 'page-indicator',
-                    button_mask: St.ButtonMask.ONE |
-                                 St.ButtonMask.TWO |
-                                 St.ButtonMask.THREE,
+                    button_mask: St.ButtonMask.PRIMARY |
+                                 St.ButtonMask.MIDDLE |
+                                 St.ButtonMask.SECONDARY,
                     reactive: this._reactive,
                     child: new St.Widget({
                         style_class: 'page-indicator-icon',

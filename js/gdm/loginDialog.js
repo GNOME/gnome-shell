@@ -62,7 +62,7 @@ export const UserListItem = GObject.registerClass({
         });
         super._init({
             style_class: 'login-dialog-user-list-item',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             can_focus: true,
             x_expand: true,
             child: layout,
@@ -604,7 +604,7 @@ export const LoginDialog = GObject.registerClass({
         });
         this._notListedButton = new St.Button({
             style_class: 'login-dialog-not-listed-button',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             can_focus: true,
             child: notListedLabel,
             reactive: true,

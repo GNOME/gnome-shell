@@ -617,7 +617,7 @@ export const UnlockDialog = GObject.registerClass({
         this._otherUserButton = new St.Button({
             style_class: 'login-dialog-button switch-user-button',
             accessible_name: _('Log in as another user'),
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             reactive: false,
             opacity: 0,
             x_align: Clutter.ActorAlign.END,

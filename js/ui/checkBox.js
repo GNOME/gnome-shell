@@ -14,7 +14,7 @@ class CheckBox extends St.Button {
         super._init({
             style_class: 'check-box',
             child: container,
-            button_mask: St.ButtonMask.ONE,
+            button_mask: St.ButtonMask.PRIMARY,
             toggle_mode: true,
             can_focus: true,
         });

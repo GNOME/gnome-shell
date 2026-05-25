@@ -126,7 +126,7 @@ class Dialog extends St.Widget {
 
         const button = new St.Button({
             style_class: 'modal-dialog-button',
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             reactive: true,
             can_focus: true,
             x_expand: true,

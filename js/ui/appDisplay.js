@@ -1852,7 +1852,7 @@ class AppViewItem extends St.Button {
         super._init({
             pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.MIDDLE,
             can_focus: true,
             ...params,
         });
@@ -2280,7 +2280,7 @@ export const FolderIcon = GObject.registerClass({
     _init(id, path, parentView) {
         super._init({
             style_class: 'overview-tile app-folder',
-            button_mask: St.ButtonMask.ONE,
+            button_mask: St.ButtonMask.PRIMARY,
             can_focus: true,
         }, global.settings.is_writable('app-picker-layout'));
 
@@ -2571,7 +2571,7 @@ export const AppFolderDialog = GObject.registerClass({
         // Edit button
         this._editButton = new St.Button({
             style_class: 'icon-button',
-            button_mask: St.ButtonMask.ONE,
+            button_mask: St.ButtonMask.PRIMARY,
             toggle_mode: true,
             reactive: true,
             can_focus: true,

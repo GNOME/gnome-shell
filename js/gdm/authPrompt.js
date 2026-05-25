@@ -254,7 +254,7 @@ export const AuthPrompt = GObject.registerClass({
         this.cancelButton = new St.Button({
             style_class: 'login-dialog-button cancel-button',
             accessible_name: _('Cancel'),
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             reactive: this._hasCancelButton,
             can_focus: this._hasCancelButton,
             x_align: Clutter.ActorAlign.START,
