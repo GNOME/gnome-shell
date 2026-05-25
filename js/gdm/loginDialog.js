@@ -326,6 +326,7 @@ const SessionMenuButton = GObject.registerClass({
             can_focus: true,
             accessible_name: _('Choose Session'),
             accessible_role: Atk.Role.MENU,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
@@ -419,6 +420,7 @@ class A11yMenuButton extends St.Button {
             icon_name: 'org.gnome.Settings-accessibility-symbolic',
             accessible_name: _('Accessibility'),
             accessible_role: Atk.Role.MENU,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             can_focus: true,
         });
 
