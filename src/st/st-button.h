@@ -59,16 +59,16 @@ void         st_button_fake_release    (StButton     *button);
 
 /**
  * StButtonMask:
- * @ST_BUTTON_ONE: button 1 (left)
- * @ST_BUTTON_TWO: button 2 (middle)
- * @ST_BUTTON_THREE: button 3 (right)
+ * @ST_BUTTON_PRIMARY: primary button
+ * @ST_BUTTON_MIDDLE: middle button
+ * @ST_BUTTON_SECONDARY: secondary button
  *
  * A mask representing which mouse buttons an #StButton responds to.
  */
 typedef enum {
-  ST_BUTTON_ONE   = (1 << 0),
-  ST_BUTTON_TWO   = (1 << 1),
-  ST_BUTTON_THREE = (1 << 2),
+  ST_BUTTON_PRIMARY   = (1 << 0),
+  ST_BUTTON_MIDDLE    = (1 << 1),
+  ST_BUTTON_SECONDARY = (1 << 2),
 } StButtonMask;
 
 #define ST_BUTTON_MASK_FROM_BUTTON(button) (1 << ((button) - 1))

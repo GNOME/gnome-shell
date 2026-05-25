@@ -172,7 +172,7 @@ st_button_key_press (ClutterActor *actor,
   StButtonPrivate *priv = st_button_get_instance_private (button);
   uint32_t keyval;
 
-  if (priv->button_mask & ST_BUTTON_ONE)
+  if (priv->button_mask & ST_BUTTON_PRIMARY)
     {
       keyval = clutter_event_get_key_symbol (event);
 
@@ -199,7 +199,7 @@ st_button_key_release (ClutterActor *actor,
   StButtonPrivate *priv = st_button_get_instance_private (button);
   uint32_t keyval;
 
-  if (priv->button_mask & ST_BUTTON_ONE)
+  if (priv->button_mask & ST_BUTTON_PRIMARY)
     {
       keyval = clutter_event_get_key_symbol (event);
 
@@ -210,7 +210,7 @@ st_button_key_release (ClutterActor *actor,
         {
           if (priv->key_pressed)
             {
-              handle_clicked (button, ST_BUTTON_ONE);
+              handle_clicked (button, ST_BUTTON_PRIMARY);
               st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "active");
               priv->key_pressed = FALSE;
             }
@@ -361,7 +361,7 @@ st_button_class_init (StButtonClass *klass)
    */
   props[PROP_BUTTON_MASK] =
     g_param_spec_flags ("button-mask", NULL, NULL,
-                        ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
+                        ST_TYPE_BUTTON_MASK, ST_BUTTON_PRIMARY,
                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
@@ -425,7 +425,7 @@ st_button_init (StButton *button)
 {
   StButtonPrivate *priv = st_button_get_instance_private (button);
 
-  priv->button_mask = ST_BUTTON_ONE;
+  priv->button_mask = ST_BUTTON_PRIMARY;
   priv->click_gesture = CLUTTER_CLICK_GESTURE (clutter_click_gesture_new ());
   clutter_press_gesture_set_cancel_threshold (CLUTTER_PRESS_GESTURE (priv->click_gesture), -1);
   clutter_actor_meta_set_name (CLUTTER_ACTOR_META (priv->click_gesture), "StButton click gesture");
