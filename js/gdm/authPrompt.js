@@ -674,8 +674,6 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         this._entryArea.hide();
-        if (this._message.text === '')
-            this._message.hide();
         this._fadeInElement(this._authList);
         this.updateSensitivity({sensitive: true});
     }
@@ -715,7 +713,6 @@ export const AuthPrompt = GObject.registerClass({
         else
             this._message.remove_style_class_name('login-dialog-message-hint');
 
-        this._message.show();
         if (message) {
             this._message.remove_all_transitions();
             this._message.text = message;
