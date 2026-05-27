@@ -53,6 +53,7 @@ const _SESSION_TYPE_SECTION_NAME = _('Session Type');
 const N_A11Y_MENU_COLUMNS = 2;
 
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
+Gio._promisify(Gdm.Greeter.prototype, 'call_select_session');
 
 export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
@@ -601,7 +602,7 @@ export const LoginDialog = GObject.registerClass({
                 return;
 
             if (sectionName === _SESSION_TYPE_SECTION_NAME)
-                this._greeter.call_select_session_sync(item.id, null);
+                this._greeter.call_select_session(item.id, null).catch(logError);
 
             this._authMenuButton.closeMenu();
         });
