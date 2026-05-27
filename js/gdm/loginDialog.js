@@ -57,6 +57,7 @@ Gio._promisify(Gdm.Greeter.prototype, 'call_select_session');
 Gio._promisify(Gdm.Greeter.prototype, 'call_start_session_when_ready');
 Gio._promisify(Gdm.Greeter.prototype, 'call_stop_conflicting_session');
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
+Gio._promisify(Gdm.Greeter.prototype, 'call_select_session');
 
 export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
