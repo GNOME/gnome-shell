@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-05-14 18:26+0000\n"
-"PO-Revision-Date: 2026-05-18 12:13+0100\n"
+"POT-Creation-Date: 2026-05-26 21:02+0000\n"
+"PO-Revision-Date: 2026-05-28 16:03+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -119,7 +119,7 @@ msgstr "Kemeres skrin-skeusen"
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Take a screenshot of a window"
-msgstr "Kemeres skrin-skeusen a unn fenester"
+msgstr "Kemeres skrin-skeusen a fenester"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:271
@@ -153,14 +153,14 @@ msgstr "Diskwedhes oll appys"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "Bywhe toulys bervedhek gwerek rag awtours ha provoryon gans Alt-F2"
+msgstr "Bywhe toulys a-bervedh gwerek rag awtours ha provoryon gans Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Gasa hedhas dhe doulys bervedhek prevessyans ha gorwolyans ow tevnydhya an "
+"Gasa hedhas dhe doulys a-bervedh prevessyans ha gorwolyans ow tevnydhya an "
 "fenester Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:16
@@ -175,9 +175,9 @@ msgid ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "Yma dhe ystynansow GNOME Shell enworrans manylyon \"UUID\"; an alwedh ma a "
-"rol ystynansow may kodh bos kargys. Res yw dhe neb ystynnans ow mynnes bos "
-"kargys rag bos y'n rol ma. Ynwedh, hwi a yll handla an rol ma gans an "
-"vethodys D-Bus EnableExtension ha DisableExtension war org.gnome.Shell."
+"rol ystynansow may kodh bos kargys. Res yw dhe neb ystynnans ow mynnes dhe "
+"vos kargys rag bos y'n rol ma. Ynwedh, hwi a yll handla an rol ma gans an "
+"methodys D-Bus EnableExtension ha DisableExtension war org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -193,7 +193,7 @@ msgid ""
 msgstr ""
 "Yma dhe ystynansow GNOME Shell enworrans manylyon \"UUID\"; an alwedh ma a "
 "rol ystynansow may kodh bos marowhes, hwath mar kargys avel rann a'n fordh a-"
-"lemmyn. Ynwedh, hwi a yll handla an rol gans an vethodys D-Bus "
+"lemmyn. Ynwedh, hwi a yll handla an rol gans an methodys D-Bus "
 "EnableExtension ha DisableExtenion war org.gnome.Shell. An alwedh ma a "
 "worgorr an settyans \"enabled-extension\"."
 
@@ -238,18 +238,18 @@ msgid ""
 msgstr ""
 "GNOME Shell a wra karga ystynansow hepken ow lavasos skoodhya an dyllans a-"
 "lemmyn. Ow pywhe an dewis ma a wra marowhe an lett ma hag assaya dhe garga "
-"oll ystynansow ny vern an dhyllansow i a lavas skoodhya."
+"oll ystynansow ny vern an dyllansow i a lavas skoodhya."
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "List of desktop file IDs for favorite applications"
-msgstr "Rol a IDs restrennow desktop rag appys dhrudh"
+msgstr "Rol a IDs restrennow desktop rag appys drudh"
 
 #: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"An appys owth omdhesedha orth an IDs ma a vydh diskwedhes y'n arenebedh "
+"An appys owth omdhesedha orth an IDs ma a vydh diskwedhys y'n arenebedh "
 "drudh."
 
 #: data/org.gnome.shell.gschema.xml.in:75
@@ -288,9 +288,9 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"An shell a wra peji ger-tremena pan devis argelys po system restrenva yw "
+"An shell a wra peji ger-tremena pan dhevis argelys po system restrenva yw "
 "ygerys. Mars an ger-tremena a yll bos sawys rag devnydh y’n termyn a-dheu, "
-"dewisboks a wra bos ena. An alwedh ma a worr an studh defowt a'n dewisboks."
+"dewisboks a vydh ena. An alwedh ma a worr an studh defowt a'n dewisboks."
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
@@ -302,7 +302,7 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"Nebes systemow a skoodh moy es dew profilys vatri. Rag skoodhya hwath ow "
+"Nebes systemow a skoodh moy es dew profilys batri. Rag skoodhya hwath ow "
 "tewis yntra dew profilys, an alwedh ma a rekord an profil andefowt dewisys-"
 "diwettha."
 
@@ -335,68 +335,68 @@ msgid ""
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
 "Aray a'n kunteller app. Pub enworrans manylyon y'n aray yw folen. Folennow "
-"yw gwithys y'n aray i apperya yn GNOME Shell. Pub folen a syns dewdhen “id "
-"app” → 'data'. Y'n eur ma, an niverow a sew yw gwithys avel 'data': • "
+"yw gwithys y'n aray i a omdhiskwedh yn GNOME Shell. Pub folen a syns dewdhen "
+"“id app” → 'data'. Y'n eur ma, an niverow a sew yw gwithys avel 'data': • "
 "“tyller”: an tyller a'n ardwodhik app y'n folen"
 
 #: data/org.gnome.shell.gschema.xml.in:145
 #: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to shift between overview states"
-msgstr "Kesunyansow Vysowek rag chanjya yntra studhyow worwolok"
+msgstr "Kesunyans bysowek rag chanjya yntra studhyow gorwolok"
 
 #: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
-"Kesunyansow Vysowek rag chanjya yntra esedhek, kunteller fenester ha rastell "
+"Kesunyans bysowek rag chanjya yntra esedhek, kunteller fenester ha rastell "
 "app"
 
 #: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
-"Kesunyansow Vysowek rag chanjya yntra rastell app, kunteller fenester hag "
+"Kesunyans bysowek rag chanjya yntra rastell app, kunteller fenester hag "
 "esedhek"
 
 #: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "Kesunyansow Vysowek rag ygeri an wel “Diskwedhes Appys”"
+msgstr "Kesunyans bysowek rag ygeri an gwel “Diskwedhes Appys”"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Kesunyansow Vysowek rag ygeri an wel “Diskwedhes Appys” an Worwolok Wriansow."
+"Kesunyans bysowek rag ygeri an gwel “Diskwedhes Appys” an Worwolok Wriansow."
 
 #: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
-msgstr "Kesunyansow Vysowek rag ygeri gorwolok"
+msgstr "Kesunyans bysowek rag ygeri gorwolok"
 
 #: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
-msgstr "Kesunyansow Vysowek rag ygeri an Worwolok Wriansow."
+msgstr "Kesunyans bysowek rag ygeri an Worwolok Wriansow."
 
 #: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "Kesunyansow Vysowek rag dewis an gweladewder a'n rol warnyansow"
+msgstr "Kesunyans bysowek rag dewis an gweladewder a'n rol warnyansow"
 
 #: data/org.gnome.shell.gschema.xml.in:175
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "Kesunyansow Vysowek rag dewis an gweladewder a'n rol warnyansow."
+msgstr "Kesunyans bysowek rag dewis an gweladewder a'n rol warnyansow."
 
 #: data/org.gnome.shell.gschema.xml.in:181
 msgid "Keybinding to toggle the quick settings menu"
-msgstr "Kesunyansow Vysowek rag dewis an rol settyansow uskis"
+msgstr "Kesunyans bysowek rag dewis an rol settyansow uskis"
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Keybinding to toggle the quick settings menu."
-msgstr "Kesunyansow Vysowek rag dewis an rol settyansow uskis."
+msgstr "Kesunyans bysowek rag dewis an rol settyansow uskis."
 
 #: data/org.gnome.shell.gschema.xml.in:188
 msgid "Keybinding to focus the active notification"
-msgstr "Kesunyansow Vysowek rag fogella an gwarnyans byw"
+msgstr "Kesunyans bysowek rag fogella an gwarnyans byw"
 
 #: data/org.gnome.shell.gschema.xml.in:189
 msgid "Keybinding to focus the active notification."
-msgstr "Kesunyansow Vysowek rag fogella an gwarnyans byw."
+msgstr "Kesunyans bysowek rag fogella an gwarnyans byw."
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 1"
@@ -504,7 +504,7 @@ msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"Mar gwir, appys gans fenestri hepken war'n bordh a-lemmyn yw diskwedhys y'n "
+"Mar gwir, appys gans fenestri war'n bordh a-lemmyn hepken yw diskwedhys y'n "
 "skwycheller. Yn ken maner, oll appys yw synsys."
 
 #: data/org.gnome.shell.gschema.xml.in:330
@@ -518,7 +518,7 @@ msgid ""
 "(shows only the application icon) or “both”."
 msgstr ""
 "Selya fatel an fenestri yw diskwedhys y'n skwycheller. Galladewderyow ewn yw "
-"“thumbnail-only” (diskwedhes aven byghan a'n fenester), “app-icon-only” "
+"“thumbnail-only” (diskwedhes skeusennik a'n fenester), “app-icon-only” "
 "(diskwedhes an arwodhik app hepken) or “both” (an dhew)."
 
 #: data/org.gnome.shell.gschema.xml.in:340
@@ -526,7 +526,7 @@ msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
-"Mar gwir, fenestri dhyworth an bordh a-lemmyn hepken yw diskwedhys y'n "
+"Mar kwir, fenestri dhyworth an bordh a-lemmyn hepken yw diskwedhys y'n "
 "skwycheller. Yn ken maner, oll fenestri yw synsys."
 
 #: data/org.gnome.shell.gschema.xml.in:350
@@ -535,7 +535,7 @@ msgstr "Tylleryow"
 
 #: data/org.gnome.shell.gschema.xml.in:351
 msgid "The locations to show in world clocks"
-msgstr "An dylleryow rag diskwedhes yn klockys an nor"
+msgstr "An tylleryow rag diskwedhes yn klockys an nor"
 
 #: data/org.gnome.shell.gschema.xml.in:361
 msgid "Automatic location"
@@ -559,7 +559,7 @@ msgstr "An tyller rag diskwedhes dargan"
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
 #: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
-msgstr "Ystynansow\t"
+msgstr "Ystynansow"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -571,7 +571,7 @@ msgstr "Lesow"
 
 #: js/dbusServices/extensions/extensionPrefsDialog.js:70
 msgid "Extension Error"
-msgstr "Error Ystynnans"
+msgstr "Kamm Ystynnans"
 
 #. Translators: %s is an extension name
 #: js/dbusServices/extensions/extensionPrefsDialog.js:103
@@ -594,11 +594,11 @@ msgstr "Kudhlow a-dro dhe'n kudyn ma yw kavadow martesen war'n %s."
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
 #: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
-msgstr "Manylyon Error"
+msgstr "Manylyon Kamm"
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:26
 msgid "Copy Error"
-msgstr "Kopia Error"
+msgstr "Kopia Kamm"
 
 #: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1427
 msgid "Screen Time Limit Reached"
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Ignore"
 msgstr "Skonya Aswon"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -637,61 +637,61 @@ msgstr "Ger-tremena"
 msgid "Choose Session"
 msgstr "Dewis Esedhek"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Hedhadewder"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:474
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
 "%s. To login remotely, you must log out from the remote session or force "
 "stop it."
 msgstr ""
-"Omgelmyans pell nyns yw galladow drefen yma esedhek pell owth eksekutya "
+"Omgelmyans pell nag yw galladow drefen yma esedhek pell owth eksekutya "
 "seulabrys rag %s. Rag omgelmi yn pell, res yw dhywgh omdhigelmi dhyworth an "
 "esedhek pell po astel gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:477
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
 "login, you must log out from the remote session or force stop it."
 msgstr ""
-"Omgelmyans nyns yw galladow drefen esedhek pell owth eksekutya seulabrys rag "
+"Omgelmyans nag yw galladow drefen esedhek pell owth eksekutya seulabrys rag "
 "%s. Rag omgelmi, res yw dhywgh omdhigelmi dhyworth an esedhek pell po astel "
 "gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:480
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
 "%s. To login remotely, you must log out from the local session or force stop "
 "it."
 msgstr ""
-"Omgelmyans nyns yw galladow drefen yma esedhek leel owth eksekutya seulabrys "
+"Omgelmyans nag yw galladow drefen yma esedhek leel owth eksekutya seulabrys "
 "rag %s. Rag omgelmi yn pell, res yw dhywgh omdhigelmi dhyworth an esedhek "
 "leel po astel gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/loginDialog.js:483
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
 "you must log out from the session or force stop it."
 msgstr ""
-"Omgelmyans nyns yw galladow drefen yma esedhek owth eksekutya seulabrys rag "
+"Omgelmyans nag yw galladow drefen yma esedhek owth eksekutya seulabrys rag "
 "%s. Rag omgelmi, res yw dhywgh omdhigelmi dhyworth an esedhek po astel gans "
 "nerth."
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/loginDialog.js:492
 msgid "Session Already Running"
 msgstr "Esedhek Owth Eksekutya Seulabrys"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/loginDialog.js:504
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -699,42 +699,42 @@ msgstr ""
 "Owth astel gans nerth a wra kwytya neb appys hag argerdhow owth eksekutya, "
 "hag a wra omsewya martesen yn koll data"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/loginDialog.js:524
 msgid "Force Stop"
 msgstr "Astel gans Nerth"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:602
 msgid "Not listed?"
-msgstr "Na rolyowgh hwi?"
+msgstr "Na rolyewgh hwi?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1138
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(r.e., devnydhyer po %s)"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Hanow Devnydhyer"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1209
 msgid "Login Attempt Timed Out"
 msgstr "Assay Omgelmyans yn Termyn Yn-Mes"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1210
 msgid "Login took too long, please try again"
 msgstr "Omgelmyans kemerys re hir, assayewgh arta mar pleg"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1555
 msgid "Login Window"
 msgstr "Fenester Omgelmyans"
 
 #: js/gdm/util.js:503
 msgid "Authentication error"
-msgstr "Error omgelmyans"
+msgstr "Kamm omgelmyans"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
@@ -748,32 +748,32 @@ msgstr "(po tevewgh bys a-dreus redyer)"
 msgid "(or place finger on reader)"
 msgstr "(po lewgh bys war redyer)"
 
-#: js/misc/breakManager.js:774
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "Sownd powes deu"
 
-#: js/misc/breakManager.js:983
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d eylen"
 msgstr[1] "%d eylennow"
 
-#: js/misc/breakManager.js:989
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d mynysen"
 msgstr[1] "%d mynysennow"
 
-#: js/misc/breakManager.js:995
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d eur"
 msgstr[1] "%d euryow"
 
-#: js/misc/breakManager.js:1001
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -781,79 +781,79 @@ msgstr[0] "%d dydh"
 msgstr[1] "%d dedhyow"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Y vydh termyn rag powes yn %s"
 msgstr[1] "Y vydh termyn rag powes yn %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "Powes Gwayans Tost"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "Powes Lagasow Tost"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "Powes Tost"
 
-#: js/misc/breakManager.js:1142
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "Powes Gwayans yn Avonsyans"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1145
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Pesyewgh ow kwaya rag %s"
 msgstr[1] "Pesyewgh ow kwaya rag %s"
 
-#: js/misc/breakManager.js:1151
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "Powes Lagasow yn Avonsyans"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1154
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Pesyewgh ow mires dhe-ves rag %s"
 msgstr[1] "Pesyewgh ow mires dhe-ves rag %s"
 
-#: js/misc/breakManager.js:1160
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "Powes yn Avonsyans"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1163
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s remenant yn agas powes"
 msgstr[1] "%s remenant yn agas powes"
 
-#: js/misc/breakManager.js:1202
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "Termyn rag Powes Gwayans"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1205
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Kemerewgh powes dhyworth an devis ha gwaya a-dro rag %s"
 msgstr[1] "Kemerewgh powes dhyworth an devis ha gwaya a-dro rag %s"
 
-#: js/misc/breakManager.js:1211
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "Termyn rag Powes Lagasow"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1214
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -866,12 +866,12 @@ msgstr[1] ""
 "Kemerewgh powes dhyworth an skrin. Mirewgh dhe'n lyha 6 metrow a-ves rag "
 "dhe'n lyha %s"
 
-#: js/misc/breakManager.js:1220
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "Termyn rag Powes"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1223
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -879,53 +879,53 @@ msgstr[0] "Termyn yw rag powes. Dewgh alemma dhyworth an devis rag %s!"
 msgstr[1] "Termyn yw rag powes. Dewgh alemma dhyworth an devis rag %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1247
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
-msgstr[0] "Yth ewgh hwi degoodh kemeres powes nans yw %s"
-msgstr[1] "Yth ewgh hwi degoodh kemeres powes nans yw %s"
+msgstr[0] "Yth ewgh degoodh dhe gemeres powes nans yw %s"
+msgstr[1] "Yth ewgh degoodh dhe gemeres powes nans yw %s"
 
-#: js/misc/breakManager.js:1253
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "Powes A-dhelergh"
 
-#: js/misc/breakManager.js:1269
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Yma %s remenant yn agas powes"
 msgstr[1] "Yma %s remenant yn agas powes"
 
-#: js/misc/breakManager.js:1275
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "Powes Goderrys"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1353
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "Delatya"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Skyppya"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1397
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "Kemeres"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1460
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "Powes yn %d eylen"
 msgstr[1] "Powes yn %d eylennow"
 
-#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Golewder"
 
@@ -1040,7 +1040,7 @@ msgstr[1] "An amontyell a wra alhwedha yn %d eylennow."
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
-msgstr[0] "Finweth Dermyn Skrin yn %d Mynysen"
+msgstr[0] "Finweth Termyn Skrin yn %d Mynysen"
 msgstr[1] "Finweth Dermyn Skrin yn %d Mynysennow"
 
 #: js/misc/timeLimitsManager.js:1406
@@ -1053,7 +1053,7 @@ msgstr "Termyn yw rag astel ow tevnydhya an devis"
 
 #: js/misc/util.js:131
 msgid "Command not found"
-msgstr "Arghadow nyns yw kevys"
+msgstr "Arghadow nag yw kevys"
 
 #: js/misc/util.js:169
 #, javascript-format
@@ -1191,8 +1191,8 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"Agas junyans dhe'n omgelmyans hotspot ma nyns yw saw. Geryow-tremena po "
-"kedhlow aral hwi a ynworrowgh war'n folen ma a yll bos gwelys gans tus yn "
+"Agas junyans dhe'n omgelmyans hotspot ma nag yw saw. Geryow-tremena po "
+"kedhlow erel hwi a ynworrowgh war'n folen ma a yll bos gwelys gans tus yn "
 "ogas."
 
 #: js/portalHelper/main.js:121
@@ -1209,19 +1209,31 @@ msgstr "Nagha"
 msgid "Allow"
 msgstr "Gasa"
 
-#: js/ui/appDisplay.js:1734
+#: js/ui/appDisplay.js:159
+msgid "App grid"
+msgstr "Rastell app"
+
+#: js/ui/appDisplay.js:1737
 msgid "Unnamed Folder"
 msgstr "Restrenva Dhihenwys"
 
+#: js/ui/appDisplay.js:2558
+msgid "Folder name"
+msgstr "Hanow restrenva"
+
+#: js/ui/appDisplay.js:2581
+msgid "Edit folder name"
+msgstr "Golegi hanow restrenva"
+
 #: js/ui/appFavorites.js:104
 #, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "%s re beu pynnys war'n skostel."
+msgid "%s Pinned to Dash"
+msgstr "%s Pynnys war Skostel"
 
 #: js/ui/appFavorites.js:135
 #, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "%s re beu dispynnys dhyworth an skostel."
+msgid "%s Unpinned From Dash"
+msgstr "%s Dispynnys dhyworth Skostel"
 
 #: js/ui/appFavorites.js:149 js/ui/main.js:304
 msgid "Undo"
@@ -1276,7 +1288,7 @@ msgstr "Skovarnigow"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Korrgewsell"
 
@@ -1286,7 +1298,7 @@ msgstr "Chanjya Kilva…"
 
 #: js/ui/backgroundMenu.js:15
 msgid "Display Settings"
-msgstr "Settyansow Dhispletyans"
+msgstr "Settyansow Displetyans"
 
 #: js/ui/backgroundMenu.js:16
 msgid "Settings"
@@ -1419,19 +1431,19 @@ msgstr "Ynia Kwytyans"
 msgid "Wait"
 msgstr "Gortos"
 
-#: js/ui/components/automountManager.js:81
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "Kov a-ves junys"
 
-#: js/ui/components/automountManager.js:93
+#: js/ui/components/automountManager.js:95
 msgid "External drive disconnected"
 msgstr "Kov a-ves disjunys"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:209
 msgid "Unable to unlock volume"
 msgstr "Ny yllir dialhwedha kevrol"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "An dyllans leys a udisks ny skoodhya an settyans PIM"
 
@@ -1761,12 +1773,12 @@ msgstr "Nebes appys yw bysi po yma ober ansawys dhedha"
 
 #: js/ui/endSessionDialog.js:276
 msgid "Other users are logged in"
-msgstr "Devnydhyoryon erel yw omgelmys"
+msgstr "Yma devnydhyoryon erel omgelmys"
 
 #: js/ui/endSessionDialog.js:431
 msgctxt "button"
 msgid "Boot Options"
-msgstr "Dewisyow Dhalleth"
+msgstr "Dewisyow Dalleth"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:637
@@ -1803,23 +1815,23 @@ msgstr "Nowedhyansow ystynansow yw kavadow dhe lea"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
-msgstr "Gasa ow spralla kesunyansow vysowek"
+msgstr "Gasa ow spralla kesunyansow bysowek"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:73
 #, javascript-format
 msgid "The app %s wants to inhibit shortcuts"
-msgstr "An app %s a vynn spralla kesunyansow vysowek"
+msgstr "An app %s a vynn spralla kesunyansow bysowek"
 
 #: js/ui/inhibitShortcutsDialog.js:74
 msgid "An app wants to inhibit shortcuts"
-msgstr "Yma app a vynn spralla kesunyansow vysowek"
+msgstr "Yma app a vynn spralla kesunyansow bysowek"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:81
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s"
-msgstr "Hwi a yll daskor kesunyansow vysowek gans ow tava %s"
+msgstr "Hwi a yll daskor kesunyansow bysowek gans ow tava %s"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid "Slow Keys Turned On"
@@ -1851,7 +1863,7 @@ msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Namnygen hwi re davewgh an alhwedhen Shift 5 prys yn rew. Hemm yw an "
+"Namnygen hwi re devewgh an alhwedhen Shift 5 prys yn rew. Hemm yw an "
 "kesunyans rag an nas Alhwedhennow Glusek, mayth a venn fatel agas bysowek a "
 "ober."
 
@@ -1883,59 +1895,59 @@ msgstr "Gwitha Marow"
 
 #: js/ui/keyboard.js:179 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
-msgstr "Settyansow Vysowek"
+msgstr "Settyansow Bysowek"
 
-#: js/ui/lookingGlass.js:737
+#: js/ui/lookingGlass.js:738
 msgid "No extensions installed"
 msgstr "Nyns eus ystynansow leys"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:801
 #, javascript-format
 msgid "%s has not emitted any errors"
-msgstr "Ny veu danvenys %s neb errors"
+msgstr "Ny veu danvenys %s neb kammow"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:807
 msgid "Hide Errors"
-msgstr "Kudha Errors"
+msgstr "Kudha Kammow"
 
-#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+#: js/ui/lookingGlass.js:811 js/ui/lookingGlass.js:891
 msgid "Show Errors"
-msgstr "Diskwedhes Errors"
+msgstr "Diskwedhes Kammow"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:820
 msgid "Active"
 msgstr "Byw"
 
-#: js/ui/lookingGlass.js:822
+#: js/ui/lookingGlass.js:823
 msgid "Inactive"
 msgstr "Marow"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:825
 msgid "Error"
-msgstr "Error"
+msgstr "Kamm"
 
-#: js/ui/lookingGlass.js:826
+#: js/ui/lookingGlass.js:827
 msgid "Out of date"
 msgstr "Anterrus"
 
-#: js/ui/lookingGlass.js:828
+#: js/ui/lookingGlass.js:829
 msgid "Downloading"
 msgstr "Owth Iskarga"
 
-#: js/ui/lookingGlass.js:830
+#: js/ui/lookingGlass.js:831
 msgid "Deactivating"
 msgstr "Ow Marowhe"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:833
 msgid "Activating"
 msgstr "Ow Pywhe"
 
-#: js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:869
 msgid "View Source"
 msgstr "Gweles Pennfenten God"
 
-#: js/ui/lookingGlass.js:879
+#: js/ui/lookingGlass.js:880
 msgid "Web Page"
 msgstr "Gwiasva"
 
@@ -1991,7 +2003,7 @@ msgstr "Titel ankoth"
 #. characters.
 #: js/ui/overviewControls.js:330
 msgid "Type to search"
-msgstr "Jynnskrifewgh dhe hwilas"
+msgstr "Jynnskrifewgh rag hwilas"
 
 #: js/ui/overviewControls.js:395
 msgid "Apps"
@@ -2137,34 +2149,34 @@ msgstr "Skrin-Gwydhyowyow"
 #: js/ui/screenshot.js:2063
 #, no-c-format
 msgid "Screencast From %d %t"
-msgstr "Skrin-Gwydhyowyow A-Dhia %d %t"
+msgstr "Skrin-Deghesyans A-Dhia %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2109
-msgid "Screencast recorded"
-msgstr "Skrin-Gwydhyow rekordys"
+msgid "Screencast Recorded"
+msgstr "Skrin-Deghesyans Rekordys"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2122
-msgid "Screencast failed to start"
-msgstr "Skrin-Gwydhyow re fyllis dhe dhalleth"
+msgid "Screencast Failed to Start"
+msgstr "Skrin-Deghesyans re Fyllis dhe Dhalleth"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2128
-msgid "Screencast ended: Out of disk space"
-msgstr "Skrin-Gwydhyow diwedhys: Ow Tifygya efander plasen"
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "Skrin-Deghesyans re Fyllis: Ow Tifygya Efander Plasen"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
 #: js/ui/screenshot.js:2134
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "Skrin-Gwydhyow diwedhys heb y waytyas, assayewgh arta mar pleg"
+msgid "Screencast Failed, Please Try Again"
+msgstr "Skrin-Deghesyans re Fyllis, Assayewgh Arta Mar Pleg"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2137
-msgid "Screencast ended unexpectedly"
-msgstr "Skrin-Gwydhyow diwedhys heb y waytyas"
+msgid "Screencast Failed"
+msgstr "Skrin-Deghesyans re Fyllis"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:2150
@@ -2186,27 +2198,27 @@ msgstr "Skrin-Skeusen A-Dhia %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2391
-msgid "Screenshot captured"
-msgstr "Skrin-Skeusen kemerys"
+msgid "Screenshot Captured"
+msgstr "Skrin-Skeusen Kemerys"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2393
 msgid "You can paste the image from the clipboard"
 msgstr "Hwi a yll dasskrifa an skeusen dhyworth an astel glypp"
 
-#: js/ui/screenshot.js:2451 js/ui/screenshot.js:2613
+#: js/ui/screenshot.js:2452 js/ui/screenshot.js:2615
 msgid "Screenshot taken"
 msgstr "Skrin-Skeusen kemerys"
 
-#: js/ui/search.js:850
+#: js/ui/search.js:839
 msgid "Searching"
 msgstr "Ow Hwilas"
 
-#: js/ui/search.js:853
+#: js/ui/search.js:842
 msgid "No results"
 msgstr "Nyns eus sewyansow"
 
-#: js/ui/search.js:989
+#: js/ui/search.js:978
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2307,7 +2319,7 @@ msgstr "Bysowek Skrin"
 
 #: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:253
 msgid "Visual Alerts"
-msgstr "Gwarnyansow Welesek"
+msgstr "Gwarnyansow Gwelesek"
 
 #: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:269
 msgid "Sticky Keys"
@@ -2411,11 +2423,11 @@ msgstr "Ygeri rol Bluetooth"
 
 #: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
 msgid "Bluetooth Settings"
-msgstr "Settyansow Vluetooth"
+msgstr "Settyansow Bluetooth"
 
 #: js/ui/status/bluetooth.js:350
 msgid "No available or connected devices"
-msgstr "Nyns eus devisyow gavadow po junys"
+msgstr "Nyns eus devisyow kavadow po junys"
 
 #: js/ui/status/bluetooth.js:351
 msgid "Turn on Bluetooth to connect to devices"
@@ -2439,7 +2451,7 @@ msgstr "Gis Du"
 
 #: js/ui/status/doNotDisturb.js:10
 msgid "Do Not Disturb"
-msgstr "Na Ankresyewgh Dhymm"
+msgstr "Nag Ankresyewgh Dhymm"
 
 #: js/ui/status/dwellClick.js:14
 msgid "Single Click"
@@ -2477,7 +2489,7 @@ msgstr "An app %s a vynn drehedhes agas tyller"
 
 #: js/ui/status/location.js:349
 msgid "Location access can be changed at any time from the privacy settings"
-msgstr "Hedhas tyller a yll bos chanjys yn neb eur y'n settyansow brivetter"
+msgstr "Hedhas tyller a yll bos chanjys yn neb eur y'n settyansow privetter"
 
 #: js/ui/status/location.js:357
 msgid "Deny Access"
@@ -2549,23 +2561,23 @@ msgstr "Oll Rosweythyow"
 
 #: js/ui/status/network.js:1907
 msgid "Wired Connections"
-msgstr "Junyansow Wiver"
+msgstr "Junyansow Wivrys"
 
 #: js/ui/status/network.js:1908
 msgid "Open wired connections menu"
-msgstr "Ygeri rol junyansow wiver"
+msgstr "Ygeri rol junyansow wivrys"
 
 #: js/ui/status/network.js:1909
 msgid "Wired Settings"
-msgstr "Settyansow Junyansow Wiver"
+msgstr "Settyansow Junyansow Wivrys"
 
 #: js/ui/status/network.js:1923
 msgid "Bluetooth Tethers"
-msgstr "Stagow Vluetooth"
+msgstr "Stagow Bluetooth"
 
 #: js/ui/status/network.js:1924
 msgid "Open Bluetooth tethers menu"
-msgstr "Ygeri rol stagow Vluetooth"
+msgstr "Ygeri rol stagow Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1931
@@ -2574,11 +2586,11 @@ msgstr "Stag"
 
 #: js/ui/status/network.js:1944
 msgid "Mobile Connections"
-msgstr "Junyansow Glapkodh"
+msgstr "Junyansow Klapkodh"
 
 #: js/ui/status/network.js:1945
 msgid "Open mobile connections menu"
-msgstr "Ygeri rol junyansow glapkodh"
+msgstr "Ygeri rol junyansow klapkodh"
 
 #: js/ui/status/network.js:1947
 msgid "Mobile Broadband Settings"
@@ -2632,7 +2644,7 @@ msgstr "Fordh Vatri"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
-msgstr "Ygeri rol brofilys vatri"
+msgstr "Ygeri rol brofilys batri"
 
 #: js/ui/status/powerProfiles.js:77
 msgctxt "Quick settings menu header"
@@ -2641,7 +2653,7 @@ msgstr "Fordh Vatri"
 
 #: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
-msgstr "Settyansow Vatri"
+msgstr "Settyansow Batri"
 
 #: js/ui/status/remoteAccess.js:73
 msgid "Stop Screencast"
@@ -2715,35 +2727,35 @@ msgstr "Error omgelmyans Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Ny yllir omgelmi an devis Thunderbolt: %s"
 
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "Ughelder chanjys"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "Diskoselhe"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "Koselhe"
 
-#: js/ui/status/volume.js:297
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "Ughelder"
 
-#: js/ui/status/volume.js:313
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "Eskorrans Sownd"
 
-#: js/ui/status/volume.js:314
+#: js/ui/status/volume.js:315
 msgid "Open sound output menu"
 msgstr "Ygeri rol eskorrans sownd"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:391
 msgid "Sound Input"
 msgstr "Ynworrans Sownd"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:392
 msgid "Open sound input menu"
 msgstr "Ygeri rol ynworrans sownd"
 
@@ -2809,7 +2821,7 @@ msgstr "Dynnargh dhe %s"
 
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
-msgstr "Mar mynnowgh dyski agas fordh a-dri, mirewgh an torn"
+msgstr "Mar mynnowgh dyski agas fordh a-dro, mirewgh an torn"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2949,7 +2961,7 @@ msgstr "Ny yllir lonchya “%s”"
 
 #: src/shell-keyring-prompt.c:776
 msgid "Passwords do not match"
-msgstr "Geryow-tremena na omdhesedha"
+msgstr "Geryow-tremena nag a omdhesedh"
 
 #: src/shell-keyring-prompt.c:784
 msgid "Password cannot be blank"
@@ -2962,7 +2974,7 @@ msgstr "Fenester omgelmyans o deges gans an devnydhyer"
 #: src/st/st-icon-theme.c:1857
 #, c-format
 msgid "Icon '%s' not present in theme %s"
-msgstr "Arwodhik '%s' nyns yw yn thema %s"
+msgstr "Arwodhik '%s' nag yw yn thema %s"
 
 #: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
@@ -2983,7 +2995,7 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
 "Ystynansow GNOME a handla ow nowedhi ystynansow, ow selya settyansow "
-"ystynansow hag ow remova po ow marowhe ystynansow dhihwansys."
+"ystynansow hag ow remova po ow marowhe ystynansow dihwansys."
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 msgid "Main Window"
@@ -2991,7 +3003,7 @@ msgstr "Pennfenester"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Available Updates"
-msgstr "Nowedhyansow Gavadow"
+msgstr "Nowedhyansow Kavadow"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Search View"
@@ -3025,14 +3037,14 @@ msgid ""
 "in the system. It is recommended to turn the extension off until the error "
 "is resolved."
 msgstr ""
-"Yma error y'n ystynnans ma. Hemm a yll kawsya kudynnow yn tylleryow aral y'n "
-"system. Yth yw komendys dhe varowhe an ystynnans erna vo digelmys yw an "
-"error."
+"Yth esa kamm y'n ystynnans ma. Hemm a yll kawsya kudynnow yn tylleryow erel "
+"y'n system. Yth yw komendys dhe varowhe an ystynnans erna vo digelmys yw an "
+"kamm."
 
 #. translators: Details for an extension error
 #: subprojects/extensions-app/js/extensionManager.js:248
 msgid "Error details:"
-msgstr "Manylyon error:"
+msgstr "Manylyon kamm:"
 
 #: subprojects/extensions-app/js/extensionRow.js:82
 #, javascript-format
@@ -3100,7 +3112,7 @@ msgstr "_Remova…"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Keyboard Shortcuts"
-msgstr "Kesunyansow Vysowek"
+msgstr "Kesunyansow Bysowek"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
@@ -3131,12 +3143,12 @@ msgid ""
 "Extensions can cause performance and stability issues. It is recommended to "
 "disable all extensions if you experience problems with your system."
 msgstr ""
-"Ystynansow a yll kawsya kudynnow dooth ha krefter. Yth yw komendys dhe "
-"varowhe oll ystynansow mar dewgh erbynn kudynnow gans agas system."
+"Ystynansow a yll kawsya kudynnow tooth ha krefter. Yth yw komendys dhe "
+"varowhe oll ystynansow mar tewgh erbynn kudynnow gans agas system."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "User Extensions"
-msgstr "Ystynansow Dhevnydhyer"
+msgstr "Ystynansow Devnydhyer"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:184
 msgid "System Extensions"
@@ -3196,7 +3208,7 @@ msgstr "Dewis Hwithrans"
 #: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr "Diskwedhes Kesunyansow Vysowek"
+msgstr "Diskwedhes Kesunyansow Bysowek"
 
 #: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
 msgctxt "shortcut window"
@@ -3251,7 +3263,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:443
 #, c-format
 msgid "Choose one of the available templates:\n"
-msgstr "Dewis unn a'n ensamplys gavadow:\n"
+msgstr "Dewis unn a'n ensamplys kavadow:\n"
 
 #: subprojects/extensions-tool/src/command-create.c:457
 msgid "Template"
@@ -3328,7 +3340,7 @@ msgstr "UUID, hanow ha deskrifans a res"
 #: subprojects/extensions-tool/src/command-enable.c:62
 #, c-format
 msgid "Extension “%s” does not exist\n"
-msgstr "Nyns eus ystynnans an par “%s”\n"
+msgstr "Nyns eus ystynnans a'n par “%s”\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:98
 msgid "Disable an extension"
@@ -3457,7 +3469,7 @@ msgstr "RESTRENVA"
 
 #: subprojects/extensions-tool/src/command-pack.c:453
 msgid "The directory where translations are found"
-msgstr "An restrenva le may yma treylyansow"
+msgstr "An restrenva le mayth yma treylyansow"
 
 #: subprojects/extensions-tool/src/command-pack.c:457
 msgid "The gettext domain to use for translations"
@@ -3469,7 +3481,7 @@ msgstr "Aslea fardel owth eksistya seulabrys"
 
 #: subprojects/extensions-tool/src/command-pack.c:464
 msgid "The directory where the pack should be created"
-msgstr "An restrenva le may y kodh gwrys an fardel"
+msgstr "An restrenva le mayth y kodh gwrys an fardel"
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "SOURCE_DIRECTORY"
@@ -3550,7 +3562,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:432
 msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
-msgstr "Receva an termys wonis yn https://extensions.gnome.org/upload/"
+msgstr "Receva an termow a servis yn https://extensions.gnome.org/upload/"
 
 #: subprojects/extensions-tool/src/command-upload.c:434
 msgid "FILE…"
@@ -3566,7 +3578,7 @@ msgstr "Unn hepken a --password ha --password-file a yll bos devnydhys"
 
 #: subprojects/extensions-tool/src/command-upload.c:467
 msgid "You must accept the terms of service to upload extensions"
-msgstr "Res yw dhywgh receva an termys wonis rag ughkarga ystynansow"
+msgstr "Res yw dhywgh receva an termow a wonis rag ughkarga ystynansow"
 
 #: subprojects/extensions-tool/src/command-upload.c:473
 msgid "No files given"
@@ -3574,7 +3586,7 @@ msgstr "Nyns eus restrennow provys"
 
 #: subprojects/extensions-tool/src/main.c:76
 msgid "Do not print error messages"
-msgstr "Na pryntyewgh messajys error"
+msgstr "Na pryntyewgh messajys kamm"
 
 #: subprojects/extensions-tool/src/main.c:249
 msgid "Path"
@@ -3737,6 +3749,13 @@ msgstr[1] "%u Ynworransow"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Sowndys System"
+
+#, javascript-format
+#~ msgid "%s has been pinned to the dash."
+#~ msgstr "%s re beu pynnys war'n skostel."
+
+#~ msgid "Screencast ended unexpectedly"
+#~ msgstr "Skrin-Gwydhyow diwedhys heb y waytyas"
 
 #~ msgctxt "title"
 #~ msgid "Restart & Install Upgrade"
