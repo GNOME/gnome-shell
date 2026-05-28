@@ -295,6 +295,13 @@ const UIAreaSelector = GObject.registerClass({
         this._panGesture.connect('end', () => this._onPanEnd());
         this.add_action(this._panGesture);
 
+        this._motionController = new Clutter.MotionController();
+        this._motionController.connect('motion', this._onMotion.bind(this));
+        this._motionController.connect('leave', () => {
+            this.set_cursor_type(Clutter.Cursor.INHERIT);
+        });
+        this.add_action(this._motionController);
+
         // Initialize area to out of bounds so reset() below resets it.
         this._startX = -1;
         this._startY = 0;
@@ -687,18 +694,9 @@ const UIAreaSelector = GObject.registerClass({
         this._updateSelectionRect();
     }
 
-    vfunc_motion_event(event) {
-        if (this._panGesture.get_state() === Clutter.GestureState.WAITING) {
-            const [x, y] = event.get_coords();
+    _onMotion(_controller, _sprite, x, y) {
+        if (this._panGesture.get_state() === Clutter.GestureState.WAITING)
             this._updateCursor(x, y);
-        }
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
-    vfunc_leave_event(event) {
-        this.set_cursor_type(Clutter.Cursor.INHERIT);
-        return super.vfunc_leave_event(event);
     }
 });
 
