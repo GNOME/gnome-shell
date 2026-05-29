@@ -616,9 +616,24 @@ export const Inspector = GObject.registerClass({
         this._displayText = new St.Label({x_expand: true});
         eventHandler.add_child(this._displayText);
 
-        eventHandler.connect('button-press-event', this._onButtonPressEvent.bind(this));
-        eventHandler.connect('scroll-event', this._onScrollEvent.bind(this));
-        eventHandler.connect('motion-event', this._onMotionEvent.bind(this));
+        const motionController = new Clutter.MotionController();
+        motionController.connect('motion', (_controller, sprite) => {
+            const {x, y} = sprite.get_coords();
+            this._update(x, y);
+        });
+        eventHandler.add_action(motionController);
+
+        const scrollController = new Clutter.ScrollController({
+            flags: Clutter.ScrollControllerFlags.DISCRETE |
+                Clutter.ScrollControllerFlags.SCROLL_VERTICAL,
+        });
+        scrollController.connect('scroll', this._onScroll.bind(this));
+        eventHandler.add_action(scrollController);
+
+        const clickGesture = new Clutter.ClickGesture();
+        clickGesture.set_recognize_on_press(true);
+        clickGesture.connect('recognize', this._onButtonPress.bind(this));
+        eventHandler.add_action(clickGesture);
 
         const keyController = new Clutter.KeyController();
         keyController.connect('key-press', () => {
@@ -671,28 +686,26 @@ export const Inspector = GObject.registerClass({
         this.emit('closed');
     }
 
-    _onButtonPressEvent(actor, event) {
+    _onButtonPress(clickGesture) {
         if (this._target) {
-            const [stageX, stageY] = event.get_coords();
-            this.emit('target', this._target, stageX, stageY);
+            const {x, y} = clickGesture.get_coords_abs();
+            this.emit('target', this._target, x, y);
         }
         this._close();
         return Clutter.EVENT_STOP;
     }
 
-    _onScrollEvent(actor, event) {
-        switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP: {
+    _onScroll(_controller, sprite, _source, _dx, dy) {
+        const {x, y} = sprite.get_coords();
+
+        if (dy < 0) {
             // select parent
             const parent = this._target.get_parent();
             if (parent != null) {
                 this._target = parent;
-                this._update(event);
+                this._update(x, y);
             }
-            break;
-        }
-
-        case Clutter.ScrollDirection.DOWN:
+        } else if (dy > 0) {
             // select child
             if (this._target !== this._pointerTarget) {
                 let child = this._pointerTarget;
@@ -704,24 +717,13 @@ export const Inspector = GObject.registerClass({
                 }
                 if (child) {
                     this._target = child;
-                    this._update(event);
+                    this._update(x, y);
                 }
             }
-            break;
-
-        default:
-            break;
         }
-        return Clutter.EVENT_STOP;
     }
 
-    _onMotionEvent(actor, event) {
-        this._update(event);
-        return Clutter.EVENT_STOP;
-    }
-
-    _update(event) {
-        const [stageX, stageY] = event.get_coords();
+    _update(stageX, stageY) {
         const target = global.stage.get_actor_at_pos(
             Clutter.PickMode.ALL, stageX, stageY);
 
