@@ -1053,18 +1053,121 @@ const ScreencastPhase = {
     RECORDING: 'RECORDING',
 };
 
-export const ScreenshotUI = GObject.registerClass({
-    Properties: {
+export class ScreenshotUI extends St.Widget {
+    static [GObject.properties] = {
         'screencast-in-progress': GObject.ParamSpec.boolean(
             'screencast-in-progress', null, null,
             GObject.ParamFlags.READABLE,
             false),
-    },
-    Signals: {
+    };
+
+    static [GObject.signals] = {
         'screenshot-taken': {param_types: [Gio.File.$gtype]},
         'closed': {},
-    },
-}, class ScreenshotUI extends St.Widget {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_Return, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_KP_Enter, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_ISO_Enter, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_space, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'selection', Clutter.KEY_s, 0,
+            obj => {
+                obj._selectionButton.checked = true;
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'screen', Clutter.KEY_c, 0,
+            obj => {
+                obj._screenButton.checked = true;
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'window', Clutter.KEY_w, 0,
+            obj => {
+                if (obj._windowButton.reactive)
+                    obj._windowButton.checked = true;
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'screencast', Clutter.KEY_v, 0,
+            obj => {
+                if (obj._castButton.reactive)
+                    obj._castButton.checked = !obj._castButton.checked;
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'pointer', Clutter.KEY_p, 0,
+            obj => {
+                obj._showPointerButton.checked = !obj._showPointerButton.checked;
+                return Clutter.EVENT_STOP;
+            }
+        );
+
+        bindingPool.install_closure(
+            'move-left', Clutter.KEY_Left, 0,
+            obj => {
+                obj._moveFocus(St.DirectionType.LEFT);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-right', Clutter.KEY_Right, 0,
+            obj => {
+                obj._moveFocus(St.DirectionType.RIGHT);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-up', Clutter.KEY_Up, 0,
+            obj => {
+                obj._moveFocus(St.DirectionType.UP);
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'move-down', Clutter.KEY_Down, 0,
+            obj => {
+                obj._moveFocus(St.DirectionType.DOWN);
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init() {
         super._init({
             name: 'screenshot-ui',
@@ -2135,72 +2238,23 @@ export const ScreenshotUI = GObject.registerClass({
         this.notify('screencast-in-progress');
     }
 
-    vfunc_key_press_event(event) {
-        const symbol = event.get_key_symbol();
-        if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space ||
-            symbol === Clutter.KEY_KP_Enter || symbol === Clutter.KEY_ISO_Enter ||
-            ((event.get_state() & Clutter.ModifierType.CONTROL_MASK) &&
-             (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C))) {
-            this._onCaptureButtonClicked().catch(logError);
-            return Clutter.EVENT_STOP;
-        }
-
-        if (symbol === Clutter.KEY_s || symbol === Clutter.KEY_S) {
-            this._selectionButton.checked = true;
-            return Clutter.EVENT_STOP;
-        }
-
-        if (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C) {
-            this._screenButton.checked = true;
-            return Clutter.EVENT_STOP;
-        }
-
-        if (this._windowButton.reactive &&
-            (symbol === Clutter.KEY_w || symbol === Clutter.KEY_W)) {
-            this._windowButton.checked = true;
-            return Clutter.EVENT_STOP;
-        }
-
-        if (symbol === Clutter.KEY_p || symbol === Clutter.KEY_P) {
-            this._showPointerButton.checked = !this._showPointerButton.checked;
-            return Clutter.EVENT_STOP;
-        }
-
-        if (this._castButton.reactive &&
-            (symbol === Clutter.KEY_v || symbol === Clutter.KEY_V)) {
-            this._castButton.checked = !this._castButton.checked;
-            return Clutter.EVENT_STOP;
-        }
-
-        if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right ||
-            symbol === Clutter.KEY_Up || symbol === Clutter.KEY_Down) {
-            let direction;
-            if (symbol === Clutter.KEY_Left)
-                direction = St.DirectionType.LEFT;
-            else if (symbol === Clutter.KEY_Right)
-                direction = St.DirectionType.RIGHT;
-            else if (symbol === Clutter.KEY_Up)
-                direction = St.DirectionType.UP;
-            else if (symbol === Clutter.KEY_Down)
-                direction = St.DirectionType.DOWN;
-
-            if (this._windowButton.checked) {
-                const window =
-                    this._windowSelectors.flatMap(selector => selector.windows())
-                        .find(win => win.checked) ?? null;
-                this.navigate_focus(window, direction, false);
-            } else if (this._screenButton.checked) {
-                const screen =
-                    this._screenSelectors.find(selector => selector.checked) ?? null;
-                this.navigate_focus(screen, direction, false);
-            }
-
-            return Clutter.EVENT_STOP;
-        }
-
-        return super.vfunc_key_press_event(event);
+    _activate() {
+        this._onCaptureButtonClicked().catch(logError);
     }
-});
+
+    _moveFocus(direction) {
+        if (this._windowButton.checked) {
+            const window =
+                  this._windowSelectors.flatMap(selector => selector.windows())
+                  .find(win => win.checked) ?? null;
+            this.navigate_focus(window, direction, false);
+        } else if (this._screenButton.checked) {
+            const screen =
+                  this._screenSelectors.find(selector => selector.checked) ?? null;
+            this.navigate_focus(screen, direction, false);
+        }
+    }
+}
 
 /**
  * Stores a PNG-encoded screenshot into the clipboard and a file, and shows a
