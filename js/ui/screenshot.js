@@ -3068,6 +3068,12 @@ class PickPixel extends St.Widget {
         });
         this.add_action(clickGesture);
 
+        const motionController = new Clutter.MotionController();
+        motionController.connect('motion', (_sprite, x, y) => {
+            this._pickColor(x, y);
+        });
+        this.add_action(motionController);
+
         this._recolorEffect = new RecolorEffect({
             chroma: new Cogl.Color({
                 red: 80,
@@ -3121,12 +3127,6 @@ class PickPixel extends St.Widget {
 
         this._recolorEffect.color = this._color;
         this._previewCursor.show();
-    }
-
-    vfunc_motion_event(event) {
-        const [x, y] = event.get_coords();
-        this._pickColor(x, y);
-        return Clutter.EVENT_PROPAGATE;
     }
 });
 
