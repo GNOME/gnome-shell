@@ -199,14 +199,20 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
     }
 
     open(animate) {
-        super.open(animate);
+        if (!super.open(animate))
+            return false;
+
         global.stage.connectObject(
             'captured-event', this._onCapturedEvent.bind(this), this);
+        return true;
     }
 
     close(animate) {
-        super.close(animate);
+        if (!super.close(animate))
+            return false;
+
         global.stage.disconnectObject(this);
+        return true;
     }
 
     destroy() {

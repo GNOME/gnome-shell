@@ -937,6 +937,27 @@ export class PopupMenuBase extends Signals.EventEmitter {
         }
     }
 
+    open(_animate) {
+        if (this.isOpen)
+            return false;
+
+        if (this.isEmpty())
+            return false;
+
+        this.isOpen = true;
+        this.emit('open-state-changed', true);
+        return true;
+    }
+
+    close(_animate) {
+        if (!this.isOpen)
+            return false;
+
+        this.isOpen = false;
+        this.emit('open-state-changed', false);
+        return true;
+    }
+
     toggle() {
         if (this.isOpen)
             this.close(BoxPointer.PopupAnimation.FULL);
@@ -1050,18 +1071,13 @@ export class PopupMenu extends PopupMenuBase {
     }
 
     open(animate) {
-        if (this.isOpen)
-            return;
-
-        if (this.isEmpty())
-            return;
+        if (!super.open())
+            return false;
 
         if (!this._systemModalOpenedId) {
             this._systemModalOpenedId =
                 Main.layoutManager.connect('system-modal-opened', () => this.close());
         }
-
-        this.isOpen = true;
 
         this._boxPointer.setPosition(this.sourceActor, this._arrowAlignment);
         this._boxPointer.open(animate);
@@ -1075,7 +1091,7 @@ export class PopupMenu extends PopupMenuBase {
         if (!this.sourceActor?.has_allocation())
             this.sourceActor?.get_parent().queue_relayout();
 
-        this.emit('open-state-changed', true);
+        return true;
     }
 
     close(animate) {
@@ -1088,11 +1104,7 @@ export class PopupMenu extends PopupMenuBase {
             });
         }
 
-        if (!this.isOpen)
-            return;
-
-        this.isOpen = false;
-        this.emit('open-state-changed', false);
+        return super.close();
     }
 
     destroy() {
@@ -1183,14 +1195,8 @@ export class PopupSubMenu extends PopupMenuBase {
     }
 
     open(animate) {
-        if (this.isOpen)
-            return;
-
-        if (this.isEmpty())
-            return;
-
-        this.isOpen = true;
-        this.emit('open-state-changed', true);
+        if (!super.open())
+            return false;
 
         this.actor.show();
 
@@ -1230,14 +1236,12 @@ export class PopupSubMenu extends PopupMenuBase {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_EXPO,
         });
+        return true;
     }
 
     close(animate) {
-        if (!this.isOpen)
-            return;
-
-        this.isOpen = false;
-        this.emit('open-state-changed', false);
+        if (!super.close())
+            return false;
 
         if (this._activeMenuItem)
             this._activeMenuItem.active = false;
@@ -1260,6 +1264,7 @@ export class PopupSubMenu extends PopupMenuBase {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_EXPO,
         });
+        return true;
     }
 
     _onKeyPressEvent(actor, event) {

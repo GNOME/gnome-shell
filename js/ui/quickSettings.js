@@ -457,11 +457,10 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
     }
 
     open(animate) {
-        if (this.isOpen)
-            return;
+        if (!super.open())
+            return false;
 
         this.actor.show();
-        this.isOpen = true;
 
         const previousHeight = this.actor.height;
         this.actor.height = -1;
@@ -485,12 +484,12 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
                 this.actor.height = -1;
             },
         });
-        this.emit('open-state-changed', true);
+        return true;
     }
 
     close(animate) {
-        if (!this.isOpen)
-            return;
+        if (!super.close())
+            return false;
 
         const {opacity} = this.box;
         const duration = animate !== PopupAnimation.NONE
@@ -512,8 +511,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
             },
         });
 
-        this.isOpen = false;
-        this.emit('open-state-changed', false);
+        return true;
     }
 
     _syncChecked() {
@@ -840,13 +838,19 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
     }
 
     open(animate) {
+        if (!super.open(animate))
+            return false;
+
         this.actor.show();
-        super.open(animate);
+        return true;
     }
 
     close(animate) {
+        if (!super.close(animate))
+            return false;
+
         this._activeMenu?.close(animate);
-        super.close(animate);
+        return true;
     }
 
     _setDimmed(dim) {

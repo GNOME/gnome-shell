@@ -48,17 +48,20 @@ export class EntryMenu extends PopupMenu.PopupMenu {
     }
 
     open(animate) {
+        if (!super.open(animate))
+            return false;
+
         this._updatePasteItem();
         this._updateCopyItem();
         if (this._passwordItem)
             this._updatePasswordItem();
 
-        super.open(animate);
         this._entry.add_style_pseudo_class('focus');
 
         const direction = St.DirectionType.TAB_FORWARD;
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
+        return true;
     }
 
     _updateCopyItem() {
