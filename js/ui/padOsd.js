@@ -12,6 +12,7 @@ import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
 
 import * as Main from './main.js';
+import {PopupAnimation} from './boxpointer.js';
 import * as PopupMenu from './popupMenu.js';
 import * as Layout from './layout.js';
 
@@ -49,11 +50,11 @@ const PadChooser = GObject.registerClass({
     vfunc_clicked() {
         if (this.get_checked()) {
             if (this._padChooserMenu != null)
-                this._padChooserMenu.open(true);
+                this._padChooserMenu.open(PopupAnimation.FULL);
             else
                 this.set_checked(false);
         } else {
-            this._padChooserMenu.close(true);
+            this._padChooserMenu.close(PopupAnimation.FULL);
         }
     }
 
@@ -181,7 +182,7 @@ const ActionComboBox = GObject.registerClass({
     }
 
     popup() {
-        this._editMenu.open(true);
+        this._editMenu.open(PopupAnimation.FULL);
     }
 
     popdown() {
