@@ -71,8 +71,11 @@ class AutoComplete extends Signals.EventEmitter {
         super();
 
         this._entry = entry;
-        this._entry.connect('key-press-event', this._entryKeyPressEvent.bind(this));
         this._lastTabTime = global.get_current_time();
+
+        const keyController = new Clutter.KeyController();
+        keyController.connect('key-press', this._entryKeyPress.bind(this));
+        this._entry.add_action(keyController);
     }
 
     _processCompletionRequest(event) {
@@ -112,14 +115,16 @@ class AutoComplete extends Signals.EventEmitter {
         this._lastTabTime = time;
     }
 
-    _entryKeyPressEvent(actor, event) {
+    _entryKeyPress(controller) {
         const cursorPos = this._entry.clutter_text.get_cursor_position();
         let text = this._entry.get_text();
         if (cursorPos !== -1)
             text = text.slice(0, cursorPos);
 
-        if (event.get_key_symbol() === Clutter.KEY_Tab)
-            this._handleCompletions(text, event.get_time()).catch(logError);
+        const [, key] = controller.get_key();
+
+        if (key === Clutter.KEY_Tab)
+            this._handleCompletions(text, Clutter.get_current_event_time()).catch(logError);
         return Clutter.EVENT_PROPAGATE;
     }
 
