@@ -124,11 +124,20 @@ else
 endif
 
 libsystemd_dep = dependency('libsystemd', version: systemd_req, required: false)
+
+if not libsystemd_dep.found()
+  libsystemd_dep = dependency('libelogind', required: false)
+endif
+
 have_libsystemd = libsystemd_dep.found()
 
 if get_option('systemd')
   if not have_libsystemd
     error('libsystemd is required for systemd support')
+  endif
+
+  if libsystemd_dep.name() == 'libelogind'
+    error('systemd option conflicts with elogind libsystemd provider')
   endif
 
   systemd_dep = dependency('systemd', version: systemd_req)
