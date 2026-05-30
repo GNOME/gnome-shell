@@ -27,6 +27,8 @@ const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 const SCREEN_TRANSITION_DELAY = 250; // ms
 const SCREEN_TRANSITION_DURATION = 500; // ms
 
+const MAX_PANEL_ALIGNMENT_PADDING = 6; // device pixels
+
 function isPopupMetaWindow(actor) {
     switch (actor.meta_window.get_window_type()) {
     case Meta.WindowType.DROPDOWN_MENU:
@@ -36,6 +38,43 @@ function isPopupMetaWindow(actor) {
     default:
         return false;
     }
+}
+
+function findPixelAlignedLogicalHeight(height, scale) {
+    if (height <= 0 || scale <= 0)
+        return Math.ceil(height);
+
+    let alignedHeight = Math.ceil(height);
+    const deviceHeight = height * scale;
+
+    for (let i = 0; i < 256; i++) {
+        const alignedDeviceHeight = alignedHeight * scale;
+        const devicePadding = alignedDeviceHeight - deviceHeight;
+
+        if (devicePadding > MAX_PANEL_ALIGNMENT_PADDING)
+            break;
+
+        if (Math.abs(alignedDeviceHeight - Math.round(alignedDeviceHeight)) < 0.001)
+            return alignedHeight;
+
+        alignedHeight++;
+    }
+
+    return Math.ceil(height);
+}
+
+function getNaturalHeightForWidth(actor, width) {
+    let height = 0;
+
+    for (const child of actor.get_children()) {
+        if (!child.visible)
+            continue;
+
+        const [, childHeight] = child.get_preferred_height(width);
+        height += childHeight;
+    }
+
+    return height;
 }
 
 export const MonitorConstraint = GObject.registerClass({
@@ -211,6 +250,7 @@ export const LayoutManager = GObject.registerClass({
         this._rightPanelBarrier = null;
 
         this._inOverview = false;
+        this._updatePanelBoxHeightLater = 0;
         this._updateRegionIdle = 0;
 
         this._trackedActors = [];
@@ -243,6 +283,7 @@ export const LayoutManager = GObject.registerClass({
 
             this._destroyHotCorners();
             this._destroyPanelBarrier();
+            this._clearUpdatePanelBoxHeightLater();
             this.uiGroup.destroy();
         });
 
@@ -284,6 +325,8 @@ export const LayoutManager = GObject.registerClass({
             affectsStruts: true,
             trackFullscreen: true,
         });
+        this.panelBox.connect('queue-relayout',
+            this._queueUpdatePanelBoxHeight.bind(this));
         this.panelBox.connect('notify::allocation',
             this._panelBoxChanged.bind(this));
 
@@ -590,12 +633,55 @@ export const LayoutManager = GObject.registerClass({
             return;
 
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
-        this.panelBox.set_size(this.primaryMonitor.width, -1);
+        this._updatePanelBoxHeight();
 
         this.keyboardIndex = this.primaryIndex;
     }
 
+    _updatePanelBoxHeight() {
+        this._clearUpdatePanelBoxHeightLater();
+
+        if (!this.primaryMonitor)
+            return;
+
+        const panelHeight =
+            getNaturalHeightForWidth(this.panelBox, this.primaryMonitor.width);
+
+        if (panelHeight > 0) {
+            const alignedPanelHeight = findPixelAlignedLogicalHeight(
+                panelHeight, this.primaryMonitor.geometry_scale);
+            if (this.panelBox.width !== this.primaryMonitor.width ||
+                this.panelBox.height !== alignedPanelHeight)
+                this.panelBox.set_size(this.primaryMonitor.width, alignedPanelHeight);
+        } else {
+            this.panelBox.set_size(this.primaryMonitor.width, -1);
+        }
+    }
+
+    _clearUpdatePanelBoxHeightLater() {
+        if (!this._updatePanelBoxHeightLater)
+            return;
+
+        const laters = global.compositor.get_laters();
+        laters.remove(this._updatePanelBoxHeightLater);
+        this._updatePanelBoxHeightLater = 0;
+    }
+
+    _queueUpdatePanelBoxHeight() {
+        if (this._updatePanelBoxHeightLater)
+            return;
+
+        const laters = global.compositor.get_laters();
+        this._updatePanelBoxHeightLater = laters.add(
+            Meta.LaterType.BEFORE_REDRAW, () => {
+                this._updatePanelBoxHeightLater = 0;
+                this._updatePanelBoxHeight();
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
     _panelBoxChanged() {
+        this._updatePanelBoxHeight();
         this._updatePanelBarrier();
 
         const size = this.panelBox.height;
@@ -1079,12 +1165,12 @@ export const LayoutManager = GObject.registerClass({
             if (!actorData.affectsStruts)
                 continue;
 
-            let [x, y] = actorData.actor.get_transformed_position();
-            let [w, h] = actorData.actor.get_transformed_size();
-            x = Math.round(x);
-            y = Math.round(y);
-            w = Math.round(w);
-            h = Math.round(h);
+            const [x, y] = actorData.actor.get_transformed_position();
+            const [w, h] = actorData.actor.get_transformed_size();
+            const x1 = Math.floor(x);
+            const y1 = Math.floor(y);
+            const x2 = Math.ceil(x + w);
+            const y2 = Math.ceil(y + h);
 
             let monitor = null;
             if (actorData.affectsStruts)
@@ -1092,10 +1178,10 @@ export const LayoutManager = GObject.registerClass({
 
             if (monitor) {
                 // Limit struts to the size of the screen
-                const x1 = Math.max(x, 0);
-                const x2 = Math.min(x + w, global.screen_width);
-                const y1 = Math.max(y, 0);
-                const y2 = Math.min(y + h, global.screen_height);
+                const screenX1 = Math.max(x1, 0);
+                const screenX2 = Math.min(x2, global.screen_width);
+                const screenY1 = Math.max(y1, 0);
+                const screenY2 = Math.min(y2, global.screen_height);
 
                 // Metacity wants to know what side of the monitor the
                 // strut is considered to be attached to. First, we find
@@ -1108,33 +1194,38 @@ export const LayoutManager = GObject.registerClass({
                 // screen, then we don't create a strut for it at all.
 
                 let side;
-                if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
-                    if (y1 <= monitor.y)
+                if (screenX1 <= monitor.x && screenX2 >= monitor.x + monitor.width) {
+                    if (screenY1 <= monitor.y)
                         side = Meta.Side.TOP;
-                    else if (y2 >= monitor.y + monitor.height)
+                    else if (screenY2 >= monitor.y + monitor.height)
                         side = Meta.Side.BOTTOM;
                     else
                         continue;
-                } else if (y1 <= monitor.y && y2 >= monitor.y + monitor.height) {
-                    if (x1 <= monitor.x)
+                } else if (screenY1 <= monitor.y && screenY2 >= monitor.y + monitor.height) {
+                    if (screenX1 <= monitor.x)
                         side = Meta.Side.LEFT;
-                    else if (x2 >= monitor.x + monitor.width)
+                    else if (screenX2 >= monitor.x + monitor.width)
                         side = Meta.Side.RIGHT;
                     else
                         continue;
-                } else if (x1 <= monitor.x) {
+                } else if (screenX1 <= monitor.x) {
                     side = Meta.Side.LEFT;
-                } else if (y1 <= monitor.y) {
+                } else if (screenY1 <= monitor.y) {
                     side = Meta.Side.TOP;
-                } else if (x2 >= monitor.x + monitor.width) {
+                } else if (screenX2 >= monitor.x + monitor.width) {
                     side = Meta.Side.RIGHT;
-                } else if (y2 >= monitor.y + monitor.height) {
+                } else if (screenY2 >= monitor.y + monitor.height) {
                     side = Meta.Side.BOTTOM;
                 } else {
                     continue;
                 }
 
-                const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+                const strutRect = new Mtk.Rectangle({
+                    x: screenX1,
+                    y: screenY1,
+                    width: screenX2 - screenX1,
+                    height: screenY2 - screenY1,
+                });
                 const strut = new Meta.Strut({rect: strutRect, side});
                 struts.push(strut);
             }
