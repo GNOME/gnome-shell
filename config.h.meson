@@ -19,9 +19,6 @@
 /* Define to 1 fi you have the <sys/resource.h> header file. */
 #mesondefine HAVE_SYS_RESOURCE_H
 
-/* Define if we have libsystemd */
-#mesondefine HAVE_LIBSYSTEMD
-
 /* Define if we have NetworkManager */
 #mesondefine HAVE_NETWORKMANAGER
 

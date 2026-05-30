@@ -129,13 +129,11 @@ if not libsystemd_dep.found()
   libsystemd_dep = dependency('libelogind', required: false)
 endif
 
-have_libsystemd = libsystemd_dep.found()
+if not libsystemd_dep.found()
+  error('No libsystemd provider found: tried libsystemd and libelogind')
+endif
 
 if get_option('systemd')
-  if not have_libsystemd
-    error('libsystemd is required for systemd support')
-  endif
-
   if libsystemd_dep.name() == 'libelogind'
     error('systemd option conflicts with elogind libsystemd provider')
   endif
@@ -167,7 +165,6 @@ cdata.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 cdata.set_quoted('VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 
-cdata.set('HAVE_LIBSYSTEMD', have_libsystemd)
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_PIPEWIRE', have_pipewire)
 cdata.set('HAVE_SYSTEMD', have_systemd)

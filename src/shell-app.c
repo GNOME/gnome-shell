@@ -2,9 +2,12 @@
 
 #include "config.h"
 
+#include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <glib/gi18n-lib.h>
+#include <systemd/sd-journal.h>
 
 #include <meta/display.h>
 #include <meta/meta-context.h>
@@ -19,12 +22,6 @@
 #include "gtkactionmuxer.h"
 #include "org-gtk-application.h"
 #include "switcheroo-control.h"
-
-#ifdef HAVE_LIBSYSTEMD
-#include <systemd/sd-journal.h>
-#include <errno.h>
-#include <unistd.h>
-#endif
 
 /* This is mainly a memory usage optimization - the user is going to
  * be running far fewer of the applications at one time than they have
@@ -1401,9 +1398,7 @@ shell_app_launch (ShellApp           *app,
   {
     int journalfd = -1;
 
-#ifdef HAVE_LIBSYSTEMD
     journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
-#endif /* HAVE_LIBSYSTEMD */
 
     ret = g_desktop_app_info_launch_uris_as_manager_with_fds (app->info, NULL,
                                                               context,
