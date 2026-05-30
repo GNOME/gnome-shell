@@ -358,7 +358,7 @@ const Key = GObject.registerClass({
     }
 
     _showSubkeys() {
-        this._boxPointer.open(BoxPointer.PopupAnimation.FULL);
+        this._boxPointer.open();
         global.stage.connectObject(
             'captured-event', this._onCapturedEvent.bind(this), this);
         this.keyButton.connectObject('notify::mapped', () => {
@@ -369,7 +369,7 @@ const Key = GObject.registerClass({
 
     _hideSubkeys() {
         if (this._boxPointer)
-            this._boxPointer.close(BoxPointer.PopupAnimation.FULL);
+            this._boxPointer.close();
         global.stage.disconnectObject(this);
         this.keyButton.disconnectObject(this);
         this._capturedPress = false;

@@ -456,7 +456,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         headerLayout.attach_next_to(this._headerSpacer, actor, side, 1, 1);
     }
 
-    open(animate) {
+    open(animate = PopupAnimation.FULL) {
         if (!super.open())
             return false;
 
@@ -487,7 +487,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         return true;
     }
 
-    close(animate) {
+    close(animate = PopupAnimation.FULL) {
         if (!super.close())
             return false;
 

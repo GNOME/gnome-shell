@@ -3039,7 +3039,7 @@ export const AppIcon = GObject.registerClass({
                     this._onMenuPoppedDown();
             });
             Main.overview.connectObject('hiding',
-                () => this._menu.close(), this);
+                () => this._menu.close(BoxPointer.PopupAnimation.NONE), this);
 
             Main.uiGroup.add_child(this._menu.actor);
             this._menuManager.addMenu(this._menu);
@@ -3047,7 +3047,7 @@ export const AppIcon = GObject.registerClass({
 
         this.emit('menu-state-changed', true);
 
-        this._menu.open(BoxPointer.PopupAnimation.FULL);
+        this._menu.open();
         this.emit('sync-tooltip');
 
         return false;

@@ -49,11 +49,11 @@ const PadChooser = GObject.registerClass({
     vfunc_clicked() {
         if (this.get_checked()) {
             if (this._padChooserMenu != null)
-                this._padChooserMenu.open(true);
+                this._padChooserMenu.open();
             else
                 this.set_checked(false);
         } else {
-            this._padChooserMenu.close(true);
+            this._padChooserMenu.close();
         }
     }
 
@@ -181,7 +181,7 @@ const ActionComboBox = GObject.registerClass({
     }
 
     popup() {
-        this._editMenu.open(true);
+        this._editMenu.open();
     }
 
     popdown() {

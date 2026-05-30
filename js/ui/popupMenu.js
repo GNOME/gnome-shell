@@ -744,9 +744,6 @@ export class PopupMenuBase extends Signals.EventEmitter {
     }
 
     itemActivated(animate) {
-        if (animate === undefined)
-            animate = BoxPointer.PopupAnimation.FULL;
-
         this._getTopMenu().close(animate);
     }
 
@@ -784,7 +781,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
             },
             'activate', () => {
                 this.emit('activate', menuItem);
-                this.itemActivated(BoxPointer.PopupAnimation.FULL);
+                this.itemActivated();
             }, GObject.ConnectFlags.AFTER,
             'destroy', () => {
                 if (menuItem === this._activeMenuItem)
@@ -960,9 +957,9 @@ export class PopupMenuBase extends Signals.EventEmitter {
 
     toggle() {
         if (this.isOpen)
-            this.close(BoxPointer.PopupAnimation.FULL);
+            this.close();
         else
-            this.open(BoxPointer.PopupAnimation.FULL);
+            this.open();
     }
 
     destroy() {
@@ -1070,7 +1067,7 @@ export class PopupMenu extends PopupMenuBase {
         this._boxPointer.setSourceAlignment(alignment);
     }
 
-    open(animate) {
+    open(animate = BoxPointer.PopupAnimation.FULL) {
         if (!super.open())
             return false;
 
@@ -1094,7 +1091,7 @@ export class PopupMenu extends PopupMenuBase {
         return true;
     }
 
-    close(animate) {
+    close(animate = BoxPointer.PopupAnimation.FULL) {
         if (this._activeMenuItem)
             this._activeMenuItem.active = false;
 
@@ -1194,7 +1191,7 @@ export class PopupSubMenu extends PopupMenuBase {
         return this.getSensitive();
     }
 
-    open(animate) {
+    open(animate = true) {
         if (!super.open())
             return false;
 
@@ -1239,7 +1236,7 @@ export class PopupSubMenu extends PopupMenuBase {
         return true;
     }
 
-    close(animate) {
+    close(animate = true) {
         if (!super.close())
             return false;
 
@@ -1271,7 +1268,7 @@ export class PopupSubMenu extends PopupMenuBase {
         // Move focus back to parent menu if the user types Left.
 
         if (this.isOpen && event.get_key_symbol() === Clutter.KEY_Left) {
-            this.close(BoxPointer.PopupAnimation.FULL);
+            this.close();
             this.sourceActor._delegate.active = true;
             return Clutter.EVENT_STOP;
         }
@@ -1381,9 +1378,9 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
 
     setSubmenuShown(open) {
         if (open)
-            this.menu.open(BoxPointer.PopupAnimation.FULL);
+            this.menu.open();
         else
-            this.menu.close(BoxPointer.PopupAnimation.FULL);
+            this.menu.close();
     }
 
     _setOpenState(open) {
@@ -1516,7 +1513,7 @@ export class PopupMenuManager {
                 actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                 return Clutter.EVENT_STOP;
             } else if (symbol === Clutter.KEY_Escape && menu.isOpen) {
-                menu.close(BoxPointer.PopupAnimation.FULL);
+                menu.close();
                 return Clutter.EVENT_STOP;
             }
         } else if (event.type() === Clutter.EventType.ENTER &&
@@ -1528,7 +1525,7 @@ export class PopupMenuManager {
         } else if ((event.type() === Clutter.EventType.BUTTON_PRESS ||
                     event.type() === Clutter.EventType.TOUCH_BEGIN) &&
                    !actor.contains(targetActor)) {
-            menu.close(BoxPointer.PopupAnimation.FULL);
+            menu.close();
         }
 
         return Clutter.EVENT_PROPAGATE;
@@ -1551,6 +1548,6 @@ export class PopupMenuManager {
         // on the BoxPointer ourselves, so we shouldn't
         // reanimate.
         if (isUser)
-            menu.close(BoxPointer.PopupAnimation.FULL);
+            menu.close();
     }
 }

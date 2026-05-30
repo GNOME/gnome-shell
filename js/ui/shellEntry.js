@@ -5,7 +5,6 @@ import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
-import * as BoxPointer from './boxpointer.js';
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
 import * as PopupMenu from './popupMenu.js';
@@ -113,11 +112,11 @@ function _setMenuAlignment(entry, stageX) {
 
 function _onMenuClickGesture(gesture, entry) {
     if (entry.menu.isOpen) {
-        entry.menu.close(BoxPointer.PopupAnimation.FULL);
+        entry.menu.close();
     } else if (gesture.get_button() === Clutter.BUTTON_SECONDARY) {
         const coords = gesture.get_coords_abs();
         _setMenuAlignment(entry, coords.x);
-        entry.menu.open(BoxPointer.PopupAnimation.FULL);
+        entry.menu.open();
     }
 }
 
@@ -126,7 +125,7 @@ function _onPopup(actor, entry) {
     const [success, textX, textY_, lineHeight_] = entry.clutter_text.position_to_coords(cursorPosition);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
-    entry.menu.open(BoxPointer.PopupAnimation.FULL);
+    entry.menu.open();
 }
 
 /**

@@ -1,7 +1,6 @@
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
 
-import * as BoxPointer from './boxpointer.js';
 import * as PopupMenu from './popupMenu.js';
 
 import * as Main from './main.js';
@@ -34,7 +33,7 @@ export function addBackgroundMenu(actor, layoutManager) {
 
     function openMenu(x, y) {
         Main.layoutManager.setDummyCursorGeometry(x, y, 0, 0);
-        actor._backgroundMenu.open(BoxPointer.PopupAnimation.FULL);
+        actor._backgroundMenu.open();
     }
 
     const longPressGesture = new Clutter.LongPressGesture({

@@ -385,7 +385,7 @@ const SessionMenuButton = GObject.registerClass({
     }
 
     close() {
-        this._menu.close();
+        this._menu.close(BoxPointer.PopupAnimation.NONE);
     }
 
     _populate() {

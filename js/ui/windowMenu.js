@@ -230,7 +230,7 @@ export class WindowMenuManager {
             window.check_alive(global.get_current_time());
         });
         const destroyId = window.connect('unmanaged', () => {
-            menu.close();
+            menu.close(BoxPointer.PopupAnimation.NONE);
         });
 
         this._sourceActor.set_size(Math.max(1, rect.width), Math.max(1, rect.height));
