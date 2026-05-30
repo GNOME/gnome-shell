@@ -411,8 +411,8 @@ class MessageHeader extends St.BoxLayout {
     }
 });
 
-export const Message = GObject.registerClass({
-    Properties: {
+export class Message extends St.Button {
+    static [GObject.properties] = {
         'title': GObject.ParamSpec.string(
             'title', null, null,
             GObject.ParamFlags.READWRITE,
@@ -433,15 +433,44 @@ export const Message = GObject.registerClass({
             'datetime', null, null,
             GObject.ParamFlags.READWRITE,
             GLib.DateTime),
-    },
-    Signals: {
+    };
+
+    static [GObject.signals] = {
         'close': {
             flags: GObject.SignalFlags.RUN_LAST,
         },
         'expanded': {},
         'unexpanded': {},
-    },
-}, class Message extends St.Button {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'close', Clutter.KEY_BackSpace, 0,
+            obj => {
+                obj._closeIfAllowed();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'close', Clutter.KEY_Delete, 0,
+            obj => {
+                obj._closeIfAllowed();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'close', Clutter.KEY_KP_Delete, 0,
+            obj => {
+                obj._closeIfAllowed();
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     constructor(source) {
         super({
             style_class: 'message',
@@ -669,20 +698,11 @@ export const Message = GObject.registerClass({
         return false;
     }
 
-    vfunc_key_press_event(event) {
-        const keysym = event.get_key_symbol();
-
-        if (keysym === Clutter.KEY_Delete ||
-            keysym === Clutter.KEY_KP_Delete ||
-            keysym === Clutter.KEY_BackSpace) {
-            if (this.canClose()) {
-                this.close();
-                return Clutter.EVENT_STOP;
-            }
-        }
-        return super.vfunc_key_press_event(event);
+    _closeIfAllowed() {
+        if (this.canClose())
+            this.close();
     }
-});
+}
 
 export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends Message {
