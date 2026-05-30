@@ -123,14 +123,19 @@ else
   have_pipewire = false
 endif
 
+libsystemd_dep = dependency('libsystemd', version: systemd_req, required: false)
+have_libsystemd = libsystemd_dep.found()
+
 if get_option('systemd')
-  libsystemd_dep = dependency('libsystemd', version: systemd_req)
+  if not have_libsystemd
+    error('libsystemd is required for systemd support')
+  endif
+
   systemd_dep = dependency('systemd', version: systemd_req)
   systemduserunitdir = systemd_dep.get_variable('systemduserunitdir',
     pkgconfig_define: ['prefix', prefix])
   have_systemd = true
 else
-  libsystemd_dep = []
   have_systemd = false
 endif
 
@@ -153,6 +158,7 @@ cdata.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 cdata.set_quoted('VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 
+cdata.set('HAVE_LIBSYSTEMD', have_libsystemd)
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
 cdata.set('HAVE_PIPEWIRE', have_pipewire)
 cdata.set('HAVE_SYSTEMD', have_systemd)

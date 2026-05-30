@@ -20,7 +20,7 @@
 #include "org-gtk-application.h"
 #include "switcheroo-control.h"
 
-#ifdef HAVE_SYSTEMD
+#ifdef HAVE_LIBSYSTEMD
 #include <systemd/sd-journal.h>
 #include <errno.h>
 #include <unistd.h>
@@ -1401,9 +1401,9 @@ shell_app_launch (ShellApp           *app,
   {
     int journalfd = -1;
 
-#ifdef HAVE_SYSTEMD
+#ifdef HAVE_LIBSYSTEMD
     journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
-#endif /* HAVE_SYSTEMD */
+#endif /* HAVE_LIBSYSTEMD */
 
     ret = g_desktop_app_info_launch_uris_as_manager_with_fds (app->info, NULL,
                                                               context,
