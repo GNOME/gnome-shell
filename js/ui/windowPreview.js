@@ -233,6 +233,11 @@ export const WindowPreview = GObject.registerClass({
             this._title.ensure_style();
             this._icon.ensure_style();
         });
+
+        const motionController = new Clutter.MotionController();
+        motionController.connect('enter', () => this._onEnter());
+        motionController.connect('leave', () => this._onLeave());
+        this.add_action(motionController);
     }
 
     _updateIconScale() {
@@ -558,18 +563,13 @@ export const WindowPreview = GObject.registerClass({
         this.emit('selected', global.get_current_time());
     }
 
-    vfunc_enter_event(event) {
+    _onEnter() {
         this.showOverlay(true);
-        return super.vfunc_enter_event(event);
     }
 
-    vfunc_leave_event(event) {
+    _onLeave() {
         if (this._destroyed)
-            return super.vfunc_leave_event(event);
-
-        if ((event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
-            global.stage.get_grab_actor() === this._closeButton)
-            return super.vfunc_leave_event(event);
+            return;
 
         if (this._idleHideOverlayId > 0)
             GLib.source_remove(this._idleHideOverlayId);
@@ -590,8 +590,6 @@ export const WindowPreview = GObject.registerClass({
             });
 
         GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');
-
-        return super.vfunc_leave_event(event);
     }
 
     vfunc_key_focus_in() {
