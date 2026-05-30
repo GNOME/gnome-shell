@@ -26,22 +26,51 @@ const ICON_OVERLAP = 0.7;
 
 const ICON_TITLE_SPACING = 6;
 
-export const WindowPreview = GObject.registerClass({
-    Properties: {
+export class WindowPreview extends Shell.WindowPreview {
+    static [GObject.properties] = {
         'overlay-enabled': GObject.ParamSpec.boolean(
             'overlay-enabled', null, null,
             GObject.ParamFlags.READWRITE,
             true),
-    },
-    Signals: {
+    };
+
+    static [GObject.signals] = {
         'drag-begin': {},
         'drag-cancelled': {},
         'drag-end': {},
         'selected': {param_types: [GObject.TYPE_UINT]},
         'show-chrome': {},
         'size-changed': {},
-    },
-}, class WindowPreview extends Shell.WindowPreview {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_Return, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_KP_Enter, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_ISO_Enter, 0,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init(metaWindow, workspace, overviewAdjustment) {
         this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
@@ -604,17 +633,6 @@ export const WindowPreview = GObject.registerClass({
             this.hideOverlay(true);
     }
 
-    vfunc_key_press_event(event) {
-        const symbol = event.get_key_symbol();
-        const isEnter = symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter;
-        if (isEnter) {
-            this._activate();
-            return true;
-        }
-
-        return super.vfunc_key_press_event(event);
-    }
-
     _restack() {
         // We may not have a parent if DnD completed successfully, in
         // which case our clone will shortly be destroyed and replaced
@@ -666,4 +684,4 @@ export const WindowPreview = GObject.registerClass({
 
         this.emit('drag-end');
     }
-});
+}
