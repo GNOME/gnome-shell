@@ -59,6 +59,11 @@ class URLHighlighter extends St.Label {
             'recognize', this._onClick.bind(this),
             'may-recognize', this._checkInUrl.bind(this));
         this.add_action(this._clickGesture);
+
+        const motionController = new Clutter.MotionController();
+        motionController.connect('leave', () => this._onLeave());
+        motionController.connect('motion', this._onMotion.bind(this));
+        this.add_action(motionController);
     }
 
     _checkInUrl() {
@@ -80,11 +85,11 @@ class URLHighlighter extends St.Label {
         }
     }
 
-    vfunc_motion_event(event) {
+    _onMotion(_controller, _sprite, x, y) {
         if (!this.visible || this.get_paint_opacity() === 0)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
-        const urlId = this._findUrlAtPos(...event.get_coords());
+        const urlId = this._findUrlAtPos(x, y);
         if (urlId !== -1 && !this._cursorChanged) {
             this.set_cursor_type(Clutter.CursorType.POINTER);
             this._cursorChanged = true;
@@ -92,18 +97,16 @@ class URLHighlighter extends St.Label {
             this.set_cursor_type(Clutter.CursorType.DEFAULT);
             this._cursorChanged = false;
         }
-        return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_leave_event(event) {
+    _onLeave() {
         if (!this.visible || this.get_paint_opacity() === 0)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
         if (this._cursorChanged) {
             this._cursorChanged = false;
             this.set_cursor_type(Clutter.CursorType.DEFAULT);
         }
-        return super.vfunc_leave_event(event);
     }
 
     setMarkup(text, allowMarkup) {
