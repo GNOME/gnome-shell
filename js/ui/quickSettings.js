@@ -13,8 +13,6 @@ import * as Main from './main.js';
 import * as PopupMenu from './popupMenu.js';
 import {Slider} from './slider.js';
 
-import {PopupAnimation} from './boxpointer.js';
-
 const DIM_BRIGHTNESS = -0.4;
 export const POPUP_ANIMATION_TIME = 400;
 
@@ -456,8 +454,14 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         headerLayout.attach_next_to(this._headerSpacer, actor, side, 1, 1);
     }
 
-    open(animate = PopupAnimation.FULL) {
-        if (!super.open())
+    /**
+     * @param {object} params
+     * @param {bool} [params.animate=true] whether to animate the transition
+     *
+     * @returns {bool} whether the open state changed
+     */
+    open(params = {}) {
+        if (!super.open(params))
             return false;
 
         this.actor.show();
@@ -468,7 +472,8 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         this.actor.height = previousHeight;
         const distance = Math.abs(targetHeight - previousHeight);
 
-        const duration = animate !== PopupAnimation.NONE
+        const {animate = true} = params;
+        const duration = animate
             ? POPUP_ANIMATION_TIME / 2
             : 0;
 
@@ -487,12 +492,19 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         return true;
     }
 
-    close(animate = PopupAnimation.FULL) {
-        if (!super.close())
+    /**
+     * @param {object} params
+     * @param {bool} [params.animate=true] whether to animate the transition
+     *
+     * @returns {bool} whether the open state changed
+     */
+    close(params = {}) {
+        if (!super.close(params))
             return false;
 
+        const {animate = true} = params;
         const {opacity} = this.box;
-        const duration = animate !== PopupAnimation.NONE
+        const duration = animate
             ? POPUP_ANIMATION_TIME / 2
             : 0;
 
@@ -837,19 +849,19 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         return this._grid.get_first_child();
     }
 
-    open(animate) {
-        if (!super.open(animate))
+    open(params = {}) {
+        if (!super.open(params))
             return false;
 
         this.actor.show();
         return true;
     }
 
-    close(animate) {
-        if (!super.close(animate))
+    close(params = {}) {
+        if (!super.close(params))
             return false;
 
-        this._activeMenu?.close(animate);
+        this._activeMenu?.close(params);
         return true;
     }
 

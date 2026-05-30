@@ -11,7 +11,6 @@ import St from 'gi://St';
 
 import * as AppFavorites from './appFavorites.js';
 import {AppMenu} from './appMenu.js';
-import * as BoxPointer from './boxpointer.js';
 import * as DND from './dnd.js';
 import * as GrabHelper from './grabHelper.js';
 import * as IconGrid from './iconGrid.js';
@@ -3039,7 +3038,7 @@ export const AppIcon = GObject.registerClass({
                     this._onMenuPoppedDown();
             });
             Main.overview.connectObject('hiding',
-                () => this._menu.close(BoxPointer.PopupAnimation.NONE), this);
+                () => this._menu.close({animate: false}), this);
 
             Main.uiGroup.add_child(this._menu.actor);
             this._menuManager.addMenu(this._menu);

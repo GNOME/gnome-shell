@@ -29,7 +29,6 @@ import St from 'gi://St';
 
 import * as AuthPrompt from './authPrompt.js';
 import * as Batch from './batch.js';
-import * as BoxPointer from '../ui/boxpointer.js';
 import {ConflictingSessionDialog} from './conflictingSessionDialog.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
 import * as GdmUtil from './util.js';
@@ -364,7 +363,7 @@ const SessionMenuButton = GObject.registerClass({
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
         this.opacity = sensitive ? 255 : 0;
-        this._menu.close(BoxPointer.PopupAnimation.NONE);
+        this._menu.close({animate: false});
     }
 
     _updateOrnament() {
@@ -385,7 +384,7 @@ const SessionMenuButton = GObject.registerClass({
     }
 
     close() {
-        this._menu.close(BoxPointer.PopupAnimation.NONE);
+        this._menu.close({animate: false});
     }
 
     _populate() {

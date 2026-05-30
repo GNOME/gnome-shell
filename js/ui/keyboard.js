@@ -198,8 +198,8 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
         return Clutter.EVENT_STOP;
     }
 
-    open(animate) {
-        if (!super.open(animate))
+    open(params = {}) {
+        if (!super.open(params))
             return false;
 
         global.stage.connectObject(
@@ -207,8 +207,8 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
         return true;
     }
 
-    close(animate) {
-        if (!super.close(animate))
+    close(params = {}) {
+        if (!super.close(params))
             return false;
 
         global.stage.disconnectObject(this);

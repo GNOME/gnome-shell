@@ -2,7 +2,6 @@ import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
-import * as BoxPointer from './boxpointer.js';
 import * as Main from './main.js';
 import * as PopupMenu from './popupMenu.js';
 import * as Screenshot from './screenshot.js';
@@ -230,14 +229,14 @@ export class WindowMenuManager {
             window.check_alive(global.get_current_time());
         });
         const destroyId = window.connect('unmanaged', () => {
-            menu.close(BoxPointer.PopupAnimation.NONE);
+            menu.close({animate: false});
         });
 
         this._sourceActor.set_size(Math.max(1, rect.width), Math.max(1, rect.height));
         this._sourceActor.set_position(rect.x, rect.y);
         this._sourceActor.show();
 
-        menu.open(BoxPointer.PopupAnimation.FADE);
+        menu.open({fadeOnly: true});
         menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         menu.connect('open-state-changed', (menu_, isOpen) => {
             if (isOpen)

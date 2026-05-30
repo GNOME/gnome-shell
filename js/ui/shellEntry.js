@@ -46,8 +46,8 @@ export class EntryMenu extends PopupMenu.PopupMenu {
             GObject.BindingFlags.SYNC_CREATE);
     }
 
-    open(animate) {
-        if (!super.open(animate))
+    open(params = {}) {
+        if (!super.open(params))
             return false;
 
         this._updatePasteItem();

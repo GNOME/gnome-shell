@@ -15,7 +15,6 @@ import * as Main from '../main.js';
 import * as PopupMenu from '../popupMenu.js';
 import * as PanelMenu from '../panelMenu.js';
 import * as SwitcherPopup from '../switcherPopup.js';
-import {PopupAnimation} from '../boxpointer.js';
 
 export const INPUT_SOURCE_TYPE_XKB = 'xkb';
 export const INPUT_SOURCE_TYPE_IBUS = 'ibus';
@@ -1035,7 +1034,7 @@ class InputSourceIndicator extends PanelMenu.Button {
 
             // We also hide if we have only one visible source unless
             // it's an IBus source with properties.
-            this.menu.close(PopupAnimation.NONE);
+            this.menu.close({animate: false});
             this.hide();
             return;
         }

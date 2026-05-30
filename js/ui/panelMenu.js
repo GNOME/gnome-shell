@@ -4,7 +4,6 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 
 import * as Main from './main.js';
-import {PopupAnimation} from './boxpointer.js';
 import * as PopupMenu from './popupMenu.js';
 
 export const ButtonBox = GObject.registerClass(
@@ -147,7 +146,7 @@ export const Button = GObject.registerClass({
         super.vfunc_hide();
 
         if (this.menu)
-            this.menu.close(PopupAnimation.NONE);
+            this.menu.close({animate: false});
     }
 
     _onMenuKeyPress(actor, event) {

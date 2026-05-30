@@ -11,7 +11,6 @@ import UPower from 'gi://UPowerGlib';
 import * as SystemActions from '../../misc/systemActions.js';
 import * as Main from '../main.js';
 import * as PopupMenu from '../popupMenu.js';
-import {PopupAnimation} from '../boxpointer.js';
 
 import {QuickSettingsItem, QuickToggle, SystemIndicator} from '../quickSettings.js';
 import {loadInterfaceXML} from '../../misc/fileUtils.js';
@@ -125,7 +124,7 @@ class ScreenshotItem extends QuickSettingsItem {
                 Main.screenshotUI.open().catch(logError);
                 return GLib.SOURCE_REMOVE;
             });
-            topMenu.close(PopupAnimation.NONE);
+            topMenu.close({animate: false});
         });
     }
 });

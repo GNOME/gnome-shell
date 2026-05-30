@@ -4,7 +4,6 @@ import IBus from 'gi://IBus';
 import Shell from 'gi://Shell';
 
 import * as Signals from './signals.js';
-import * as BoxPointer from '../ui/boxpointer.js';
 import {logErrorUnlessCancelled} from './errorUtils.js';
 
 import * as IBusCandidatePopup from '../ui/ibusCandidatePopup.js';
@@ -236,7 +235,7 @@ class IBusManager extends Signals.EventEmitter {
             return;
 
         this._currentEngineName = engineName;
-        this._candidatePopup.close(BoxPointer.PopupAnimation.NONE);
+        this._candidatePopup.close({animate: false});
 
         if (this._registerPropertiesId !== 0)
             return;
