@@ -6,7 +6,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Graphene from 'gi://Graphene';
 import Pango from 'gi://Pango';
-import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from './main.js';
@@ -1940,18 +1939,7 @@ const FadeEffect = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             Clutter.Actor),
     },
-}, class FadeEffect extends Shell.GLSLEffect {
-    constructor(params) {
-        super(params);
-
-        this._heightLocation = this.get_uniform_location('height');
-        this._topFadePositionLocation = this.get_uniform_location('top_fade_position');
-        this._bottomFadePositionLocation = this.get_uniform_location('bottom_fade_position');
-        this._opacityLocation = this.get_uniform_location('opacity');
-        this._topEdgeFadeLocation = this.get_uniform_location('top_edge_fade');
-        this._bottomEdgeFadeLocation = this.get_uniform_location('bottom_edge_fade');
-    }
-
+}, class FadeEffect extends Clutter.ShaderEffect {
     _updateEnabled() {
         if (!this._vadjustment) {
             this.enabled = false;
@@ -1987,7 +1975,7 @@ const FadeEffect = GObject.registerClass({
             return;
 
         this._opacity = opacity;
-        this.set_uniform_float(this._opacityLocation, 1, [opacity]);
+        this.set_uniform_float('opacity', 1, [opacity]);
         this.queue_repaint();
 
         this.notify('opacity');
@@ -2035,24 +2023,24 @@ const FadeEffect = GObject.registerClass({
         if (this._highlightActor) {
             const position = this._highlightActor.apply_relative_transform_to_point(this.actor, new Graphene.Point3D());
 
-            this.set_uniform_float(this._topFadePositionLocation, 1, [position.y - value]);
-            this.set_uniform_float(this._bottomFadePositionLocation, 1, [(position.y + this._highlightActor.height - 1) - value]);
+            this.set_uniform_float('top_fade_position', 1, [position.y - value]);
+            this.set_uniform_float('bottom_fade_position', 1, [(position.y + this._highlightActor.height - 1) - value]);
         } else {
-            this.set_uniform_float(this._topFadePositionLocation, 1, [0.0]);
-            this.set_uniform_float(this._bottomFadePositionLocation, 1, [0.0]);
+            this.set_uniform_float('top_fade_position', 1, [0.0]);
+            this.set_uniform_float('bottom_fade_position', 1, [0.0]);
         }
 
-        this.set_uniform_float(this._heightLocation, 1, [pageSize]);
+        this.set_uniform_float('height', 1, [pageSize]);
 
-        this.set_uniform_float(this._topEdgeFadeLocation, 1, [Math.min(value, this._fadeMargin)]);
-        this.set_uniform_float(this._bottomEdgeFadeLocation, 1, [
+        this.set_uniform_float('top_edge_fade', 1, [Math.min(value, this._fadeMargin)]);
+        this.set_uniform_float('bottom_edge_fade', 1, [
             pageSize - Math.min(upper - pageSize - value, this._fadeMargin),
         ]);
 
         super.vfunc_paint_target(node, paintContext);
     }
 
-    vfunc_build_pipeline() {
+    vfunc_get_static_snippet() {
         const dec = `uniform sampler2D tex;                       \n
                      uniform float height;                        \n
                      uniform float opacity;                       \n
@@ -2084,6 +2072,8 @@ const FadeEffect = GObject.registerClass({
 
                      cogl_color_out *= ratio;                                                             \n`;
 
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, dec, src, true);
+        const snippet = new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT, dec, null);
+        snippet.set_replace(src);
+        return snippet;
     }
 });
