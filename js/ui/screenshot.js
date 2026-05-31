@@ -2949,45 +2949,29 @@ const RecolorEffect = GObject.registerClass({
             GObject.ParamFlags.WRITABLE,
             0.0, 1.0, 0.0),
     },
-}, class RecolorEffect extends Shell.GLSLEffect {
+}, class RecolorEffect extends Clutter.ShaderEffect {
     _init(params) {
         this._color = new Cogl.Color();
         this._chroma = new Cogl.Color();
         this._threshold = 0;
         this._smoothing = 0;
 
-        this._colorLocation = null;
-        this._chromaLocation = null;
-        this._thresholdLocation = null;
-        this._smoothingLocation = null;
-
         super._init(params);
 
-        this._colorLocation = this.get_uniform_location('recolor_color');
-        this._chromaLocation = this.get_uniform_location('chroma_color');
-        this._thresholdLocation = this.get_uniform_location('threshold');
-        this._smoothingLocation = this.get_uniform_location('smoothing');
-
-        this._updateColorUniform(this._colorLocation, this._color);
-        this._updateColorUniform(this._chromaLocation, this._chroma);
-        this._updateFloatUniform(this._thresholdLocation, this._threshold);
-        this._updateFloatUniform(this._smoothingLocation, this._smoothing);
+        this._updateColorUniform('recolor_color', this._color);
+        this._updateColorUniform('chroma_color', this._chroma);
+        this._updateFloatUniform('threshold', this._threshold);
+        this._updateFloatUniform('smoothing', this._smoothing);
     }
 
-    _updateColorUniform(location, color) {
-        if (!location)
-            return;
-
-        this.set_uniform_float(location,
+    _updateColorUniform(name, color) {
+        this.set_uniform_float(name,
             3, [color.red / 255, color.green / 255, color.blue / 255]);
         this.queue_repaint();
     }
 
-    _updateFloatUniform(location, value) {
-        if (!location)
-            return;
-
-        this.set_uniform_float(location, 1, [value]);
+    _updateFloatUniform(name, value) {
+        this.set_uniform_float(name, 1, [value]);
         this.queue_repaint();
     }
 
@@ -2998,7 +2982,7 @@ const RecolorEffect = GObject.registerClass({
         this._color = c;
         this.notify('color');
 
-        this._updateColorUniform(this._colorLocation, this._color);
+        this._updateColorUniform('recolor_color', this._color);
     }
 
     set chroma(c) {
@@ -3008,7 +2992,7 @@ const RecolorEffect = GObject.registerClass({
         this._chroma = c;
         this.notify('chroma');
 
-        this._updateColorUniform(this._chromaLocation, this._chroma);
+        this._updateColorUniform('chroma_color', this._chroma);
     }
 
     set threshold(value) {
@@ -3018,7 +3002,7 @@ const RecolorEffect = GObject.registerClass({
         this._threshold = value;
         this.notify('threshold');
 
-        this._updateFloatUniform(this._thresholdLocation, this._threshold);
+        this._updateFloatUniform('threshold', this._threshold);
     }
 
     set smoothing(value) {
@@ -3028,10 +3012,10 @@ const RecolorEffect = GObject.registerClass({
         this._smoothing = value;
         this.notify('smoothing');
 
-        this._updateFloatUniform(this._smoothingLocation, this._smoothing);
+        this._updateFloatUniform('smoothing', this._smoothing);
     }
 
-    vfunc_build_pipeline() {
+    vfunc_get_static_snippet() {
         // Conversion parameters from https://en.wikipedia.org/wiki/YCbCr
         const decl = `
             vec3 rgb2yCrCb(vec3 c) {                                \n
@@ -3055,7 +3039,7 @@ const RecolorEffect = GObject.registerClass({
             cogl_color_out.rgb =                                    \n
               mix(recolor_color, cogl_color_out.rgb, blend);        \n`;
 
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, decl, src, false);
+        return new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT, decl, src);
     }
 });
 

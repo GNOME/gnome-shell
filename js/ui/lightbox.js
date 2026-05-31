@@ -1,7 +1,6 @@
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
 import GObject from 'gi://GObject';
-import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Params from '../misc/params.js';
@@ -40,23 +39,22 @@ const RadialShaderEffect = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
     },
-}, class RadialShaderEffect extends Shell.GLSLEffect {
+}, class RadialShaderEffect extends Clutter.ShaderEffect {
     _init(params) {
         this._brightness = undefined;
         this._sharpness = undefined;
 
         super._init(params);
 
-        this._brightnessLocation = this.get_uniform_location('brightness');
-        this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
-
         this.brightness = 1.0;
         this.sharpness = 0.0;
     }
 
-    vfunc_build_pipeline() {
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT,
-            VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
+    vfunc_get_static_snippet() {
+        const snippet = new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT,
+            VIGNETTE_DECLARATIONS, null);
+        snippet.set_replace(VIGNETTE_CODE);
+        return snippet;
     }
 
     get brightness() {
@@ -67,7 +65,7 @@ const RadialShaderEffect = GObject.registerClass({
         if (this._brightness === v)
             return;
         this._brightness = v;
-        this.set_uniform_float(this._brightnessLocation,
+        this.set_uniform_float('brightness',
             1, [this._brightness]);
         this.notify('brightness');
     }
@@ -80,7 +78,7 @@ const RadialShaderEffect = GObject.registerClass({
         if (this._sharpness === v)
             return;
         this._sharpness = v;
-        this.set_uniform_float(this._sharpnessLocation,
+        this.set_uniform_float('vignette_sharpness',
             1, [this._sharpness]);
         this.notify('sharpness');
     }
