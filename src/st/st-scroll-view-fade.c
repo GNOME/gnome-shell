@@ -32,7 +32,63 @@
 
 #define DEFAULT_FADE_OFFSET 68.0f
 
-#include "st-scroll-view-fade-generated.h"
+static const gchar st_scroll_view_fade_declarations[] =
+  "uniform sampler2D tex;\n"
+  "uniform float height;\n"
+  "uniform float width;\n"
+  "uniform float fade_offset_top;\n"
+  "uniform float fade_offset_bottom;\n"
+  "uniform float fade_offset_left;\n"
+  "uniform float fade_offset_right;\n"
+  "uniform bool  fade_edges_top;\n"
+  "uniform bool  fade_edges_right;\n"
+  "uniform bool  fade_edges_bottom;\n"
+  "uniform bool  fade_edges_left;\n"
+  "uniform bool  extend_fade_area;\n"
+  "\n"
+  "uniform vec2 fade_area_topleft;\n"
+  "uniform vec2 fade_area_bottomright;\n";
+
+static const gchar st_scroll_view_fade_replace[] =
+  "    cogl_color_out = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
+  "\n"
+  "    float y = height * cogl_tex_coord_in[0].y;\n"
+  "    float x = width * cogl_tex_coord_in[0].x;\n"
+  "    float ratio = 1.0;\n"
+  "\n"
+  "    if (x > fade_area_topleft[0] && x < fade_area_bottomright[0] &&\n"
+  "        y > fade_area_topleft[1] && y < fade_area_bottomright[1])\n"
+  "    {\n"
+  "        float after_left = x - fade_area_topleft[0];\n"
+  "        float before_right = fade_area_bottomright[0] - x;\n"
+  "        float after_top = y - fade_area_topleft[1];\n"
+  "        float before_bottom = fade_area_bottomright[1] - y;\n"
+  "\n"
+  "        if (after_top < fade_offset_top && fade_edges_top) {\n"
+  "            ratio *= after_top / fade_offset_top;\n"
+  "        }\n"
+  "\n"
+  "        if (before_bottom < fade_offset_bottom && fade_edges_bottom) {\n"
+  "            ratio *= before_bottom / fade_offset_bottom;\n"
+  "        }\n"
+  "\n"
+  "        if (after_left < fade_offset_left && fade_edges_left) {\n"
+  "            ratio *= after_left / fade_offset_left;\n"
+  "        }\n"
+  "\n"
+  "        if (before_right < fade_offset_right && fade_edges_right) {\n"
+  "            ratio *= before_right / fade_offset_right;\n"
+  "        }\n"
+  "    } else if (extend_fade_area) {\n"
+  "        if (x <= fade_area_topleft[0] && fade_edges_left ||\n"
+  "            x >= fade_area_bottomright[0] && fade_edges_right ||\n"
+  "            y <= fade_area_topleft[1] && fade_edges_top ||\n"
+  "            y >= fade_area_bottomright[1] && fade_edges_bottom) {\n"
+  "            ratio = 0.0;\n"
+  "        }\n"
+  "    }\n"
+  "\n"
+  "    cogl_color_out *= ratio;\n";
 
 struct _StScrollViewFade
 {
@@ -66,10 +122,17 @@ enum {
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-static char *
-st_scroll_view_fade_get_static_shader_source (ClutterShaderEffect *effect)
+static CoglSnippet *
+st_scroll_view_fade_get_static_snippet (ClutterShaderEffect *effect)
 {
-   return g_strdup (st_scroll_view_fade_glsl);
+  CoglSnippet *snippet;
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              st_scroll_view_fade_declarations,
+                              NULL);
+  cogl_snippet_set_replace (snippet, st_scroll_view_fade_replace);
+
+  return snippet;
 }
 
 static void
@@ -404,7 +467,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
   meta_class->set_actor = st_scroll_view_fade_set_actor;
 
   shader_class = CLUTTER_SHADER_EFFECT_CLASS (klass);
-  shader_class->get_static_shader_source = st_scroll_view_fade_get_static_shader_source;
+  shader_class->get_static_snippet = st_scroll_view_fade_get_static_snippet;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->paint_target = st_scroll_view_fade_paint_target;
