@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include <glib/gi18n-lib.h>
+#include <glib/gstdio.h>
 
 #include <meta/display.h>
 #include <meta/meta-context.h>
@@ -1369,7 +1370,7 @@ shell_app_launch (ShellApp           *app,
 
   /* Optimized spawn path, avoiding a child_setup function */
   {
-    int journalfd = -1;
+    g_autofd int journalfd = -1;
 
 #ifdef HAVE_SYSTEMD
     journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
@@ -1384,9 +1385,6 @@ shell_app_launch (ShellApp           *app,
                                                               journalfd,
                                                               journalfd,
                                                               error);
-
-    if (journalfd >= 0)
-      (void) close (journalfd);
   }
   g_object_unref (context);
 
