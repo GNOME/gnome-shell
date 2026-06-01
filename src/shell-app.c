@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include <glib/gi18n-lib.h>
+#include <glib/gstdio.h>
 #include <systemd/sd-journal.h>
 
 #include <meta/display.h>
@@ -1396,7 +1397,7 @@ shell_app_launch (ShellApp           *app,
 
   /* Optimized spawn path, avoiding a child_setup function */
   {
-    int journalfd = -1;
+    g_autofd int journalfd = -1;
 
     journalfd = sd_journal_stream_fd (shell_app_get_id (app), LOG_INFO, FALSE);
 
@@ -1409,9 +1410,6 @@ shell_app_launch (ShellApp           *app,
                                                               journalfd,
                                                               journalfd,
                                                               error);
-
-    if (journalfd >= 0)
-      (void) close (journalfd);
   }
   g_object_unref (context);
 
