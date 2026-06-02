@@ -12,7 +12,6 @@ import * as Signals from '../misc/signals.js';
 import * as BoxPointer from './boxpointer.js';
 import * as InputSourceManager from './status/keyboard.js';
 import * as IBusManager from '../misc/ibusManager.js';
-import * as BoxPointer from './boxpointer.js';
 import * as Main from './main.js';
 import * as PageIndicators from './pageIndicators.js';
 import * as PopupMenu from './popupMenu.js';
@@ -245,7 +244,6 @@ const Key = GObject.registerClass({
 
         this._extendedKeys = extendedKeys;
         this._extendedKeyboard = null;
-        this._capturedPress = false;
         this._hasAction = hasAction;
     }
 
@@ -258,9 +256,9 @@ const Key = GObject.registerClass({
     }
 
     _onDestroy() {
-        if (this._boxPointer) {
-            this._boxPointer.destroy();
-            this._boxPointer = null;
+        if (this._menu) {
+            this._menu.destroy();
+            this._menu = null;
         }
     }
 
@@ -268,54 +266,31 @@ const Key = GObject.registerClass({
         if (this._extendedKeys.length === 0)
             return;
 
-        if (this._boxPointer)
+        if (this._menu)
             return;
 
-        this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM);
-        this._boxPointer.hide();
-        Main.layoutManager.addTopChrome(this._boxPointer);
-        this._boxPointer.setPosition(this.keyButton, 0.5);
+        this._menu = new NoGrabPopup(this.keyButton, St.Side.BOTTOM);
+        this._menu.actor.add_style_class_name('keyboard-subkeys-boxpointer');
+        this._menu.box.orientation = Clutter.Orientation.HORIZONTAL;
+        this._menu.box.style_class = 'key-container';
 
-        // Adds style to existing keyboard style to avoid repetition
-        this._boxPointer.add_style_class_name('keyboard-subkeys-boxpointer');
-        this._getExtendedKeys();
+        for (const extendedKey of this._extendedKeys) {
+            const key = this._makeKey(extendedKey);
+            key.extendedKey = extendedKey;
+            this._menu.box.add_child(key);
+            key.set_size(...this.keyButton.allocation.get_size());
+        }
+
         this.keyButton._extendedKeys = this._extendedKeyboard;
-    }
-
-    _onCapturedEvent(actor, event) {
-        const type = event.type();
-        const press = type === Clutter.EventType.BUTTON_PRESS || type === Clutter.EventType.TOUCH_BEGIN;
-        const release = type === Clutter.EventType.BUTTON_RELEASE || type === Clutter.EventType.TOUCH_END;
-        const targetActor = global.stage.get_event_actor(event);
-
-        if (targetActor === this._boxPointer.bin ||
-            this._boxPointer.bin.contains(targetActor))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (press)
-            this._capturedPress = true;
-        else if (release && this._capturedPress)
-            this._hideSubkeys();
-
-        return Clutter.EVENT_STOP;
+        Main.layoutManager.addTopChrome(this._menu.actor);
     }
 
     _showSubkeys() {
-        this._boxPointer.open();
-        global.stage.connectObject(
-            'captured-event', this._onCapturedEvent.bind(this), this);
-        this.keyButton.connectObject('notify::mapped', () => {
-            if (!this.keyButton.is_mapped())
-                this._hideSubkeys();
-        }, this);
+        this._menu.open(BoxPointer.PopupAnimation.FULL);
     }
 
     _hideSubkeys() {
-        if (this._boxPointer)
-            this._boxPointer.close();
-        global.stage.disconnectObject(this);
-        this.keyButton.disconnectObject(this);
-        this._capturedPress = false;
+        this._menu?.close(BoxPointer.PopupAnimation.FULL);
     }
 
     _makeKey(commitString, label, icon) {
@@ -357,29 +332,6 @@ const Key = GObject.registerClass({
         });
 
         return button;
-    }
-
-    _getExtendedKeys() {
-        this._extendedKeyboard = new St.BoxLayout({
-            style_class: 'key-container',
-            orientation: Clutter.Orientation.HORIZONTAL,
-        });
-        for (let i = 0; i < this._extendedKeys.length; ++i) {
-            const extendedKey = this._extendedKeys[i];
-            const key = this._makeKey(extendedKey);
-
-            key.extendedKey = extendedKey;
-            this._extendedKeyboard.add_child(key);
-
-            key.set_size(...this.keyButton.allocation.get_size());
-            this.keyButton.connect('notify::allocation',
-                () => key.set_size(...this.keyButton.allocation.get_size()));
-        }
-        this._boxPointer.bin.add_child(this._extendedKeyboard);
-    }
-
-    get subkeys() {
-        return this._boxPointer;
     }
 
     setLatched(latched) {
