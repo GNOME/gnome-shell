@@ -467,7 +467,11 @@ export const SwitcherList = GObject.registerClass({
         this._list.add_child(bbox);
 
         bbox.connect('clicked', () => this._onItemClicked(bbox));
-        bbox.connect('motion-event', () => this._onItemMotion(bbox));
+
+        const motionController = new Clutter.MotionController();
+        motionController.connect('motion', () => this._onItemMotion(bbox));
+        motionController.connect('enter', () => this._onItemMotion(bbox));
+        bbox.add_action(motionController);
 
         bbox.label_actor = label;
 
