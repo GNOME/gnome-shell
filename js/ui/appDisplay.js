@@ -504,7 +504,13 @@ var BaseAppView = GObject.registerClass({
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
-        this._scrollView.connect('scroll-event', this._onScroll.bind(this));
+
+        const scrollController = new Clutter.ScrollController({
+            flags: Clutter.ScrollControllerFlags.DISCRETE |
+                Clutter.ScrollControllerFlags.SCROLL_VERTICAL,
+        });
+        scrollController.connect('scroll', this._onScroll.bind(this));
+        this._scrollView.add_action(scrollController);
 
         this._adjustment = this._scrollView.hadjustment;
         this._adjustment.connect('notify::value', adj => {
@@ -521,9 +527,13 @@ var BaseAppView = GObject.registerClass({
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
             });
-        this._pageIndicators.connect('scroll-event', (actor, event) => {
-            this._scrollView.event(event, false);
+
+        const indicatorScrollController = new Clutter.ScrollController({
+            flags: Clutter.ScrollControllerFlags.DISCRETE |
+                Clutter.ScrollControllerFlags.SCROLL_VERTICAL,
         });
+        indicatorScrollController.connect('scroll', this._onScroll.bind(this));
+        this._pageIndicators.add_action(indicatorScrollController);
 
         // Navigation indicators
         this._nextPageIndicator = new St.Widget({
@@ -655,40 +665,28 @@ var BaseAppView = GObject.registerClass({
         return new AppGrid({allow_incomplete_pages: true});
     }
 
-    _onScroll(actor, event) {
-        if (this._swipeTracker.canHandleScrollEvent(event))
-            return Clutter.EVENT_PROPAGATE;
-
+    _onScroll(controller, sprite, source, dx, dy) {
         if (!this._canScroll)
-            return Clutter.EVENT_STOP;
+            return;
 
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
         const vertical = this._orientation === Clutter.Orientation.VERTICAL;
 
         let nextPage = this._grid.currentPage;
-        switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP:
+        if (dy < 0) {
             nextPage -= 1;
-            break;
-
-        case Clutter.ScrollDirection.DOWN:
+        } else if (dy > 0) {
             nextPage += 1;
-            break;
-
-        case Clutter.ScrollDirection.LEFT:
+        } else if (dx < 0) {
             if (vertical)
-                return Clutter.EVENT_STOP;
+                return;
             nextPage += rtl ? 1 : -1;
-            break;
-
-        case Clutter.ScrollDirection.RIGHT:
+        } else if (dx > 0) {
             if (vertical)
-                return Clutter.EVENT_STOP;
+                return;
             nextPage += rtl ? -1 : 1;
-            break;
-
-        default:
-            return Clutter.EVENT_STOP;
+        } else {
+            return;
         }
 
         this.goToPage(nextPage);
@@ -699,8 +697,6 @@ var BaseAppView = GObject.registerClass({
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
             });
-
-        return Clutter.EVENT_STOP;
     }
 
     _swipeBegin(tracker, monitor) {
@@ -1590,11 +1586,11 @@ class AppDisplay extends BaseAppView {
         super.goToPage(pageNumber, animate);
     }
 
-    _onScroll(actor, event) {
+    _onScroll(controller, sprite, source, dx, dy) {
         if (this._displayingDialog || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
-        return super._onScroll(actor, event);
+        return super._onScroll(controller, sprite, source, dx, dy);
     }
 
     _onKeyPressEvent(actor, event) {
