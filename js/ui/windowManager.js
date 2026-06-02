@@ -512,6 +512,7 @@ export class WindowManager {
 
         this._isWorkspacePrepended = false;
         this._canScroll = true; // limiting scrolling speed
+        this._blockCount = 0;
 
         this._shellwm.connect('kill-window-effects', (shellwm, actor) => {
             this._minimizeWindowDone(shellwm, actor);
@@ -1064,6 +1065,33 @@ export class WindowManager {
             return;
 
         this._workspaceTracker.keepWorkspaceAlive(workspace, duration);
+    }
+
+    blockWorkspaceUpdates() {
+        if (++this._blockCount > 1)
+            return;
+
+        if (!this._workspaceTracker)
+            return;
+
+        this._workspaceTracker.blockUpdates();
+    }
+
+    unblockWorkspaceUpdates() {
+        console.assert(this._blockCount > 0,
+            'Unmatched call to unblockWorkspaceUpdates()');
+        if (this._blockCount === 0)
+            return;
+
+        this._blockCount -= 1;
+
+        if (this._blockCount !== 0)
+            return;
+
+        if (!this._workspaceTracker)
+            return;
+
+        this._workspaceTracker.unblockUpdates();
     }
 
     skipNextEffect(actor) {
@@ -1807,10 +1835,10 @@ export class WindowManager {
 
         if (!Main.overview.visible) {
             if (this._workspaceSwitcherPopup == null) {
-                this._workspaceTracker.blockUpdates();
+                this.blockWorkspaceUpdates();
                 this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
                 this._workspaceSwitcherPopup.connect('destroy', () => {
-                    this._workspaceTracker.unblockUpdates();
+                    this.unblockWorkspaceUpdates();
                     this._workspaceSwitcherPopup = null;
                     this._isWorkspacePrepended = false;
                 });
