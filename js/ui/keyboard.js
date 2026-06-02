@@ -131,17 +131,7 @@ class Suggestions extends St.BoxLayout {
 
     add(word, callback) {
         const button = new St.Button({label: word});
-        button.connect('button-press-event', () => {
-            callback();
-            return Clutter.EVENT_STOP;
-        });
-        button.connect('touch-event', (actor, event) => {
-            if (event.type() !== Clutter.EventType.TOUCH_BEGIN)
-                return Clutter.EVENT_PROPAGATE;
-
-            callback();
-            return Clutter.EVENT_STOP;
-        });
+        button.connect('clicked', () => callback());
         this.add_child(button);
     }
 
