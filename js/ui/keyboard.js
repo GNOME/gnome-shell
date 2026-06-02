@@ -19,7 +19,6 @@ import * as SwipeTracker from './swipeTracker.js';
 
 export const KEYBOARD_ANIMATION_TIME = 150;
 const KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
-const KEY_LONG_PRESS_TIME = 250;
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
@@ -215,7 +214,6 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
 const Key = GObject.registerClass({
     Signals: {
         'long-press': {},
-        'pressed': {},
         'released': {},
         'keyval': {param_types: [GObject.TYPE_UINT]},
         'commit': {param_types: [GObject.TYPE_STRING]},
@@ -236,7 +234,6 @@ const Key = GObject.registerClass({
 
         this._extendedKeys = extendedKeys;
         this._extendedKeyboard = null;
-        this._pressTimeoutId = 0;
         this._capturedPress = false;
         this._hasAction = hasAction;
     }
@@ -254,8 +251,6 @@ const Key = GObject.registerClass({
             this._boxPointer.destroy();
             this._boxPointer = null;
         }
-
-        this.cancel();
     }
 
     _ensureExtendedKeysPopup() {
@@ -274,59 +269,6 @@ const Key = GObject.registerClass({
         this._boxPointer.add_style_class_name('keyboard-subkeys-boxpointer');
         this._getExtendedKeys();
         this.keyButton._extendedKeys = this._extendedKeyboard;
-    }
-
-    _press(button) {
-        if (button === this.keyButton) {
-            this._pressTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT,
-                KEY_LONG_PRESS_TIME,
-                () => {
-                    this._pressTimeoutId = 0;
-
-                    this.emit('long-press');
-
-                    if (this._extendedKeys.length > 0) {
-                        this._touchPressSlot = null;
-                        this._ensureExtendedKeysPopup();
-                        this.keyButton.set_hover(false);
-                        this.keyButton.fake_release();
-                        this._showSubkeys();
-                    }
-                });
-        }
-
-        this.emit('pressed');
-        this._pressed = true;
-    }
-
-    _release(button, commitString) {
-        if (this._pressTimeoutId !== 0) {
-            GLib.source_remove(this._pressTimeoutId);
-            this._pressTimeoutId = 0;
-        }
-
-        if (this._pressed) {
-            if (this._keyval && button === this.keyButton)
-                this.emit('keyval', this._keyval);
-            else if (commitString)
-                this.emit('commit', commitString);
-            else if (!this._hasAction)
-                console.error('Need keyval, commitString or an action');
-        }
-
-        this.emit('released');
-        this._hideSubkeys();
-        this._pressed = false;
-    }
-
-    cancel() {
-        if (this._pressTimeoutId !== 0) {
-            GLib.source_remove(this._pressTimeoutId);
-            this._pressTimeoutId = 0;
-        }
-        this._touchPressSlot = null;
-        this.keyButton.set_hover(false);
-        this.keyButton.fake_release();
     }
 
     _onCapturedEvent(actor, event) {
@@ -381,35 +323,26 @@ const Key = GObject.registerClass({
             button.set_label(commitString);
         }
 
-        button.connect('button-press-event', () => {
-            this._press(button, commitString);
-            button.add_style_pseudo_class('active');
-            return Clutter.EVENT_STOP;
-        });
-        button.connect('button-release-event', () => {
-            this._release(button, commitString);
-            button.remove_style_pseudo_class('active');
-            return Clutter.EVENT_STOP;
-        });
-        button.connect('touch-event', (actor, event) => {
-            const slot = event.get_event_sequence().get_slot();
-
-            if (!this._touchPressSlot &&
-                event.type() === Clutter.EventType.TOUCH_BEGIN) {
-                this._touchPressSlot = slot;
-                this._press(button, commitString);
-                button.add_style_pseudo_class('active');
-            } else if (event.type() === Clutter.EventType.TOUCH_END) {
-                if (!this._touchPressSlot ||
-                    this._touchPressSlot === slot) {
-                    this._release(button, commitString);
-                    button.remove_style_pseudo_class('active');
-                }
-
-                if (this._touchPressSlot === slot)
-                    this._touchPressSlot = null;
+        const longPressGesture = new Clutter.LongPressGesture();
+        longPressGesture.connect('recognize', () => {
+            this.emit('long-press');
+            if (this._extendedKeys.length > 0) {
+                this._ensureExtendedKeysPopup();
+                this._showSubkeys();
             }
-            return Clutter.EVENT_STOP;
+        });
+        button.add_action(longPressGesture);
+
+        button.connect('clicked', () => {
+            if (this._keyval && button === this.keyButton)
+                this.emit('keyval', this._keyval);
+            else if (commitString)
+                this.emit('commit', commitString);
+            else if (!this._hasAction)
+                console.error('Need keyval, commitString or an action');
+
+            this.emit('released');
+            this._hideSubkeys();
         });
 
         return button;
@@ -596,7 +529,6 @@ const EmojiPager = GObject.registerClass({
         this._curPage = null;
         this._followingPage = null;
         this._followingPanel = null;
-        this._currentKey = null;
         this._delta = 0;
         this._width = null;
 
@@ -688,12 +620,6 @@ const EmojiPager = GObject.registerClass({
 
     _onSwipeUpdate(tracker, progress) {
         this.delta = -progress * this._width;
-
-        if (this._currentKey != null) {
-            this._currentKey.cancel();
-            this._currentKey = null;
-        }
-
         return false;
     }
 
@@ -780,15 +706,7 @@ const EmojiPager = GObject.registerClass({
             const modelKey = page.pageKeys[i];
             const key = new Key({commitString: modelKey.label}, modelKey.variants);
 
-            key.keyButton.set_button_mask(0);
-
-            key.connect('pressed', () => {
-                this._currentKey = key;
-            });
             key.connect('commit', (actor, str) => {
-                if (this._currentKey !== key)
-                    return;
-                this._currentKey = null;
                 this.emit('emoji', str);
             });
 
