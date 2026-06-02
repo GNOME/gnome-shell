@@ -89,6 +89,10 @@ export const SwitcherPopup = GObject.registerClass({
         keyController.connect('modifier-change', this._onModifierChange.bind(this));
         this.add_action(keyController);
 
+        const scrollController = new Clutter.ScrollController();
+        scrollController.connect('scroll', this._onScroll.bind(this));
+        this.add_action(scrollController);
+
         // Initially disable hover so we ignore the enter-event if
         // the switcher appears underneath the current pointer location
         this._disableHover();
@@ -246,11 +250,12 @@ export const SwitcherPopup = GObject.registerClass({
             this._select(this._next());
     }
 
-    vfunc_scroll_event(event) {
+    _onScroll(_controller, _sprite, _source, _dx, dy) {
         this._disableHover();
 
-        this._scrollHandler(event.get_scroll_direction());
-        return Clutter.EVENT_PROPAGATE;
+        const direction =
+              dy > 0 ? Clutter.ScrollDirection.DOWN : Clutter.ScrollDirection.UP;
+        this._scrollHandler(direction);
     }
 
     _itemActivatedHandler(n) {
