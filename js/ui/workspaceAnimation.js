@@ -407,6 +407,7 @@ export class WorkspaceAnimationController {
             switchData.monitors.push(group);
         }
 
+        Main.wm.blockWorkspaceUpdates();
         global.compositor.disable_unredirect();
         this._grab = Main.pushModal(global.stage, {
             actionMode: Shell.ActionMode.NORMAL,
@@ -414,6 +415,7 @@ export class WorkspaceAnimationController {
     }
 
     _finishWorkspaceSwitch(switchData) {
+        Main.wm.unblockWorkspaceUpdates();
         global.compositor.enable_unredirect();
 
         if (this._grab) {
