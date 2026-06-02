@@ -9,6 +9,7 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Signals from '../misc/signals.js';
 
+import * as BoxPointer from './boxpointer.js';
 import * as InputSourceManager from './status/keyboard.js';
 import * as IBusManager from '../misc/ibusManager.js';
 import * as BoxPointer from './boxpointer.js';
@@ -77,6 +78,57 @@ class AspectContainer extends St.Widget {
     }
 });
 
+class NoGrabPopup extends PopupMenu.PopupMenu {
+    constructor(actor, arrowSide) {
+        super(actor, 0.5, arrowSide);
+
+        actor.connectObject(
+            'destroy', () => this.close(BoxPointer.PopupAnimation.FULL),
+            'notify::mapped', () => {
+                if (!actor.is_mapped())
+                    this.close(BoxPointer.PopupAnimation.FULL);
+            },
+            this);
+
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.connect(
+            'may-recognize', this._onMayRecognize.bind(this));
+        this._clickGesture.connect(
+            'recognize', () => this.close(BoxPointer.PopupAnimation.FULL));
+    }
+
+    _onMayRecognize(gesture) {
+        const {x, y} = gesture.get_coords_abs();
+        const targetActor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+
+        return targetActor !== this.actor && !this.actor.contains(targetActor);
+    }
+
+    open(params = {}) {
+        if (!super.open(params))
+            return false;
+
+        global.stage.add_action_full(
+            'close-popup-gesture',
+            Clutter.EventPhase.CAPTURE,
+            this._clickGesture);
+        return true;
+    }
+
+    close(params = {}) {
+        if (!super.close(params))
+            return false;
+        global.stage.remove_action(this._clickGesture);
+        return true;
+    }
+
+    destroy() {
+        global.stage.remove_action(this._clickGesture);
+        this.sourceActor.disconnectObject(this);
+        super.destroy();
+    }
+};
+
 const KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
@@ -144,9 +196,9 @@ class Suggestions extends St.BoxLayout {
     }
 });
 
-class LanguageSelectionPopup extends PopupMenu.PopupMenu {
+class LanguageSelectionPopup extends NoGrabPopup {
     constructor(actor) {
-        super(actor, 0.5, St.Side.BOTTOM);
+        super(actor, St.Side.BOTTOM);
 
         const inputSourceManager = InputSourceManager.getInputSourceManager();
         const inputSources = inputSourceManager.inputSources;
@@ -167,47 +219,6 @@ class LanguageSelectionPopup extends PopupMenu.PopupMenu {
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         item = this.addSettingsAction(_('Keyboard Settings'), 'gnome-keyboard-panel.desktop');
         item.can_focus = false;
-
-        actor.connectObject('notify::mapped', () => {
-            if (!actor.is_mapped())
-                this.close(true);
-        }, this);
-    }
-
-    _onCapturedEvent(actor, event) {
-        const targetActor = global.stage.get_event_actor(event);
-
-        if (targetActor === this.actor ||
-            this.actor.contains(targetActor))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.type() === Clutter.EventType.BUTTON_RELEASE || event.type() === Clutter.EventType.TOUCH_END)
-            this.close(true);
-
-        return Clutter.EVENT_STOP;
-    }
-
-    open(params = {}) {
-        if (!super.open(params))
-            return false;
-
-        global.stage.connectObject(
-            'captured-event', this._onCapturedEvent.bind(this), this);
-        return true;
-    }
-
-    close(params = {}) {
-        if (!super.close(params))
-            return false;
-
-        global.stage.disconnectObject(this);
-        return true;
-    }
-
-    destroy() {
-        global.stage.disconnectObject(this);
-        this.sourceActor.disconnectObject(this);
-        super.destroy();
     }
 }
 
@@ -1510,7 +1521,7 @@ export const Keyboard = GObject.registerClass({
 
         this._languagePopup = new LanguageSelectionPopup(keyActor);
         Main.layoutManager.addTopChrome(this._languagePopup.actor);
-        this._languagePopup.open(true);
+        this._languagePopup.open(BoxPointer.PopupAnimation.FULL);
     }
 
     _updateCurrentPageVisible() {
