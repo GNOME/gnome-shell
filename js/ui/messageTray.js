@@ -699,13 +699,27 @@ GObject.registerClass({
 }, Notification);
 SignalTracker.registerDestroyableType(Notification);
 
-export const MessageTray = GObject.registerClass({
-    Signals: {
+export class MessageTray extends St.Widget {
+    static [GObject.signals] = {
         'queue-changed': {},
         'source-added': {param_types: [Source.$gtype]},
         'source-removed': {param_types: [Source.$gtype]},
-    },
-}, class MessageTray extends St.Widget {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'close', Clutter.KEY_Escape, Clutter.RELEASE_MASK,
+            obj => {
+                obj._expireNotification();
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init() {
         super._init({
             visible: false,
@@ -738,8 +752,6 @@ export const MessageTray = GObject.registerClass({
             x_expand: true,
             layout_manager: new Clutter.BinLayout(),
         });
-        this._bannerBin.connect('key-release-event',
-            this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
             this._onNotificationHoverChanged.bind(this));
         this.add_child(this._bannerBin);
@@ -826,15 +838,6 @@ export const MessageTray = GObject.registerClass({
 
     set bannerAlignment(align) {
         this._bannerBin.set_x_align(align);
-    }
-
-    _onNotificationKeyRelease(actor, event) {
-        if (event.get_key_symbol() === Clutter.KEY_Escape && event.get_state() === 0) {
-            this._expireNotification();
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _expireNotification() {
@@ -1310,7 +1313,7 @@ export const MessageTray = GObject.registerClass({
     _ensureBannerFocused() {
         this._notificationFocusGrabber.grabFocus();
     }
-});
+}
 
 let systemNotificationSource = null;
 
