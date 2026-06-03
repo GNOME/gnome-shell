@@ -81,18 +81,19 @@ const CandidateArea = GObject.registerClass({
 
         this._orientation = -1;
         this._cursorPosition = 0;
-    }
 
-    vfunc_scroll_event(event) {
-        switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP:
-            this.emit('cursor-up');
-            break;
-        case Clutter.ScrollDirection.DOWN:
-            this.emit('cursor-down');
-            break;
-        }
-        return Clutter.EVENT_PROPAGATE;
+        const scrollController = new Clutter.ScrollController({
+            flags: Clutter.ScrollControllerFlags.DISCRETE |
+                Clutter.ScrollControllerFlags.SCROLL_VERTICAL,
+        });
+        scrollController.connect(
+            'scroll', (_controller, _sprite, _source, dx, dy) => {
+                if (dy < 0)
+                    this.emit('cursor-up');
+                else if (dy > 0)
+                    this.emit('cursor-down');
+            });
+        this.add_action(scrollController);
     }
 
     setOrientation(orientation) {
