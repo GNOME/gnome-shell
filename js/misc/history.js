@@ -29,8 +29,18 @@ export class HistoryManager extends Signals.EventEmitter {
         this._entry = params.entry;
 
         if (this._entry) {
-            this._entry.connect('key-press-event',
-                this._onEntryKeyPress.bind(this));
+            const keyController = new Clutter.KeyController();
+            keyController.connect('key-press', () => {
+                const [, symbol] = keyController.get_key();
+
+                if (symbol === Clutter.KEY_Up)
+                    return this._setPrevItem(this._entry.get_text().trim());
+                else if (symbol === Clutter.KEY_Down)
+                    return this._setNextItem(this._entry.get_text().trim());
+
+                return Clutter.EVENT_PROPAGATE;
+            });
+            this._entry.add_action(keyController);
         }
     }
 
@@ -81,16 +91,6 @@ export class HistoryManager extends Signals.EventEmitter {
         }
         this._historyIndex = this._history.length;
         return input; // trimmed
-    }
-
-    _onEntryKeyPress(entry, event) {
-        const symbol = event.get_key_symbol();
-        if (symbol === Clutter.KEY_Up)
-            return this._setPrevItem(entry.get_text().trim());
-        else if (symbol === Clutter.KEY_Down)
-            return this._setNextItem(entry.get_text().trim());
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _indexChanged() {
