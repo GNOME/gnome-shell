@@ -568,6 +568,10 @@ export const UnlockDialog = GObject.registerClass({
             });
         this.add_action(discreteScroll);
 
+        this._keyController = new Clutter.KeyController();
+        this._keyController.connect('key-press', () => this._onKeyPress());
+        this.add_action(this._keyController);
+
         this._activePage = null;
 
         const clickGesture = new Clutter.ClickGesture();
@@ -671,19 +675,17 @@ export const UnlockDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    vfunc_key_press_event(event) {
+    _onKeyPress() {
         if (this._activePage === this._promptBox ||
             (this._promptBox && this._promptBox.visible))
             return Clutter.EVENT_PROPAGATE;
 
-        const keyval = event.get_key_symbol();
+        const [, keyval, _, unichar] = this._keyController.get_key();
         if (keyval === Clutter.KEY_Shift_L ||
             keyval === Clutter.KEY_Shift_R ||
             keyval === Clutter.KEY_Shift_Lock ||
             keyval === Clutter.KEY_Caps_Lock)
             return Clutter.EVENT_PROPAGATE;
-
-        const unichar = event.get_key_unicode();
 
         this._showPrompt();
 
