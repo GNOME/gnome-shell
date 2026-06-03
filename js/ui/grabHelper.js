@@ -165,16 +165,22 @@ export class GrabHelper {
                 }
             });
             this._owner.add_action(this._clickGesture);
+
+            this._keyController = new Clutter.KeyController();
+            this._keyController.connect('key-press', () => {
+                const [, key] = this._keyController.get_key();
+                if (key === Clutter.KEY_Escape) {
+                    this.ungrab({isUser: true});
+                    return Clutter.EVENT_STOP;
+                }
+                return Clutter.EVENT_PROPAGATE;
+            });
+            this._owner.add_action_full(
+                'grab-helper-key-capture', Clutter.EventPhase.CAPTURE,
+                this._keyController);
+
             this._capturedEventId = this._owner.connect('captured-event',
                 (actor, event) => {
-                    const type = event.type();
-
-                    if (type === Clutter.EventType.KEY_PRESS &&
-                        event.get_key_symbol() === Clutter.KEY_Escape) {
-                        this.ungrab({isUser: true});
-                        return Clutter.EVENT_STOP;
-                    }
-
                     Main.keyboard.maybeHandleEvent(event);
                     return Clutter.EVENT_PROPAGATE;
                 });
