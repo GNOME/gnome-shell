@@ -1310,8 +1310,38 @@ const PageManager = GObject.registerClass({
     }
 });
 
-export const AppDisplay = GObject.registerClass(
-class AppDisplay extends BaseAppView {
+export class AppDisplay extends BaseAppView {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'next', Clutter.KEY_Page_Down, 0,
+            obj => {
+                obj.goToPage(obj._grid.currentPage + 1);
+                return Clutter.EVENT_STOP;
+            });
+        bindingPool.install_closure(
+            'prev', Clutter.KEY_Page_Up, 0,
+            obj => {
+                obj.goToPage(obj._grid.currentPage - 1);
+                return Clutter.EVENT_STOP;
+            });
+        bindingPool.install_closure(
+            'first', Clutter.KEY_Home, 0,
+            obj => {
+                obj.goToPage(0);
+                return Clutter.EVENT_STOP;
+            });
+        bindingPool.install_closure(
+            'last', Clutter.KEY_End, 0,
+            obj => {
+                obj.goToPage(obj._grid.nPages - 1);
+                return Clutter.EVENT_STOP;
+            });
+    }
+
     _init() {
         super._init({
             layout_manager: new Clutter.BinLayout(),
@@ -1358,17 +1388,13 @@ class AppDisplay extends BaseAppView {
     }
 
     vfunc_map() {
-        this._keyPressEventId =
-            global.stage.connect('key-press-event',
-                this._onKeyPressEvent.bind(this));
         super.vfunc_map();
+        this.reactive = true;
+        this.grab_key_focus();
     }
 
     vfunc_unmap() {
-        if (this._keyPressEventId) {
-            global.stage.disconnect(this._keyPressEventId);
-            this._keyPressEventId = 0;
-        }
+        this.reactive = false;
         super.vfunc_unmap();
     }
 
@@ -1593,27 +1619,6 @@ class AppDisplay extends BaseAppView {
         return super._onScroll(controller, sprite, source, dx, dy);
     }
 
-    _onKeyPressEvent(actor, event) {
-        if (this._displayingDialog)
-            return Clutter.EVENT_STOP;
-
-        if (event.get_key_symbol() === Clutter.KEY_Page_Up) {
-            this.goToPage(this._grid.currentPage - 1);
-            return Clutter.EVENT_STOP;
-        } else if (event.get_key_symbol() === Clutter.KEY_Page_Down) {
-            this.goToPage(this._grid.currentPage + 1);
-            return Clutter.EVENT_STOP;
-        } else if (event.get_key_symbol() === Clutter.KEY_Home) {
-            this.goToPage(0);
-            return Clutter.EVENT_STOP;
-        } else if (event.get_key_symbol() === Clutter.KEY_End) {
-            this.goToPage(this._grid.nPages - 1);
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     addFolderDialog(dialog) {
         Main.layoutManager.overviewGroup.add_child(dialog);
         dialog.connect('open-state-changed', (o, isOpen) => {
@@ -1745,7 +1750,7 @@ class AppDisplay extends BaseAppView {
 
         return true;
     }
-});
+}
 
 export class AppSearchProvider {
     constructor() {
