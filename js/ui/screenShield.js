@@ -139,6 +139,12 @@ export class ScreenShield extends Signals.EventEmitter {
         this.idleMonitor = global.backend.get_core_idle_monitor();
         this._cursorTracker = global.backend.get_cursor_tracker();
 
+        this._motionListener = new Clutter.MotionController({
+            enabled: false,
+        });
+        this._motionListener.connect('motion', () => this._showPointer());
+        this._lockDialogGroup.add_action(this._motionListener);
+
         this._syncInhibitor();
     }
 
@@ -344,10 +350,7 @@ export class ScreenShield extends Signals.EventEmitter {
             this._cursorVisibleInhibited = false;
         }
 
-        if (this._motionId) {
-            this._lockDialogGroup.disconnect(this._motionId);
-            this._motionId = 0;
-        }
+        this._motionListener.enabled = false;
     }
 
     _hidePointer() {
@@ -360,13 +363,7 @@ export class ScreenShield extends Signals.EventEmitter {
     }
 
     _hidePointerUntilMotion() {
-        const eventActor = this._lockDialogGroup;
-        this._motionId = eventActor.connect('captured-event', (_, event) => {
-            if (event.type() === Clutter.EventType.MOTION)
-                this._showPointer();
-
-            return Clutter.EVENT_PROPAGATE;
-        });
+        this._motionListener.enabled = true;
         this._hidePointer();
     }
 
