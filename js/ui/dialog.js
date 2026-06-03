@@ -32,6 +32,36 @@ class Dialog extends St.Widget {
 
         this._parentActor = parentActor;
         this._parentActor.add_child(this);
+
+        const keyController = new Clutter.KeyController();
+        keyController.connectObject(
+            'key-press', () => {
+                const [, symbol] = keyController.get_key();
+                this._pressedKey = symbol;
+                return Clutter.EVENT_PROPAGATE;
+            },
+            'key-release', () => {
+                const pressedKey = this._pressedKey;
+                this._pressedKey = null;
+
+                const [, symbol] = keyController.get_key();
+                if (symbol !== pressedKey)
+                    return Clutter.EVENT_PROPAGATE;
+
+                const buttonInfo = this._buttonKeys[symbol];
+                if (!buttonInfo)
+                    return Clutter.EVENT_PROPAGATE;
+
+                const {button, action} = buttonInfo;
+
+                if (action && button.reactive) {
+                    action();
+                    return Clutter.EVENT_STOP;
+                }
+                return Clutter.EVENT_PROPAGATE;
+            },
+            this);
+        this.add_action(keyController);
     }
 
     _createDialog() {
@@ -71,32 +101,6 @@ class Dialog extends St.Widget {
 
     _onDestroy() {
         this.makeInactive();
-    }
-
-    vfunc_event(event) {
-        if (event.type() === Clutter.EventType.KEY_PRESS) {
-            this._pressedKey = event.get_key_symbol();
-        } else if (event.type() === Clutter.EventType.KEY_RELEASE) {
-            const pressedKey = this._pressedKey;
-            this._pressedKey = null;
-
-            const symbol = event.get_key_symbol();
-            if (symbol !== pressedKey)
-                return Clutter.EVENT_PROPAGATE;
-
-            const buttonInfo = this._buttonKeys[symbol];
-            if (!buttonInfo)
-                return Clutter.EVENT_PROPAGATE;
-
-            const {button, action} = buttonInfo;
-
-            if (action && button.reactive) {
-                action();
-                return Clutter.EVENT_STOP;
-            }
-        }
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _setInitialKeyFocus(actor) {
