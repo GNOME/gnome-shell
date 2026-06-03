@@ -446,6 +446,14 @@ export const Calendar = GObject.registerClass({
         });
 
         this._buildHeader();
+
+        const scrollController = new Clutter.ScrollController({
+            flags: Clutter.ScrollControllerFlags.DISCRETE |
+                Clutter.ScrollControllerFlags.SCROLL_HORIZONTAL |
+                Clutter.ScrollControllerFlags.SCROLL_VERTICAL,
+        });
+        scrollController.connect('scroll', this._onScroll.bind(this));
+        this.add_action(scrollController);
     }
 
     setEventSource(eventSource) {
@@ -557,18 +565,11 @@ export const Calendar = GObject.registerClass({
         this._firstDayIndex = this.get_n_children();
     }
 
-    vfunc_scroll_event(event) {
-        switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP:
-        case Clutter.ScrollDirection.LEFT:
+    _onScroll(_controller, _sprite, _source, dx, dy) {
+        if (dx < 0 || dy < 0)
             this._onPrevMonthButtonClicked();
-            break;
-        case Clutter.ScrollDirection.DOWN:
-        case Clutter.ScrollDirection.RIGHT:
+        else
             this._onNextMonthButtonClicked();
-            break;
-        }
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _onPrevMonthButtonClicked() {
