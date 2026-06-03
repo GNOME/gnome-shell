@@ -47,8 +47,6 @@ export const BoxPointer = GObject.registerClass({
         this.add_child(this._border);
         this.set_child_above_sibling(this.bin, this._border);
         this._sourceAlignment = 0.5;
-        this._muteKeys = true;
-        this._muteInput = true;
 
         this.connect('notify::visible', () => {
             if (this.visible)
@@ -56,21 +54,17 @@ export const BoxPointer = GObject.registerClass({
             else
                 global.compositor.enable_unredirect();
         });
-    }
 
-    vfunc_captured_event(event) {
-        if (event.type() === Clutter.EventType.ENTER ||
-            event.type() === Clutter.EventType.LEAVE)
-            return Clutter.EVENT_PROPAGATE;
+        this._muteKeys = new Clutter.KeyController();
+        this._muteKeys.connect('key-press', () => Clutter.EVENT_STOP);
+        this.add_action_full(
+            'key-muting', Clutter.EventPhase.CAPTURE, this._muteKeys);
 
-        const mute = event.type() === Clutter.EventType.KEY_PRESS ||
-            event.type() === Clutter.EventType.KEY_RELEASE
-            ? this._muteKeys : this._muteInput;
-
-        if (mute)
-            return Clutter.EVENT_STOP;
-
-        return Clutter.EVENT_PROPAGATE;
+        this._muteInput = new Clutter.ClickGesture({
+            recognize_on_press: true,
+        });
+        this.add_action_full(
+            'click-muting', Clutter.EventPhase.CAPTURE, this._muteInput);
     }
 
     get arrowSide() {
@@ -90,7 +84,7 @@ export const BoxPointer = GObject.registerClass({
         else
             this.opacity = 255;
 
-        this._muteKeys = false;
+        this._muteKeys.enabled = false;
         this.show();
 
         if (useMotion && animate & PopupAnimation.SLIDE) {
@@ -126,7 +120,7 @@ export const BoxPointer = GObject.registerClass({
             duration: animationTime,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this._muteInput = false;
+                this._muteInput.enabled = false;
                 if (onComplete)
                     onComplete();
             },
@@ -173,8 +167,8 @@ export const BoxPointer = GObject.registerClass({
             }
         }
 
-        this._muteInput = true;
-        this._muteKeys = true;
+        this._muteInput.enabled = true;
+        this._muteKeys.enabled = true;
 
         this.remove_all_transitions();
         this.ease({
