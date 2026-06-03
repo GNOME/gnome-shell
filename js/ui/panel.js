@@ -195,8 +195,26 @@ class WorkspaceIndicators extends St.BoxLayout {
     }
 });
 
-const ActivitiesButton = GObject.registerClass(
 class ActivitiesButton extends PanelMenu.Button {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'toggle', Clutter.KEY_Return, Clutter.RELEASE_MASK,
+            obj => {
+                obj._toggleAction();
+                return Clutter.EVENT_STOP;
+            });
+        bindingPool.install_closure(
+            'toggle', Clutter.KEY_space, Clutter.RELEASE_MASK,
+            obj => {
+                obj._toggleAction();
+                return Clutter.EVENT_STOP;
+            });
+    }
+
     _init() {
         super._init(0.0, null, true);
 
@@ -245,13 +263,10 @@ class ActivitiesButton extends PanelMenu.Button {
         return Main.wm.handleWorkspaceScroll(event);
     }
 
-    vfunc_key_release_event(event) {
-        const symbol = event.get_key_symbol();
-        if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space) {
-            if (Main.overview.shouldToggleByCornerOrButton()) {
-                Main.overview.toggle();
-                return Clutter.EVENT_STOP;
-            }
+    _toggleAction() {
+        if (Main.overview.shouldToggleByCornerOrButton()) {
+            Main.overview.toggle();
+            return Clutter.EVENT_STOP;
         }
 
         return Clutter.EVENT_PROPAGATE;
@@ -267,7 +282,7 @@ class ActivitiesButton extends PanelMenu.Button {
         GLib.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;
     }
-});
+}
 
 const UnsafeModeIndicator = GObject.registerClass(
 class UnsafeModeIndicator extends SystemIndicator {
@@ -427,8 +442,21 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'screenSharing': ScreenSharingIndicator,
 };
 
-export const Panel = GObject.registerClass(
-class Panel extends St.Widget {
+export class Panel extends St.Widget {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'unfocus', Clutter.KEY_Escape, 0,
+            () => {
+                global.display.focus_default_window(Clutter.CURRENT_TIME);
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init() {
         super._init({
             name: 'panel',
@@ -565,16 +593,6 @@ class Panel extends St.Widget {
             sprite,
             event.get_time(),
             coords);
-    }
-
-    vfunc_key_press_event(event) {
-        const symbol = event.get_key_symbol();
-        if (symbol === Clutter.KEY_Escape) {
-            global.display.focus_default_window(event.get_time());
-            return Clutter.EVENT_STOP;
-        }
-
-        return super.vfunc_key_press_event(event);
     }
 
     _toggleMenu(indicator) {
@@ -765,4 +783,4 @@ class Panel extends St.Widget {
                    stageX > rect.x && stageX < rect.x + rect.width;
         });
     }
-});
+}
