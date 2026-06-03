@@ -22,8 +22,21 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-export const RunDialog = GObject.registerClass(
-class RunDialog extends ModalDialog.ModalDialog {
+export class RunDialog extends ModalDialog.ModalDialog {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'close', Clutter.KEY_Escape, Clutter.RELEASE_MASK,
+            obj => {
+                obj.close();
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+
     _init() {
         super._init({
             styleClass: 'run-dialog',
@@ -85,7 +98,6 @@ class RunDialog extends ModalDialog.ModalDialog {
         content.add_child(this._descriptionLabel);
 
         this._commandError = false;
-        this._pressedKey = null;
 
         this._pathCompleter = new Gio.FilenameCompleter();
 
@@ -93,10 +105,15 @@ class RunDialog extends ModalDialog.ModalDialog {
             gsettingsKey: HISTORY_KEY,
             entry: this._entryText,
         });
-        this._entryText.connect('key-press-event', (o, e) => {
-            const symbol = e.get_key_symbol();
+
+        const entryKeyController = new Clutter.KeyController();
+        entryKeyController.connect('key-press', () => {
+            const [, symbol] = entryKeyController.get_key();
+            const [, pressed, latched, locked] = entryKeyController.get_state();
+            const state = pressed | latched | locked;
+
             if (symbol === Clutter.KEY_Tab) {
-                const text = o.get_text();
+                const text = this._entryText.get_text();
                 let prefix;
                 if (text.lastIndexOf(' ') === -1)
                     prefix = text;
@@ -104,14 +121,14 @@ class RunDialog extends ModalDialog.ModalDialog {
                     prefix = text.substring(text.lastIndexOf(' ') + 1);
                 const postfix = this._getCompletion(prefix);
                 if (postfix != null && postfix.length > 0) {
-                    o.insert_text(postfix, -1);
-                    o.set_cursor_position(text.length + postfix.length);
+                    this._entryText.insert_text(postfix, -1);
+                    this._entryText.set_cursor_position(text.length + postfix.length);
                 }
                 return Clutter.EVENT_STOP;
             } else if ([Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_ISO_Enter].includes(symbol)) {
                 this.popModal();
-                this._run(o.get_text(),
-                    Clutter.get_current_event().get_state() & Clutter.ModifierType.CONTROL_MASK);
+                this._run(this._entryText.get_text(),
+                    state & Clutter.ModifierType.CONTROL_MASK);
                 if (!this._commandError ||
                     !this.pushModal())
                     this.close();
@@ -119,6 +136,8 @@ class RunDialog extends ModalDialog.ModalDialog {
             }
             return Clutter.EVENT_PROPAGATE;
         });
+        this._entryText.add_action(entryKeyController);
+
         this._entryText.connect('text-changed', () => {
             this._descriptionLabel.set_text(defaultDescriptionText);
         });
@@ -128,26 +147,6 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._enableInternalCommands =
             !this._parentalControlsManager.anyParentalControlsEnabled &&
             global.settings.get_boolean('development-tools');
-    }
-
-    vfunc_key_press_event(event) {
-        this._pressedKey = event.get_key_symbol();
-    }
-
-    vfunc_key_release_event(event) {
-        const pressedKey = this._pressedKey;
-        this._pressedKey = null;
-
-        const key = event.get_key_symbol();
-        if (key !== pressedKey)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (key === Clutter.KEY_Escape) {
-            this.close();
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _getCommandCompletion(text) {
@@ -268,4 +267,4 @@ class RunDialog extends ModalDialog.ModalDialog {
 
         return super.open();
     }
-});
+}
