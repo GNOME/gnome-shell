@@ -279,6 +279,16 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
+
+        this._altCapture = new Clutter.KeyController({
+            enabled: false,
+        });
+        this._altCapture.connectObject(
+            'key-press', () => this._onKeyCaptured(true),
+            'key-release', () => this._onKeyCaptured(false),
+            this);
+        this.add_action_full(
+            'alt-capture-controller', Clutter.EventPhase.CAPTURE, this._altCapture);
     }
 
     async _getCanRebootToBootLoaderMenu() {
@@ -373,22 +383,13 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._sessionSection.visible = hasSessions;
     }
 
-    _onCapturedEvent(actor, event) {
-        let altEnabled = false;
-
-        const type = event.type();
-        if (type !== Clutter.EventType.KEY_PRESS && type !== Clutter.EventType.KEY_RELEASE)
-            return Clutter.EVENT_PROPAGATE;
-
-        const key = event.get_key_symbol();
+    _onKeyCaptured(pressed) {
+        const [, key] = this._altCapture.get_key();
         if (key !== Clutter.KEY_Alt_L && key !== Clutter.KEY_Alt_R)
             return Clutter.EVENT_PROPAGATE;
 
-        if (type === Clutter.EventType.KEY_PRESS)
-            altEnabled = true;
-
-        this._rebootButton.visible = !altEnabled;
-        this._rebootButtonAlt.visible = altEnabled;
+        this._rebootButton.visible = !pressed;
+        this._rebootButtonAlt.visible = pressed;
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -431,8 +432,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                     label: C_('button', 'Boot Options'),
                 });
                 this._rebootButtonAlt.visible = false;
-                this._capturedEventId = this.connect('captured-event',
-                    this._onCapturedEvent.bind(this));
+                this._altCapture.enabled = true;
             }
         }
     }
