@@ -1375,13 +1375,23 @@ export const LoginDialog = GObject.registerClass({
         this._startTimedLogin(userName, seconds);
 
         // Restart timed login on user interaction
-        global.stage.connect('captured-event', (actor, event) => {
-            if (event.type() === Clutter.EventType.KEY_PRESS ||
-                event.type() === Clutter.EventType.BUTTON_PRESS)
-                this._startTimedLogin(userName, seconds);
+        const clickGesture = new Clutter.ClickGesture({
+            recognize_on_press: true,
+        });
+        clickGesture.connect('may-recognize', () => {
+            this._startTimedLogin(userName, seconds);
+            return false;
+        });
+        global.stage.add_action_full(
+            'timed-login-click-capture', Clutter.EventPhase.CAPTURE, clickGesture);
 
+        const keyController = new Clutter.KeyController();
+        keyController.connect('key-press', () => {
+            this._startTimedLogin(userName, seconds);
             return Clutter.EVENT_PROPAGATE;
         });
+        global.stage.add_action_full(
+            'timed-login-key-capture', Clutter.EventPhase.CAPTURE, keyController);
     }
 
     _setUserListExpanded(expanded) {
