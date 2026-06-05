@@ -1899,16 +1899,21 @@ class AppViewItem extends St.Button {
         if (!layout.is_wrapped() && !layout.is_ellipsized())
             return;
 
-        label.remove_transition('allocation');
+        const expand = this._forcedHighlight || this.hover || this.has_key_focus();
+        if (this._expand === expand)
+            return;
+        this._expand = expand;
 
-        const id = label.connect('notify::allocation', () => {
-            label.restore_easing_state();
-            label.disconnect(id);
+        const leader = expand ? this : label;
+        leader.remove_transition('allocation');
+
+        const id = leader.connect('notify::allocation', () => {
+            leader.restore_easing_state();
+            leader.disconnect(id);
         });
 
-        const expand = this._forcedHighlight || this.hover || this.has_key_focus();
-        label.save_easing_state();
-        label.set_easing_duration(expand
+        leader.save_easing_state();
+        leader.set_easing_duration(expand
             ? APP_ICON_TITLE_EXPAND_TIME
             : APP_ICON_TITLE_COLLAPSE_TIME);
         clutterText.set({
