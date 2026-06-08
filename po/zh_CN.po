@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-04-27 21:22+0000\n"
-"PO-Revision-Date: 2026-05-05 17:49+0800\n"
+"POT-Creation-Date: 2026-05-28 19:26+0000\n"
+"PO-Revision-Date: 2026-06-08 10:18+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -299,7 +299,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
-msgstr "上次选择的非默认性能配置文件"
+msgstr "上次选择的非默认电源配置文件"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
@@ -307,7 +307,7 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"一些系统支持多于两种性能配置文件。为了仍然支持在两种配置文件间切换，该设置键"
+"一些系统支持多于两种电源配置文件。为了仍然支持在两种配置文件间切换，该设置键"
 "记录上次选择的非默认配置文件。"
 
 #: data/org.gnome.shell.gschema.xml.in:113
@@ -605,7 +605,7 @@ msgstr "此设备已达到每日屏幕使用时间的限制。请明天继续。
 msgid "Ignore"
 msgstr "忽略"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -626,12 +626,12 @@ msgstr "密码"
 msgid "Choose Session"
 msgstr "选择会话"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "无障碍"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:474
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -642,7 +642,7 @@ msgstr ""
 "或强行停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:477
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -652,7 +652,7 @@ msgstr ""
 "停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:480
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -663,7 +663,7 @@ msgstr ""
 "或强行停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/loginDialog.js:483
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -671,62 +671,62 @@ msgid ""
 msgstr ""
 "登录不可用，因为 %s 已有会话在运行。要想登录，您必须从会话登出或强行停止它。"
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/loginDialog.js:492
 msgid "Session Already Running"
 msgstr "会话已在运行"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/loginDialog.js:504
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr "强行停止将退出任何正在运行的应用和进程，可能会导致数据丢失"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/loginDialog.js:524
 msgid "Force Stop"
 msgstr "强行停止"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:602
 msgid "Not listed?"
 msgstr "未列出？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1138
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "（如 user 或 %s）"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "用户名"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1209
 msgid "Login Attempt Timed Out"
 msgstr "登录超时"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1210
 msgid "Login took too long, please try again"
 msgstr "登录时间过长，请重试"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1555
 msgid "Login Window"
 msgstr "登录窗口"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:503
 msgid "Authentication error"
 msgstr "认证出错"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
+#: js/gdm/util.js:738
 msgid "(or swipe finger across reader)"
 msgstr "（或将手指划过指纹读取器）"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
+#: js/gdm/util.js:743
 msgid "(or place finger on reader)"
 msgstr "（或将手指置于指纹读取器上）"
 
@@ -2567,12 +2567,12 @@ msgstr "电源模式"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
-msgstr "打开性能配置菜单"
+msgstr "打开电源配置文件菜单"
 
 #: js/ui/status/powerProfiles.js:77
 msgctxt "Quick settings menu header"
 msgid "Power Mode"
-msgstr "性能模式"
+msgstr "电源模式"
 
 #: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
@@ -2671,11 +2671,11 @@ msgstr "声音输出"
 msgid "Open sound output menu"
 msgstr "打开声音输出菜单"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:390
 msgid "Sound Input"
 msgstr "声音输入"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:391
 msgid "Open sound input menu"
 msgstr "打开声音输入菜单"
 
@@ -2914,15 +2914,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr "GNOME 扩展程序可用于升级扩展，配置扩展首选项和移除、禁用不想要的扩展。"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:66
 msgid "Main Window"
 msgstr "主窗口"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Available Updates"
 msgstr "可用更新"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Search View"
 msgstr "搜索视图"
 
