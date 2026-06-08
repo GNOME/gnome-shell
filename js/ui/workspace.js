@@ -707,10 +707,11 @@ export const WorkspaceLayout = GObject.registerClass({
             let workspaceBoxWidth, workspaceBoxHeight;
 
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
-                workspaceBoxX = (child.boundingBox.x - workareaX) * allocationScale;
-                workspaceBoxY = (child.boundingBox.y - workareaY) * allocationScale;
-                workspaceBoxWidth = child.boundingBox.width * allocationScale;
-                workspaceBoxHeight = child.boundingBox.height * allocationScale;
+                const {boundingBox} = child;
+                workspaceBoxX = (boundingBox.x - workareaX) * allocationScale;
+                workspaceBoxY = (boundingBox.y - workareaY) * allocationScale;
+                workspaceBoxWidth = boundingBox.width * allocationScale;
+                workspaceBoxHeight = boundingBox.height * allocationScale;
             } else {
                 workspaceBoxX = workareaX * allocationScale;
                 workspaceBoxY = workareaY * allocationScale;
