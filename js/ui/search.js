@@ -1,3 +1,4 @@
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -110,6 +111,10 @@ class ListSearchResult extends SearchResult {
                 y_align: Clutter.ActorAlign.CENTER,
             });
             content.add_child(this._descriptionLabel);
+
+            this.get_accessible().add_relationship(
+                Atk.RelationType.DESCRIBED_BY,
+                this._descriptionLabel.get_accessible());
 
             this._resultsView.connectObject(
                 'terms-changed', this._highlightTerms.bind(this), this);
