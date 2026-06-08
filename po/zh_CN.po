@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-05-28 19:26+0000\n"
-"PO-Revision-Date: 2026-06-08 10:18+0800\n"
+"POT-Creation-Date: 2026-06-05 20:51+0000\n"
+"PO-Revision-Date: 2026-06-08 10:27+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -605,7 +605,7 @@ msgstr "此设备已达到每日屏幕使用时间的限制。请明天继续。
 msgid "Ignore"
 msgstr "忽略"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
+#: js/gdm/authPrompt.js:256 js/gdm/conflictingSessionDialog.js:94
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -622,16 +622,8 @@ msgstr "取消"
 msgid "Password"
 msgstr "密码"
 
-#: js/gdm/loginDialog.js:327
-msgid "Choose Session"
-msgstr "选择会话"
-
-#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
-msgid "Accessibility"
-msgstr "无障碍"
-
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:474
+#: js/gdm/conflictingSessionDialog.js:50
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -642,7 +634,7 @@ msgstr ""
 "或强行停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:477
+#: js/gdm/conflictingSessionDialog.js:53
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -652,7 +644,7 @@ msgstr ""
 "停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:480
+#: js/gdm/conflictingSessionDialog.js:56
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -663,7 +655,7 @@ msgstr ""
 "或强行停止它。"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:483
+#: js/gdm/conflictingSessionDialog.js:59
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -671,46 +663,54 @@ msgid ""
 msgstr ""
 "登录不可用，因为 %s 已有会话在运行。要想登录，您必须从会话登出或强行停止它。"
 
-#: js/gdm/loginDialog.js:492
+#: js/gdm/conflictingSessionDialog.js:68
 msgid "Session Already Running"
 msgstr "会话已在运行"
 
-#: js/gdm/loginDialog.js:504
+#: js/gdm/conflictingSessionDialog.js:80
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
 msgstr "强行停止将退出任何正在运行的应用和进程，可能会导致数据丢失"
 
-#: js/gdm/loginDialog.js:524
+#: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "强行停止"
 
-#: js/gdm/loginDialog.js:602
+#: js/gdm/loginDialog.js:331
+msgid "Choose Session"
+msgstr "选择会话"
+
+#: js/gdm/loginDialog.js:425 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "无障碍"
+
+#: js/gdm/loginDialog.js:535
 msgid "Not listed?"
 msgstr "未列出？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1138
+#: js/gdm/loginDialog.js:1071
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "（如 user 或 %s）"
 
-#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "用户名"
 
-#: js/gdm/loginDialog.js:1209
+#: js/gdm/loginDialog.js:1142
 msgid "Login Attempt Timed Out"
 msgstr "登录超时"
 
-#: js/gdm/loginDialog.js:1210
+#: js/gdm/loginDialog.js:1143
 msgid "Login took too long, please try again"
 msgstr "登录时间过长，请重试"
 
-#: js/gdm/loginDialog.js:1555
+#: js/gdm/loginDialog.js:1494
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -730,103 +730,103 @@ msgstr "（或将手指划过指纹读取器）"
 msgid "(or place finger on reader)"
 msgstr "（或将手指置于指纹读取器上）"
 
-#: js/misc/breakManager.js:774
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "休息完成提示音"
 
-#: js/misc/breakManager.js:983
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d 秒"
 
-#: js/misc/breakManager.js:989
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分"
 
-#: js/misc/breakManager.js:995
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d 时"
 
-#: js/misc/breakManager.js:1001
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d 天"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "将在 %s 后开始休息"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "即将开始活动休息"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "即将开始眼部休息"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "即将开始休息"
 
-#: js/misc/breakManager.js:1142
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "正在进行活动休息"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1145
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "继续周围活动 %s"
 
-#: js/misc/breakManager.js:1151
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "正在进行眼部休息"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1154
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "继续转移视线 %s"
 
-#: js/misc/breakManager.js:1160
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "正在进行休息"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1163
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "休息时间剩余 %s"
 
-#: js/misc/breakManager.js:1202
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "到活动休息时间了"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1205
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "离开电子设备休息并四处活动 %s"
 
-#: js/misc/breakManager.js:1211
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "到眼部休息时间了"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1214
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -834,62 +834,62 @@ msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] "离开屏幕休息一下。看向至少 6 米远处并保持至少 %s"
 
-#: js/misc/breakManager.js:1220
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "到休息时间了"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1223
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "是时间休息一下了。离开电子设备 %s！"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1247
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "%s 之前您就应该休息一下了"
 
-#: js/misc/breakManager.js:1253
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "休息延误"
 
-#: js/misc/breakManager.js:1269
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "您的休息时间剩余 %s"
 
-#: js/misc/breakManager.js:1275
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "休息中断"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1353
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "延迟"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "跳过"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1397
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "休息"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1460
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "将在 %d 后开始休息"
 
-#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "亮度"
 
@@ -1164,19 +1164,31 @@ msgstr "拒绝"
 msgid "Allow"
 msgstr "允许"
 
-#: js/ui/appDisplay.js:1734
+#: js/ui/appDisplay.js:159
+msgid "App grid"
+msgstr "应用网格"
+
+#: js/ui/appDisplay.js:1737
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
+#: js/ui/appDisplay.js:2558
+msgid "Folder name"
+msgstr "文件夹名称"
+
+#: js/ui/appDisplay.js:2581
+msgid "Edit folder name"
+msgstr "编辑文件夹名称"
+
 #: js/ui/appFavorites.js:104
 #, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "%s 已固定到快捷栏。"
+msgid "%s Pinned to Dash"
+msgstr "%s 已固定到快捷栏"
 
 #: js/ui/appFavorites.js:135
 #, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "%s 已从快捷栏移除。"
+msgid "%s Unpinned From Dash"
+msgstr "%s 已从快捷栏移除"
 
 #: js/ui/appFavorites.js:149 js/ui/main.js:304
 msgid "Undo"
@@ -1231,7 +1243,7 @@ msgstr "耳机"
 msgid "Headset"
 msgstr "耳麦"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "麦克风"
 
@@ -1373,19 +1385,19 @@ msgstr "强制退出"
 msgid "Wait"
 msgstr "等待"
 
-#: js/ui/components/automountManager.js:81
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "外部驱动器已连接"
 
-#: js/ui/components/automountManager.js:93
+#: js/ui/components/automountManager.js:95
 msgid "External drive disconnected"
 msgstr "外部驱动器已断开"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:209
 msgid "Unable to unlock volume"
 msgstr "无法解锁卷"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "安装的 udisks 版本不支持 PIM 设置"
 
@@ -1827,57 +1839,57 @@ msgstr "保持关闭"
 msgid "Keyboard Settings"
 msgstr "键盘设置"
 
-#: js/ui/lookingGlass.js:737
+#: js/ui/lookingGlass.js:738
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:801
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s 没有发出任何错误信息"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:807
 msgid "Hide Errors"
 msgstr "隐藏错误"
 
-#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+#: js/ui/lookingGlass.js:811 js/ui/lookingGlass.js:891
 msgid "Show Errors"
 msgstr "显示错误"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:820
 msgid "Active"
 msgstr "活动"
 
-#: js/ui/lookingGlass.js:822
+#: js/ui/lookingGlass.js:823
 msgid "Inactive"
 msgstr "未活动"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:825
 msgid "Error"
 msgstr "出错"
 
-#: js/ui/lookingGlass.js:826
+#: js/ui/lookingGlass.js:827
 msgid "Out of date"
 msgstr "过时"
 
-#: js/ui/lookingGlass.js:828
+#: js/ui/lookingGlass.js:829
 msgid "Downloading"
 msgstr "正在下载"
 
-#: js/ui/lookingGlass.js:830
+#: js/ui/lookingGlass.js:831
 msgid "Deactivating"
 msgstr "正在停用"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:833
 msgid "Activating"
 msgstr "正在激活"
 
-#: js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:869
 msgid "View Source"
 msgstr "查看源"
 
-#: js/ui/lookingGlass.js:879
+#: js/ui/lookingGlass.js:880
 msgid "Web Page"
 msgstr "网页"
 
@@ -2083,30 +2095,30 @@ msgstr "录屏 %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2109
-msgid "Screencast recorded"
+msgid "Screencast Recorded"
 msgstr "屏幕已录制"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2122
-msgid "Screencast failed to start"
+msgid "Screencast Failed to Start"
 msgstr "录屏启动失败"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2128
-msgid "Screencast ended: Out of disk space"
-msgstr "录屏已结束：磁盘空间不足"
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "录屏失败：磁盘空间不足"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
 #: js/ui/screenshot.js:2134
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "录屏意外结束，请重试"
+msgid "Screencast Failed, Please Try Again"
+msgstr "录屏失败，请重试"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2137
-msgid "Screencast ended unexpectedly"
-msgstr "录屏意外结束"
+msgid "Screencast Failed"
+msgstr "录屏失败"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:2150
@@ -2128,7 +2140,7 @@ msgstr "截图 %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2391
-msgid "Screenshot captured"
+msgid "Screenshot Captured"
 msgstr "已获取截图"
 
 #. Translators: notification body when a screenshot was captured.
@@ -2136,19 +2148,19 @@ msgstr "已获取截图"
 msgid "You can paste the image from the clipboard"
 msgstr "您可以从剪贴板粘贴该图像"
 
-#: js/ui/screenshot.js:2451 js/ui/screenshot.js:2613
+#: js/ui/screenshot.js:2452 js/ui/screenshot.js:2615
 msgid "Screenshot taken"
 msgstr "已获取屏幕截图"
 
-#: js/ui/search.js:850
+#: js/ui/search.js:839
 msgid "Searching"
 msgstr "正在搜索"
 
-#: js/ui/search.js:853
+#: js/ui/search.js:842
 msgid "No results"
 msgstr "无结果"
 
-#: js/ui/search.js:989
+#: js/ui/search.js:978
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2647,35 +2659,35 @@ msgstr "雷电接口授权错误"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "无法授权雷电接口设备：%s"
 
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "音量已变更"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "取消静音"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "静音"
 
-#: js/ui/status/volume.js:297
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "音量"
 
-#: js/ui/status/volume.js:313
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "声音输出"
 
-#: js/ui/status/volume.js:314
+#: js/ui/status/volume.js:315
 msgid "Open sound output menu"
 msgstr "打开声音输出菜单"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:391
 msgid "Sound Input"
 msgstr "声音输入"
 
-#: js/ui/status/volume.js:391
+#: js/ui/status/volume.js:392
 msgid "Open sound input menu"
 msgstr "打开声音输入菜单"
 
@@ -2868,12 +2880,12 @@ msgstr "列出可用的模式"
 msgid "Force animations to be enabled"
 msgstr "强制启用动画"
 
-#: src/shell-app.c:266
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "未知"
 
-#: src/shell-app.c:516
+#: src/shell-app.c:514
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "启动“%s”失败"
@@ -2914,15 +2926,15 @@ msgid ""
 "preferences and removing or disabling unwanted extensions."
 msgstr "GNOME 扩展程序可用于升级扩展，配置扩展首选项和移除、禁用不想要的扩展。"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:66
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
 msgid "Main Window"
 msgstr "主窗口"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
 msgid "Available Updates"
 msgstr "可用更新"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
 msgid "Search View"
 msgstr "搜索视图"
 
@@ -3664,6 +3676,13 @@ msgstr[0] "%u 个输入"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "系统声音"
+
+#, javascript-format
+#~ msgid "%s has been pinned to the dash."
+#~ msgstr "%s 已固定到快捷栏。"
+
+#~ msgid "Screencast ended unexpectedly"
+#~ msgstr "录屏意外结束"
 
 #~ msgctxt "title"
 #~ msgid "Restart & Install Upgrade"
