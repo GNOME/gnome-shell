@@ -1909,6 +1909,7 @@ class AppViewItem extends St.Button {
             leader.disconnect(id);
         });
 
+        this.icon.clip_to_allocation = expand;
         leader.save_easing_state();
         leader.set_easing_duration(expand
             ? APP_ICON_TITLE_EXPAND_TIME
