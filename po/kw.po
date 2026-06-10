@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-05-26 21:02+0000\n"
-"PO-Revision-Date: 2026-05-28 16:03+0100\n"
+"POT-Creation-Date: 2026-06-10 07:51+0000\n"
+"PO-Revision-Date: 2026-06-10 13:32+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Ignore"
 msgstr "Skonya Aswon"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
+#: js/gdm/authPrompt.js:256 js/gdm/conflictingSessionDialog.js:94
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -633,16 +633,8 @@ msgstr "Hedhi"
 msgid "Password"
 msgstr "Ger-tremena"
 
-#: js/gdm/loginDialog.js:327
-msgid "Choose Session"
-msgstr "Dewis Esedhek"
-
-#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
-msgid "Accessibility"
-msgstr "Hedhadewder"
-
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:474
+#: js/gdm/conflictingSessionDialog.js:50
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -654,7 +646,7 @@ msgstr ""
 "esedhek pell po astel gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:477
+#: js/gdm/conflictingSessionDialog.js:53
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -665,7 +657,7 @@ msgstr ""
 "gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:480
+#: js/gdm/conflictingSessionDialog.js:56
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -677,7 +669,7 @@ msgstr ""
 "leel po astel gans nerth."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:483
+#: js/gdm/conflictingSessionDialog.js:59
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -687,11 +679,11 @@ msgstr ""
 "%s. Rag omgelmi, res yw dhywgh omdhigelmi dhyworth an esedhek po astel gans "
 "nerth."
 
-#: js/gdm/loginDialog.js:492
+#: js/gdm/conflictingSessionDialog.js:68
 msgid "Session Already Running"
 msgstr "Esedhek Owth Eksekutya Seulabrys"
 
-#: js/gdm/loginDialog.js:504
+#: js/gdm/conflictingSessionDialog.js:80
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -699,36 +691,44 @@ msgstr ""
 "Owth astel gans nerth a wra kwytya neb appys hag argerdhow owth eksekutya, "
 "hag a wra omsewya martesen yn koll data"
 
-#: js/gdm/loginDialog.js:524
+#: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "Astel gans Nerth"
 
-#: js/gdm/loginDialog.js:602
+#: js/gdm/loginDialog.js:331
+msgid "Choose Session"
+msgstr "Dewis Esedhek"
+
+#: js/gdm/loginDialog.js:425 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Hedhadewder"
+
+#: js/gdm/loginDialog.js:535
 msgid "Not listed?"
 msgstr "Na rolyewgh hwi?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1138
+#: js/gdm/loginDialog.js:1071
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(r.e., devnydhyer po %s)"
 
-#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Hanow Devnydhyer"
 
-#: js/gdm/loginDialog.js:1209
+#: js/gdm/loginDialog.js:1142
 msgid "Login Attempt Timed Out"
 msgstr "Assay Omgelmyans yn Termyn Yn-Mes"
 
-#: js/gdm/loginDialog.js:1210
+#: js/gdm/loginDialog.js:1143
 msgid "Login took too long, please try again"
 msgstr "Omgelmyans kemerys re hir, assayewgh arta mar pleg"
 
-#: js/gdm/loginDialog.js:1555
+#: js/gdm/loginDialog.js:1494
 msgid "Login Window"
 msgstr "Fenester Omgelmyans"
 
@@ -1217,11 +1217,11 @@ msgstr "Rastell app"
 msgid "Unnamed Folder"
 msgstr "Restrenva Dhihenwys"
 
-#: js/ui/appDisplay.js:2558
+#: js/ui/appDisplay.js:2564
 msgid "Folder name"
 msgstr "Hanow restrenva"
 
-#: js/ui/appDisplay.js:2581
+#: js/ui/appDisplay.js:2587
 msgid "Edit folder name"
 msgstr "Golegi hanow restrenva"
 
@@ -2210,15 +2210,15 @@ msgstr "Hwi a yll dasskrifa an skeusen dhyworth an astel glypp"
 msgid "Screenshot taken"
 msgstr "Skrin-Skeusen kemerys"
 
-#: js/ui/search.js:839
+#: js/ui/search.js:844
 msgid "Searching"
 msgstr "Ow Hwilas"
 
-#: js/ui/search.js:842
+#: js/ui/search.js:847
 msgid "No results"
 msgstr "Nyns eus sewyansow"
 
-#: js/ui/search.js:978
+#: js/ui/search.js:983
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2451,7 +2451,7 @@ msgstr "Gis Du"
 
 #: js/ui/status/doNotDisturb.js:10
 msgid "Do Not Disturb"
-msgstr "Nag Ankresyewgh Dhymm"
+msgstr "Fogella"
 
 #: js/ui/status/dwellClick.js:14
 msgid "Single Click"
@@ -2949,12 +2949,12 @@ msgstr "Rolya fordhow galladow"
 msgid "Force animations to be enabled"
 msgstr "Ynia bywheansow dhe vos byw"
 
-#: src/shell-app.c:266
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ankoth"
 
-#: src/shell-app.c:516
+#: src/shell-app.c:514
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Ny yllir lonchya “%s”"
