@@ -734,7 +734,8 @@ export const AuthPrompt = GObject.registerClass({
             this._authList,
         ].find(widget => widget.visible) ?? this._entry;
 
-        if (authWidget.reactive === sensitive)
+        if (authWidget.reactive === sensitive &&
+            (!sensitive || authWidget.has_key_focus()))
             return;
 
         if (authWidget === this._entry)
