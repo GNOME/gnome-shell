@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
 "POT-Creation-Date: 2026-06-10 07:51+0000\n"
-"PO-Revision-Date: 2026-06-10 13:32+0100\n"
+"PO-Revision-Date: 2026-06-15 11:00+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -199,7 +199,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
-msgstr "Marowhe ystynansow dhevnydhyer"
+msgstr "Marowhe ystynansow devnydhyer"
 
 #: data/org.gnome.shell.gschema.xml.in:38
 msgid ""
@@ -608,7 +608,7 @@ msgstr "Finweth Termyn Skrin Hedhys"
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr ""
-"Finweth dhedhyek rag termyn skrin war'n devis ma yw hedhys. Daskemeres a-"
+"Finweth dhedhyek rag termyn skrin war'n devis ma yw hedhys. Daskemerewgh a-"
 "vorow."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
@@ -705,7 +705,7 @@ msgstr "Hedhadewder"
 
 #: js/gdm/loginDialog.js:535
 msgid "Not listed?"
-msgstr "Na rolyewgh hwi?"
+msgstr "Na hwi rolys?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -785,8 +785,8 @@ msgstr[1] "%d dedhyow"
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
-msgstr[0] "Y vydh termyn rag powes yn %s"
-msgstr[1] "Y vydh termyn rag powes yn %s"
+msgstr[0] "Y fydh termyn rag powes yn %s"
+msgstr[1] "Y fydh termyn rag powes yn %s"
 
 #: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
@@ -1414,7 +1414,7 @@ msgstr "Dilea oll gwarnyansow"
 #: js/ui/closeDialog.js:40
 #, javascript-format
 msgid "“%s” Is Not Responding"
-msgstr "“%s” Nyns yw ow Korthebi"
+msgstr "“%s” nag yw ow Korthebi"
 
 #: js/ui/closeDialog.js:41
 msgid ""
@@ -1554,7 +1554,7 @@ msgstr "Omgelmi"
 #. * for instance.
 #: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
 msgid "Sorry, that didn’t work. Please try again."
-msgstr "Drog yw genev, ny oberi henna. Assayewgh arta mar pleg."
+msgstr "Soweth, ny oberys henna. Assayewgh arta mar pleg."
 
 #: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
 msgid "Windows"
@@ -1704,7 +1704,7 @@ msgstr[1] "An system a wra marowhe yn awtomatek yn %d eylennow"
 #: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr "Lea nowedhyansow vedhelweyth ow kortos"
+msgstr "Lea nowedhyansow medhelweyth ow kortos"
 
 #: js/ui/endSessionDialog.js:81
 msgctxt "button"
@@ -1969,7 +1969,7 @@ msgid ""
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 "Owth eksekutya esedhek avel devndyhyer pryvylejek a kodh avodys rag resons "
-"sawder. Mars yw galladow, hwi kodh omgelmi avel devnydhyer normal."
+"sawder. Mars yw galladow, res yw dhywgh omgelmi avel devnydhyer normal."
 
 #: js/ui/main.js:411
 msgid "Screen Lock disabled"
@@ -2149,7 +2149,7 @@ msgstr "Skrin-Gwydhyowyow"
 #: js/ui/screenshot.js:2063
 #, no-c-format
 msgid "Screencast From %d %t"
-msgstr "Skrin-Deghesyans A-Dhia %d %t"
+msgstr "Skrin-Deghesyans a-dhia %d %t"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2109
@@ -2194,7 +2194,7 @@ msgstr "Diskwedhes yn Restrennow"
 #: js/ui/screenshot.js:2347
 #, javascript-format
 msgid "Screenshot From %s"
-msgstr "Skrin-Skeusen A-Dhia %s"
+msgstr "Skrin-Skeusen a-dhia %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2391
@@ -2705,8 +2705,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"Yth esa devis nowydh helerghys ha hwi o dhe-ves. Disjunyewgh ha dasjunyewgh "
-"an devis mar pleg rag dalleth ow tevnydhya."
+"Yth esa devis nowydh helerghys hag yth esewgh dhe-ves. Disjunyewgh ha "
+"dasjunyewgh an devis mar pleg rag dalleth ow tevnydhya."
 
 #: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
@@ -2720,7 +2720,7 @@ msgstr ""
 
 #: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
-msgstr "Error omgelmyans Thunderbolt"
+msgstr "Kamm omgelmyans Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:322
 #, javascript-format
