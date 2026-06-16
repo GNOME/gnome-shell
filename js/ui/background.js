@@ -518,7 +518,7 @@ const Background = GObject.registerClass({
             return;
         }
 
-        this._loadFile(this._file);
+        this._loadFile(this._file).catch(logError);
     }
 });
 
