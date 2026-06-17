@@ -674,7 +674,8 @@ st_entry_key_press_event (ClutterActor *actor,
       ((state & CLUTTER_CONTROL_MASK)
        && keyval == CLUTTER_KEY_V) ||
       ((state & CLUTTER_SHIFT_MASK)
-       && keyval == CLUTTER_KEY_Insert))
+       && keyval == CLUTTER_KEY_Insert) ||
+      (keyval == CLUTTER_KEY_Paste))
     {
       StClipboard *clipboard;
 
@@ -689,8 +690,9 @@ st_entry_key_press_event (ClutterActor *actor,
     }
 
   /* copy */
-  if ((state & CLUTTER_CONTROL_MASK)
-      && (keyval == CLUTTER_KEY_c || keyval == CLUTTER_KEY_C) &&
+  if ((((state & CLUTTER_CONTROL_MASK)
+        && (keyval == CLUTTER_KEY_c || keyval == CLUTTER_KEY_C)) ||
+       (keyval == CLUTTER_KEY_Copy)) &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
@@ -712,8 +714,9 @@ st_entry_key_press_event (ClutterActor *actor,
 
 
   /* cut */
-  if ((state & CLUTTER_CONTROL_MASK)
-      && (keyval == CLUTTER_KEY_x || keyval == CLUTTER_KEY_X) &&
+  if ((((state & CLUTTER_CONTROL_MASK)
+        && (keyval == CLUTTER_KEY_x || keyval == CLUTTER_KEY_X)) ||
+      (keyval == CLUTTER_KEY_Cut)) &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
