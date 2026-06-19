@@ -1474,7 +1474,7 @@ on_activate_action_cb (GObject      *source,
                        GAsyncResult *res,
                        gpointer      user_data)
 {
-  GTask *task = G_TASK (user_data);
+  g_autoptr (GTask) task = G_TASK (user_data);
   g_autoptr (GVariant) value = NULL;
   g_autoptr (GError) error = NULL;
 
@@ -1492,12 +1492,14 @@ activate_action_get_bus_cb (GObject      *object,
                             GAsyncResult *result,
                             gpointer      user_data)
 {
-  GTask *task = G_TASK (user_data);
+  g_autoptr (GTask) task = G_TASK (user_data);
   ShellApp *app = NULL;
   g_autoptr (GDBusConnection) session_bus = NULL;
   g_autoptr (GError) error = NULL;
   g_autofree gchar *object_path = NULL;
   g_autofree gchar *app_id = NULL;
+  GVariant *task_data = NULL;
+  GCancellable *cancellable = NULL;
   gchar *last_dot;
 
   session_bus = g_bus_get_finish (result, &error);
@@ -1516,14 +1518,16 @@ activate_action_get_bus_cb (GObject      *object,
       *last_dot = '\0';
 
   object_path = object_path_from_app_id (app_id);
+  task_data = g_task_get_task_data (task);
+  cancellable = g_task_get_cancellable (task);
 
   g_dbus_connection_call (session_bus,
                           app_id, object_path,
                           "org.freedesktop.Application", "ActivateAction",
-                          g_task_get_task_data (task),
+                          task_data,
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1,
-                          g_task_get_cancellable (task),
-                          on_activate_action_cb, task);
+                          cancellable,
+                          on_activate_action_cb, g_steal_pointer (&task));
 }
 
 
