@@ -1548,12 +1548,12 @@ activate_action_get_bus_cb (GObject      *object,
   object_path = object_path_from_app_id (app_id);
 
   g_dbus_connection_call (session_bus,
-                           app_id, object_path,
-                           "org.freedesktop.Application", "ActivateAction",
-                           g_task_get_task_data (task),
-                           NULL, G_DBUS_CALL_FLAGS_NONE, -1,
-                           g_task_get_cancellable (task),
-                           on_activate_action_cb, task);
+                          app_id, object_path,
+                          "org.freedesktop.Application", "ActivateAction",
+                          g_task_get_task_data (task),
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                          g_task_get_cancellable (task),
+                          on_activate_action_cb, task);
 }
 
 
