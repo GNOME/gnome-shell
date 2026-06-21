@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-04-27 21:22+0000\n"
-"PO-Revision-Date: 2026-05-14 20:16+0300\n"
+"POT-Creation-Date: 2026-05-28 19:26+0000\n"
+"PO-Revision-Date: 2026-06-21 19:29+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Ignore"
 msgstr "Ігнараваць"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -630,12 +630,12 @@ msgstr "Пароль"
 msgid "Choose Session"
 msgstr "Выбраць сеанс"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Спецыяльныя магчымасці"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:474
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -646,7 +646,7 @@ msgstr ""
 "аддаленага ўваходу ў сістэму, патрабуецца з яго выйсці або прымусова спыніць."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:477
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -656,7 +656,7 @@ msgstr ""
 "Каб увайсці ў сістэму, патрабуецца з яго выйсці або прымусова спыніць."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:480
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -667,7 +667,7 @@ msgstr ""
 "аддаленага ўваходу ў сістэму, патрабуецца з яго выйсці або прымусова спыніць."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/loginDialog.js:483
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -676,11 +676,11 @@ msgstr ""
 "Уваход у сістэму немагчымы, таму што сеанс для %s ужо запушчаны. Для ўваходу "
 "ў сістэму, патрабуецца з яго выйсці або прымусова спыніць."
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/loginDialog.js:492
 msgid "Session Already Running"
 msgstr "Сеанс ужо запушчаны"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/loginDialog.js:504
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -688,52 +688,52 @@ msgstr ""
 "Прымусовае спыненне прывядзе да завяршэння запушчаных праграм і працэсаў, а "
 "таксама можа прывесці да страты даных"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/loginDialog.js:524
 msgid "Force Stop"
 msgstr "Прымусова спыніць"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:602
 msgid "Not listed?"
 msgstr "Няма ў спісе?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1138
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(напр. карыстальнік ці %s)"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Імя карыстальніка"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1209
 msgid "Login Attempt Timed Out"
 msgstr "Скончыўся тэрмін чакання ўваходу ў сістэму"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1210
 msgid "Login took too long, please try again"
 msgstr "Уваход у сістэму заняў занадта шмат часу, паўтарыце спробу"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1555
 msgid "Login Window"
 msgstr "Акно ўваходу ў сістэму"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:503
 msgid "Authentication error"
 msgstr "Памылка праверкі сапраўднасці"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
+#: js/gdm/util.js:738
 msgid "(or swipe finger across reader)"
 msgstr "(або правядзіце пальцам па чытальніку)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
+#: js/gdm/util.js:743
 msgid "(or place finger on reader)"
 msgstr "(або прыкладзіце палец да чытальніка)"
 
@@ -2638,7 +2638,7 @@ msgstr "Прадукцыйнасць"
 #: js/ui/status/powerProfiles.js:24
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr "Збалансаваны"
+msgstr "Баланс"
 
 #: js/ui/status/powerProfiles.js:29
 msgctxt "Power profile"
@@ -2650,17 +2650,15 @@ msgctxt "Power profile"
 msgid "Custom"
 msgstr "Уласны"
 
-# Трэба Рэжым сілкавання, але ўлазіць толькі Рэжым сіл... або Рэжым с...
 #: js/ui/status/powerProfiles.js:45
 msgctxt "Quick settings button title"
 msgid "Power Mode"
-msgstr "Рэжым сілкавання"
+msgstr "Сілкаванне"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
 msgstr "Адкрыць меню рэжымаў сілкавання"
 
-# Трэба Рэжым сілкавання, але ўлазіць толькі Рэжым сіл... або Рэжым с...
 #: js/ui/status/powerProfiles.js:77
 msgctxt "Quick settings menu header"
 msgid "Power Mode"
@@ -2765,11 +2763,11 @@ msgstr "Аўдыявыхад"
 msgid "Open sound output menu"
 msgstr "Адкрыць меню аўдыявыхада"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:390
 msgid "Sound Input"
 msgstr "Аўдыяўваход"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:391
 msgid "Open sound input menu"
 msgstr "Адкрыць меню аўдыяўвахода"
 
@@ -3013,15 +3011,15 @@ msgstr ""
 "Пашырэнні GNOME ажыццяўляюць абнаўленне і змяненне параметраў пашырэнняў, "
 "выдаленне або адключэнне непажаданых пашырэнняў."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:66
 msgid "Main Window"
 msgstr "Галоўнае акно"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
 msgid "Available Updates"
 msgstr "Даступны абнаўленні"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
 msgid "Search View"
 msgstr "Пошук"
 
