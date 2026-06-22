@@ -490,7 +490,7 @@ class FocusTracker extends Signals.EventEmitter {
                 this._setCurrentWindow(global.display.focus_window);
                 this.emit('window-changed', this._currentWindow);
             },
-            'grab-op-begin', (display, window, op) => {
+            'grab-op-begin', (display, window, op, _sprite) => {
                 if (window === this._currentWindow &&
                     (op === Meta.GrabOp.MOVING || op === Meta.GrabOp.KEYBOARD_MOVING))
                     this.emit('window-grabbed');
