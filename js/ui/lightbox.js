@@ -51,7 +51,7 @@ const RadialShaderEffect = GObject.registerClass({
     }
 
     vfunc_get_static_snippet() {
-        const snippet = new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT,
+        const snippet = Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT,
             VIGNETTE_DECLARATIONS, null);
         snippet.set_replace(VIGNETTE_CODE);
         return snippet;

@@ -2072,7 +2072,7 @@ const FadeEffect = GObject.registerClass({
 
                      cogl_color_out *= ratio;                                                             \n`;
 
-        const snippet = new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT, dec, null);
+        const snippet = Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT, dec, null);
         snippet.set_replace(src);
         return snippet;
     }

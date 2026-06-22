@@ -3039,7 +3039,7 @@ const RecolorEffect = GObject.registerClass({
             cogl_color_out.rgb =                                    \n
               mix(recolor_color, cogl_color_out.rgb, blend);        \n`;
 
-        return new Cogl.Snippet(Cogl.SnippetHook.FRAGMENT, decl, src);
+        return Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT, decl, src);
     }
 });
 
