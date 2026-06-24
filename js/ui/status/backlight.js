@@ -56,12 +56,8 @@ const SliderItem = GObject.registerClass({
         this.notify('value');
     }
 
-    vfunc_key_press_event(event) {
-        const key = event.get_key_symbol();
-        if (key === Clutter.KEY_Left || key === Clutter.KEY_Right)
-            return this._slider.vfunc_key_press_event(event);
-        else
-            return super.vfunc_key_press_event(event);
+    vfunc_navigate_focus(from, direction) {
+        return this._slider.navigate_focus(from, direction, false);
     }
 });
 
