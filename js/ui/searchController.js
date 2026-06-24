@@ -101,10 +101,12 @@ export const SearchController = GObject.registerClass({
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
+            this._text.set_input_interceptor(global.stage);
             this._stageKeyPressId =
                 global.stage.connect('key-press-event', this._onStageKeyPress.bind(this));
         });
         Main.overview.connect('hiding', () => {
+            this._text.set_input_interceptor(null);
             if (this._stageKeyPressId !== 0) {
                 global.stage.disconnect(this._stageKeyPressId);
                 this._stageKeyPressId = 0;
@@ -161,8 +163,6 @@ export const SearchController = GObject.registerClass({
             else
                 Main.overview.hide();
             return Clutter.EVENT_STOP;
-        } else if (this._shouldTriggerSearch(symbol)) {
-            this.startSearch(event);
         }
         return Clutter.EVENT_PROPAGATE;
     }
@@ -219,28 +219,6 @@ export const SearchController = GObject.registerClass({
             // Disable 'find-as-you-type'
             global.stage.remove_action(this._clickGesture);
         }
-    }
-
-    _shouldTriggerSearch(symbol) {
-        if (symbol === Clutter.KEY_Multi_key)
-            return true;
-
-        if (symbol === Clutter.KEY_BackSpace && this._searchActive)
-            return true;
-
-        const unicode = Clutter.keysym_to_unicode(symbol);
-        if (unicode === 0)
-            return false;
-
-        if (getTermsForSearchString(String.fromCharCode(unicode)).length > 0)
-            return true;
-
-        return false;
-    }
-
-    startSearch(event) {
-        global.stage.set_key_focus(this._text);
-        this._text.event(event, false);
     }
 
     // the entry does not show the hint
