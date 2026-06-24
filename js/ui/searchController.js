@@ -59,6 +59,9 @@ export const SearchController = GObject.registerClass({
         this._text.connect('key-focus-out', () => {
             this._searchResults.highlightDefault(false);
         });
+        this._text.connect('activate', () => {
+            this._searchResults.activateDefault();
+        });
         this._entry.connect('popup-menu', () => {
             if (!this._searchActive)
                 return;
@@ -301,9 +304,6 @@ export const SearchController = GObject.registerClass({
                 return Clutter.EVENT_STOP;
             } else if (symbol === arrowNext && this._text.cursor_position === -1) {
                 this._searchResults.navigateFocus(nextDirection);
-                return Clutter.EVENT_STOP;
-            } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
-                this._searchResults.activateDefault();
                 return Clutter.EVENT_STOP;
             }
         }
