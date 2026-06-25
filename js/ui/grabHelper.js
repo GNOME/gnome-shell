@@ -178,12 +178,6 @@ export class GrabHelper {
             this._owner.add_action_full(
                 'grab-helper-key-capture', Clutter.EventPhase.CAPTURE,
                 this._keyController);
-
-            this._capturedEventId = this._owner.connect('captured-event',
-                (actor, event) => {
-                    Main.keyboard.maybeHandleEvent(event);
-                    return Clutter.EVENT_PROPAGATE;
-                });
         }
 
         this._modalCount++;

@@ -1563,13 +1563,6 @@ export class LookingGlass extends St.BoxLayout {
         this._resize();
     }
 
-    vfunc_captured_event(event) {
-        if (Main.keyboard.maybeHandleEvent(event))
-            return Clutter.EVENT_STOP;
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     setBorderPaintTarget(obj) {
         if (this._borderPaintTarget != null)
             this._borderPaintTarget.remove_effect(this._redBorderEffect);

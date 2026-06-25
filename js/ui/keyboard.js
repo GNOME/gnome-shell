@@ -1026,22 +1026,6 @@ export class KeyboardManager extends Signals.EventEmitter {
     setSuggestionsVisible(visible) {
         this._keyboard?.setSuggestionsVisible(visible);
     }
-
-    maybeHandleEvent(event) {
-        if (!this._keyboard)
-            return false;
-
-        const actor = global.stage.get_event_actor(event);
-
-        if (Main.layoutManager.keyboardBox.contains(actor) ||
-            !!actor._extendedKeys || !!actor.extendedKey) {
-            actor.event(event, true);
-            actor.event(event, false);
-            return true;
-        }
-
-        return false;
-    }
 }
 
 export const Keyboard = GObject.registerClass({

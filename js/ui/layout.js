@@ -303,7 +303,7 @@ export const LayoutManager = GObject.registerClass({
             reactive: true,
             track_hover: true,
         });
-        this.addTopChrome(this.keyboardBox);
+        inputPanelGroup.add_child(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
         this.screenshotUIGroup = new St.Widget({

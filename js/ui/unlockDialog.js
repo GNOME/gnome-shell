@@ -695,13 +695,6 @@ export const UnlockDialog = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_captured_event(event) {
-        if (Main.keyboard.maybeHandleEvent(event))
-            return Clutter.EVENT_STOP;
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     _createBackground(monitorIndex) {
         const monitor = Main.layoutManager.monitors[monitorIndex];
         const widget = new St.Widget({
