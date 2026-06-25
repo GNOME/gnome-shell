@@ -486,32 +486,32 @@ const UIAreaSelector = GObject.registerClass({
             let snapY = this._dragStartY;
 
             switch (cursor) {
-            case Clutter.CursorType.NW_RESIZE:
+            case Meta.Cursor.NW_RESIZE:
                 snapX = leftX;
                 snapY = topY;
                 break;
-            case Clutter.CursorType.NE_RESIZE:
+            case Meta.Cursor.NE_RESIZE:
                 snapX = rightX;
                 snapY = topY;
                 break;
-            case Clutter.CursorType.SW_RESIZE:
+            case Meta.Cursor.SW_RESIZE:
                 snapX = leftX;
                 snapY = bottomY;
                 break;
-            case Clutter.CursorType.SE_RESIZE:
+            case Meta.Cursor.SE_RESIZE:
                 snapX = rightX;
                 snapY = bottomY;
                 break;
-            case Clutter.CursorType.N_RESIZE:
+            case Meta.Cursor.N_RESIZE:
                 snapY = topY;
                 break;
-            case Clutter.CursorType.S_RESIZE:
+            case Meta.Cursor.S_RESIZE:
                 snapY = bottomY;
                 break;
-            case Clutter.CursorType.W_RESIZE:
+            case Meta.Cursor.W_RESIZE:
                 snapX = leftX;
                 break;
-            case Clutter.CursorType.E_RESIZE:
+            case Meta.Cursor.E_RESIZE:
                 snapX = rightX;
                 break;
             }
