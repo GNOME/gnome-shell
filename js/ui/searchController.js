@@ -52,7 +52,6 @@ export const SearchController = GObject.registerClass({
 
         this._text = this._entry.clutter_text;
         this._text.connect('text-changed', this._onTextChanged.bind(this));
-        this._text.connect('key-press-event', this._onKeyPress.bind(this));
         this._text.connect('key-focus-in', () => {
             this._searchResults.highlightDefault(true);
         });
@@ -82,6 +81,12 @@ export const SearchController = GObject.registerClass({
             icon_name: 'edit-clear-symbolic',
         });
 
+        this._searchEntryKeyController = new Clutter.KeyController();
+        this._searchEntryKeyController.connect('key-press', () => this._onKeyPress());
+        this._entry.add_action_full(
+            'search-key-selection', Clutter.EventPhase.CAPTURE,
+            this._searchEntryKeyController);
+
         this._iconClickedId = 0;
 
         this._searchResults = new Search.SearchResultsView();
@@ -99,18 +104,16 @@ export const SearchController = GObject.registerClass({
 
         global.focus_manager.add_group(this._searchResults);
 
-        this._stageKeyPressId = 0;
+        this._stageKeyController = new Clutter.KeyController();
+        this._stageKeyController.connect('key-press', () => this._onStageKeyPress());
+
         Main.overview.connect('showing', () => {
             this._text.set_input_interceptor(global.stage);
-            this._stageKeyPressId =
-                global.stage.connect('key-press-event', this._onStageKeyPress.bind(this));
+            global.stage.add_action(this._stageKeyController);
         });
         Main.overview.connect('hiding', () => {
             this._text.set_input_interceptor(null);
-            if (this._stageKeyPressId !== 0) {
-                global.stage.disconnect(this._stageKeyPressId);
-                this._stageKeyPressId = 0;
-            }
+            global.stage.remove_action(this._stageKeyController);
         });
 
         // Will be connected to the stage when active
@@ -147,13 +150,13 @@ export const SearchController = GObject.registerClass({
         this._setSearchActive(false);
     }
 
-    _onStageKeyPress(actor, event) {
+    _onStageKeyPress() {
         // Ignore events while anything but the overview has
         // pushed a modal (system modals, looking glass, ...)
         if (Main.modalCount > 1)
             return Clutter.EVENT_PROPAGATE;
 
-        const symbol = event.get_key_symbol();
+        const [, symbol] = this._stageKeyController.get_key();
 
         if (symbol === Clutter.KEY_Escape) {
             if (this._searchActive)
@@ -252,8 +255,8 @@ export const SearchController = GObject.registerClass({
         }
     }
 
-    _onKeyPress(entry, event) {
-        const symbol = event.get_key_symbol();
+    _onKeyPress() {
+        const [, symbol] = this._searchEntryKeyController.get_key();
         if (symbol === Clutter.KEY_Escape) {
             if (this._isActivated()) {
                 this.reset();
@@ -261,7 +264,7 @@ export const SearchController = GObject.registerClass({
             }
         } else if (this._searchActive) {
             let arrowNext, nextDirection;
-            if (entry.get_text_direction() === Clutter.TextDirection.RTL) {
+            if (this._entry.get_text_direction() === Clutter.TextDirection.RTL) {
                 arrowNext = Clutter.KEY_Left;
                 nextDirection = St.DirectionType.LEFT;
             } else {
