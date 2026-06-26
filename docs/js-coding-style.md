@@ -290,6 +290,16 @@ If your usage of an object is like a hash table (and thus conceptually the keys
 can have special chars in them), don't use quotes, but use brackets:
 `{bar: 42}`, `foo['bar']`.
 
+## Variable naming
+
+We use javaStyle variable names, with CamelCase for type names and lowerCamelCase
+for variable and method names. However, when calling a C method with underscore-based
+names via introspection, we just keep them looking as they do in C for simplicity.
+
+Private variables, whether object member variables or module-scoped variables,
+should begin with `_`. You must not access private symbols externally, although
+using them from subclasses is acceptable.
+
 ## Animations
 
 Most objects that are animated are actors, and most properties used in animations
