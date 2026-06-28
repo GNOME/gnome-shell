@@ -1,8 +1,6 @@
 include:
   - project: 'GNOME/citemplates'
     file: 'templates/default-rules.yml'
-  - project: 'GNOME/citemplates'
-    file: 'flatpak/flatpak_ci_initiative.yml'
   - project: 'Infrastructure/freedesktop-ci-templates'
     file: 'templates/fedora.yml'
     ref: '057b052e682d8e5a20c1eb2dd60d5b87d2b56856'
@@ -233,24 +231,6 @@ test-coverity:
     key: coverity-tarball
     paths:
       - coverity
-
-flatpak:
-  stage: build
-  needs: ["check-commit-log"]
-  variables:
-    SUBPROJECT: "subprojects/extensions-app"
-    # Your manifest path
-    MANIFEST_PATH: "$SUBPROJECT/build-aux/flatpak/org.gnome.Extensions.json"
-    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    FLATPAK_MODULE: "gnome-extensions-app"
-    APP_ID: "org.gnome.Extensions.Devel"
-    BUNDLE: "extensions-git.flatpak"
-  extends: .flatpak
-
-nightly:
-  extends: '.publish_nightly'
-  needs:
-    - flatpak
 
 dist:
   variables:
