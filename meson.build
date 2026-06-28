@@ -294,19 +294,6 @@ if get_option('extensions_tool')
   )
 endif
 
-if get_option('extensions_app')
-  extensions_app = subproject('extensions-app',
-    default_options: [
-      'package_name=@0@'.format(meson.project_name()),
-    ]
-  )
-
-  extensions_app_version = extensions_app.get_variable('package_version')
-  assert(extensions_app_version == meson.project_version(),
-    'Extensions app version does not match project version'
-  )
-endif
-
 if get_option('tests')
   common_test_env = environment()
   common_test_env.set('GSETTINGS_SCHEMA_DIR', meson.project_build_root() / 'data')
@@ -349,7 +336,6 @@ summary_options = {
   'camera_monitor': get_option('camera_monitor'),
   'networkmanager': get_option('networkmanager'),
   'systemd': get_option('systemd'),
-  'extensions_app': get_option('extensions_app'),
   'extensions_tool': get_option('extensions_tool'),
   'man': get_option('man'),
   'gtk_doc': get_option('gtk_doc'),

@@ -72,15 +72,6 @@ export default defineConfig([
             },
         },
     }, {
-        files: ['subprojects/extensions-app/js/**'],
-        languageOptions: {
-            globals: {
-                _: 'readonly',
-                C_: 'readonly',
-                N_: 'readonly',
-            },
-        },
-    }, {
         // doc snippets, disable rules that depend on wider context
         files: ['tmp.*/*.js'],
         rules:  {

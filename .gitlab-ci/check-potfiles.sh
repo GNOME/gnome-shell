@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 srcdirs="src subprojects/extensions-tool"
-uidirs="js subprojects/extensions-app"
-desktopdirs="data subprojects/extensions-app/ subprojects/extensions-tool"
+uidirs="js"
+desktopdirs="data subprojects/extensions-tool"
 
 # find source files that contain gettext keywords
 files=$(grep -lR --include='*.c' '\(gettext\|[^I_)]_\)(' $srcdirs)
