@@ -148,7 +148,7 @@ got_switcheroo_control_gpus_property_cb (GObject      *source_object,
 {
   ShellGlobal *global;
   GError *error = NULL;
-  GVariant *gpus;
+  g_autoptr (GVariant) gpus = NULL;
 
   gpus = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
                                         res, &error);
