@@ -1,3 +1,17 @@
+49.8
+====
+* Fix regression in screenshot area resizing [Sebastian; !4265]
+* Announce search result description to screen readers [Lukáš; !4251]
+* Improve animation when expanding app grid label [Daniel; !4247]
+* Fix spacing in lock screen media notifications [Florian; !4217]
+* Plugged leak [Alessandro; !4258]
+* Misc. bug fixes and cleanups [Swagtoy, Andre, Alessandro, Florian;
+  !4233, !4250, !4253, !4204]
+
+Contributors:
+  Alessandro Bono, Sebastian Keller, Florian Müllner, Andre Nijman, Swagtoy,
+  Lukáš Tyrychtr, Daniel van Vugt
+
 49.7
 ====
 * Fix extending screenshot area selection to monitor edges [Ramez; !4158]
