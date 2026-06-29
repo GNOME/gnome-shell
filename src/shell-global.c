@@ -147,7 +147,7 @@ got_switcheroo_control_gpus_property_cb (GObject      *source_object,
                                          gpointer      user_data)
 {
   ShellGlobal *global;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
   g_autoptr (GVariant) gpus = NULL;
 
   gpus = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
@@ -156,7 +156,6 @@ got_switcheroo_control_gpus_property_cb (GObject      *source_object,
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         g_debug ("Could not get GPUs property from switcheroo-control: %s", error->message);
-      g_clear_error (&error);
       return;
     }
 
@@ -171,16 +170,15 @@ switcheroo_control_ready_cb (GObject      *source_object,
                              gpointer      user_data)
 {
   ShellGlobal *global;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
   ShellNetHadessSwitcherooControl *control;
-  g_auto(GStrv) cached_props = NULL;
+  g_auto (GStrv) cached_props = NULL;
 
   control = shell_net_hadess_switcheroo_control_proxy_new_for_bus_finish (res, &error);
   if (!control)
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         g_debug ("Could not get switcheroo-control GDBusProxy: %s", error->message);
-      g_clear_error (&error);
       return;
     }
 
@@ -359,8 +357,9 @@ shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
   const char *shell_js = g_getenv("GNOME_SHELL_JS");
-  char *imagedir, **search_path;
-  char *path;
+  g_autofree char *imagedir = NULL;
+  g_auto (GStrv) search_path = NULL;
+  g_autofree char *path = NULL;
   const char *byteorder_string;
 
   if (!datadir)
@@ -373,12 +372,9 @@ shell_global_init (ShellGlobal *global)
    */
   imagedir = g_build_filename (datadir, "images/", NULL);
   if (g_file_test (imagedir, G_FILE_TEST_IS_DIR))
-    global->imagedir = imagedir;
+    global->imagedir = g_steal_pointer (&imagedir);
   else
-    {
-      g_free (imagedir);
-      global->imagedir = g_strdup_printf ("%s/", datadir);
-    }
+    global->imagedir = g_strdup_printf ("%s/", datadir);
 
   /* Ensure config dir exists for later use */
   global->userdatadir = g_build_filename (g_get_user_data_dir (), "gnome-shell", NULL);
@@ -398,7 +394,6 @@ shell_global_init (ShellGlobal *global)
                           g_getenv ("DISPLAY"));
   (void) g_mkdir_with_parents (path, 0700);
   global->runtime_state_path = g_file_new_for_path (path);
-  g_free (path);
 
   global->settings = g_settings_new ("org.gnome.shell");
 
@@ -441,8 +436,6 @@ shell_global_init (ShellGlobal *global)
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
                                      NULL);
-
-  g_strfreev (search_path);
 
   global->save_ops = g_hash_table_new_full (g_file_hash,
                                             (GEqualFunc) g_file_equal,
@@ -1261,7 +1254,7 @@ static gboolean
 run_leisure_functions (gpointer data)
 {
   ShellGlobal *global = data;
-  GSList *closures;
+  g_autoptr (GSList) closures = NULL;
   GSList *iter;
 
   global->leisure_function_id = 0;
@@ -1286,8 +1279,6 @@ run_leisure_functions (gpointer data)
 
       g_free (closure);
     }
-
-  g_slist_free (closures);
 
   return G_SOURCE_REMOVE;
 }
@@ -1439,7 +1430,7 @@ delete_variant_cb (GObject      *object,
                    gpointer      user_data)
 {
   ShellGlobal *global = user_data;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
 
   if (!g_file_delete_finish (G_FILE (object), result, &error))
     {
@@ -1449,8 +1440,6 @@ delete_variant_cb (GObject      *object,
           g_warning ("Could not delete runtime/persistent state file: %s\n",
                      error->message);
         }
-
-      g_error_free (error);
     }
 
   g_hash_table_remove (global->save_ops, object);
@@ -1511,7 +1500,7 @@ replace_variant_cb (GObject      *object,
                     gpointer      user_data)
 {
   ShellGlobal *global = user_data;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
 
   if (!replace_contents_finish (G_FILE (object), result, &error))
     {
@@ -1520,8 +1509,6 @@ replace_variant_cb (GObject      *object,
           g_warning ("Could not replace runtime/persistent state file: %s\n",
                      error->message);
         }
-
-      g_error_free (error);
     }
 
   g_hash_table_remove (global->save_ops, object);
@@ -1533,9 +1520,10 @@ save_variant (ShellGlobal *global,
               const char  *property_name,
               GVariant    *variant)
 {
-  GFile *path = g_file_get_child (dir, property_name);
+  g_autoptr (GFile) path = NULL;
   GCancellable *cancellable;
 
+  path = g_file_get_child (dir, property_name);
   cancellable = g_hash_table_lookup (global->save_ops, path);
   g_cancellable_cancel (cancellable);
 
@@ -1563,8 +1551,6 @@ save_variant (ShellGlobal *global,
        */
       replace_contents_async (path, bytes, cancellable, replace_variant_cb, global);
     }
-
-  g_object_unref (path);
 }
 
 static GVariant *
@@ -1573,11 +1559,12 @@ load_variant (GFile      *dir,
               const char *property_name)
 {
   GVariant *res = NULL;
-  GMappedFile *mfile;
-  GFile *path = g_file_get_child (dir, property_name);
-  char *pathstr;
-  GError *local_error = NULL;
+  g_autoptr (GMappedFile) mfile = NULL;
+  g_autoptr (GFile) path = NULL;
+  g_autofree char *pathstr = NULL;
+  g_autoptr (GError) local_error = NULL;
 
+  path = g_file_get_child (dir, property_name);
   pathstr = g_file_get_path (path);
   mfile = g_mapped_file_new (pathstr, FALSE, &local_error);
   if (!mfile)
@@ -1586,18 +1573,12 @@ load_variant (GFile      *dir,
         {
           g_warning ("Failed to open runtime state: %s", local_error->message);
         }
-      g_clear_error (&local_error);
     }
   else
     {
-      GBytes *bytes = g_mapped_file_get_bytes (mfile);
+      g_autoptr (GBytes) bytes = g_mapped_file_get_bytes (mfile);
       res = g_variant_new_from_bytes (G_VARIANT_TYPE (property_type), bytes, FALSE);
-      g_bytes_unref (bytes);
-      g_mapped_file_unref (mfile);
     }
-
-  g_object_unref (path);
-  g_free (pathstr);
 
   return res;
 }
