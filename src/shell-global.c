@@ -470,6 +470,7 @@ shell_global_finalize (GObject *object)
   g_clear_object (&global->app_system);
   g_clear_object (&global->app_cache);
   g_clear_object (&global->app_usage);
+  g_clear_object (&global->wm);
 
   g_clear_handle_id (&global->before_paint_id,
                      clutter_threads_remove_repaint_func);
