@@ -1277,7 +1277,7 @@ run_leisure_functions (gpointer data)
 
   for (iter = closures; iter; iter = iter->next)
     {
-      LeisureClosure *closure = closures->data;
+      LeisureClosure *closure = iter->data;
       closure->func (closure->user_data);
 
       if (closure->notify)
