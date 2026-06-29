@@ -1,3 +1,58 @@
+51.alpha
+========
+* Fix extending screenshot area selection to monitor edges [Ramez; !4158]
+* Fix faulty German translations of several date/time formats
+  [Andre K.; Translation/de#88]
+* Don't notify dash elements twice to screen reader [Sergio; !4182]
+* Add rate control to VA-API H.264 screencast pipelines [Mikhail; !4171]
+* Fix showing “Install Updates” checkbox in power-off/restart dialog
+  [Milan; !4185, !4188]
+* Fix autorun notification for connected USB drives Sebastian K.; !4187]
+* Fix spinner resetting on each key press in overview search [Vicente; !4191]
+* Fix reapplying layout on `xkb-options` changes [Sebastian K.; !4205]
+* Fix wiggle feedback on non-password auth failures [Joan; !4209]
+* Expose slow-down-factor in looking glass [Florian; !4211]
+* Improve app grid accessibility [Sergio; !4110, !4111]
+* Support touch scrolling in ScrollView [Lorenzo; !4138]
+* Use custom sound effects instead of sound theme [Jakub; !4154]
+* Open session/a11y menu on login screen on either button [Florian; !4225]
+* Use more readable St.ButtonMask values [Florian; !4224]
+* Save and restore monitor brightness [Sebastian W.; !4006]
+* Only show audio input icon when actually recording [Herman; !4218]
+* Support elogind as libsystemd provider [Swagtoy; !4233]
+* Prevent workspaces from being removed mid-animation [Tony; !4014]
+* Support version 2 of text_input_v3 protocol [Carlos; !4008]
+* Improve UI for conflicting sessions on login screen [Joan; !4081]
+* Announce search result description to screen readers [Lukáš; !4251]
+* Improve animation when expanding app grid label [Daniel; !4247]
+* Replace GLSLEffect with ClutterShaderEffect [Bilal; !4241]
+* Fix spacing in lock screen media notifications [Florian; !4217]
+* Add support for start/end text-align [Florian; !4204]
+* Pass params object to popupMenu open()/close() methods [Florian; !4240]
+* Split extensions-app into its own repository [Florian; !4267]
+* Plugged leak [Alessandro; !4258]
+* Misc. bug fixes and cleanups [Bilal, fthx, Marco, Florian, Bilal,
+  Sebastian K., Liam, Monster, Achill, Andre N., Alessandro; !4176, !4077,
+  !4183, !4184, !4180, !4135, !4194, !4197, !4201, !4198, !4210, !4220, !4195,
+  !3255, !3257, !4163, !4222, !4226, !4228, !4221, !4234, !4243, !4250, !4253,
+  !4260, !4133, !4266]
+
+Contributors:
+  Vicente Bertolotti, Alessandro Bono, Tony Chen, Sergio Costas Rodriguez,
+  Milan Crha, Bilal Elmoussaoui, Herman Fries, fthx, Carlos Garnacho,
+  Mikhail Gavrilov, Achill Gilgenast, Lorenzo Ianotto, Saikeo Kavhanxay,
+  Sebastian Keller, Ramez Medhat, Monster, Florian Müllner, Andre Nijman,
+  Liam Rust, Jakub Steiner, Swagtoy, Joan Torres Lopez,
+  Marco Trevisan (Treviño), Lukáš Tyrychtr, Daniel van Vugt, Sebastian Wick
+
+Translators:
+  Andre Klapper [de], Kjartan Maraas [nb], Nathan Follens [nl], Jose Riha [sk],
+  Saikeo Kavhanxay [lo], luming zh [zh_CN], Bjørn Mørkedal [nn],
+  Flynn Peck [kw], Vasil Pupkin [be], Yuri Chornoivan [uk], Martin [sl],
+  Emin Tufan Çetin [tr], Antonio Marin [ro], Kristjan ESPERANTO [de],
+  Ryo Nakano [ja], Davide Ferracin [it], Artur S0 [ru], Cas Pascal [vi],
+  Victoria Niedzielska [pl], Luiggi R. Cardoso [pt_BR]
+
 50.1
 ====
 * Use triangular noise shape for dithering lightbox vignette [Michel; !4137]
