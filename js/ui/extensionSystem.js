@@ -182,7 +182,9 @@ export class ExtensionManager extends Signals.EventEmitter {
 
     _callExtensionDisable(extension) {
         try {
-            extension.stateObj.disable();
+            const res = extension.stateObj.disable();
+            if (res?.then !== undefined)
+                throw new Error('disable() must not be async');
         } catch (e) {
             this.logExtensionError(extension.uuid, e);
         }
