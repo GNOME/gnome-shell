@@ -934,13 +934,29 @@ export class PopupMenuBase extends Signals.EventEmitter {
         }
     }
 
+    _maybeStartKeynav(params) {
+        let currentEvent = params['triggerEvent'];
+        if (currentEvent === undefined) {
+            currentEvent = Clutter.get_current_event();
+            if (global.backend.get_last_input_device() !== currentEvent?.get_source_device())
+                return;
+        }
+        switch (currentEvent?.type()) {
+        case Clutter.EventType.KEY_PRESS:
+        case Clutter.EventType.KEY_RELEASE:
+            this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            break;
+        }
+    }
+
     /**
-     * @param {object} _params
-     * @param {bool} [_params.animate=true] whether to animate the transition
+     * @param {object} params
+     * @param {bool} [params.animate=true] whether to animate the transition
+     * @param {Clutter.Event} [params.triggerEvent] the keyboard/mouse event that triggered opening this
      *
      * @returns {bool} whether the open state changed
      */
-    open(_params) {
+    open(params = {}) {
         if (this.isOpen)
             return false;
 
@@ -950,6 +966,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
         this.isOpen = true;
         this.emit('open-state-changed', true);
         this.actor.show();
+        this._maybeStartKeynav(params);
         return true;
     }
 
@@ -1094,10 +1111,11 @@ export class PopupMenu extends PopupMenuBase {
      * @param {object} params
      * @param {bool} [params.animate=true] whether to animate the transition
      * @param {bool} [params.fadeOnly=false] whether to skip motion bits of the animation
+     * @param {Clutter.Event} [params.triggerEvent] the keyboard/mouse event that triggered opening this
      *
      * @returns {bool} whether the open state changed
      */
-    open(params) {
+    open(params = {}) {
         if (!super.open(params))
             return false;
 
@@ -1233,6 +1251,7 @@ export class PopupSubMenu extends PopupMenuBase {
     /**
      * @param {object} params
      * @param {bool} [params.animate=true] whether to animate the transition
+     * @param {Clutter.Event} [params.triggerEvent] the keyboard/mouse event that triggered opening this
      *
      * @returns {bool} whether the open state changed
      */

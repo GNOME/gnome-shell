@@ -455,6 +455,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
     /**
      * @param {object} params
      * @param {bool} [params.animate=true] whether to animate the transition
+     * @param {Clutter.Event} [params.triggerEvent] the keyboard/mouse event that triggered opening this
      *
      * @returns {bool} whether the open state changed
      */
