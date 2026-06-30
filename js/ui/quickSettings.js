@@ -462,8 +462,6 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         if (!super.open(params))
             return false;
 
-        this.actor.show();
-
         const previousHeight = this.actor.height;
         this.actor.height = -1;
         const [targetHeight] = this.actor.get_preferred_height(-1);
@@ -845,14 +843,6 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
     getFirstItem() {
         return this._grid.get_first_child();
-    }
-
-    open(params = {}) {
-        if (!super.open(params))
-            return false;
-
-        this.actor.show();
-        return true;
     }
 
     close(params = {}) {

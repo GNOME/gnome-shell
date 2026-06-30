@@ -949,6 +949,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
 
         this.isOpen = true;
         this.emit('open-state-changed', true);
+        this.actor.show();
         return true;
     }
 
@@ -1238,8 +1239,6 @@ export class PopupSubMenu extends PopupMenuBase {
     open(params = {}) {
         if (!super.open(params))
             return false;
-
-        this.actor.show();
 
         let {animate = true} = params;
         const needsScrollbar = this._needsScrollbar();
