@@ -675,6 +675,11 @@ main (int argc, char **argv)
   shell_perf_log_init ();
   shell_introspection_init ();
 
+  /* Ensure the GNOME Shell cursor implementation registers itself as
+   * a GIO extension.
+   */
+  g_type_ensure (ST_TYPE_CURSOR);
+
   g_log_set_writer_func (default_log_writer, NULL, NULL);
 
   shell_profiler_init ();
