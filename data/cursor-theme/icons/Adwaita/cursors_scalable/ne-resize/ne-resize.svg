@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-4 -4 32 32"
+   width="32"
+   height="32"
+   id="svg2"
+   version="1.0"
+   xml:space="preserve"
+   sodipodi:docname="ne-resize.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+   id="defs4">
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter657"
+   x="-0.13728817"
+   y="-0.13726538"
+   width="1.2745763"
+   height="1.2745308">
+  <feGaussianBlur
+   stdDeviation="1 1"
+   result="blur"
+   id="feGaussianBlur657" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter980"
+   x="-0.082372903"
+   y="-0.082359229"
+   width="1.1647458"
+   height="1.1647185">
+  <feGaussianBlur
+   stdDeviation="0.6 0.6"
+   result="blur"
+   id="feGaussianBlur980" />
+  </filter>
+  </defs>
+  <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1"
+   inkscape:cx="12"
+   inkscape:cy="12"
+   inkscape:window-width="5120"
+   inkscape:window-height="1371"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+  <metadata
+   id="metadata7">
+  <rdf:RDF>
+  <cc:Work
+   rdf:about="">
+  <dc:format>image/svg+xml</dc:format>
+  <dc:type
+   rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  <dc:creator>
+  <cc:Agent>
+  <dc:title>Jakub Steiner</dc:title>
+  </cc:Agent>
+  </dc:creator>
+  <cc:license
+   rdf:resource="http://en.wikipedia.org/wiki/MIT_License" />
+  <dc:source>http://jimmac.musichall.cz/themes.php?skin=7</dc:source>
+  <dc:subject>
+  <rdf:Bag>
+  <rdf:li>negative</rdf:li>
+  <rdf:li>inverted</rdf:li>
+  <rdf:li>cursor</rdf:li>
+  <rdf:li>theme</rdf:li>
+  <rdf:li>X</rdf:li>
+  <rdf:li>xorg</rdf:li>
+  <rdf:li>xcursor</rdf:li>
+  </rdf:Bag>
+  </dc:subject>
+  <dc:description>Inverted variant of the DMZ cursor theme.</dc:description>
+  </cc:Work>
+  </rdf:RDF>
+  </metadata>
+  <g
+   id="layer5"
+   style="display:inline"
+   transform="translate(-272,-48)">
+  <path
+   id="path363"
+   style="color:#000000;display:inline;opacity:0.2;fill:#000000;-inkscape-stroke:none;filter:url(#filter657)"
+   d="m 276,53 c -0.54599,4.3e-4 -0.99957,0.454008 -1,1 v 1.949219 c 8e-5,0.574339 0.47644,1.050701 1.05078,1.050781 H 288 v 12 c 0,0.54636 0.45364,1 1,1 h 2 c 0.54636,0 1,-0.45364 1,-1 V 53 Z m -0.20703,5 4.09961,4.09961 -5.00586,5.00586 c -0.49093,0.48972 -0.49093,1.29934 0,1.78906 l 1.21875,1.21875 c 0.237,0.23769 0.55888,0.37104 0.89453,0.3711 0.33565,-6e-5 0.65753,-0.13341 0.89453,-0.3711 L 282.90039,65.10742 287,69.20703 V 58 Z" />
+  <path
+   id="path686"
+   style="color:#000000;display:inline;opacity:0.3;fill:#000000;-inkscape-stroke:none;filter:url(#filter980)"
+   d="m 276,53 c -0.54599,4.3e-4 -0.99957,0.454008 -1,1 v 1.949219 c 8e-5,0.574339 0.47644,1.050701 1.05078,1.050781 H 288 v 12 c 0,0.54636 0.45364,1 1,1 h 2 c 0.54636,0 1,-0.45364 1,-1 V 53 Z m -0.20703,5 4.09961,4.09961 -5.00586,5.00586 c -0.49093,0.48972 -0.49093,1.29934 0,1.78906 l 1.21875,1.21875 c 0.237,0.23769 0.55888,0.37104 0.89453,0.3711 0.33565,-6e-5 0.65753,-0.13341 0.89453,-0.3711 L 282.90039,65.10742 287,69.20703 V 58 Z" />
+  </g>
+  <g
+   id="layer1"
+   style="display:inline"
+   transform="translate(-272,-48)">
+  <path
+   id="path542"
+   style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   d="m 277,68.984375 a 0.76417954,0.76417954 0 0 0 0.54102,-0.224609 L 282.90039,63.400391 286.5,67 V 57.5 H 277 l 3.59961,3.599609 -5.35938,5.359375 a 0.76417786,0.76417786 0 0 0 0,1.082032 l 1.21875,1.21875 A 0.76417954,0.76417954 0 0 0 277,68.984375 Z M 291,68.5 A 0.5,0.5 0 0 0 291.5,68 V 52.5 H 276 a 0.5003943,0.5003943 0 0 0 -0.5,0.5 v 1.949219 A 0.550857,0.550857 0 0 0 276.05078,55.5 H 288.5 V 68 a 0.5,0.5 0 0 0 0.5,0.5 z" />
+  </g>
+    <path
+   id="hotspot"
+   d="M15 10h1v1h-1z"
+   display="none"
+   fill="#333" />
+</svg>

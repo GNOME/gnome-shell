@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-4 -4 32 32"
+   width="32"
+   height="32"
+   id="svg2"
+   version="1.0"
+   xml:space="preserve"
+   sodipodi:docname="vertical-text.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+   id="defs4">
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter662"
+   x="-0.12"
+   y="-0.26666667"
+   width="1.24"
+   height="1.5333333">
+  <feGaussianBlur
+   stdDeviation="1 1"
+   result="blur"
+   id="feGaussianBlur662" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter985"
+   x="-0.072000003"
+   y="-0.16000001"
+   width="1.144"
+   height="1.32">
+  <feGaussianBlur
+   stdDeviation="0.6 0.6"
+   result="blur"
+   id="feGaussianBlur985" />
+  </filter>
+  </defs>
+  <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1"
+   inkscape:cx="11.5"
+   inkscape:cy="12"
+   inkscape:window-width="5120"
+   inkscape:window-height="1371"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+  <metadata
+   id="metadata7">
+  <rdf:RDF>
+  <cc:Work
+   rdf:about="">
+  <dc:format>image/svg+xml</dc:format>
+  <dc:type
+   rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  <dc:creator>
+  <cc:Agent>
+  <dc:title>Jakub Steiner</dc:title>
+  </cc:Agent>
+  </dc:creator>
+  <cc:license
+   rdf:resource="http://en.wikipedia.org/wiki/MIT_License" />
+  <dc:source>http://jimmac.musichall.cz/themes.php?skin=7</dc:source>
+  <dc:subject>
+  <rdf:Bag>
+  <rdf:li>negative</rdf:li>
+  <rdf:li>inverted</rdf:li>
+  <rdf:li>cursor</rdf:li>
+  <rdf:li>theme</rdf:li>
+  <rdf:li>X</rdf:li>
+  <rdf:li>xorg</rdf:li>
+  <rdf:li>xcursor</rdf:li>
+  </rdf:Bag>
+  </dc:subject>
+  <dc:description>Inverted variant of the DMZ cursor theme.</dc:description>
+  </cc:Work>
+  </rdf:RDF>
+  </metadata>
+  <g
+   id="layer5"
+   style="display:inline"
+   transform="translate(-240,-16)">
+  <path
+   id="path358"
+   style="color:#000000;display:inline;opacity:0.2;fill:#000000;-inkscape-stroke:none;filter:url(#filter662)"
+   d="m 242,23 v 2.5 c 0,0.782663 0.32877,1.448746 0.74609,2 C 242.32877,28.051254 242,28.717337 242,29.5 V 32 h 3 v -2.5 c 0,-0.282064 0.21794,-0.5 0.5,-0.5 h 13 c 0.28206,0 0.5,0.217936 0.5,0.5 V 32 h 3 v -2.5 c 0,-0.782669 -0.32875,-1.448746 -0.74609,-2 C 261.67125,26.948746 262,26.282669 262,25.5 V 23 h -3 v 2.5 c 0,0.282064 -0.21794,0.5 -0.5,0.5 h -13 C 245.21794,26 245,25.782064 245,25.5 V 23 Z" />
+  <path
+   id="path681"
+   style="color:#000000;display:inline;opacity:0.3;fill:#000000;-inkscape-stroke:none;filter:url(#filter985)"
+   d="m 242,23 v 2.5 c 0,0.782663 0.32877,1.448746 0.74609,2 C 242.32877,28.051254 242,28.717337 242,29.5 V 32 h 3 v -2.5 c 0,-0.282064 0.21794,-0.5 0.5,-0.5 h 13 c 0.28206,0 0.5,0.217936 0.5,0.5 V 32 h 3 v -2.5 c 0,-0.782669 -0.32875,-1.448746 -0.74609,-2 C 261.67125,26.948746 262,26.282669 262,25.5 V 23 h -3 v 2.5 c 0,0.282064 -0.21794,0.5 -0.5,0.5 h -13 C 245.21794,26 245,25.782064 245,25.5 V 23 Z" />
+  </g>
+  <g
+   id="layer1"
+   style="display:inline"
+   transform="translate(-240,-16)">
+  <g
+   style="fill:none"
+   id="g563"
+   transform="rotate(90,120.01563,142.01563)">
+  <path
+   d="m 0.5,2.5 h 2 a 1,1 45 0 1 1,1 v 13 a 1,1 135 0 1 -1,1 h -2 v 2 h 2 c 0.78237,0 1.48951,-0.3618 2,-0.8385 0.51049,0.4767 1.21763,0.8385 2,0.8385 h 2 v -2 h -2 a 1,1 45 0 1 -1,-1 v -13 a 1,1 135 0 1 1,-1 h 2 v -2 h -2 c -0.78237,4e-6 -1.48951,0.361823 -2,0.83855 C 3.98951,0.861823 3.28237,0.500004 2.5,0.5 h -2 z"
+   fill="#000000"
+   stroke="#ffffff"
+   stroke-linejoin="round"
+   id="path563"
+   style="stroke-linejoin:miter" />
+  </g>
+  </g>
+    <path
+   id="hotspot"
+   d="M12 11h1v1h-1z"
+   display="none"
+   fill="#333" />
+</svg>

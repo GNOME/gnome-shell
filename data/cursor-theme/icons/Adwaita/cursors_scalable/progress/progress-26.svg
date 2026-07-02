@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-4 -4 32 32"
+   width="32"
+   height="32"
+   id="svg2"
+   version="1.0"
+   xml:space="preserve"
+   sodipodi:docname="progress-26.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+   id="defs4">
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter637"
+   x="-0.15"
+   y="-0.13033519"
+   width="1.3"
+   height="1.2606704">
+  <feGaussianBlur
+   stdDeviation="1 1"
+   result="blur"
+   id="feGaussianBlur637" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter645"
+   x="-0.15"
+   y="-0.13032132"
+   width="1.3"
+   height="1.2606426">
+  <feGaussianBlur
+   stdDeviation="1 1"
+   result="blur"
+   id="feGaussianBlur645" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter960"
+   x="-0.090000004"
+   y="-0.078201117"
+   width="1.18"
+   height="1.1564022">
+  <feGaussianBlur
+   stdDeviation="0.6 0.6"
+   result="blur"
+   id="feGaussianBlur960" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter968"
+   x="-0.090000004"
+   y="-0.078192794"
+   width="1.18"
+   height="1.1563856">
+  <feGaussianBlur
+   stdDeviation="0.6 0.6"
+   result="blur"
+   id="feGaussianBlur968" />
+  </filter>
+  
+  
+  
+  
+  
+  
+  
+  
+  </defs>
+  <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="11.313708"
+   inkscape:cx="-9.6785241"
+   inkscape:cy="23.688077"
+   inkscape:window-width="5120"
+   inkscape:window-height="1371"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+  <metadata
+   id="metadata7">
+  <rdf:RDF>
+  <cc:Work
+   rdf:about="">
+  <dc:format>image/svg+xml</dc:format>
+  <dc:type
+   rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  <dc:creator>
+  <cc:Agent>
+  <dc:title>Jakub Steiner</dc:title>
+  </cc:Agent>
+  </dc:creator>
+  <cc:license
+   rdf:resource="http://en.wikipedia.org/wiki/MIT_License" />
+  <dc:source>http://jimmac.musichall.cz/themes.php?skin=7</dc:source>
+  <dc:subject>
+  <rdf:Bag>
+  <rdf:li>negative</rdf:li>
+  <rdf:li>inverted</rdf:li>
+  <rdf:li>cursor</rdf:li>
+  <rdf:li>theme</rdf:li>
+  <rdf:li>X</rdf:li>
+  <rdf:li>xorg</rdf:li>
+  <rdf:li>xcursor</rdf:li>
+  </rdf:Bag>
+  </dc:subject>
+  <dc:description>Inverted variant of the DMZ cursor theme.</dc:description>
+  </cc:Work>
+  </rdf:RDF>
+  </metadata>
+  <path
+   id="path375"
+   style="color:#000000;display:inline;opacity:0.2;fill:#000000;-inkscape-stroke:none;filter:url(#filter645)"
+   d="m 3,2.28906 v 18.41602 l 3.947266,-3.94727 c 1.131082,1.91816 3.169673,3.24024 5.552734,3.24024 3.583914,0 6.5,-2.9161 6.5,-6.5 0,-3.58393 -2.916087,-6.5 -6.5,-6.5 -1.351979,0 -2.579827,0.46151 -3.621094,1.16992 z" /><path
+   id="path698"
+   style="color:#000000;display:inline;opacity:0.3;fill:#000000;-inkscape-stroke:none;filter:url(#filter968)"
+   d="m 3,2.28906 v 18.41602 l 3.947266,-3.94727 c 1.131082,1.91816 3.169673,3.24024 5.552734,3.24024 3.583914,0 6.5,-2.9161 6.5,-6.5 0,-3.58393 -2.916087,-6.5 -6.5,-6.5 -1.351979,0 -2.579827,0.46151 -3.621094,1.16992 z" />
+  <g
+   id="layer1"
+   style="display:inline"
+   transform="translate(-16,-212)">
+  <g
+   style="display:inline"
+   id="g5728"
+   transform="translate(-274,172.8883)">
+  <g
+   style="display:inline;fill:none"
+   id="g10"
+   transform="translate(292.5,39.6088)">
+  <path
+   d="M 1,18 V 2 L 6.28675,7.28675 C 7.30821,6.4809 8.59795,6 10,6 c 3.3137,0 6,2.68629 6,6 0,3.3137 -2.6863,6 -6,6 -2.4333,0 -4.52829,-1.4485 -5.46974,-3.5303 z"
+   fill="#000000"
+   stroke="#ffffff"
+   id="path1-356" />
+  </g>
+  </g>
+  </g>
+  <g
+   transform="matrix(0.15416775,-0.12484262,0.12484262,0.15416775,-86.936336,-260.43597)"
+   id="g12252"
+   style="display:inline">
+  <ellipse
+   style="display:inline;fill:none;stroke:#ffffff;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.5"
+   id="path12254"
+   transform="matrix(-0.25897377,0.96588435,-0.96596727,-0.25866432,0,0)"
+   cx="1460.5298"
+   cy="101.53752"
+   rx="15.24345"
+   ry="15.243538" />
+  <path
+   style="display:inline;fill:none;stroke:#ffffff;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+   id="ellipse319"
+   transform="matrix(-0.25897377,0.96588435,-0.96596727,-0.25866432,0,0)"
+   d="m 1475.7733,101.53752 a 15.243538,15.243538 0 0 1 -7.6217,13.20129" />
+  </g>  <path
+   id="hotspot"
+   d="M3 1h1v1h-1z"
+   display="none"
+   fill="#333" />
+</svg>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/shell/cursor-theme/">
+    <file>icons/Adwaita/cursors_scalable/alias/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/alias/alias.svg</file>
+    <file>icons/Adwaita/cursors_scalable/all-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/all-resize/all-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/all-scroll/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/all-scroll/all-scroll.svg</file>
+    <file>icons/Adwaita/cursors_scalable/cell/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/cell/cell.svg</file>
+    <file>icons/Adwaita/cursors_scalable/col-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/col-resize/col-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/context-menu/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/context-menu/context-menu.svg</file>
+    <file>icons/Adwaita/cursors_scalable/copy/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/copy/copy.svg</file>
+    <file>icons/Adwaita/cursors_scalable/crosshair/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/crosshair/crosshair.svg</file>
+    <file>icons/Adwaita/cursors_scalable/default/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/default/default.svg</file>
+    <file>icons/Adwaita/cursors_scalable/dnd-ask/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/dnd-ask/context-menu.svg</file>
+    <file>icons/Adwaita/cursors_scalable/e-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/e-resize/e-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/ew-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/ew-resize/ew-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/grab/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/grab/grab.svg</file>
+    <file>icons/Adwaita/cursors_scalable/grabbing/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/grabbing/grabbing.svg</file>
+    <file>icons/Adwaita/cursors_scalable/help/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/help/help.svg</file>
+    <file>icons/Adwaita/cursors_scalable/move/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/move/default.svg</file>
+    <file>icons/Adwaita/cursors_scalable/ne-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/ne-resize/ne-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/nesw-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/nesw-resize/nesw-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/no-drop/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/no-drop/no-drop.svg</file>
+    <file>icons/Adwaita/cursors_scalable/not-allowed/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/not-allowed/not-allowed.svg</file>
+    <file>icons/Adwaita/cursors_scalable/n-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/n-resize/n-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/ns-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/ns-resize/ns-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/nw-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/nw-resize/nw-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/nwse-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/nwse-resize/nwse-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/pointer/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/pointer/pointer.svg</file>
+    <file>icons/Adwaita/cursors_scalable/progress/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-01.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-02.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-03.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-04.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-05.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-06.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-07.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-08.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-09.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-10.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-11.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-12.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-13.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-14.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-15.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-16.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-17.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-18.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-19.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-20.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-21.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-22.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-23.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-24.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-25.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-26.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-27.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-28.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-29.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-30.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-31.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-32.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-33.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-34.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-35.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-36.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-37.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-38.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-39.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-40.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-41.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-42.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-43.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-44.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-45.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-46.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-47.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-48.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-49.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-50.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-51.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-52.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-53.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-54.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-55.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-56.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-57.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-58.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/progress/progress-59.svg</file>
+    <file>icons/Adwaita/cursors_scalable/row-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/row-resize/row-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/se-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/se-resize/se-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/s-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/s-resize/s-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/sw-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/sw-resize/sw-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/text/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/text/text.svg</file>
+    <file>icons/Adwaita/cursors_scalable/vertical-text/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/vertical-text/vertical-text.svg</file>
+    <file>icons/Adwaita/cursors_scalable/wait/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-01.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-02.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-03.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-04.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-05.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-06.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-07.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-08.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-09.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-10.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-11.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-12.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-13.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-14.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-15.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-16.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-17.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-18.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-19.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-20.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-21.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-22.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-23.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-24.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-25.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-26.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-27.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-28.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-29.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-30.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-31.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-32.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-33.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-34.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-35.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-36.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-37.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-38.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-39.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-40.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-41.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-42.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-43.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-44.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-45.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-46.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-47.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-48.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-49.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-50.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-51.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-52.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-53.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-54.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-55.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-56.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-57.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-58.svg</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/wait/wait-59.svg</file>
+    <file>icons/Adwaita/cursors_scalable/w-resize/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/w-resize/w-resize.svg</file>
+    <file>icons/Adwaita/cursors_scalable/X_cursor/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/X_cursor/X_cursor.svg</file>
+    <file>icons/Adwaita/cursors_scalable/zoom-in/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/zoom-in/zoom-in.svg</file>
+    <file>icons/Adwaita/cursors_scalable/zoom-out/metadata.json</file>
+    <file preprocess="xml-stripblanks">icons/Adwaita/cursors_scalable/zoom-out/zoom-out.svg</file>
+  </gresource>
+</gresources>

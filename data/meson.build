@@ -77,6 +77,11 @@ foreach resource : data_resources
   )
 endforeach
 
+cursor_theme_resource = gnome.compile_resources(
+  'gnome-shell-cursor-theme',
+  'gnome-shell-cursor-theme.gresource.xml',
+  source_dir: 'cursor-theme')
+
 perfconf = configuration_data()
 perfconf.set('datadir', datadir)
 configure_file(

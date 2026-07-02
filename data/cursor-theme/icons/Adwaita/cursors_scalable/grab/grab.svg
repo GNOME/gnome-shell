@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-4 -4 32 32"
+   width="32"
+   height="32"
+   id="svg2"
+   version="1.0"
+   xml:space="preserve"
+   sodipodi:docname="grab.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+   id="defs4">
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter525"
+   x="-0.14247113"
+   y="-0.12"
+   width="1.2849423"
+   height="1.24">
+  <feGaussianBlur
+   stdDeviation="1 1"
+   result="blur"
+   id="feGaussianBlur525" />
+  </filter>
+  <filter
+   style="color-interpolation-filters:sRGB"
+   id="filter848"
+   x="-0.085482679"
+   y="-0.072000003"
+   width="1.1709654"
+   height="1.144">
+  <feGaussianBlur
+   stdDeviation="0.6 0.6"
+   result="blur"
+   id="feGaussianBlur848" />
+  </filter>
+  </defs>
+  <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1"
+   inkscape:cx="11.5"
+   inkscape:cy="12"
+   inkscape:window-width="5120"
+   inkscape:window-height="1371"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg2" />
+  <metadata
+   id="metadata7">
+  <rdf:RDF>
+  <cc:Work
+   rdf:about="">
+  <dc:format>image/svg+xml</dc:format>
+  <dc:type
+   rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+  <dc:creator>
+  <cc:Agent>
+  <dc:title>Jakub Steiner</dc:title>
+  </cc:Agent>
+  </dc:creator>
+  <cc:license
+   rdf:resource="http://en.wikipedia.org/wiki/MIT_License" />
+  <dc:source>http://jimmac.musichall.cz/themes.php?skin=7</dc:source>
+  <dc:subject>
+  <rdf:Bag>
+  <rdf:li>negative</rdf:li>
+  <rdf:li>inverted</rdf:li>
+  <rdf:li>cursor</rdf:li>
+  <rdf:li>theme</rdf:li>
+  <rdf:li>X</rdf:li>
+  <rdf:li>xorg</rdf:li>
+  <rdf:li>xcursor</rdf:li>
+  </rdf:Bag>
+  </dc:subject>
+  <dc:description>Inverted variant of the DMZ cursor theme.</dc:description>
+  </cc:Work>
+  </rdf:RDF>
+  </metadata>
+  <g
+   id="layer5"
+   style="display:inline"
+   transform="translate(-80,-16)">
+  <path
+   id="path495"
+   style="color:#000000;display:inline;opacity:0.2;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;filter:url(#filter525)"
+   d="m 91.996094,19 c -0.961018,0 -1.663691,0.738369 -1.851563,1.646484 h -0.002 C 90.048805,20.740237 89.996114,20.867399 89.996094,21 v 0.416016 C 89.687831,21.221299 89.38506,21 88.996094,21 c -1.098646,0 -2,0.901354 -2,2 v 7.507812 l -0.611328,-0.808593 c -0.01436,-0.01866 -0.03003,-0.03628 -0.04687,-0.05273 -0.676734,-0.676732 -1.893405,-0.813637 -2.707032,0 C 83.360277,29.91703 83.171,30.30711 83.152344,30.75 c -0.01866,0.44289 0.110029,0.923172 0.384765,1.472656 0.0066,0.01333 0.01375,0.02637 0.02148,0.03906 l 3.011718,4.90039 c 0.01288,0.02055 0.02724,0.04013 0.04297,0.05859 0.267491,0.320989 0.663082,0.744918 1.148438,1.105469 C 88.247077,38.68673 88.829431,39 89.496094,39 h 7.499996 c 0.9472,0 1.74104,-0.435479 2.24805,-1.091797 C 99.75115,37.251885 99.99609,36.395312 99.99609,35.5 V 25 c 0,-1.098658 -0.90137,-2 -2,-2 -0.38941,0 -0.6915,0.220878 -1,0.416016 V 23 c 0,-1.098658 -0.90137,-2 -2,-2 -0.39411,0 -0.70087,0.222386 -1.011715,0.421875 V 21.003906 C 93.992995,19.905269 93.094752,19 91.996094,19 Z" />
+  <path
+   id="path818"
+   style="color:#000000;display:inline;opacity:0.3;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;filter:url(#filter848)"
+   d="m 91.996094,19 c -0.961018,0 -1.663691,0.738369 -1.851563,1.646484 h -0.002 C 90.048805,20.740237 89.996114,20.867399 89.996094,21 v 0.416016 C 89.687831,21.221299 89.38506,21 88.996094,21 c -1.098646,0 -2,0.901354 -2,2 v 7.507812 l -0.611328,-0.808593 c -0.01436,-0.01866 -0.03003,-0.03628 -0.04687,-0.05273 -0.676734,-0.676732 -1.893405,-0.813637 -2.707032,0 C 83.360277,29.91703 83.171,30.30711 83.152344,30.75 c -0.01866,0.44289 0.110029,0.923172 0.384765,1.472656 0.0066,0.01333 0.01375,0.02637 0.02148,0.03906 l 3.011718,4.90039 c 0.01288,0.02055 0.02724,0.04013 0.04297,0.05859 0.267491,0.320989 0.663082,0.744918 1.148438,1.105469 C 88.247077,38.68673 88.829431,39 89.496094,39 h 7.499996 c 0.9472,0 1.74104,-0.435479 2.24805,-1.091797 C 99.75115,37.251885 99.99609,36.395312 99.99609,35.5 V 25 c 0,-1.098658 -0.90137,-2 -2,-2 -0.38941,0 -0.6915,0.220878 -1,0.416016 V 23 c 0,-1.098658 -0.90137,-2 -2,-2 -0.39411,0 -0.70087,0.222386 -1.011715,0.421875 V 21.003906 C 93.992995,19.905269 93.094752,19 91.996094,19 Z" />
+  </g>
+  <g
+   id="layer1"
+   style="display:inline"
+   transform="translate(-80,-16)">
+  <g
+   style="display:inline;fill:none"
+   id="g4"
+   transform="translate(82.990215,18)">
+  <path
+   d="m 7.50678,2 c 0,-0.82843 0.67157,-1.5 1.5,-1.5 0.82843,0 1.49482,0.6716 1.48832,1.5 l 0.0117,7.5 V 4 c 0,-0.82843 0.6716,-1.5 1.5,-1.5 0.8284,0 1.5,0.67157 1.5,1.5 V 6 M 7.50678,2 v 2 c 0,-0.82843 -0.67157,-1.5 -1.5,-1.5 -0.82843,0 -1.5,0.67157 -1.5,1.5 v 9 L 2.99507,11 c -0.5,-0.5 -1.37492,-0.6251 -2.000011,0 -0.39004,0.39 -0.499988,1 2e-6,2 l 3.011729,4.9 c 0.5,0.6 1.5,1.6 2.49999,1.6 h 7.50002 c 1.6045,0 2.5,-1.3954 2.5,-3 V 6 c 0,-0.82843 -0.6716,-1.5 -1.5,-1.5 -0.8284,0 -1.5,0.67157 -1.5,1.5 M 7.50678,2 V 9.5 M 13.5068,6 v 3.5"
+   stroke="#ffffff"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   id="path2-2"
+   style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+  </g>
+  </g>
+    <path
+   id="hotspot"
+   d="M11 2h1v1h-1z"
+   display="none"
+   fill="#333" />
+</svg>

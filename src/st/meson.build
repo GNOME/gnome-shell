@@ -178,7 +178,7 @@ st_deps = [
 
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-' + mutter_api_version,
-  sources: st_gir_sources + st_nogir_sources + croco_sources,
+  sources: st_gir_sources + st_nogir_sources + croco_sources + cursor_theme_resource,
   c_args: st_cflags,
   dependencies: st_deps + [
     libxml_dep,
