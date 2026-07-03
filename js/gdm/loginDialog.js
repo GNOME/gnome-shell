@@ -1082,6 +1082,7 @@ export const LoginDialog = GObject.registerClass({
 
     _askForUsernameAndBeginVerification() {
         this._authPrompt.setUser(null);
+        this._authPrompt.updateEntry(false);
         this._authPrompt.setQuestion(_('Username'));
 
         this._showRealmLoginHint(this._realmManager.loginFormat);

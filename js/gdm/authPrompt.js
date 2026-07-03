@@ -421,7 +421,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('next');
     }
 
-    _updateEntry(secret) {
+    updateEntry(secret) {
         let newEntry, inactiveEntry;
 
         if (secret && this._entry !== this._passwordEntry) {
@@ -455,7 +455,7 @@ export const AuthPrompt = GObject.registerClass({
             return;
         }
 
-        this._updateEntry(secret);
+        this.updateEntry(secret);
 
         // Hack: The question string comes directly from PAM, if it's "Password:"
         // we replace it with our own to allow localization, if it's something
@@ -770,9 +770,6 @@ export const AuthPrompt = GObject.registerClass({
 
         const userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
         this._userWell.set_child(userWidget);
-
-        if (!user)
-            this._updateEntry(false);
     }
 
     reset(params) {
@@ -795,7 +792,7 @@ export const AuthPrompt = GObject.registerClass({
         this.clear({reuseEntryText});
         this._message.opacity = 0;
         this.setUser(null);
-        this._updateEntry(true);
+        this.updateEntry(true);
 
         if (oldStatus === AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
