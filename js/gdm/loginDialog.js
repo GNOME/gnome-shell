@@ -989,6 +989,7 @@ export const LoginDialog = GObject.registerClass({
 
     _onReset(authPrompt, resetType) {
         this._ensureGreeterProxy();
+        this._showBottomButtonGroup();
 
         const previousUser = this._user;
         this._user = null;
@@ -1012,13 +1013,26 @@ export const LoginDialog = GObject.registerClass({
         }
     }
 
-    _onVerificationComplete() {
+    _showBottomButtonGroup() {
+        this._bottomButtonGroup.reactive = true;
+        this._bottomButtonGroup.ease({
+            opacity: 255,
+            duration: _FADE_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _hideBottomButtonGroup() {
         this._bottomButtonGroup.reactive = false;
         this._bottomButtonGroup.ease({
             opacity: 0,
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+    }
+
+    _onVerificationComplete() {
+        this._hideBottomButtonGroup();
     }
 
     _onLoading(_authPrompt, isLoading) {
