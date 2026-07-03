@@ -796,7 +796,6 @@ export const AuthPrompt = GObject.registerClass({
         this._queryingService = null;
         this.clear({reuseEntryText});
         this._message.opacity = 0;
-        this.setUser(null);
         this._updateEntry(true);
 
         if (oldStatus === AuthPromptStatus.VERIFICATION_FAILED)
