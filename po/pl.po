@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-06-10 07:51+0000\n"
-"PO-Revision-Date: 2026-06-17 10:22+0200\n"
+"POT-Creation-Date: 2026-06-23 17:48+0000\n"
+"PO-Revision-Date: 2026-07-05 16:27+0200\n"
 "Last-Translator: Victoria Niedzielska <victorian@gnome.org>\n"
 "Language-Team: Polish <https://l10n.gnome.org/teams/pl/>\n"
 "Language: pl\n"
@@ -1019,9 +1019,7 @@ msgstr "Przełącz użytkownika"
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:141
 msgid "switch user"
-msgstr ""
-"przełącz użytkownika;przełączanie użytkowników;switch user;przełącz "
-"osobę;przełącz osoby;"
+msgstr "przełącz użytkownika;przełączanie użytkowników;switch user;"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:148
@@ -1816,8 +1814,8 @@ msgstr "Wyłączenie komputera po zainstalowaniu aktualizacji"
 #: js/ui/endSessionDialog.js:262
 msgid "Low battery power: please plug in before installing updates"
 msgstr ""
-"Niski poziom naładowania akumulatora: proszę podłączyć komputer do prądu "
-"przed instalowaniem aktualizacji"
+"Niski poziom naładowania baterii: proszę podłączyć urządzenie do prądu przed "
+"instalowaniem aktualizacji"
 
 #: js/ui/endSessionDialog.js:271
 msgid "Some applications are busy or have unsaved work"
@@ -2032,7 +2030,7 @@ msgstr "Blokowanie ekranu wymaga menedżera wyświetlania GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:403
+#: js/ui/messageList.js:402
 msgid "Unknown App"
 msgstr "Nieznana aplikacja"
 
