@@ -144,6 +144,25 @@ static gboolean st_widget_real_navigate_focus (StWidget         *widget,
 static void check_pseudo_class (StWidget *widget);
 static void check_labels (StWidget *widget);
 
+static gboolean
+has_binding_pools (ClutterActor *actor)
+{
+  GType type;
+
+  type = G_OBJECT_TYPE (actor);
+  g_assert (g_type_is_a (type, CLUTTER_TYPE_ACTOR));
+
+  while (type != CLUTTER_TYPE_ACTOR)
+    {
+      if (clutter_binding_pool_find (g_type_name (type)))
+        return TRUE;
+
+      type = g_type_parent (type);
+    }
+
+  return FALSE;
+}
+
 static void
 st_widget_update_insensitive (StWidget *widget)
 {
@@ -247,6 +266,19 @@ st_widget_constructed (GObject *gobject)
   G_OBJECT_CLASS (st_widget_parent_class)->constructed (gobject);
 
   st_widget_update_insensitive (ST_WIDGET (gobject));
+
+  if (has_binding_pools (CLUTTER_ACTOR (gobject)))
+    {
+      ClutterKeyController *key_controller;
+
+      key_controller =
+        CLUTTER_KEY_CONTROLLER (clutter_key_controller_new (NULL));
+      clutter_key_controller_set_trigger_keybindings (key_controller, TRUE);
+
+      clutter_actor_add_action_with_name (CLUTTER_ACTOR (gobject),
+                                          "shortcuts key controller",
+                                          CLUTTER_ACTION (key_controller));
+    }
 }
 
 static void
