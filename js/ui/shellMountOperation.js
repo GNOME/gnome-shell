@@ -23,6 +23,12 @@ const WORK_SPINNER_ICON_SIZE = 16;
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
 /* ------ Common Utils ------- */
+
+/**
+ * @param {ModalDialog.ModalDialog} dialog
+ * @param {string[]} oldChoices
+ * @param {string[]} choices
+ **/
 function _setButtonsForChoices(dialog, oldChoices, choices) {
     const buttons = [];
     let buttonsChanged = oldChoices.length !== choices.length;
@@ -42,6 +48,10 @@ function _setButtonsForChoices(dialog, oldChoices, choices) {
         dialog.setButtons(buttons);
 }
 
+/**
+ * @param {Dialog.MessageDialogContent} content
+ * @param {string} message
+ **/
 function _setLabelsForMessage(content, message) {
     const labels = message.split('\n');
 
