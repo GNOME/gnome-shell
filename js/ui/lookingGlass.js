@@ -55,6 +55,7 @@ const CLUTTER_DEBUG_FLAG_CATEGORIES = new Map([
     // ['PickDebugFlag', { argPos: 2, exclude: [] }],
 ]);
 
+/** @returns {string[]} **/
 function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];
     // Don't add the private properties of globalThis (i.e., ones starting with '_')
@@ -265,6 +266,7 @@ const Notebook = GObject.registerClass({
     }
 });
 
+/** @param {Any} o **/
 function objectToString(o) {
     if (typeof o === typeof objectToString) {
         // special case this since the default is way, way too verbose
