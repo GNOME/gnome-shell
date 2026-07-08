@@ -95,6 +95,10 @@ export class AuthServices extends GObject.Object {
         return roles.some(r => this.SupportedRoles.includes(r));
     }
 
+    static isEnabled(_settings) {
+        return true;
+    }
+
     constructor(params) {
         super();
         params = Params.parse(params, {
@@ -479,7 +483,7 @@ export class AuthServices extends GObject.Object {
     }
 
     _handleGetUnsupportedRoles() {
-        return [];
+        return this._enabledRoles.filter(r => !this.supportedRoles.includes(r));
     }
 
     _handleSelectChoice() {}
@@ -546,4 +550,8 @@ export class AuthServices extends GObject.Object {
         throw new GObject.NotImplementedError(
             `_handleCanStartService in ${this.constructor.name}`);
     }
+
+    addCredentialManager(_serviceName, _credentialManager) {}
+
+    removeCredentialManager(_serviceName) {}
 }
