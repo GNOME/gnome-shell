@@ -6,6 +6,8 @@ import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
 import {AuthServices} from './authServices.js';
 
+const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
+
 const MechanismsStatus = {
     WAITING: 0,
     NOT_FOUND: 1,
@@ -29,6 +31,10 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     static {
         GObject.registerClass(this);
+    }
+
+    static isEnabled(settings) {
+        return settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
     }
 
     constructor(params) {
@@ -96,19 +102,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleGetUnsupportedRoles() {
-        // While waiting for mechanisms info (WAITING) or when mechanisms are
-        // found (FOUND), use supportedRoles to get unsupported ones.
         // When we couldn't get mechanisms (NOT_FOUND), assume all roles
-        // are unsupported.
-        switch (this._mechanismsStatus) {
-        case MechanismsStatus.WAITING:
-        case MechanismsStatus.FOUND:
-            return this._enabledRoles.filter(r => !this.supportedRoles.includes(r));
-        case MechanismsStatus.NOT_FOUND:
+        // are unsupported so they cascade to lower-priority authServices.
+        if (this._mechanismsStatus === MechanismsStatus.NOT_FOUND)
             return this._enabledRoles;
-        default:
-            throw new GObject.NotImplementedError(`invalid MechanismStatus: ${this._mechanismsStatus}`);
-        }
+
+        return super._handleGetUnsupportedRoles();
     }
 
     _handleReset() {

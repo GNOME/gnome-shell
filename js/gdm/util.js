@@ -18,7 +18,6 @@ export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
 export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 export const PASSKEY_AUTHENTICATION_KEY = 'enable-passkey-authentication';
-export const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 export const WEB_AUTHENTICATION_KEY = 'enable-web-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
@@ -49,6 +48,14 @@ export const MessageType = {
     INFO: 2,
     ERROR: 3,
 };
+
+// Priority-ordered: earlier entries take precedence for shared roles.
+// Each authServices claims the roles it supports; unsupported roles
+// cascade to the next authServices in the array.
+const AuthServicesClasses = [
+    AuthServicesSSSDSwitchable,
+    AuthServicesLegacy,
+];
 
 /**
  * Error thrown during the authentication initialization phase.
@@ -141,6 +148,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._client = client;
         this._cancellable = null;
+        this._authServices = [];
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
@@ -169,8 +177,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         try {
             const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
             this._setUserVerifier(proxies.userVerifier);
-            await this._authServicesSSSDSwitchable?.beginVerification(userName, proxies);
-            await this._authServicesLegacy?.beginVerification(userName, proxies);
+            for (const s of this._authServices) {
+                // eslint-disable-next-line no-await-in-loop
+                await s.beginVerification(userName, proxies);
+            }
         } catch (e) {
             if (e instanceof InitError)
                 this._reportInitError(e);
@@ -180,20 +190,18 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     selectMechanism(mechanism) {
-        let selected = false;
-        selected |= this._authServicesSSSDSwitchable?.selectMechanism(mechanism);
-        selected |= this._authServicesLegacy?.selectMechanism(mechanism);
-        return selected;
+        // Every authServices needs to update its selected mechanism
+        return this._authServices
+            .map(s => s.selectMechanism(mechanism))
+            .some(Boolean);
     }
 
     needsUsername() {
-        return this._authServicesSSSDSwitchable?.needsUsername() ||
-            this._authServicesLegacy?.needsUsername();
+        return this._authServices.some(s => s.needsUsername());
     }
 
     reset() {
-        this._authServicesSSSDSwitchable?.reset();
-        this._authServicesLegacy?.reset();
+        this._authServices.forEach(s => s.reset());
 
         this._userVerifier?.call_cancel_sync(null);
 
@@ -201,8 +209,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     cancel() {
-        this._authServicesSSSDSwitchable?.cancel();
-        this._authServicesLegacy?.cancel();
+        this._authServices.forEach(s => s.cancel());
 
         this._userVerifier?.call_cancel_sync(null);
 
@@ -210,13 +217,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     clear() {
-        this._authServicesSSSDSwitchable?.clear();
-        this._authServicesLegacy?.clear();
-
-        if (this._authServicesSSSDSwitchable) {
-            this._authServicesLegacy?.updateEnabledRoles(
-                this._authServicesSSSDSwitchable.unsupportedRoles);
-        }
+        this._authServices.forEach(s => s.clear());
+        this._redistributeRoles();
 
         this._clearMessageQueue();
 
@@ -240,11 +242,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     destroy() {
-        this._authServicesSSSDSwitchable?.destroy();
-        this._authServicesSSSDSwitchable = null;
-
-        this._authServicesLegacy?.destroy();
-        this._authServicesLegacy = null;
+        this._authServices.forEach(s => s.destroy());
+        this._authServices = [];
 
         this.cancel();
 
@@ -253,8 +252,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     selectChoice(serviceName, key) {
-        this._authServicesSSSDSwitchable?.selectChoice(serviceName, key);
-        this._authServicesLegacy?.selectChoice(serviceName, key);
+        this._authServices.forEach(s => s.selectChoice(serviceName, key));
     }
 
     async answerQuery(serviceName, answer) {
@@ -262,16 +260,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // ensure no messages get lost
         await this._handlePendingMessages().catch(logErrorUnlessCancelled);
 
-        this._authServicesSSSDSwitchable?.answerQuery(serviceName, answer);
-        this._authServicesLegacy?.answerQuery(serviceName, answer);
+        this._authServices.forEach(s => s.answerQuery(serviceName, answer));
     }
 
     addCredentialManager(serviceName, credentialManager) {
-        this._authServicesLegacy?.addCredentialManager(serviceName, credentialManager);
+        this._authServices.forEach(s => s.addCredentialManager(serviceName, credentialManager));
     }
 
     removeCredentialManager(serviceName) {
-        this._authServicesLegacy?.removeCredentialManager(serviceName);
+        this._authServices.forEach(s => s.removeCredentialManager(serviceName));
     }
 
     _getIntervalForMessage(message) {
@@ -443,15 +440,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         if (this._settings.get_boolean(WEB_AUTHENTICATION_KEY))
             enabledRoles.push(Constants.WEB_LOGIN_ROLE_NAME);
 
-        const switchableAuthentication =
-            this._settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
+        const enabledAuthServicesClasses = AuthServicesClasses
+            .filter(C => C.isEnabled(this._settings));
 
         if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles) &&
-            switchableAuthentication === this._switchableAuthenticationEnabled)
+            enabledAuthServicesClasses.length === this._enabledAuthServicesClasses?.length &&
+            enabledAuthServicesClasses.every(c => this._enabledAuthServicesClasses.includes(c)))
             return;
 
         this._enabledRoles = enabledRoles;
-        this._switchableAuthenticationEnabled = switchableAuthentication;
+        this._enabledAuthServicesClasses = enabledAuthServicesClasses;
 
         this._createAuthServices();
     }
@@ -461,36 +459,34 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         const params = {
             client: this._client,
-            enabledRoles: this._enabledRoles,
             allowedFailures: this.allowedFailures,
             reauthOnly: this._reauthOnly,
         };
-        if (this._switchableAuthenticationEnabled &&
-            AuthServicesSSSDSwitchable.supportsAny(this._enabledRoles)) {
-            this._authServicesSSSDSwitchable = new AuthServicesSSSDSwitchable(params);
 
-            params.enabledRoles = this._authServicesSSSDSwitchable.unsupportedRoles;
-            this._authServicesLegacy = new AuthServicesLegacy(params);
-        } else if (AuthServicesLegacy.supportsAny(this._enabledRoles)) {
-            this._authServicesLegacy = new AuthServicesLegacy(params);
-        }
+        this._enabledAuthServicesClasses
+            .filter(AuthServicesClass =>
+                AuthServicesClass.supportsAny(this._enabledRoles))
+            .forEach(AuthServicesClass => {
+                const enabledRoles =
+                    this._authServices.at(-1)?.unsupportedRoles ??
+                    this._enabledRoles;
+                this._authServices.push(new AuthServicesClass({
+                    ...params,
+                    enabledRoles,
+                }));
+            });
 
         this._connectAuthServices();
     }
 
     _clearAuthServices() {
-        this._authServicesSSSDSwitchable?.destroy();
-        this._authServicesSSSDSwitchable = null;
-        this._authServicesLegacy?.destroy();
-        this._authServicesLegacy = null;
+        this._authServices.forEach(s => s.destroy());
+        this._authServices = [];
     }
 
     _connectAuthServices() {
-        [
-            this._authServicesSSSDSwitchable,
-            this._authServicesLegacy,
-        ].forEach(authServices => {
-            authServices?.connectObject(
+        this._authServices.forEach(authServices => {
+            authServices.connectObject(
                 'ask-question', (_, ...args) => this.emit('ask-question', ...args),
                 'queue-message', (_, ...args) => this._queueMessage(...args),
                 'queue-priority-message', (_, ...args) => this._queuePriorityMessage(...args),
@@ -512,32 +508,46 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     get selectedMechanism() {
-        return this._authServicesSSSDSwitchable?.selectedMechanism ??
-            this._authServicesLegacy?.selectedMechanism ??
-            null;
+        return this._authServices
+            .find(s => s.selectedMechanism)?.selectedMechanism ?? null;
+    }
+
+    _redistributeRoles() {
+        if (this._authServices.length < 2)
+            return;
+
+        this._redistributingRoles = true;
+
+        // Each authServices receives the roles unsupported by the one
+        // before it, cascading down the priority chain
+        const authServices = this._authServices;
+        for (let i = 1; i < authServices.length; i++) {
+            const prev = authServices[i - 1];
+            const current = authServices[i];
+            current.updateEnabledRoles(prev.unsupportedRoles);
+        }
+
+        this._redistributingRoles = false;
     }
 
     _onMechanismsChanged() {
-        if (this._enableFallbackMechanisms())
+        if (this._redistributingRoles)
             return;
 
-        const mechanismsSSSDSwitchable = this._authServicesSSSDSwitchable?.enabledMechanisms ?? [];
-        const mechanismsLegacy = this._authServicesLegacy?.enabledMechanisms ?? [];
-        const mechanisms = [...mechanismsSSSDSwitchable, ...mechanismsLegacy];
+        this._redistributeRoles();
+
+        // Collect mechanisms from all authServices in priority order,
+        // keeping only the first mechanism per role
+        const seenRoles = new Set();
+        const mechanisms = this._authServices
+            .flatMap(s => s.enabledMechanisms ?? [])
+            .filter(m => !seenRoles.has(m.role) && seenRoles.add(m.role));
 
         const selectedMechanism = this.selectedMechanism ??
             mechanisms.find(m => isSelectable(m)) ??
             {};
 
         this.emit('mechanisms-changed', mechanisms, selectedMechanism);
-    }
-
-    _enableFallbackMechanisms() {
-        if (!this._authServicesSSSDSwitchable || !this._authServicesLegacy)
-            return false;
-
-        return this._authServicesLegacy.updateEnabledRoles(
-            this._authServicesSSSDSwitchable.unsupportedRoles);
     }
 
     async _waitPendingMessages(task) {
