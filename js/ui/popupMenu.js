@@ -1227,8 +1227,12 @@ export class PopupSubMenu extends PopupMenuBase {
 
         this.actor._delegate = this;
         this.actor.clip_to_allocation = true;
-        this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));
         this.actor.hide();
+
+        const keyController = new Clutter.KeyController();
+        keyController.connect(
+            'key-press', controller => this._onKeyPress(controller));
+        this.actor.add_action(keyController);
     }
 
     _needsScrollbar() {
@@ -1334,12 +1338,13 @@ export class PopupSubMenu extends PopupMenuBase {
         return true;
     }
 
-    _onKeyPressEvent(actor, event) {
+    _onKeyPress(controller) {
         // Move focus back to parent menu if the user types Left.
+        const [, symbol] = controller.get_key();
 
-        if (this.isOpen && event.get_key_symbol() === Clutter.KEY_Left) {
+        if (this.isOpen && symbol === Clutter.KEY_Left) {
             this.close();
-            this.sourceActor._delegate.active = true;
+            this.sourceActor.grab_key_focus();
             return Clutter.EVENT_STOP;
         }
 
@@ -1377,8 +1382,21 @@ export class PopupMenuSection extends PopupMenuBase {
     }
 }
 
-export const PopupSubMenuMenuItem = GObject.registerClass(
-class PopupSubMenuMenuItem extends PopupBaseMenuItem {
+export class PopupSubMenuMenuItem extends PopupBaseMenuItem {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'open', Clutter.KEY_Right, 0,
+            obj => {
+                obj._setOpenState(true);
+                obj.menu.actor.navigate_focus(null, St.DirectionType.DOWN, false);
+                return Clutter.EVENT_STOP;
+            });
+    }
+
     _init(text, wantIcon) {
         super._init();
 
@@ -1461,25 +1479,10 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         return this.menu.isOpen;
     }
 
-    vfunc_key_press_event(event) {
-        const symbol = event.get_key_symbol();
-
-        if (symbol === Clutter.KEY_Right) {
-            this._setOpenState(true);
-            this.menu.actor.navigate_focus(null, St.DirectionType.DOWN, false);
-            return Clutter.EVENT_STOP;
-        } else if (symbol === Clutter.KEY_Left && this._getOpenState()) {
-            this._setOpenState(false);
-            return Clutter.EVENT_STOP;
-        }
-
-        return super.vfunc_key_press_event(event);
-    }
-
     activate(_event) {
         this._setOpenState(!this._getOpenState());
     }
-});
+};
 
 /* Basic implementation of a menu manager.
  * Call addMenu to add menus
