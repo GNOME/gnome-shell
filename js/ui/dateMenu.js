@@ -892,6 +892,8 @@ class DateMenuButton extends PanelMenu.Button {
         bin._delegate = this;
         this.menu.box.add_child(bin);
         this.menu.box.add_style_class_name('datemenu-popover');
+        // Default vertical wraparound keynav behavior is unwanted here
+        this.menu.actor.set_keynav_flags(St.KeynavFlags.NONE);
 
         const hbox = new St.BoxLayout({name: 'calendarArea'});
         bin.add_child(hbox);

@@ -383,6 +383,7 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         });
         this.actor._delegate = this;
         this.actor.add_child(this.box);
+        this.actor.set_keynav_flags(St.KeynavFlags.WRAP_VERTICALLY);
 
         global.focus_manager.add_group(this.actor);
 
@@ -742,6 +743,8 @@ export const QuickSettingsMenu = class extends PopupMenu.PopupMenu {
         this.actor = new St.Widget({reactive: true, width: 0, height: 0});
         this.actor.add_child(this._boxPointer);
         this.actor._delegate = this;
+        // Undo superclass defaults
+        this._boxPointer.set_keynav_flags(St.KeynavFlags.NONE);
 
         global.focus_manager.add_group(this.actor);
 

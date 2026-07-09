@@ -170,15 +170,6 @@ export const PopupBaseMenuItem = GObject.registerClass({
             return Clutter.EVENT_STOP;
         }
 
-        // Support wrapping navigation in the menu
-        if (symbol === Clutter.KEY_Up || symbol === Clutter.KEY_Down) {
-            const group = global.focus_manager.get_group(this);
-            const direction = symbol === Clutter.KEY_Up
-                ? St.DirectionType.UP
-                : St.DirectionType.DOWN;
-            if (group?.navigate_focus(this, direction, true))
-                return Clutter.EVENT_STOP;
-        }
         return Clutter.EVENT_PROPAGATE;
     }
 
@@ -1030,6 +1021,7 @@ export class PopupMenu extends PopupMenuBase {
 
         this._boxPointer.bin.set_child(this.box);
         this.actor.add_style_class_name('popup-menu');
+        this.actor.set_keynav_flags(St.KeynavFlags.WRAP_VERTICALLY);
 
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
