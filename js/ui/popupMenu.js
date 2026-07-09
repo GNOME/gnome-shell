@@ -65,8 +65,8 @@ export function arrowIcon(side) {
     return arrow;
 }
 
-export const PopupBaseMenuItem = GObject.registerClass({
-    Properties: {
+export class PopupBaseMenuItem extends St.BoxLayout {
+    static [GObject.properties] = {
         'active': GObject.ParamSpec.boolean(
             'active', null, null,
             GObject.ParamFlags.READWRITE,
@@ -75,11 +75,23 @@ export const PopupBaseMenuItem = GObject.registerClass({
             'sensitive', null, null,
             GObject.ParamFlags.READWRITE,
             true),
-    },
-    Signals: {
+    };
+
+    static [GObject.signals] = {
         'activate': {param_types: [Clutter.Event.$gtype]},
-    },
-}, class PopupBaseMenuItem extends St.BoxLayout {
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_space, 0, obj => obj._activateBinding());
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_Return, 0, obj => obj._activateBinding());
+    }
+
     _init(params) {
         params = Params.parse(params, {
             reactive: true,
@@ -129,6 +141,16 @@ export const PopupBaseMenuItem = GObject.registerClass({
             this.bind_property('hover', this, 'active', GObject.BindingFlags.SYNC_CREATE);
     }
 
+    _activateBinding() {
+        if (this._activatable) {
+            const event = Clutter.get_current_event();
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     get actor() {
         /* This is kept for compatibility with current implementation, and we
            don't want to warn here yet since PopupMenu depends on this */
@@ -147,30 +169,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        if (global.focus_manager.navigate_from_event(event))
-            return Clutter.EVENT_STOP;
-
-        if (!this._activatable)
-            return super.vfunc_key_press_event(event);
-
-        let state = event.get_state();
-
-        // if user has a modifier down (except capslock and numlock)
-        // then don't handle the key press here
-        state &= ~Clutter.ModifierType.LOCK_MASK;
-        state &= ~Clutter.ModifierType.MOD2_MASK;
-        state &= Clutter.ModifierType.MODIFIER_MASK;
-
-        if (state)
-            return Clutter.EVENT_PROPAGATE;
-
-        const symbol = event.get_key_symbol();
-        if (symbol === Clutter.KEY_space || symbol === Clutter.KEY_Return) {
-            this.activate(event);
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
+        return global.focus_manager.navigate_from_event(event);
     }
 
     vfunc_key_focus_in() {
@@ -272,7 +271,7 @@ export const PopupBaseMenuItem = GObject.registerClass({
         else
             this.remove_style_class_name('popup-ornamented-menu-item');
     }
-});
+};
 
 export const PopupMenuItem = GObject.registerClass(
 class PopupMenuItem extends PopupBaseMenuItem {

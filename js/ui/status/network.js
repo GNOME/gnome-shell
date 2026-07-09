@@ -187,10 +187,6 @@ const NMMenuItem = GObject.registerClass({
         return 0;
     }
 
-    activate() {
-        super.activate(Clutter.get_current_event());
-    }
-
     _activeConnectionStateChanged() {
         this.notify('is-active');
         this.notify('icon-name');
