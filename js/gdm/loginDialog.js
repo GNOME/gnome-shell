@@ -357,8 +357,7 @@ class A11yMenuButton extends St.Button {
             else
                 this.remove_style_pseudo_class('active');
         });
-        this._menu.actor.connect('key-press-event',
-            (o, ev) => global.focus_manager.navigate_from_event(ev));
+        global.focus_manager.add_group(this._menu.actor);
 
         this._manager = new PopupMenu.PopupMenuManager(this,
             {actionMode: Shell.ActionMode.NONE});
