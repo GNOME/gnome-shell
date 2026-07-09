@@ -168,10 +168,6 @@ export class PopupBaseMenuItem extends St.BoxLayout {
         this._parent = parent;
     }
 
-    vfunc_key_press_event(event) {
-        return global.focus_manager.navigate_from_event(event);
-    }
-
     vfunc_key_focus_in() {
         super.vfunc_key_focus_in();
         this.active = true;
