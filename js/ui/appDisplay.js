@@ -2786,13 +2786,6 @@ export const AppFolderDialog = GObject.registerClass({
             this._zoomAndFadeIn();
     }
 
-    vfunc_key_press_event(event) {
-        if (global.focus_manager.navigate_from_event(event))
-            return Clutter.EVENT_STOP;
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     _setLighterBackground(lighter) {
         const backgroundColor = lighter
             ? DIALOG_SHADE_HIGHLIGHT
