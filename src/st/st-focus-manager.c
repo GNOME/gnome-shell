@@ -158,7 +158,7 @@ remove_destroyed_group (ClutterActor *actor,
 {
   StFocusManager *manager = user_data;
 
-  st_focus_manager_remove_group (manager, ST_WIDGET (actor));
+  g_hash_table_remove (manager->groups, actor);
 }
 
 /**
@@ -175,11 +175,15 @@ st_focus_manager_add_group (StFocusManager *manager,
                             StWidget       *root)
 {
   gpointer count_p = g_hash_table_lookup (manager->groups, root);
-  int count = count_p ? GPOINTER_TO_INT (count_p) : 0;
+  int count = GPOINTER_TO_INT (count_p);
 
-  g_signal_connect (root, "destroy",
-                    G_CALLBACK (remove_destroyed_group),
-                    manager);
+  if (count == 0)
+    {
+      g_signal_connect (root, "destroy",
+                        G_CALLBACK (remove_destroyed_group),
+                        manager);
+    }
+
   g_hash_table_insert (manager->groups, root, GINT_TO_POINTER (++count));
 }
 
@@ -199,10 +203,19 @@ st_focus_manager_remove_group (StFocusManager *manager,
 
   if (count == 0)
     return;
+
   if (count == 1)
-    g_hash_table_remove (manager->groups, root);
+    {
+      g_signal_handlers_disconnect_by_func (root,
+                                            remove_destroyed_group,
+                                            manager);
+
+      g_hash_table_remove (manager->groups, root);
+    }
   else
-    g_hash_table_insert (manager->groups, root, GINT_TO_POINTER(--count));
+    {
+      g_hash_table_insert (manager->groups, root, GINT_TO_POINTER(--count));
+    }
 }
 
 /**
