@@ -87,6 +87,8 @@ const DiscreteItem = GObject.registerClass({
         this.connect('notify::n-levels', () => this._syncLevels());
         this.connect('notify::value', () => this._syncChecked());
         this._syncLevels();
+
+        global.focus_manager.add_group(this);
     }
 
     _valueToLevel(value) {
@@ -130,10 +132,6 @@ const DiscreteItem = GObject.registerClass({
 
         this.add_child(box);
         this._levelButtons.set(key, box);
-    }
-
-    vfunc_key_press_event(event) {
-        return global.focus_manager.navigate_from_event(event);
     }
 
     _syncLevels() {
