@@ -1021,13 +1021,16 @@ export class PopupMenu extends PopupMenuBase {
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
 
+        this._keyController = new Clutter.KeyController();
+        this._keyController.connect('key-press', () => this._onKeyPress());
+
         if (this.sourceActor) {
             this.sourceActor.connectObject(
-                'key-press-event', this._onKeyPress.bind(this),
                 'notify::mapped', () => {
                     if (!this.sourceActor.mapped)
                         this.close();
                 }, this);
+            this.sourceActor.add_action(this._keyController);
         }
 
         this._systemModalOpenedId = 0;
@@ -1041,10 +1044,10 @@ export class PopupMenu extends PopupMenuBase {
         this._openedSubMenu = submenu;
     }
 
-    _onKeyPress(actor, event) {
+    _onKeyPress() {
         // Disable toggling the menu by keyboard
         // when it cannot be toggled by pointer
-        if (!actor.reactive)
+        if (!this.sourceActor.reactive)
             return Clutter.EVENT_PROPAGATE;
 
         let navKey;
@@ -1063,18 +1066,12 @@ export class PopupMenu extends PopupMenuBase {
             break;
         }
 
-        let state = event.get_state();
+        const [, symbol] = this._keyController.get_key();
+        const [, pressed, latched] = this._keyController.get_state();
 
-        // if user has a modifier down (except capslock and numlock)
-        // then don't handle the key press here
-        state &= ~Clutter.ModifierType.LOCK_MASK;
-        state &= ~Clutter.ModifierType.MOD2_MASK;
-        state &= Clutter.ModifierType.MODIFIER_MASK;
-
-        if (state)
+        // If user has a modifier down then don't handle the key presses
+        if (pressed || latched)
             return Clutter.EVENT_PROPAGATE;
-
-        const symbol = event.get_key_symbol();
 
         if (symbol === Clutter.KEY_space || symbol === Clutter.KEY_Return) {
             this.toggle();
