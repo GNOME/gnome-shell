@@ -110,13 +110,6 @@ export const ModalDialog = GObject.registerClass({
         this.notify('state');
     }
 
-    vfunc_key_press_event(event) {
-        if (global.focus_manager.navigate_from_event(event))
-            return Clutter.EVENT_STOP;
-
-        return Clutter.EVENT_PROPAGATE;
-    }
-
     clearButtons() {
         this.dialogLayout.clearButtons();
     }
