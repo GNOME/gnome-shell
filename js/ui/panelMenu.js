@@ -110,10 +110,15 @@ export const Button = GObject.registerClass({
         this._clickGesture.set_enabled(!dontCreateMenu);
         this.add_action(this._clickGesture);
 
-        if (dontCreateMenu)
+        this._keyController = new Clutter.KeyController();
+        this._keyController.connect('key-press', () => this._onMenuKeyPress());
+
+        if (dontCreateMenu) {
             this.menu = new PopupMenu.PopupDummyMenu(this);
-        else
+            this.add_action(this._keyController);
+        } else {
             this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP));
+        }
     }
 
     setSensitive(sensitive) {
@@ -123,14 +128,16 @@ export const Button = GObject.registerClass({
     }
 
     setMenu(menu) {
-        if (this.menu)
+        if (this.menu) {
+            this.menu.actor.remove_action(this._keyController);
             this.menu.destroy();
+        }
 
         this.menu = menu;
         if (this.menu) {
             this.menu.actor.add_style_class_name('panel-menu');
             this.menu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
-            this.menu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
+            this.menu.actor.add_action(this._keyController);
 
             Main.uiGroup.add_child(this.menu.actor);
             this.menu.actor.hide();
@@ -146,16 +153,18 @@ export const Button = GObject.registerClass({
             this.menu.close({animate: false});
     }
 
-    _onMenuKeyPress(actor, event) {
-        if (global.focus_manager.navigate_from_event(event))
-            return Clutter.EVENT_STOP;
+    _onMenuKeyPress() {
+        const [, symbol] = this._keyController.get_key();
 
-        const symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right) {
-            const group = global.focus_manager.get_group(this);
+            const {keyFocus} = this.get_stage();
+            const focusActor =
+                  this.menu.actor.contains(keyFocus) ? this : keyFocus;
+            const group = global.focus_manager.get_group(focusActor);
+
             if (group) {
                 const direction = symbol === Clutter.KEY_Left ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
-                group.navigate_focus(this, direction, false);
+                group.navigate_focus(focusActor, direction, false);
                 return Clutter.EVENT_STOP;
             }
         }
