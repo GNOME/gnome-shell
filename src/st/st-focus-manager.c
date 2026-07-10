@@ -132,64 +132,6 @@ on_focus_root_key_press (ClutterKeyController *key_controller,
                                    direction, wrap_around);
 }
 
-static gboolean
-st_focus_manager_stage_event (ClutterActor *stage,
-			      ClutterEvent *event,
-			      gpointer      user_data)
-{
-  StFocusManager *manager = user_data;
-  StDirectionType direction;
-  gboolean wrap_around = FALSE;
-  ClutterActor *focused, *group;
-
-  if (clutter_event_type (event) != CLUTTER_KEY_PRESS)
-    return FALSE;
-
-  switch (clutter_event_get_key_symbol (event))
-    {
-    case CLUTTER_KEY_Up:
-      direction = ST_DIR_UP;
-      break;
-    case CLUTTER_KEY_Down:
-      direction = ST_DIR_DOWN;
-      break;
-    case CLUTTER_KEY_Left:
-      direction = ST_DIR_LEFT;
-      break;
-    case CLUTTER_KEY_Right:
-      direction = ST_DIR_RIGHT;
-      break;
-    case CLUTTER_KEY_Tab:
-      if (clutter_event_get_state (event) & CLUTTER_SHIFT_MASK)
-        direction = ST_DIR_TAB_BACKWARD;
-      else
-        direction = ST_DIR_TAB_FORWARD;
-      wrap_around = TRUE;
-      break;
-    case CLUTTER_KEY_ISO_Left_Tab:
-      direction = ST_DIR_TAB_BACKWARD;
-      wrap_around = TRUE;
-      break;
-
-    default:
-      return FALSE;
-    }
-
-  focused = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
-  if (!focused)
-    return FALSE;
-
-  for (group = focused; group != NULL; group = clutter_actor_get_parent (group))
-    {
-      if (g_hash_table_lookup (manager->groups, group))
-        {
-          return st_widget_navigate_focus (ST_WIDGET (group), focused,
-                                           direction, wrap_around);
-        }
-    }
-  return FALSE;
-}
-
 /**
  * st_focus_manager_get_for_stage:
  * @stage: a #ClutterStage
@@ -210,9 +152,6 @@ st_focus_manager_get_for_stage (ClutterStage *stage)
       manager->stage = stage;
       g_object_set_data_full (G_OBJECT (stage), "st-focus-manager",
 			      manager, g_object_unref);
-
-      g_signal_connect (stage, "event",
-			G_CALLBACK (st_focus_manager_stage_event), manager);
     }
 
   return manager;
@@ -336,27 +275,4 @@ st_focus_manager_get_group (StFocusManager *manager,
     actor = clutter_actor_get_parent (actor);
 
   return ST_WIDGET (actor);
-}
-
-/**
- * st_focus_manager_navigate_from_event:
- * @manager: the #StFocusManager
- * @event: a #ClutterEvent
- *
- * Try to navigate from @event as if it bubbled all the way up to
- * the stage. This is useful in complex event handling situations
- * where you want key navigation, but a parent might be stopping
- * the key navigation event from bubbling all the way up to the stage.
- *
- * Returns: Whether a new actor was navigated to
- */
-gboolean
-st_focus_manager_navigate_from_event (StFocusManager *manager,
-                                      ClutterEvent   *event)
-{
-  if (clutter_event_type (event) != CLUTTER_KEY_PRESS)
-    return FALSE;
-
-  return st_focus_manager_stage_event (CLUTTER_ACTOR (manager->stage),
-                                       event, manager);
 }
