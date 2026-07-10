@@ -813,8 +813,36 @@ class SecondaryMonitorDisplay extends St.Widget {
     }
 });
 
-export const WorkspacesDisplay = GObject.registerClass(
-class WorkspacesDisplay extends St.Widget {
+export class WorkspacesDisplay extends St.Widget {
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'next', Clutter.KEY_Page_Down, 0,
+            obj => obj._nextWorkspace());
+        bindingPool.install_closure(
+            'prev', Clutter.KEY_Page_Up, 0,
+            obj => obj._prevWorkspace());
+        bindingPool.install_closure(
+            'first', Clutter.KEY_Home, 0,
+            _ => {
+                const ws = global.workspace_manager.get_workspace_by_index(0);
+                if (ws)
+                    Main.wm.actionMoveWorkspace(ws);
+            });
+        bindingPool.install_closure(
+            'last', Clutter.KEY_End, 0,
+            _ => {
+                const {workspaceManager} = global;
+                const which = workspaceManager.n_workspaces - 1;
+                const ws = workspaceManager.get_workspace_by_index(which);
+                if (ws)
+                    Main.wm.actionMoveWorkspace(ws);
+            });
+    }
+
     _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
@@ -1004,9 +1032,6 @@ class WorkspacesDisplay extends St.Widget {
         Main.overview.connectObject(
             'windows-restacked', this._onRestacked.bind(this),
             'scroll-event', this._onScrollEvent.bind(this), this);
-
-        global.stage.connectObject(
-            'key-press-event', this._onKeyPressEvent.bind(this), this);
     }
 
     prepareToLeaveOverview() {
@@ -1100,7 +1125,7 @@ class WorkspacesDisplay extends St.Widget {
         return Main.wm.handleWorkspaceScroll(event);
     }
 
-    _onKeyPressEvent(actor, event) {
+    _moveToWorkspace(which) {
         const {ControlsState} = OverviewControls;
         if (this._overviewAdjustment.value !== ControlsState.WINDOW_PICKER)
             return Clutter.EVENT_PROPAGATE;
@@ -1109,50 +1134,43 @@ class WorkspacesDisplay extends St.Widget {
             return Clutter.EVENT_PROPAGATE;
 
         const {workspaceManager} = global;
-        const vertical = workspaceManager.layout_rows === -1;
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-
-        let which;
-        switch (event.get_key_symbol()) {
-        case Clutter.KEY_Page_Up:
-            if (vertical)
-                which = Meta.MotionDirection.UP;
-            else if (rtl)
-                which = Meta.MotionDirection.RIGHT;
-            else
-                which = Meta.MotionDirection.LEFT;
-            break;
-        case Clutter.KEY_Page_Down:
-            if (vertical)
-                which = Meta.MotionDirection.DOWN;
-            else if (rtl)
-                which = Meta.MotionDirection.LEFT;
-            else
-                which = Meta.MotionDirection.RIGHT;
-            break;
-        case Clutter.KEY_Home:
-            which = 0;
-            break;
-        case Clutter.KEY_End:
-            which = workspaceManager.n_workspaces - 1;
-            break;
-        default:
-            return Clutter.EVENT_PROPAGATE;
-        }
-
-        let ws;
-        if (which < 0)
-            // Negative workspace numbers are directions
-            // with respect to the current workspace
-            ws = workspaceManager.get_active_workspace().get_neighbor(which);
-        else
-            // Otherwise it is a workspace index
-            ws = workspaceManager.get_workspace_by_index(which);
-
+        const ws = workspaceManager.get_active_workspace().get_neighbor(which);
         if (ws)
             Main.wm.actionMoveWorkspace(ws);
 
         return Clutter.EVENT_STOP;
+    }
+
+    _nextWorkspace() {
+        const {workspaceManager} = global;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+
+        let which;
+        if (vertical)
+            which = Meta.MotionDirection.DOWN;
+        else if (rtl)
+            which = Meta.MotionDirection.LEFT;
+        else
+            which = Meta.MotionDirection.RIGHT;
+
+        return this._moveToWorkspace(which);
+    }
+
+    _prevWorkspace() {
+        const {workspaceManager} = global;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+
+        let which;
+        if (vertical)
+            which = Meta.MotionDirection.UP;
+        else if (rtl)
+            which = Meta.MotionDirection.RIGHT;
+        else
+            which = Meta.MotionDirection.LEFT;
+
+        return this._moveToWorkspace(which);
     }
 
     get _workspacesOnlyOnPrimary() {
@@ -1162,4 +1180,4 @@ class WorkspacesDisplay extends St.Widget {
     get fitModeAdjustment() {
         return this._fitModeAdjustment;
     }
-});
+};
