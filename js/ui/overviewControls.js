@@ -318,6 +318,7 @@ class ControlsManager extends St.Widget {
             x_expand: true,
             y_expand: true,
             clip_to_allocation: true,
+            reactive: true,
         });
 
         this._ignoreShowAppsButtonToggle = false;
@@ -379,6 +380,8 @@ class ControlsManager extends St.Widget {
         this.add_child(this._thumbnailsBox);
         this.add_child(this._workspacesDisplay);
 
+        global.focus_manager.add_group(this);
+
         this.layout_manager = new ControlsManagerLayout(
             this._searchEntryBin,
             this._appDisplay,
@@ -439,41 +442,6 @@ class ControlsManager extends St.Widget {
                 Main.overview.toggle();
         }, this);
 
-        // connect_after to give search controller first dibs on the event
-        global.stage.connect_after('key-press-event', (actor, event) => {
-            if (this._searchController.searchActive)
-                return Clutter.EVENT_PROPAGATE;
-
-            if (global.stage.key_focus &&
-                !this.contains(global.stage.key_focus))
-                return Clutter.EVENT_PROPAGATE;
-
-            const {finalState} =
-                this._stateAdjustment.getStateTransitionParams();
-            let keynavDisplay;
-
-            if (finalState === ControlsState.WINDOW_PICKER)
-                keynavDisplay = this._workspacesDisplay;
-            else if (finalState === ControlsState.APP_GRID)
-                keynavDisplay = this._appDisplay;
-
-            if (!keynavDisplay)
-                return Clutter.EVENT_PROPAGATE;
-
-            const symbol = event.get_key_symbol();
-            if (symbol === Clutter.KEY_Tab || symbol === Clutter.KEY_Down) {
-                keynavDisplay.navigate_focus(
-                    null, St.DirectionType.TAB_FORWARD, false);
-                return Clutter.EVENT_STOP;
-            } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
-                keynavDisplay.navigate_focus(
-                    null, St.DirectionType.TAB_BACKWARD, false);
-                return Clutter.EVENT_STOP;
-            }
-
-            return Clutter.EVENT_PROPAGATE;
-        });
-
         Main.wm.addKeybinding(
             'toggle-application-view',
             new Gio.Settings({schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA}),
@@ -496,6 +464,31 @@ class ControlsManager extends St.Widget {
         this._update();
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    vfunc_navigate_focus(from, _direction) {
+        if (from === null) {
+            const {finalState} =
+                  this._stateAdjustment.getStateTransitionParams();
+            let keynavDisplay;
+
+            if (finalState === ControlsState.WINDOW_PICKER)
+                keynavDisplay = this._workspacesDisplay;
+            else if (finalState === ControlsState.APP_GRID)
+                keynavDisplay = this._appDisplay;
+            else
+                return false;
+
+            keynavDisplay.grab_key_focus();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
+        this.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     _getFitModeForState(state) {
@@ -605,6 +598,7 @@ class ControlsManager extends St.Widget {
 
         this._updateThumbnailsBox();
         this._updateAppDisplayVisibility(params);
+        this.grab_key_focus();
     }
 
     _onSearchChanged() {

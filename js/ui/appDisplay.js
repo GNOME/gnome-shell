@@ -1347,6 +1347,7 @@ export class AppDisplay extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
+            reactive: true,
         });
 
         this._pageManager = new PageManager();
@@ -1387,15 +1388,13 @@ export class AppDisplay extends BaseAppView {
         }
     }
 
-    vfunc_map() {
-        super.vfunc_map();
-        this.reactive = true;
-        this.grab_key_focus();
-    }
-
-    vfunc_unmap() {
-        this.reactive = false;
-        super.vfunc_unmap();
+    vfunc_navigate_focus(from, direction) {
+        if (from === this && direction === St.DirectionType.DOWN) {
+            return super.vfunc_navigate_focus(
+                null, St.DirectionType.TAB_FORWARD);
+        } else {
+            return super.vfunc_navigate_focus(from, direction);
+        }
     }
 
     _redisplay() {

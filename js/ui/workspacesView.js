@@ -979,6 +979,9 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     vfunc_navigate_focus(from, direction) {
+        if (from === this && direction === St.DirectionType.DOWN)
+            direction = St.DirectionType.TAB_FORWARD;
+
         return this._getPrimaryView()?.navigate_focus(from, direction, false);
     }
 
