@@ -1489,6 +1489,9 @@ export class PopupMenuManager {
         this._grabParams = Params.parse(grabParams,
             {actionMode: Shell.ActionMode.POPUP});
         this._menus = [];
+
+        this._keyController = new Clutter.KeyController();
+        this._keyController.connect('key-press', () => this._keyPress());
     }
 
     addMenu(menu, position) {
@@ -1511,6 +1514,8 @@ export class PopupMenuManager {
         if (menu === this.activeMenu) {
             Main.popModal(this._grab);
             this._grab = null;
+
+            menu.actor.remove_action(this._keyController);
 
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
@@ -1537,9 +1542,14 @@ export class PopupMenuManager {
             const oldGrab = this._grab;
             this._grab = Main.pushModal(menu.actor, this._grabParams);
             this.activeMenu = menu;
+            oldMenu?.actor.remove_action(this._keyController);
             oldMenu?.close({fadeOnly: true});
             if (oldGrab)
                 Main.popModal(oldGrab);
+
+            menu.actor.add_action_full(
+                'popup-manager-key-controller', Clutter.EventPhase.CAPTURE,
+                this._keyController);
 
             if (!this._keyFocusId) {
                 this._keyFocusId =
@@ -1559,6 +1569,8 @@ export class PopupMenuManager {
             Main.popModal(this._grab);
             this._grab = null;
 
+            menu.actor.remove_action(this._keyController);
+
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
                 delete this._keyFocusId;
@@ -1570,21 +1582,27 @@ export class PopupMenuManager {
         newMenu.open({fadeOnly: this.activeMenu != null});
     }
 
+    _keyPress() {
+        const [, symbol] = this._keyController.get_key();
+        const menu = this.activeMenu;
+
+        if (symbol === Clutter.KEY_Down &&
+            global.stage.get_key_focus() === menu.actor) {
+            menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+            return Clutter.EVENT_STOP;
+        } else if (symbol === Clutter.KEY_Escape && menu.isOpen) {
+            menu.close();
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _onCapturedEvent(actor, event) {
         const menu = actor._delegate;
         const targetActor = global.stage.get_event_actor(event);
 
-        if (event.type() === Clutter.EventType.KEY_PRESS) {
-            const symbol = event.get_key_symbol();
-            if (symbol === Clutter.KEY_Down &&
-                global.stage.get_key_focus() === menu.actor) {
-                actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-                return Clutter.EVENT_STOP;
-            } else if (symbol === Clutter.KEY_Escape && menu.isOpen) {
-                menu.close();
-                return Clutter.EVENT_STOP;
-            }
-        } else if (event.type() === Clutter.EventType.ENTER &&
+        if (event.type() === Clutter.EventType.ENTER &&
                    (event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) === 0) {
             const hoveredMenu = this._findMenuForSource(targetActor);
 
