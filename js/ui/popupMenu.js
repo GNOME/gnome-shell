@@ -1505,6 +1505,10 @@ export class PopupMenuManager {
             },
             'recognize', () => this.activeMenu.close(),
             this);
+
+        this._motionController = new Clutter.MotionController();
+        this._motionController.connect(
+            'enter', (_, sprite) => this._checkHoveredMenu(sprite));
     }
 
     addMenu(menu, position) {
@@ -1514,8 +1518,6 @@ export class PopupMenuManager {
         menu.connectObject(
             'open-state-changed', this._onMenuOpenState.bind(this),
             'destroy', () => this.removeMenu(menu), this);
-        menu.actor.connectObject('captured-event',
-            this._onCapturedEvent.bind(this), this);
 
         if (position === undefined)
             this._menus.push(menu);
@@ -1530,6 +1532,7 @@ export class PopupMenuManager {
 
             menu.actor.remove_action(this._keyController);
             menu.actor.remove_action(this._clickGesture);
+            menu.actor.remove_action(this._motionController);
 
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
@@ -1558,6 +1561,7 @@ export class PopupMenuManager {
             this.activeMenu = menu;
             oldMenu?.actor.remove_action(this._keyController);
             oldMenu?.actor.remove_action(this._clickGesture);
+            oldMenu?.actor.remove_action(this._motionController);
             oldMenu?.close({fadeOnly: true});
             if (oldGrab)
                 Main.popModal(oldGrab);
@@ -1568,6 +1572,9 @@ export class PopupMenuManager {
             menu.actor.add_action_full(
                 'popup-manager-click-gesture', Clutter.EventPhase.CAPTURE,
                 this._clickGesture);
+            menu.actor.add_action_full(
+                'popup-manager-motion-controller', Clutter.EventPhase.CAPTURE,
+                this._motionController);
 
             if (!this._keyFocusId) {
                 this._keyFocusId =
@@ -1589,6 +1596,7 @@ export class PopupMenuManager {
 
             menu.actor.remove_action(this._keyController);
             menu.actor.remove_action(this._clickGesture);
+            menu.actor.remove_action(this._motionController);
 
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
@@ -1617,19 +1625,14 @@ export class PopupMenuManager {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _onCapturedEvent(actor, event) {
-        const menu = actor._delegate;
-        const targetActor = global.stage.get_event_actor(event);
+    _checkHoveredMenu(sprite) {
+        const {x, y} = sprite.get_coords();
+        const targetActor =
+              global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+        const hoveredMenu = this._findMenuForSource(targetActor);
 
-        if (event.type() === Clutter.EventType.ENTER &&
-                   (event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) === 0) {
-            const hoveredMenu = this._findMenuForSource(targetActor);
-
-            if (hoveredMenu && hoveredMenu !== menu)
-                this._changeMenu(hoveredMenu);
-        }
-
-        return Clutter.EVENT_PROPAGATE;
+        if (hoveredMenu && hoveredMenu !== this.activeMenu)
+            this._changeMenu(hoveredMenu);
     }
 
     _findMenuForSource(source) {
