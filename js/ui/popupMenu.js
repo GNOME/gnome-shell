@@ -1492,6 +1492,19 @@ export class PopupMenuManager {
 
         this._keyController = new Clutter.KeyController();
         this._keyController.connect('key-press', () => this._keyPress());
+
+        this._clickGesture = new Clutter.ClickGesture({
+            recognize_on_press: true,
+        });
+        this._clickGesture.connectObject(
+            'may-recognize', () => {
+                const menu = this.activeMenu;
+                const event = this._clickGesture.get_point_event(0);
+                const targetActor = global.stage.get_event_actor(event);
+                return !menu.actor.contains(targetActor);
+            },
+            'recognize', () => this.activeMenu.close(),
+            this);
     }
 
     addMenu(menu, position) {
@@ -1516,6 +1529,7 @@ export class PopupMenuManager {
             this._grab = null;
 
             menu.actor.remove_action(this._keyController);
+            menu.actor.remove_action(this._clickGesture);
 
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
@@ -1543,6 +1557,7 @@ export class PopupMenuManager {
             this._grab = Main.pushModal(menu.actor, this._grabParams);
             this.activeMenu = menu;
             oldMenu?.actor.remove_action(this._keyController);
+            oldMenu?.actor.remove_action(this._clickGesture);
             oldMenu?.close({fadeOnly: true});
             if (oldGrab)
                 Main.popModal(oldGrab);
@@ -1550,6 +1565,9 @@ export class PopupMenuManager {
             menu.actor.add_action_full(
                 'popup-manager-key-controller', Clutter.EventPhase.CAPTURE,
                 this._keyController);
+            menu.actor.add_action_full(
+                'popup-manager-click-gesture', Clutter.EventPhase.CAPTURE,
+                this._clickGesture);
 
             if (!this._keyFocusId) {
                 this._keyFocusId =
@@ -1570,6 +1588,7 @@ export class PopupMenuManager {
             this._grab = null;
 
             menu.actor.remove_action(this._keyController);
+            menu.actor.remove_action(this._clickGesture);
 
             if (this._keyFocusId) {
                 global.stage.disconnect(this._keyFocusId);
@@ -1608,10 +1627,6 @@ export class PopupMenuManager {
 
             if (hoveredMenu && hoveredMenu !== menu)
                 this._changeMenu(hoveredMenu);
-        } else if ((event.type() === Clutter.EventType.BUTTON_PRESS ||
-                    event.type() === Clutter.EventType.TOUCH_BEGIN) &&
-                   !actor.contains(targetActor)) {
-            menu.close();
         }
 
         return Clutter.EVENT_PROPAGATE;
