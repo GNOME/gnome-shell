@@ -154,10 +154,11 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         this.visible = false;
         this.style_class = 'candidate-popup-boxpointer';
 
-        this._dummyCursor = new Clutter.Actor({opacity: 0});
-        Main.layoutManager.uiGroup.add_child(this._dummyCursor);
+        const inputPanelGroup = global.compositor.get_input_panel_group();
 
-        Main.layoutManager.addTopChrome(this);
+        this._dummyCursor = new Clutter.Actor({opacity: 0});
+        inputPanelGroup.add_child(this._dummyCursor);
+        inputPanelGroup.add_child(this);
 
         const box = new St.BoxLayout({
             style_class: 'candidate-popup-content',
@@ -341,12 +342,6 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         if (isVisible) {
             this.setPosition(this._dummyCursor, 0);
             this.open(BoxPointer.PopupAnimation.NONE);
-            // We shouldn't be above some components like the screenshot UI,
-            // so don't raise to the top.
-            // The on-screen keyboard is expected to be above any entries,
-            // so just above the keyboard gets us to the right layer.
-            const {keyboardBox} = Main.layoutManager;
-            this.get_parent().set_child_above_sibling(this, keyboardBox);
         } else {
             this.close(BoxPointer.PopupAnimation.NONE);
         }
