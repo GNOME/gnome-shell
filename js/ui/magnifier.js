@@ -1792,11 +1792,12 @@ class ZoomRegion {
         });
 
         const [mouseX, mouseY] = this._getMousePosition();
+        const sourceMouseScale = this._mouseSourceActor.get_resource_scale();
         this._mouseActor.ease({
             x: mouseX,
             y: mouseY,
-            scale_x: this._xMagFactor,
-            scale_y: this._yMagFactor,
+            scale_x: this._xMagFactor / sourceMouseScale,
+            scale_y: this._yMagFactor / sourceMouseScale,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: animate ? 100 : 0,
         });
