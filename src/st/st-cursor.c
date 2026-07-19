@@ -208,8 +208,13 @@ load_cursor (StCursor  *cursor,
 static void
 ensure_cursor (StCursor *cursor)
 {
+  ClutterCursorType cursor_type =
+    clutter_cursor_get_cursor_type (CLUTTER_CURSOR (cursor));
   g_autoptr (GFile) file = NULL;
   g_autoptr (GError) error = NULL;
+
+  if (cursor_type == CLUTTER_CURSOR_NONE)
+    return;
 
   file = find_cursor_metadata (cursor);
 
