@@ -1051,7 +1051,7 @@ export const LoginDialog = GObject.registerClass({
             return;
 
         for (const m of mechanisms) {
-            if (GdmUtil.isSelectable(m)) {
+            if (m.selectable) {
                 this._authMenuButton.addItem({
                     sectionName: _PRIMARY_LOGIN_METHOD_SECTION_NAME,
                     ...m,

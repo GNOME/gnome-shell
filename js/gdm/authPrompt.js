@@ -10,7 +10,6 @@ import St from 'gi://St';
 import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
-import * as Constants from './constants.js';
 import * as GdmUtil from './util.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
@@ -638,7 +637,7 @@ export const AuthPrompt = GObject.registerClass({
 
         // Only allow instant retrying with password authentication.
         // The rest of authentications will retry through the reset flow.
-        if (canRetry && this._userVerifier.selectedMechanism?.role === Constants.PASSWORD_ROLE_NAME) {
+        if (canRetry && this._userVerifier.selectedMechanism?.preemptiveInput) {
             this.verificationStatus = AuthPromptStatus.VERIFYING;
             this._entry.text = '';
             this.startPreemptiveInput();
