@@ -185,7 +185,7 @@ export const TimeLimitsManager = GObject.registerClass({
         this._estimatedTimes = [];
         this._timerChildProxyFactory = timerChildProxyFactory ?? {
             new: () => {
-                return TimerChildProxy(Gio.DBus.system,
+                return new TimerChildProxy(Gio.DBus.system,
                     'org.freedesktop.MalcontentTimer1',
                     '/org/freedesktop/MalcontentTimer1',
                     (proxy, error) => {
