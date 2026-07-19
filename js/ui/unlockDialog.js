@@ -18,8 +18,6 @@ import {formatDateWithCFormatString} from '../misc/dateUtils.js';
 import {TimeLimitsState} from '../misc/timeLimitsManager.js';
 import * as AuthMenuButton from '../gdm/authMenuButton.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
-import * as GdmConstants from '../gdm/constants.js';
-import * as GdmUtil from '../gdm/util.js';
 import {AuthPromptStatus} from '../gdm/authPrompt.js';
 import {MprisSource} from './mpris.js';
 import {MediaMessage} from './messageList.js';
@@ -423,19 +421,16 @@ class UnlockDialogClock extends St.BoxLayout {
         this._date.text = formatDateWithCFormatString(date, dateFormat);
     }
 
-    selectAuthRole(roleName) {
-        this._selectedAuthRole = roleName;
+    selectAuthHint(hint) {
+        this._authHint = hint;
         this._updateHint();
     }
 
     _updateHint() {
-        const selectedAuthRole = this._selectedAuthRole;
         let text;
 
-        if (selectedAuthRole === GdmConstants.SMARTCARD_ROLE_NAME)
-            text = _('Insert smartcard');
-        else if (selectedAuthRole === GdmConstants.PASSKEY_ROLE_NAME)
-            text = _('Insert security key');
+        if (this._authHint)
+            text = this._authHint;
         else if (this._seat.touch_mode)
             text = _('Swipe up');
         else
@@ -783,7 +778,7 @@ export const UnlockDialog = GObject.registerClass({
 
         this._selectedAuthMechanism = authMechanism;
 
-        this._clock.selectAuthRole(authMechanism?.role);
+        this._clock.selectAuthHint(authMechanism?.hint);
     }
 
     _createBackground(monitorIndex) {
@@ -988,17 +983,13 @@ export const UnlockDialog = GObject.registerClass({
             return;
 
         for (const m of mechanisms) {
-            if (GdmUtil.isSelectable(m)) {
+            if (m.selectable) {
                 this._authMenuButton.addItem({
                     sectionName: PRIMARY_UNLOCK_METHOD_SECTION_NAME,
                     ...m,
                 });
             } else {
-                this._authIndicatorButton.addItem({
-                    iconName: GdmUtil.getNonSelectableIconName(m),
-                    description: this._getUnlockDescription(m),
-                    ...m,
-                });
+                this._authIndicatorButton.addItem(m);
             }
         }
 
@@ -1006,17 +997,6 @@ export const UnlockDialog = GObject.registerClass({
             this._authMenuButton.setActiveItem(selectedMechanism);
 
         this._authIndicatorButton.updateDescriptionLabel();
-    }
-
-    _getUnlockDescription(mechanism) {
-        // This is only used for non selectable mechanisms.
-        // Currently only fingerprint is non selectable
-        switch (mechanism.role) {
-        case GdmConstants.FINGERPRINT_ROLE_NAME:
-            return _('Unlock with fingerprint');
-        default:
-            throw new Error(`Failed getting unlock description: ${mechanism.role}`);
-        }
     }
 
     _escape() {

@@ -19,6 +19,28 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_answer_query');
 Gio._promisify(Gdm.UserVerifierChoiceListProxy.prototype, 'call_select_choice');
 Gio._promisify(Gdm.UserVerifierCustomJSONProxy.prototype, 'call_reply');
 
+export const RoleProperties = {
+    [Constants.PASSWORD_ROLE_NAME]: {
+        selectable: true,
+        preemptiveInput: true,
+    },
+    [Constants.SMARTCARD_ROLE_NAME]: {
+        selectable: true,
+        hint: _('Insert smartcard'),
+    },
+    [Constants.PASSKEY_ROLE_NAME]: {
+        selectable: true,
+        hint: _('Insert security key'),
+    },
+    [Constants.WEB_LOGIN_ROLE_NAME]: {
+        selectable: true,
+    },
+    [Constants.FINGERPRINT_ROLE_NAME]: {
+        iconName: 'fingerprint-auth-symbolic',
+        description: _('Unlock with fingerprint'),
+    },
+};
+
 export class AuthServices extends GObject.Object {
     static [GObject.signals] = {
         'destroy': {},
@@ -218,6 +240,11 @@ export class AuthServices extends GObject.Object {
         this._enabledMechanisms = [];
 
         this._handleUpdateEnabledMechanisms();
+
+        this._enabledMechanisms = this._enabledMechanisms.map(m => ({
+            ...m,
+            ...RoleProperties[m.role],
+        }));
 
         this.emit('mechanisms-changed');
     }

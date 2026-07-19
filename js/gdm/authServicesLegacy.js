@@ -7,7 +7,7 @@ import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as OVirt from './oVirt.js';
 import * as Util from './util.js';
 import * as Vmware from './vmware.js';
-import {AuthServices} from './authServices.js';
+import {AuthServices, RoleProperties} from './authServices.js';
 
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
@@ -383,6 +383,7 @@ export class AuthServicesLegacy extends AuthServices {
         this._selectedMechanism = {
             serviceName: credentialManager.service,
             role: Constants.PASSWORD_ROLE_NAME,
+            ...RoleProperties[Constants.PASSWORD_ROLE_NAME],
         };
         this.emit('reset', {softReset: true});
     }
