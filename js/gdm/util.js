@@ -14,11 +14,6 @@ import {AuthServicesSSSDSwitchable} from './authServicesSSSDSwitchable.js';
 export const CLONE_FADE_ANIMATION_TIME = 250;
 
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
-export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
-export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
-export const PASSKEY_AUTHENTICATION_KEY = 'enable-passkey-authentication';
-export const WEB_AUTHENTICATION_KEY = 'enable-web-authentication';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
@@ -427,30 +422,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _updateAuthServices() {
-        const enabledRoles = [];
-
-        if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.PASSWORD_ROLE_NAME);
-        if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.SMARTCARD_ROLE_NAME);
-        if (this._settings.get_boolean(PASSKEY_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.PASSKEY_ROLE_NAME);
-        if (this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.FINGERPRINT_ROLE_NAME);
-        if (this._settings.get_boolean(WEB_AUTHENTICATION_KEY))
-            enabledRoles.push(Constants.WEB_LOGIN_ROLE_NAME);
-
         const enabledAuthServicesClasses = AuthServicesClasses
             .filter(C => C.isEnabled(this._settings));
 
-        if (JSON.stringify(enabledRoles) === JSON.stringify(this._enabledRoles) &&
-            enabledAuthServicesClasses.length === this._enabledAuthServicesClasses?.length &&
+        if (enabledAuthServicesClasses.length === this._enabledAuthServicesClasses?.length &&
             enabledAuthServicesClasses.every(c => this._enabledAuthServicesClasses.includes(c)))
             return;
 
-        this._enabledRoles = enabledRoles;
         this._enabledAuthServicesClasses = enabledAuthServicesClasses;
-
         this._createAuthServices();
     }
 
@@ -463,19 +442,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             reauthOnly: this._reauthOnly,
         };
 
-        this._enabledAuthServicesClasses
-            .filter(AuthServicesClass =>
-                AuthServicesClass.supportsAny(this._enabledRoles))
-            .forEach(AuthServicesClass => {
-                const enabledRoles =
-                    this._authServices.at(-1)?.unsupportedRoles ??
-                    this._enabledRoles;
-                this._authServices.push(new AuthServicesClass({
-                    ...params,
-                    enabledRoles,
-                }));
-            });
+        this._enabledAuthServicesClasses.forEach(AuthServicesClass => {
+            this._authServices.push(new AuthServicesClass(params));
+        });
 
+        this._redistributeRoles();
         this._connectAuthServices();
     }
 
@@ -518,13 +489,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this._redistributingRoles = true;
 
-        // Each authServices receives the roles unsupported by the one
+        // Each authServices disables the roles supported by the one
         // before it, cascading down the priority chain
         const authServices = this._authServices;
         for (let i = 1; i < authServices.length; i++) {
             const prev = authServices[i - 1];
             const current = authServices[i];
-            current.updateEnabledRoles(prev.unsupportedRoles);
+            current.updateEnabledRoles({disableRoles: prev.supportedRoles});
         }
 
         this._redistributingRoles = false;

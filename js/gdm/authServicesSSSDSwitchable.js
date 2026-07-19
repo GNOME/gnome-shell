@@ -101,13 +101,13 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
-    _handleGetUnsupportedRoles() {
-        // When we couldn't get mechanisms (NOT_FOUND), assume all roles
-        // are unsupported so they cascade to lower-priority authServices.
+    _handleGetSupportedRoles() {
+        // When we couldn't get mechanisms (NOT_FOUND), we don't support any
+        // role so they cascade to lower-priority authServices.
         if (this._mechanismsStatus === MechanismsStatus.NOT_FOUND)
-            return this._enabledRoles;
+            return [];
 
-        return super._handleGetUnsupportedRoles();
+        return super._handleGetSupportedRoles();
     }
 
     _handleReset() {

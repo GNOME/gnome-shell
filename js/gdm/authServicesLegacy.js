@@ -12,6 +12,10 @@ import {AuthServices} from './authServices.js';
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
 
+const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+
 const Mechanisms = [
     {
         serviceName: Constants.PASSWORD_SERVICE_NAME,
@@ -45,6 +49,12 @@ export class AuthServicesLegacy extends AuthServices {
 
     static {
         GObject.registerClass(this);
+    }
+
+    static isEnabled(settings) {
+        return settings.get_boolean(PASSWORD_AUTHENTICATION_KEY) ||
+            settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
+            settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY);
     }
 
     constructor(params) {

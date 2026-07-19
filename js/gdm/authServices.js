@@ -64,10 +64,6 @@ export class AuthServices extends GObject.Object {
     static SupportedRoles = [];
     static RoleToService = {};
 
-    static supportsAny(roles) {
-        return roles.some(r => this.SupportedRoles.includes(r));
-    }
-
     static isEnabled(_settings) {
         return true;
     }
@@ -76,13 +72,12 @@ export class AuthServices extends GObject.Object {
         super();
         params = Params.parse(params, {
             client: null,
-            enabledRoles: [],
             allowedFailures: 3,
             reauthOnly: false,
         });
 
         this._client = params.client;
-        this._enabledRoles = params.enabledRoles;
+        this._enabledRoles = this.supportedRoles;
         this._allowedFailures = params.allowedFailures;
         this._reauthOnly = params.reauthOnly;
 
@@ -92,14 +87,11 @@ export class AuthServices extends GObject.Object {
 
         this._cancellable = null;
 
-        if (this.supportedRoles.includes(Constants.SMARTCARD_ROLE_NAME) &&
-            this._enabledRoles.includes(Constants.SMARTCARD_ROLE_NAME))
+        if (this.supportedRoles.includes(Constants.SMARTCARD_ROLE_NAME))
             this._connectSmartcardManager();
-        if (this.supportedRoles.includes(Constants.PASSKEY_ROLE_NAME) &&
-            this._enabledRoles.includes(Constants.PASSKEY_ROLE_NAME))
+        if (this.supportedRoles.includes(Constants.PASSKEY_ROLE_NAME))
             this._connectPasskeyDeviceManager();
-        if (this.supportedRoles.includes(Constants.FINGERPRINT_ROLE_NAME) &&
-            this._enabledRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
+        if (this.supportedRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
             this._connectFingerprintManager();
     }
 
@@ -116,11 +108,7 @@ export class AuthServices extends GObject.Object {
     }
 
     get supportedRoles() {
-        return this.constructor.SupportedRoles;
-    }
-
-    get unsupportedRoles() {
-        return this._handleGetUnsupportedRoles();
+        return this._handleGetSupportedRoles();
     }
 
     selectChoice(serviceName, key) {
@@ -199,16 +187,17 @@ export class AuthServices extends GObject.Object {
         this._handleClear();
     }
 
-    updateEnabledRoles(roles) {
-        if (this._enabledRoles.length === roles.length &&
-            this._enabledRoles.every(r => roles.includes(r)))
-            return false;
+    updateEnabledRoles({disableRoles}) {
+        const updatedRoles = this.supportedRoles
+            .filter(r => !disableRoles.includes(r));
 
-        this._enabledRoles = roles;
+        if (updatedRoles.length === this._enabledRoles.length &&
+            updatedRoles.every(r => this._enabledRoles.includes(r)))
+            return;
+
+        this._enabledRoles = updatedRoles;
 
         this._handleUpdateEnabledRoles();
-
-        return true;
     }
 
     _clearUserVerifier() {
@@ -450,8 +439,8 @@ export class AuthServices extends GObject.Object {
         }
     }
 
-    _handleGetUnsupportedRoles() {
-        return this._enabledRoles.filter(r => !this.supportedRoles.includes(r));
+    _handleGetSupportedRoles() {
+        return this.constructor.SupportedRoles;
     }
 
     _handleSelectChoice() {}
