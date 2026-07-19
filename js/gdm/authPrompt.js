@@ -37,7 +37,7 @@ class ParentalControlsShield extends St.BoxLayout {
 
         this._requestExtensionCookie = null;
 
-        this._timerChildProxy = TimerChildProxy(Gio.DBus.system,
+        this._timerChildProxy = new TimerChildProxy(Gio.DBus.system,
             'org.freedesktop.MalcontentTimer1',
             '/org/freedesktop/MalcontentTimer1',
             (proxy, error) => {

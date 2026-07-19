@@ -16,7 +16,7 @@ export class Manager extends Signals.EventEmitter {
     constructor() {
         super();
 
-        this._aggregateProvider = Provider(Gio.DBus.system,
+        this._aggregateProvider = new Provider(Gio.DBus.system,
             'org.freedesktop.realmd',
             '/org/freedesktop/realmd',
             this._reloadRealms.bind(this));
@@ -38,7 +38,7 @@ export class Manager extends Signals.EventEmitter {
             return;
 
         for (let i = 0; i < realmPaths.length; i++) {
-            Realm(Gio.DBus.system,
+            new Realm(Gio.DBus.system,
                 'org.freedesktop.realmd',
                 realmPaths[i],
                 this._onRealmLoaded.bind(this));
@@ -98,7 +98,7 @@ export class Manager extends Signals.EventEmitter {
     }
 
     release() {
-        Service(Gio.DBus.system,
+        new Service(Gio.DBus.system,
             'org.freedesktop.realmd',
             '/org/freedesktop/realmd',
             service => service.ReleaseAsync().catch(logError));
