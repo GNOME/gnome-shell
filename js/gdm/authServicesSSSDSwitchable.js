@@ -99,7 +99,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this._startSmartcardLogin();
             break;
         case Constants.PASSKEY_ROLE_NAME:
-            this._startPasskeyLogin();
+            this._startFido2TokenLogin();
             break;
         case Constants.WEB_LOGIN_ROLE_NAME:
             this._startWebLogin();
@@ -220,7 +220,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
-    _handlePasskeyChanged() {
+    _handleFido2TokenChanged() {
         if (!this._selectedMechanism ||
             !this._enabledMechanisms.some(({role}) => role === Constants.PASSKEY_ROLE_NAME))
             return;
@@ -401,7 +401,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         };
     }
 
-    _startPasskeyLogin() {
+    _startFido2TokenLogin() {
         const {
             serviceName,
             keyConnected, initInstruction,
