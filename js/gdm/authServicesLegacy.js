@@ -12,21 +12,28 @@ import {AuthServices} from './authServices.js';
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
 
+const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+
 const Mechanisms = [
     {
         serviceName: Constants.PASSWORD_SERVICE_NAME,
         role: Constants.PASSWORD_ROLE_NAME,
         name: _('Password'),
+        setting: PASSWORD_AUTHENTICATION_KEY,
     },
     {
         serviceName: Constants.SMARTCARD_SERVICE_NAME,
         role: Constants.SMARTCARD_ROLE_NAME,
         name: _('Smartcard'),
+        setting: SMARTCARD_AUTHENTICATION_KEY,
     },
     {
         serviceName: Constants.FINGERPRINT_SERVICE_NAME,
         role: Constants.FINGERPRINT_ROLE_NAME,
         name: _('Fingerprint'),
+        setting: FINGERPRINT_AUTHENTICATION_KEY,
     },
 ];
 
@@ -45,6 +52,12 @@ export class AuthServicesLegacy extends AuthServices {
 
     static {
         GObject.registerClass(this);
+    }
+
+    static isEnabled(settings) {
+        return settings.get_boolean(PASSWORD_AUTHENTICATION_KEY) ||
+            settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
+            settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY);
     }
 
     constructor(params) {
@@ -150,7 +163,8 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleUpdateEnabledMechanisms() {
         this._enabledMechanisms.push(...Mechanisms.filter(m =>
-            this._enabledRoles.includes(m.role)
+            this._enabledRoles.includes(m.role) &&
+            this._settings.get_boolean(m.setting)
         ));
 
         if (!this._fingerprintManager?.readerFound) {
