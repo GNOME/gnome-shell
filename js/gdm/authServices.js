@@ -2,7 +2,7 @@ import * as Constants from './constants.js';
 import * as FingerprintManager from './fingerprintManager.js';
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
-import * as PasskeyDeviceManager from './passkeyDeviceManager.js';
+import * as Fido2TokenManager from './fido2TokenManager.js';
 import * as SmartcardManager from './smartcardManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
@@ -112,7 +112,7 @@ export class AuthServices extends GObject.Object {
         if (this.supportedRoles.includes(Constants.SMARTCARD_ROLE_NAME))
             this._connectSmartcardManager();
         if (this.supportedRoles.includes(Constants.PASSKEY_ROLE_NAME))
-            this._connectPasskeyDeviceManager();
+            this._connectFido2TokenManager();
         if (this.supportedRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
             this._connectFingerprintManager();
     }
@@ -257,11 +257,11 @@ export class AuthServices extends GObject.Object {
             this);
     }
 
-    _connectPasskeyDeviceManager() {
-        this._passkeyDeviceManager = PasskeyDeviceManager.getPasskeyDeviceManager();
-        this._passkeyDeviceManager.connectObject(
-            'passkey-inserted', () => this._handlePasskeyChanged(),
-            'passkey-removed', () => this._handlePasskeyChanged(),
+    _connectFido2TokenManager() {
+        this._fido2TokenManager = Fido2TokenManager.getFido2TokenManager();
+        this._fido2TokenManager.connectObject(
+            'fido2-token-inserted', () => this._handleFido2TokenChanged(),
+            'fido2-token-removed', () => this._handleFido2TokenChanged(),
             this);
     }
 
@@ -497,7 +497,7 @@ export class AuthServices extends GObject.Object {
 
     _handleSmartcardChanged() {}
 
-    _handlePasskeyChanged() {}
+    _handleFido2TokenChanged() {}
 
     _handleFingerprintChanged() {}
 
