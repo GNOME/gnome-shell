@@ -1,12 +1,13 @@
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
-import * as Constants from './constants.js';
 import * as Fido2TokenManager from './fido2TokenManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as SmartcardManager from './smartcardManager.js';
 import * as Util from './util.js';
-import {AuthServices} from './authServices.js';
+import {AuthServices, Role} from './authServices.js';
+
+const SWITCHABLE_AUTH_SERVICE_NAME = 'gdm-switchable-auth';
 
 const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 
@@ -18,17 +19,17 @@ const MechanismsStatus = {
 
 export class AuthServicesSSSDSwitchable extends AuthServices {
     static SupportedRoles = [
-        Constants.PASSWORD_ROLE_NAME,
-        Constants.SMARTCARD_ROLE_NAME,
-        Constants.PASSKEY_ROLE_NAME,
-        Constants.WEB_LOGIN_ROLE_NAME,
+        Role.PASSWORD,
+        Role.SMARTCARD,
+        Role.PASSKEY,
+        Role.WEB_LOGIN,
     ];
 
     static RoleToService = {
-        [Constants.PASSWORD_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
-        [Constants.SMARTCARD_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
-        [Constants.PASSKEY_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
-        [Constants.WEB_LOGIN_ROLE_NAME]: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
+        [Role.PASSWORD]: SWITCHABLE_AUTH_SERVICE_NAME,
+        [Role.SMARTCARD]: SWITCHABLE_AUTH_SERVICE_NAME,
+        [Role.PASSKEY]: SWITCHABLE_AUTH_SERVICE_NAME,
+        [Role.WEB_LOGIN]: SWITCHABLE_AUTH_SERVICE_NAME,
     };
 
     static {
@@ -52,7 +53,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        if (this._selectedMechanism.role === Constants.SMARTCARD_ROLE_NAME) {
+        if (this._selectedMechanism.role === Role.SMARTCARD) {
             const certificates = this._selectedMechanism.certificates;
             const cert = certificates.find(c => c.keyId === key);
             this._selectedSmartcard = cert;
@@ -68,7 +69,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        if (this._selectedMechanism.role === Constants.PASSWORD_ROLE_NAME &&
+        if (this._selectedMechanism.role === Role.PASSWORD &&
             this._resettingPassword) {
             this._userVerifier.call_answer_query(serviceName,
                 answer,
@@ -78,12 +79,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         let response;
         switch (this._selectedMechanism.role) {
-        case Constants.PASSWORD_ROLE_NAME:
-        case Constants.SMARTCARD_ROLE_NAME:
+        case Role.PASSWORD:
+        case Role.SMARTCARD:
             response = this._formatResponse(answer);
             this._sendResponse(response);
             break;
-        case Constants.PASSKEY_ROLE_NAME:
+        case Role.PASSKEY:
             response = this._formatResponse(answer);
             this._sendResponse(response);
 
@@ -97,16 +98,16 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     _handleSelectMechanism() {
         switch (this._selectedMechanism?.role) {
-        case Constants.PASSWORD_ROLE_NAME:
+        case Role.PASSWORD:
             this._startPasswordLogin();
             break;
-        case Constants.SMARTCARD_ROLE_NAME:
+        case Role.SMARTCARD:
             this._startSmartcardLogin();
             break;
-        case Constants.PASSKEY_ROLE_NAME:
+        case Role.PASSKEY:
             this._startFido2TokenLogin();
             break;
-        case Constants.WEB_LOGIN_ROLE_NAME:
+        case Role.WEB_LOGIN:
             this._startWebLogin();
             break;
         }
@@ -146,7 +147,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnCustomJSONRequest(serviceName, _protocol, _version, json) {
-        if (serviceName !== Constants.SWITCHABLE_AUTH_SERVICE_NAME)
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
             return;
 
         let requestObject;
@@ -174,7 +175,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _handleUpdateEnabledMechanisms() {
         this._enabledMechanisms.push(...Object.keys(this._mechanisms)
             .map(id => ({
-                serviceName: Constants.SWITCHABLE_AUTH_SERVICE_NAME,
+                serviceName: SWITCHABLE_AUTH_SERVICE_NAME,
                 id,
                 ...this._mechanisms[id],
             }))
@@ -198,7 +199,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._clearWebLoginTimeout();
 
         const webLoginMechanism = this._enabledMechanisms
-            .find(m => m.role === Constants.WEB_LOGIN_ROLE_NAME);
+            .find(m => m.role === Role.WEB_LOGIN);
         if (!webLoginMechanism)
             return;
 
@@ -208,7 +209,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         this._webLoginTimeoutId = GLib.timeout_add_seconds_once(GLib.PRIORITY_DEFAULT,
             timeout, () => {
-                if (this._selectedMechanism?.role !== Constants.WEB_LOGIN_ROLE_NAME)
+                if (this._selectedMechanism?.role !== Role.WEB_LOGIN)
                     webLoginMechanism.needsRefresh = true;
                 else
                     this.emit('reset', {softReset: true});
@@ -224,7 +225,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         // sssd can't inform about expired password from JSON so it's needed
         // to check the info message and handle the reset using the old flow
         if (serviceName === this._selectedMechanism?.serviceName &&
-            this._selectedMechanism.role === Constants.PASSWORD_ROLE_NAME &&
+            this._selectedMechanism.role === Role.PASSWORD &&
             info.includes('Password expired. Change your password now'))
             this._resettingPassword = true;
 
@@ -261,7 +262,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             return;
 
         if (serviceName === this._selectedMechanism?.serviceName &&
-            this._selectedMechanism.role === Constants.PASSWORD_ROLE_NAME &&
+            this._selectedMechanism.role === Role.PASSWORD &&
             this._resettingPassword) {
             this.emit('ask-question', {
                 serviceName,
@@ -283,7 +284,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleCanStartService(serviceName) {
-        return serviceName === Constants.SWITCHABLE_AUTH_SERVICE_NAME &&
+        return serviceName === SWITCHABLE_AUTH_SERVICE_NAME &&
             this._mechanismsStatus === MechanismsStatus.WAITING;
     }
 
@@ -292,20 +293,20 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         let response;
         switch (role) {
-        case Constants.PASSWORD_ROLE_NAME: {
+        case Role.PASSWORD: {
             response = {password: answer};
             break;
         }
-        case Constants.SMARTCARD_ROLE_NAME: {
+        case Role.SMARTCARD: {
             const {tokenName, moduleName, keyId, label} = this._selectedSmartcard;
             response = {pin: answer, tokenName, moduleName, keyId, label};
             break;
         }
-        case Constants.PASSKEY_ROLE_NAME: {
+        case Role.PASSKEY: {
             response = {pin: answer, kerberos, cryptoChallenge};
             break;
         }
-        case Constants.WEB_LOGIN_ROLE_NAME: {
+        case Role.WEB_LOGIN: {
             response = {};
             break;
         }
@@ -456,7 +457,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _webLoginDone() {
-        if (this._selectedMechanism?.role !== Constants.WEB_LOGIN_ROLE_NAME)
+        if (this._selectedMechanism?.role !== Role.WEB_LOGIN)
             return;
 
         const response = this._formatResponse();
@@ -491,7 +492,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     _onSmartcardChanged() {
         if (!this._selectedMechanism ||
-            !this._enabledMechanisms.some(({role}) => role === Constants.SMARTCARD_ROLE_NAME))
+            !this._enabledMechanisms.some(({role}) => role === Role.SMARTCARD))
             return;
 
         this.emit('reset', {softReset: true, reuseEntryText: true});
@@ -499,7 +500,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     _onFido2TokenChanged() {
         if (!this._selectedMechanism ||
-            !this._enabledMechanisms.some(({role}) => role === Constants.PASSKEY_ROLE_NAME))
+            !this._enabledMechanisms.some(({role}) => role === Role.PASSKEY))
             return;
 
         this.emit('reset', {softReset: true, reuseEntryText: true});
