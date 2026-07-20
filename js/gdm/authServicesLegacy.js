@@ -2,8 +2,10 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import * as Constants from './constants.js';
+import * as FingerprintManager from './fingerprintManager.js';
 import {FingerprintReaderType} from './fingerprintManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
+import * as SmartcardManager from './smartcardManager.js';
 import * as OVirt from './oVirt.js';
 import * as Util from './util.js';
 import * as Vmware from './vmware.js';
@@ -59,6 +61,9 @@ export class AuthServicesLegacy extends AuthServices {
 
     constructor(params) {
         super(params);
+
+        this._connectSmartcardManager();
+        this._connectFingerprintManager();
 
         this._updateEnabledMechanisms();
 
@@ -169,22 +174,6 @@ export class AuthServicesLegacy extends AuthServices {
             // it's working for this user
             this._setFingerprintReady(false);
         }
-    }
-
-    _handleSmartcardChanged() {
-        if (this._selectedMechanism?.role !== Constants.SMARTCARD_ROLE_NAME ||
-            this._smartcardInProgress && this._smartcardManager.hasInsertedTokens())
-            return;
-
-        this.emit('reset', {softReset: true});
-    }
-
-    _handleFingerprintChanged() {
-        if (!this._enabledRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
-            return;
-
-        this._updateEnabledMechanisms();
-        this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
     _handleOnInfo(serviceName, info) {
@@ -377,6 +366,40 @@ export class AuthServicesLegacy extends AuthServices {
 
         if (this._selectedMechanism?.serviceName === serviceName)
             this.emit('reset');
+    }
+
+    _connectSmartcardManager() {
+        this._smartcardManager = SmartcardManager.getSmartcardManager();
+        this._smartcardManager.connectObject(
+            'smartcard-inserted', () => this._onSmartcardChanged(),
+            'smartcard-removed', () => this._onSmartcardChanged(),
+            this);
+    }
+
+    _connectFingerprintManager() {
+        if (!this._reauthOnly)
+            return;
+
+        this._fingerprintManager = FingerprintManager.getFingerprintManager();
+        this._fingerprintManager.connectObject(
+            'reader-type-changed', () => this._onFingerprintChanged(),
+            this);
+    }
+
+    _onSmartcardChanged() {
+        if (this._selectedMechanism?.role !== Constants.SMARTCARD_ROLE_NAME ||
+            this._smartcardInProgress && this._smartcardManager.hasInsertedTokens())
+            return;
+
+        this.emit('reset', {softReset: true});
+    }
+
+    _onFingerprintChanged() {
+        if (!this._enabledRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
+            return;
+
+        this._updateEnabledMechanisms();
+        this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
     _onCredentialManagerAuthenticated(credentialManager) {

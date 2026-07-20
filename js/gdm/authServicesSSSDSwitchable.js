@@ -2,7 +2,9 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
 import * as Constants from './constants.js';
+import * as Fido2TokenManager from './fido2TokenManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
+import * as SmartcardManager from './smartcardManager.js';
 import * as Util from './util.js';
 import {AuthServices} from './authServices.js';
 
@@ -39,6 +41,9 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     constructor(params) {
         super(params);
+
+        this._connectSmartcardManager();
+        this._connectFido2TokenManager();
 
         this._mechanismsStatus = MechanismsStatus.WAITING;
     }
@@ -205,22 +210,6 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
                 this._webLoginTimeoutId = 0;
             });
-    }
-
-    _handleSmartcardChanged() {
-        if (!this._selectedMechanism ||
-            !this._enabledMechanisms.some(({role}) => role === Constants.SMARTCARD_ROLE_NAME))
-            return;
-
-        this.emit('reset', {softReset: true, reuseEntryText: true});
-    }
-
-    _handleFido2TokenChanged() {
-        if (!this._selectedMechanism ||
-            !this._enabledMechanisms.some(({role}) => role === Constants.PASSKEY_ROLE_NAME))
-            return;
-
-        this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 
     _handleOnInfo(serviceName, info) {
@@ -442,5 +431,37 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         GLib.source_remove(this._webLoginTimeoutId);
         this._webLoginTimeoutId = 0;
+    }
+
+    _connectSmartcardManager() {
+        this._smartcardManager = SmartcardManager.getSmartcardManager();
+        this._smartcardManager.connectObject(
+            'smartcard-inserted', () => this._onSmartcardChanged(),
+            'smartcard-removed', () => this._onSmartcardChanged(),
+            this);
+    }
+
+    _connectFido2TokenManager() {
+        this._fido2TokenManager = Fido2TokenManager.getFido2TokenManager();
+        this._fido2TokenManager.connectObject(
+            'fido2-token-inserted', () => this._onFido2TokenChanged(),
+            'fido2-token-removed', () => this._onFido2TokenChanged(),
+            this);
+    }
+
+    _onSmartcardChanged() {
+        if (!this._selectedMechanism ||
+            !this._enabledMechanisms.some(({role}) => role === Constants.SMARTCARD_ROLE_NAME))
+            return;
+
+        this.emit('reset', {softReset: true, reuseEntryText: true});
+    }
+
+    _onFido2TokenChanged() {
+        if (!this._selectedMechanism ||
+            !this._enabledMechanisms.some(({role}) => role === Constants.PASSKEY_ROLE_NAME))
+            return;
+
+        this.emit('reset', {softReset: true, reuseEntryText: true});
     }
 }

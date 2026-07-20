@@ -1,9 +1,6 @@
 import * as Constants from './constants.js';
-import * as FingerprintManager from './fingerprintManager.js';
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
-import * as Fido2TokenManager from './fido2TokenManager.js';
-import * as SmartcardManager from './smartcardManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Util from './util.js';
 import Gdm from 'gi://Gdm';
@@ -108,13 +105,6 @@ export class AuthServices extends GObject.Object {
         this._unavailableServices = new Set();
 
         this._cancellable = null;
-
-        if (this.supportedRoles.includes(Constants.SMARTCARD_ROLE_NAME))
-            this._connectSmartcardManager();
-        if (this.supportedRoles.includes(Constants.PASSKEY_ROLE_NAME))
-            this._connectFido2TokenManager();
-        if (this.supportedRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
-            this._connectFingerprintManager();
     }
 
     get selectedMechanism() {
@@ -247,33 +237,6 @@ export class AuthServices extends GObject.Object {
         }));
 
         this.emit('mechanisms-changed');
-    }
-
-    _connectSmartcardManager() {
-        this._smartcardManager = SmartcardManager.getSmartcardManager();
-        this._smartcardManager.connectObject(
-            'smartcard-inserted', () => this._handleSmartcardChanged(),
-            'smartcard-removed', () => this._handleSmartcardChanged(),
-            this);
-    }
-
-    _connectFido2TokenManager() {
-        this._fido2TokenManager = Fido2TokenManager.getFido2TokenManager();
-        this._fido2TokenManager.connectObject(
-            'fido2-token-inserted', () => this._handleFido2TokenChanged(),
-            'fido2-token-removed', () => this._handleFido2TokenChanged(),
-            this);
-    }
-
-    _connectFingerprintManager() {
-        // Fingerprint can only work on lockscreen
-        if (!this._reauthOnly)
-            return;
-
-        this._fingerprintManager = FingerprintManager.getFingerprintManager();
-        this._fingerprintManager.connectObject(
-            'reader-type-changed', () => this._handleFingerprintChanged(),
-            this);
     }
 
     _waitPendingMessages() {
@@ -494,12 +457,6 @@ export class AuthServices extends GObject.Object {
         throw new GObject.NotImplementedError(
             `_handleUpdateEnabledMechanisms in ${this.constructor.name}`);
     }
-
-    _handleSmartcardChanged() {}
-
-    _handleFido2TokenChanged() {}
-
-    _handleFingerprintChanged() {}
 
     _handleOnInfo() {}
 
