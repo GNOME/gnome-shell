@@ -353,6 +353,29 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+@mixin login-buttons($context){
+  .login-button {
+    @if $context == 'login' { @include login_dialog_item_button(); }
+    @if $context == 'unlock' { @extend %lockscreen_button; }
+    @include fontsize($base_font_size + 2);
+    color: $_gdm_fg;
+    min-width: 12em;
+    text-align: center;
+    font-weight: bold;
+    border-radius: $base_border_radius * 4;
+    padding: 0;
+    margin: 0.2em $base_margin * 5;
+  }
+}
+
+.login-dialog {
+  @include login-buttons(login);
+}
+
+.unlock-dialog {
+  @include login-buttons(unlock);
+}
+
 // Screen Shield
 // a.k.a. the lockscreen, uses transparent styles
 .unlock-dialog {

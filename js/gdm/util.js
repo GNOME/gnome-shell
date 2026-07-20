@@ -503,6 +503,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 'verification-complete', () => this.emit('verification-complete'),
                 'reset', (_, args) => this.emit('reset', args),
                 'show-choice-list', (_, args) => this.emit('show-choice-list', args),
+                'show-button', (_, args) => this.emit('show-button', args),
                 'mechanisms-changed', () => this._onMechanismsChanged(),
                 this);
         });

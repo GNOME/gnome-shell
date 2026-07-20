@@ -174,6 +174,7 @@ export const AuthPrompt = GObject.registerClass({
             'ask-question', (_, args) => this._onAskQuestion(args),
             'show-message', (_, args) => this._onShowMessage(args),
             'show-choice-list', (_, args) => this._onShowChoiceList(args),
+            'show-button', (_, args) => this._onShowButton(args),
             'mechanisms-changed', (_, args) => this.emit('mechanisms-changed', args),
             'verification-failed', (_, args) => this._onVerificationFailed(args),
             'verification-complete', () => this._onVerificationComplete(),
@@ -378,6 +379,16 @@ export const AuthPrompt = GObject.registerClass({
 
         this.setActorInDefaultButtonWell(this._nextButton);
 
+        this._authButton = new St.Button({
+            style_class: 'login-button',
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._mainBox.add_child(this._authButton);
+
         // center elements inside _mainBox between the cancel
         // button on the left and this spacer on the right
         this._mainBox.add_child(new Clutter.Actor({
@@ -526,7 +537,8 @@ export const AuthPrompt = GObject.registerClass({
         if (message &&
             type < GdmUtil.MessageType.ERROR &&
             !this._entryArea.visible &&
-            !this._authList.visible) {
+            !this._authList.visible &&
+            !this._authButton.visible) {
             this._fadeInElement(this._entryArea);
             this.updateSensitivity({sensitive: true});
         }
@@ -539,6 +551,27 @@ export const AuthPrompt = GObject.registerClass({
             : Promise.resolve();
 
         showMessageResolver?.(wigglePromise);
+    }
+
+    _onShowButton({serviceName, label, callback}) {
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+        this._promptStep++;
+
+        this._clearPreemptiveState();
+
+        const authButtonClickedId = this._authButton.connect('clicked', () => {
+            this._authButton.disconnect(authButtonClickedId);
+            callback();
+        });
+
+        this._authButton.set_label(label);
+
+        this._fadeInElement(this._authButton);
+        this.updateSensitivity({sensitive: true});
+        this.emit('prompted');
     }
 
     _onVerificationFailed({serviceName, canRetry}) {
@@ -662,6 +695,7 @@ export const AuthPrompt = GObject.registerClass({
         this._authListTitle.child.text = '';
         this._authList.clear();
         this._authList.hide();
+        this._authButton.hide();
 
         this._mainBox.opacity = 255;
         this._mainBox.reactive = true;
@@ -671,6 +705,7 @@ export const AuthPrompt = GObject.registerClass({
         this._entry.hint_text = question;
 
         this._authList.hide();
+        this._authButton.hide();
 
         this._fadeInElement(this._entryArea);
         this.updateSensitivity({sensitive: true});
@@ -755,6 +790,7 @@ export const AuthPrompt = GObject.registerClass({
 
         const authWidget = [
             this._authList,
+            this._authButton,
         ].find(widget => widget.visible) ?? this._entry;
 
         if (authWidget === this._entry)

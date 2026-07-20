@@ -65,6 +65,12 @@ export class AuthServices extends GObject.Object {
          * @param {object} [choiceList] - keys map to {title: string}
          */
         'show-choice-list': {param_types: [GObject.TYPE_JSOBJECT]},
+        /**
+         * @param {string} serviceName
+         * @param {string} label
+         * @param {Function} callback
+         */
+        'show-button': {param_types: [GObject.TYPE_JSOBJECT]},
         'mechanisms-changed': {},
     };
 
