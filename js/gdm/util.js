@@ -213,6 +213,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._authServices.forEach(s => s.selectChoice(serviceName, key));
     }
 
+    buttonClicked(serviceName) {
+        this._authServices.forEach(s => s.buttonClicked(serviceName));
+    }
+
     async answerQuery(serviceName, answer) {
         // Wait for pending messages to be displayed before answering to
         // ensure no messages get lost
@@ -426,6 +430,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 'verification-complete', (_, ...args) => this.emit('verification-complete', ...args),
                 'reset', (_, ...args) => this.emit('reset', ...args),
                 'show-choice-list', (_, ...args) => this.emit('show-choice-list', ...args),
+                'show-button', (_, ...args) => this.emit('show-button', ...args),
                 'mechanisms-changed', (_, ...args) => this._onMechanismsChanged(...args),
                 'web-login', (_, ...args) => this.emit('web-login', ...args),
                 this);

@@ -73,6 +73,9 @@ export class AuthServices extends GObject.Object {
         'show-choice-list': {
             param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT],
         },
+        'show-button': {
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING],
+        },
         'mechanisms-changed': {},
         'web-login': {
             param_types: [
@@ -132,6 +135,10 @@ export class AuthServices extends GObject.Object {
 
     selectChoice(serviceName, key) {
         this._handleSelectChoice(serviceName, key);
+    }
+
+    buttonClicked(serviceName) {
+        this._handleButtonClicked(serviceName);
     }
 
     answerQuery(serviceName, answer) {
