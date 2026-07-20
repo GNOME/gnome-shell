@@ -616,6 +616,90 @@ st_entry_clipboard_callback (StClipboard *clipboard,
   clutter_text_insert_text (ctext, text, cursor_pos);
 }
 
+static void
+st_entry_paste_clipboard (StEntry *entry)
+{
+  StClipboard *clipboard;
+
+  clipboard = st_clipboard_get_default ();
+
+  st_clipboard_get_text (clipboard,
+                         ST_CLIPBOARD_TYPE_CLIPBOARD,
+                         st_entry_clipboard_callback,
+                         entry);
+}
+
+static void
+st_entry_copy_clipboard (StEntry *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  ClutterText *clutter_text = CLUTTER_TEXT (priv->entry);
+  StClipboard *clipboard;
+  g_autofree char *text = NULL;
+
+  if (clutter_text_get_password_char (clutter_text) != 0)
+    return;
+
+  clipboard = st_clipboard_get_default ();
+
+  text = clutter_text_get_selection (clutter_text);
+
+  if (text && strlen (text))
+    st_clipboard_set_text (clipboard,
+                           ST_CLIPBOARD_TYPE_CLIPBOARD,
+                           text);
+}
+
+static void
+st_entry_cut_clipboard (StEntry *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  ClutterText *clutter_text = CLUTTER_TEXT (priv->entry);
+  StClipboard *clipboard;
+  g_autofree char *text = NULL;
+
+  if (clutter_text_get_password_char (clutter_text) != 0)
+    return;
+
+  clipboard = st_clipboard_get_default ();
+
+  text = clutter_text_get_selection (clutter_text);
+
+  if (text && strlen (text))
+    {
+      st_clipboard_set_text (clipboard,
+                             ST_CLIPBOARD_TYPE_CLIPBOARD,
+                             text);
+
+      /* now delete the text */
+      clutter_text_delete_selection (clutter_text);
+    }
+}
+
+static void
+st_entry_delete_to_line_start (StEntry *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  ClutterText *clutter_text = CLUTTER_TEXT (priv->entry);
+  int pos;
+
+  pos = clutter_text_get_cursor_position (clutter_text);
+  clutter_text_delete_text (clutter_text, 0, pos);
+}
+
+static void
+st_entry_delete_to_line_end (StEntry *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+  ClutterText *clutter_text = CLUTTER_TEXT (priv->entry);
+  ClutterTextBuffer *buffer;
+  int pos;
+
+  buffer = clutter_text_get_buffer (clutter_text);
+  pos = clutter_text_get_cursor_position (clutter_text);
+  clutter_text_buffer_delete_text (buffer, pos, -1);
+}
+
 static gboolean
 clutter_text_button_press_event (ClutterActor *actor,
                                  ClutterEvent *event,
@@ -657,7 +741,7 @@ static gboolean
 st_entry_key_press_event (ClutterActor *actor,
                           ClutterEvent *event)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  StEntry *entry = ST_ENTRY (actor);
   ClutterModifierType state;
   uint32_t keyval;
 
@@ -677,66 +761,28 @@ st_entry_key_press_event (ClutterActor *actor,
        && keyval == CLUTTER_KEY_Insert) ||
       (keyval == CLUTTER_KEY_Paste))
     {
-      StClipboard *clipboard;
-
-      clipboard = st_clipboard_get_default ();
-
-      st_clipboard_get_text (clipboard,
-                             ST_CLIPBOARD_TYPE_CLIPBOARD,
-                             st_entry_clipboard_callback,
-                             actor);
+      st_entry_paste_clipboard (entry);
 
       return TRUE;
     }
 
   /* copy */
-  if ((((state & CLUTTER_CONTROL_MASK)
+  if (((state & CLUTTER_CONTROL_MASK)
         && (keyval == CLUTTER_KEY_c || keyval == CLUTTER_KEY_C)) ||
-       (keyval == CLUTTER_KEY_Copy)) &&
-      clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
+       (keyval == CLUTTER_KEY_Copy))
     {
-      StClipboard *clipboard;
-      gchar *text;
-
-      clipboard = st_clipboard_get_default ();
-
-      text = clutter_text_get_selection ((ClutterText*) priv->entry);
-
-      if (text && strlen (text))
-        st_clipboard_set_text (clipboard,
-                               ST_CLIPBOARD_TYPE_CLIPBOARD,
-                               text);
-
-      g_free (text);
+      st_entry_copy_clipboard (entry);
 
       return TRUE;
     }
 
 
   /* cut */
-  if ((((state & CLUTTER_CONTROL_MASK)
+  if (((state & CLUTTER_CONTROL_MASK)
         && (keyval == CLUTTER_KEY_x || keyval == CLUTTER_KEY_X)) ||
-      (keyval == CLUTTER_KEY_Cut)) &&
-      clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
+      (keyval == CLUTTER_KEY_Cut))
     {
-      StClipboard *clipboard;
-      gchar *text;
-
-      clipboard = st_clipboard_get_default ();
-
-      text = clutter_text_get_selection ((ClutterText*) priv->entry);
-
-      if (text && strlen (text))
-        {
-          st_clipboard_set_text (clipboard,
-                                 ST_CLIPBOARD_TYPE_CLIPBOARD,
-                                 text);
-
-          /* now delete the text */
-          clutter_text_delete_selection ((ClutterText *) priv->entry);
-        }
-
-      g_free (text);
+      st_entry_cut_clipboard (entry);
 
       return TRUE;
     }
@@ -746,8 +792,7 @@ st_entry_key_press_event (ClutterActor *actor,
   if ((state & CLUTTER_CONTROL_MASK) &&
       (keyval == CLUTTER_KEY_u || keyval == CLUTTER_KEY_U))
     {
-      int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
-      clutter_text_delete_text ((ClutterText *)priv->entry, 0, pos);
+      st_entry_delete_to_line_start (entry);
 
       return TRUE;
     }
@@ -757,9 +802,7 @@ st_entry_key_press_event (ClutterActor *actor,
   if ((state & CLUTTER_CONTROL_MASK) &&
       (keyval == CLUTTER_KEY_k || keyval == CLUTTER_KEY_K))
     {
-      ClutterTextBuffer *buffer = clutter_text_get_buffer ((ClutterText *)priv->entry);
-      int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
-      clutter_text_buffer_delete_text (buffer, pos, -1);
+      st_entry_delete_to_line_end (entry);
 
       return TRUE;
     }
