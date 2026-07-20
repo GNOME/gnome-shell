@@ -4,7 +4,6 @@ import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
 import * as Batch from './batch.js';
-import * as Constants from './constants.js';
 import * as Main from '../ui/main.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
@@ -268,7 +267,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const {promise, resolve} = Promise.withResolvers();
         this._showMessageResolver = resolve;
 
-        this.emit('show-message', message.serviceName, message.text, message.type, this._showMessageResolver);
+        this.emit('show-message', message.serviceName, message.text, message.type, message.wiggle, this._showMessageResolver);
 
         await promise.catch(logError);
         if (!this._showMessageResolver)
@@ -289,14 +288,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     }
 
-    _queueMessage(serviceName, message, messageType) {
+    _queueMessage(serviceName, message, messageType, wiggle) {
         const interval = this._getIntervalForMessage(message);
 
-        this._messageQueue.push({serviceName, text: message, type: messageType, interval});
+        this._messageQueue.push({serviceName, text: message, type: messageType, interval, wiggle});
         this._queueMessageTimeout();
     }
 
-    _queuePriorityMessage(serviceName, message, messageType) {
+    _queuePriorityMessage(serviceName, message, messageType, wiggle) {
         const newQueue = this._messageQueue.filter(m => {
             if (m.serviceName !== serviceName || m.type >= messageType)
                 return m.text !== message;
@@ -307,7 +306,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._clearMessageQueue();
 
         this._messageQueue = newQueue;
-        this._queueMessage(serviceName, message, messageType);
+        this._queueMessage(serviceName, message, messageType, wiggle);
     }
 
     _clearMessageQueue() {
@@ -375,10 +374,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         }
 
         return proxies;
-    }
-
-    serviceIsFingerprint(serviceName) {
-        return serviceName === Constants.FINGERPRINT_SERVICE_NAME;
     }
 
     _onSettingsChanged() {

@@ -1,4 +1,3 @@
-import * as Constants from './constants.js';
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
@@ -16,23 +15,31 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_answer_query');
 Gio._promisify(Gdm.UserVerifierChoiceListProxy.prototype, 'call_select_choice');
 Gio._promisify(Gdm.UserVerifierCustomJSONProxy.prototype, 'call_reply');
 
+export const Role = {
+    PASSWORD: 'password',
+    SMARTCARD: 'smartcard',
+    FINGERPRINT: 'fingerprint',
+    PASSKEY: 'passkey',
+    WEB_LOGIN: 'eidp',
+};
+
 export const RoleProperties = {
-    [Constants.PASSWORD_ROLE_NAME]: {
+    [Role.PASSWORD]: {
         selectable: true,
         preemptiveInput: true,
     },
-    [Constants.SMARTCARD_ROLE_NAME]: {
+    [Role.SMARTCARD]: {
         selectable: true,
         hint: _('Insert smartcard'),
     },
-    [Constants.PASSKEY_ROLE_NAME]: {
+    [Role.PASSKEY]: {
         selectable: true,
         hint: _('Insert security key'),
     },
-    [Constants.WEB_LOGIN_ROLE_NAME]: {
+    [Role.WEB_LOGIN]: {
         selectable: true,
     },
-    [Constants.FINGERPRINT_ROLE_NAME]: {
+    [Role.FINGERPRINT]: {
         iconName: 'fingerprint-auth-symbolic',
         description: _('Unlock with fingerprint'),
     },
@@ -42,10 +49,10 @@ export class AuthServices extends GObject.Object {
     static [GObject.signals] = {
         'destroy': {},
         'queue-message': {
-            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_UINT],
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_UINT, GObject.TYPE_BOOLEAN],
         },
         'queue-priority-message': {
-            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_UINT],
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_UINT, GObject.TYPE_BOOLEAN],
         },
         'wait-pending-messages': {
             param_types: [GObject.TYPE_JSOBJECT],

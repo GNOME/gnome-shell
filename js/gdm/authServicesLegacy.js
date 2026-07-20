@@ -1,7 +1,6 @@
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 
-import * as Constants from './constants.js';
 import * as FingerprintManager from './fingerprintManager.js';
 import {FingerprintReaderType} from './fingerprintManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
@@ -9,10 +8,14 @@ import * as SmartcardManager from './smartcardManager.js';
 import * as OVirt from './oVirt.js';
 import * as Util from './util.js';
 import * as Vmware from './vmware.js';
-import {AuthServices, RoleProperties} from './authServices.js';
+import {AuthServices, Role, RoleProperties} from './authServices.js';
 
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
+
+const PASSWORD_SERVICE_NAME = 'gdm-password';
+const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
+const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 
 const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
@@ -20,33 +23,33 @@ const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 
 const Mechanisms = [
     {
-        serviceName: Constants.PASSWORD_SERVICE_NAME,
-        role: Constants.PASSWORD_ROLE_NAME,
+        serviceName: PASSWORD_SERVICE_NAME,
+        role: Role.PASSWORD,
         name: _('Password'),
     },
     {
-        serviceName: Constants.SMARTCARD_SERVICE_NAME,
-        role: Constants.SMARTCARD_ROLE_NAME,
+        serviceName: SMARTCARD_SERVICE_NAME,
+        role: Role.SMARTCARD,
         name: _('Smartcard'),
     },
     {
-        serviceName: Constants.FINGERPRINT_SERVICE_NAME,
-        role: Constants.FINGERPRINT_ROLE_NAME,
+        serviceName: FINGERPRINT_SERVICE_NAME,
+        role: Role.FINGERPRINT,
         name: _('Fingerprint'),
     },
 ];
 
 export class AuthServicesLegacy extends AuthServices {
     static SupportedRoles = [
-        Constants.PASSWORD_ROLE_NAME,
-        Constants.SMARTCARD_ROLE_NAME,
-        Constants.FINGERPRINT_ROLE_NAME,
+        Role.PASSWORD,
+        Role.SMARTCARD,
+        Role.FINGERPRINT,
     ];
 
     static RoleToService = {
-        [Constants.PASSWORD_ROLE_NAME]: Constants.PASSWORD_SERVICE_NAME,
-        [Constants.SMARTCARD_ROLE_NAME]: Constants.SMARTCARD_SERVICE_NAME,
-        [Constants.FINGERPRINT_ROLE_NAME]: Constants.FINGERPRINT_SERVICE_NAME,
+        [Role.PASSWORD]: PASSWORD_SERVICE_NAME,
+        [Role.SMARTCARD]: SMARTCARD_SERVICE_NAME,
+        [Role.FINGERPRINT]: FINGERPRINT_SERVICE_NAME,
     };
 
     static {
@@ -86,7 +89,7 @@ export class AuthServicesLegacy extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        if (this._selectedMechanism.role === Constants.SMARTCARD_ROLE_NAME)
+        if (this._selectedMechanism.role === Role.SMARTCARD)
             this._smartcardInProgress = true;
 
         this._userVerifier.call_answer_query(
@@ -108,7 +111,7 @@ export class AuthServicesLegacy extends AuthServices {
         // Username won't be needed when there's only one mechanism and is
         // Smartcard, or if the selected mechanism is a credential manager
         return !(this._enabledMechanisms.length === 1 &&
-            this._enabledMechanisms[0].role === Constants.SMARTCARD_ROLE_NAME ||
+            this._enabledMechanisms[0].role === Role.SMARTCARD ||
             Object.keys(this._credentialManagers).includes(this._selectedMechanism?.serviceName));
     }
 
@@ -129,7 +132,7 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleOnConversationStarted(serviceName) {
-        if (serviceName !== Constants.FINGERPRINT_SERVICE_NAME ||
+        if (serviceName !== FINGERPRINT_SERVICE_NAME ||
             this._fingerprintReadyTimeoutId !== 0)
             return;
 
@@ -144,7 +147,7 @@ export class AuthServicesLegacy extends AuthServices {
 
     _setFingerprintReady(ready) {
         const mechanism = this._enabledMechanisms.find(m =>
-            m.role === Constants.FINGERPRINT_ROLE_NAME);
+            m.role === Role.FINGERPRINT);
 
         if (!mechanism || mechanism.ready === ready)
             return;
@@ -163,7 +166,7 @@ export class AuthServicesLegacy extends AuthServices {
         if (!this._fingerprintManager?.readerFound) {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
                 this._enabledRoles.includes(m.role) &&
-                m.role !== Constants.FINGERPRINT_ROLE_NAME
+                m.role !== Role.FINGERPRINT
             ));
         } else {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
@@ -179,7 +182,7 @@ export class AuthServicesLegacy extends AuthServices {
     _handleOnInfo(serviceName, info) {
         if (serviceName === this._selectedMechanism?.serviceName) {
             this.emit('queue-message', serviceName, info, Util.MessageType.INFO);
-        } else if (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
+        } else if (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName)) {
             // We don't show fingerprint messages directly since it's
             // not the main auth service. Instead we use the messages
@@ -199,15 +202,16 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleOnProblem(serviceName, problem) {
         if (serviceName === this._selectedMechanism?.serviceName ||
-            (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
+            (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName))) {
             this.emit('queue-priority-message',
                 serviceName,
                 problem,
-                Util.MessageType.ERROR);
+                Util.MessageType.ERROR,
+                serviceName === FINGERPRINT_SERVICE_NAME);
         }
 
-        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
+        if (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName)) {
             // pam_fprintd allows the user to retry multiple (maybe even infinite!
             // times before failing the authentication conversation.
@@ -261,7 +265,7 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleOnConversationStopped(serviceName) {
         if (serviceName !== this._selectedMechanism?.serviceName &&
-            serviceName !== Constants.FINGERPRINT_SERVICE_NAME)
+            serviceName !== FINGERPRINT_SERVICE_NAME)
             return;
 
         // If the login failed with the preauthenticated oVirt credentials
@@ -274,7 +278,7 @@ export class AuthServicesLegacy extends AuthServices {
             return;
         }
 
-        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME) {
+        if (serviceName === FINGERPRINT_SERVICE_NAME) {
             this._clearFingerprintReadyTimeout();
             if (this._unavailableServices.has(serviceName))
                 this._setFingerprintReady(false);
@@ -293,7 +297,7 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleOnServiceUnavailable(serviceName, errorMessage) {
-        if (serviceName !== Constants.FINGERPRINT_SERVICE_NAME ||
+        if (serviceName !== FINGERPRINT_SERVICE_NAME ||
             !this._enabledMechanisms.some(m => m.serviceName === serviceName) ||
             !errorMessage)
             return;
@@ -305,7 +309,7 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleVerificationFailed(serviceName) {
-        if (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
+        if (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName) &&
             this._fingerprintFailedId)
             GLib.source_remove(this._fingerprintFailedId);
@@ -338,7 +342,7 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleCanStartService(serviceName) {
         return serviceName === this._selectedMechanism?.serviceName ||
-            (serviceName === Constants.FINGERPRINT_SERVICE_NAME &&
+            (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName) &&
             this._userName);
     }
@@ -387,7 +391,7 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _onSmartcardChanged() {
-        if (this._selectedMechanism?.role !== Constants.SMARTCARD_ROLE_NAME ||
+        if (this._selectedMechanism?.role !== Role.SMARTCARD ||
             this._smartcardInProgress && this._smartcardManager.hasInsertedTokens())
             return;
 
@@ -395,7 +399,7 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _onFingerprintChanged() {
-        if (!this._enabledRoles.includes(Constants.FINGERPRINT_ROLE_NAME))
+        if (!this._enabledRoles.includes(Role.FINGERPRINT))
             return;
 
         this._updateEnabledMechanisms();
@@ -405,8 +409,8 @@ export class AuthServicesLegacy extends AuthServices {
     _onCredentialManagerAuthenticated(credentialManager) {
         this._selectedMechanism = {
             serviceName: credentialManager.service,
-            role: Constants.PASSWORD_ROLE_NAME,
-            ...RoleProperties[Constants.PASSWORD_ROLE_NAME],
+            role: Role.PASSWORD,
+            ...RoleProperties[Role.PASSWORD],
         };
         this.emit('reset', {softReset: true});
     }

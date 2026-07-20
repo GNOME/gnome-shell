@@ -546,7 +546,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
-    _onShowMessage(_userVerifier, serviceName, message, type, showMessageResolver) {
+    _onShowMessage(_userVerifier, serviceName, message, type, shouldWiggle, showMessageResolver) {
         this.setMessage(message, type);
         this.emit('prompted');
 
@@ -561,9 +561,6 @@ export const AuthPrompt = GObject.registerClass({
             this._fadeInElement(this._entryArea);
             this.updateSensitivity({sensitive: true});
         }
-
-        const shouldWiggle = type === GdmUtil.MessageType.ERROR &&
-            this._userVerifier.serviceIsFingerprint(serviceName);
 
         const wigglePromise = shouldWiggle
             ? wiggle(this._message, {duration: 65, wiggleCount: 3})
