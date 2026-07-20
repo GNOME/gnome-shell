@@ -152,6 +152,8 @@ class AuthListItem extends St.Button {
             this._container.add_child(icon);
         }
 
+        this.compact = !subtitle && !iconName;
+
         this.set_child(this._container);
 
         this.connect('key-focus-in',
@@ -248,6 +250,16 @@ export class AuthList extends St.BoxLayout {
         });
     }
 
+    _updateItemsLayout() {
+        const items = [...this._items.values()];
+
+        const compact = items.every(item => item.compact);
+        if (compact)
+            items.forEach(item => item.add_style_class_name('compact'));
+        else
+            items.forEach(item => item.remove_style_class_name('compact'));
+    }
+
     addItem(key, content) {
         this.removeItem(key);
 
@@ -262,6 +274,7 @@ export class AuthList extends St.BoxLayout {
         item.connect('key-focus-in', () => this.scrollToItem(item));
 
         this._moveFocusToItems();
+        this._updateItemsLayout();
 
         this.emit('item-added', item);
     }
@@ -275,6 +288,7 @@ export class AuthList extends St.BoxLayout {
         item.destroy();
 
         this._items.delete(key);
+        this._updateItemsLayout();
     }
 
     get numItems() {

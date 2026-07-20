@@ -239,6 +239,10 @@ $_gdm_dialog_width: 25em;
     padding: $base_padding * 1.5;
     margin-bottom: $base_margin;
     margin-right: $base_margin;
+
+    &.compact {
+      min-height: 1.3em;
+    }
   }
 }
 
