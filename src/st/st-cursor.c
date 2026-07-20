@@ -223,7 +223,8 @@ ensure_cursor (StCursor *cursor)
       g_autoptr (GFile) fallback = NULL;
 
       g_warning ("Could not load cursor '%s': %s",
-                 g_file_peek_path (file), error->message);
+                 clutter_cursor_type_to_name (cursor_type),
+                 error ? error->message : "No file found");
 
       g_clear_object (&file);
       g_clear_error (&error);
@@ -235,12 +236,9 @@ ensure_cursor (StCursor *cursor)
                                   fallback, &file) ||
           !load_cursor (cursor, file, &error))
         {
-          ClutterCursorType cursor_type =
-            clutter_cursor_get_cursor_type (CLUTTER_CURSOR (cursor));
-
           g_error ("Could not load fallback for '%s': %s",
                    clutter_cursor_type_to_name (cursor_type),
-                   error->message);
+                   error ? error->message : "No file found");
         }
     }
 }
