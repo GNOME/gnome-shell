@@ -159,14 +159,14 @@ class IBusManager extends Signals.EventEmitter {
 
     _onConnected() {
         this._cancellable = new Gio.Cancellable();
-        this._initEngines();
-        this._initPanelService();
+        this._initEngines(this._cancellable);
+        this._initPanelService(this._cancellable);
     }
 
-    async _initEngines() {
+    async _initEngines(cancellable) {
         try {
             const enginesList =
-                await this._ibus.list_engines_async(-1, this._cancellable);
+                await this._ibus.list_engines_async(-1, cancellable);
             for (let i = 0; i < enginesList.length; ++i) {
                 const name = enginesList[i].get_name();
                 this._engines.set(name, enginesList[i]);
@@ -178,10 +178,10 @@ class IBusManager extends Signals.EventEmitter {
         }
     }
 
-    async _initPanelService() {
+    async _initPanelService(cancellable) {
         try {
             await this._ibus.request_name_async(IBus.SERVICE_PANEL,
-                IBus.BusNameFlag.REPLACE_EXISTING, -1, this._cancellable);
+                IBus.BusNameFlag.REPLACE_EXISTING, -1, cancellable);
         } catch (e) {
             if (logErrorUnlessCancelled(e))
                 this._clear();
@@ -219,7 +219,7 @@ class IBusManager extends Signals.EventEmitter {
         try {
             // If an engine is already active we need to get its properties
             const engine =
-                await this._ibus.get_global_engine_async(-1, this._cancellable);
+                await this._ibus.get_global_engine_async(-1, cancellable);
             this._engineChanged(this._ibus, engine.get_name());
         } catch {
         }
@@ -278,10 +278,11 @@ class IBusManager extends Signals.EventEmitter {
         if (!this._ready)
             return;
 
+        const cancellable = this._cancellable;
         try {
             await this._ibus.set_global_engine_async(id,
                 this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
-                this._cancellable);
+                cancellable);
         } catch (e) {
             if (!logErrorUnlessCancelled(e))
                 return;
@@ -289,7 +290,7 @@ class IBusManager extends Signals.EventEmitter {
             try {
                 await this._ibus.set_global_engine_async(FALLBACK_ENGINE_ID,
                     this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
-                    this._cancellable);
+                    cancellable);
             } catch (e2) {
                 logErrorUnlessCancelled(e2);
             }
