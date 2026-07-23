@@ -1315,10 +1315,12 @@ class ZoomRegion {
      */
     scrollToMousePos() {
         this._followingCursor = true;
-        if (this._mouseTrackingMode !== GDesktopEnums.MagnifierMouseTrackingMode.NONE)
+        if (this._mouseTrackingMode !== GDesktopEnums.MagnifierMouseTrackingMode.NONE) {
             this._changeROI({redoCursorTracking: true});
-        else
+        } else {
+            this._updateCloneGeometry();
             this._updateMousePosition();
+        }
 
         this._clearScrollContentsTimer();
         this._scrollContentsTimerId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, POINTER_REST_TIME, () => {
