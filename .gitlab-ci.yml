@@ -15,7 +15,6 @@ include:
   - component: "gitlab.gnome.org/GNOME/citemplates/gnomeos-build-sysext@25.5"
     inputs:
       meson-options:
-        -Dextensions_app=false
         -Dextensions-tool:bash_completion=disabled
 
 stages:
