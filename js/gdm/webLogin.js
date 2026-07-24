@@ -12,8 +12,11 @@ const QR_CODE_SIZE = 150;
 const WEB_LOGIN_SPINNER_SIZE = 35;
 const URL_LABEL_LONG_THRESHOLD = 45;
 
-export const WebLoginPrompt = GObject.registerClass(
-class WebLoginPrompt extends St.BoxLayout {
+export class WebLoginPrompt extends St.BoxLayout {
+    static {
+        GObject.registerClass(this);
+    }
+
     constructor(params) {
         const {qrSize: qrCodeSize, message, url, code} = Params.parse(params, {
             qrSize: QR_CODE_SIZE,
@@ -119,14 +122,18 @@ class WebLoginPrompt extends St.BoxLayout {
 
         return url;
     }
-});
+};
 
-export const WebLoginDialog = GObject.registerClass({
-    Signals: {
+export class WebLoginDialog extends St.Widget {
+    static [GObject.signals] = {
         'cancel': {},
         'loading': {},
-    },
-}, class WebLoginDialog extends St.Widget {
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
     constructor(params) {
         const {message, url, code, buttons} = Params.parse(params, {
             message: null,
@@ -275,32 +282,37 @@ export const WebLoginDialog = GObject.registerClass({
         this.isLoading = false;
         this.emit('loading');
     }
-});
+}
 
-export var WebLoginIntro = GObject.registerClass(
-class WebLoginIntro extends St.Button {
+export class WebLoginIntro extends St.Button {
+    static [GObject.properties] = {
+        'message': GObject.ParamSpec.string(
+            'message', null, null,
+            GObject.ParamFlags.READWRITE,
+            ''),
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
     constructor(params) {
-        const {message} = Params.parse(params, {
-            message: null,
-        });
-
-        const label = new St.Label({
-            text: message,
-            style_class: 'web-login-button-label',
-        });
-
         super({
             style_class: 'web-login-intro-button',
-            accessible_name: message,
             button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             reactive: true,
             can_focus: true,
-            child: label,
+            child: new St.Label({style_class: 'web-login-button-label'}),
+            ...params,
         });
     }
 
-    setMessage(message) {
+    set message(message) {
         this.child.text = message;
         this.accessible_name = message;
     }
-});
+
+    get message() {
+        return this.child.text;
+    }
+}

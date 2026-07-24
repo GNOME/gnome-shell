@@ -590,7 +590,7 @@ export const AuthPrompt = GObject.registerClass({
         this._clearPreemptiveState();
 
         if (!this._webLoginDialog.visible && introMessage) {
-            this._webLoginIntro.setMessage(introMessage);
+            this._webLoginIntro.message = introMessage;
             this._fadeInElement(this._webLoginIntro);
             this.updateSensitivity({sensitive: true});
         } else {
