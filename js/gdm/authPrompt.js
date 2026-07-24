@@ -15,6 +15,7 @@ import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
 import * as WebLogin from './webLogin.js';
+import {LoginButton} from './loginButton.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
@@ -387,7 +388,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this.setActorInDefaultButtonWell(this._nextButton);
 
-        this._webLoginIntro = new WebLogin.WebLoginIntro();
+        this._webLoginIntro = new LoginButton();
         this._webLoginIntro.set({
             x_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
@@ -590,7 +591,7 @@ export const AuthPrompt = GObject.registerClass({
         this._clearPreemptiveState();
 
         if (!this._webLoginDialog.visible && introMessage) {
-            this._webLoginIntro.message = introMessage;
+            this._webLoginIntro.label = introMessage;
             this._fadeInElement(this._webLoginIntro);
             this.updateSensitivity({sensitive: true});
         } else {

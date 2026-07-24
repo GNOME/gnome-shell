@@ -203,7 +203,7 @@ export class WebLoginDialog extends St.Widget {
             button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
             child: new St.Label({
                 text: b.label,
-                style_class: 'web-login-button-label',
+                style_class: 'login-button-label',
             }),
         });
 
@@ -281,38 +281,5 @@ export class WebLoginDialog extends St.Widget {
 
         this.isLoading = false;
         this.emit('loading');
-    }
-}
-
-export class WebLoginIntro extends St.Button {
-    static [GObject.properties] = {
-        'message': GObject.ParamSpec.string(
-            'message', null, null,
-            GObject.ParamFlags.READWRITE,
-            ''),
-    };
-
-    static {
-        GObject.registerClass(this);
-    }
-
-    constructor(params) {
-        super({
-            style_class: 'web-login-intro-button',
-            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
-            reactive: true,
-            can_focus: true,
-            child: new St.Label({style_class: 'web-login-button-label'}),
-            ...params,
-        });
-    }
-
-    set message(message) {
-        this.child.text = message;
-        this.accessible_name = message;
-    }
-
-    get message() {
-        return this.child.text;
     }
 }

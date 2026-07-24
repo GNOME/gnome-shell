@@ -398,7 +398,7 @@ $_gdm_dialog_width: 25em;
   spacing: 1.75em;
 }
 
-.web-login-button-label {
+.login-button-label {
   @include fontsize($base_font_size + 2);
   color: $_gdm_fg;
   min-width: 12em;
@@ -406,15 +406,15 @@ $_gdm_dialog_width: 25em;
   font-weight: bold;
 }
 
-@mixin web-login-buttons($context){
-  .web-login-intro-button,
+@mixin login-buttons($context){
+  .login-button,
   .web-login-prompt-button {
     @if $context == 'login' { @include login_dialog_item_button(); }
     @if $context == 'unlock' { @extend %lockscreen_button; }
     border-radius: $base_border_radius * 4;
   }
 
-  .web-login-intro-button {
+  .login-button {
     padding: 0;
     margin: 0.2em $base_margin * 5;
   }
@@ -427,11 +427,11 @@ $_gdm_dialog_width: 25em;
 }
 
 .login-dialog {
-  @include web-login-buttons(login);
+  @include login-buttons(login);
 }
 
 .unlock-dialog {
-  @include web-login-buttons(unlock);
+  @include login-buttons(unlock);
 }
 
 // Screen Shield
