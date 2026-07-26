@@ -164,15 +164,17 @@ export class AuthServices extends GObject.Object {
         this._handleBeginVerification();
     }
 
+    _mechanismEquals(m1, m2) {
+        return  m1?.serviceName === m2?.serviceName &&
+            m1?.role === m2?.role;
+    }
+
     selectMechanism(mechanism) {
-        if (this._selectedMechanism?.role === mechanism.role &&
-            this._selectedMechanism?.serviceName === mechanism.serviceName)
+        if (this._mechanismEquals(this._selectedMechanism, mechanism))
             return false;
 
-        this._selectedMechanism = this._enabledMechanisms?.find(m =>
-            m.role === mechanism.role &&
-            m.serviceName === mechanism.serviceName
-        );
+        this._selectedMechanism = this._enabledMechanisms?.find(
+            m => this._mechanismEquals(m, mechanism));
 
         this._handleSelectMechanism();
 
