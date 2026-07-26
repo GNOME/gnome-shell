@@ -441,7 +441,9 @@ export class AuthServicesSSSDSwitchable extends AuthService {
             action: () => this._webLoginDone(),
         }];
 
-        this.emit('web-login', serviceName, initPrompt, linkPrompt, uri, code, buttons);
+        this.emit('show-button', serviceName, initPrompt,
+            () => this.emit('web-login', serviceName, initPrompt,
+                linkPrompt, uri, code, buttons));
     }
 
     _webLoginDone() {
