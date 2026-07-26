@@ -193,6 +193,8 @@ export class AuthServices extends GObject.Object {
         this._handleCancel();
     }
 
+    cancelRequested() {}
+
     destroy() {
         this.reset();
         this.clear();
