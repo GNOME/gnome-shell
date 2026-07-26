@@ -280,20 +280,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._authList = new AuthList.AuthList();
         this._authList.hide();
-        this._authList.connect('activate', (list, key) => {
-            this._authList.reactive = false;
-            this._authList.ease({
-                opacity: 0,
-                duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._authListTitle.child.text = '';
-                    this._authList.clear();
-                    this._authList.hide();
-                    this._userVerifier.selectChoice(this._queryingService, key);
-                },
-            });
-        });
+        this._authListActivateId = 0;
         this._inputWell.add_child(this._authList);
 
         this._authListTitle = new St.Bin({
@@ -399,6 +386,7 @@ export const AuthPrompt = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
+        this._authButton.connect('clicked', () => this._completePendingCallback());
         this._mainBox.add_child(this._authButton);
 
         this._webLoginDialog = new WebLogin.WebLoginDialog();
@@ -470,7 +458,7 @@ export const AuthPrompt = GObject.registerClass({
             this.startSpinning({animate: true});
 
         if (this._queryingService)
-            this._userVerifier.answerQuery(this._queryingService, this._entry.text);
+            this._completePendingCallback(this._entry.text);
         else
             this._preemptiveAnswer = this._entry.text;
 
@@ -502,17 +490,37 @@ export const AuthPrompt = GObject.registerClass({
         this._capsLockWarningLabel.visible = secret;
     }
 
-    _onAskQuestion({serviceName, question, secret}) {
+    _setPendingCallback(callback) {
+        if (this._pendingCallback)
+            throw new Error('A pending request is already active');
+        this._pendingCallback = callback;
+    }
+
+    _completePendingCallback(...args) {
+        if (!this._pendingCallback)
+            throw new Error('No pending request to complete');
+
+        const callback = this._pendingCallback;
+        this._pendingCallback = null;
+
+        this._userVerifier.handlePendingMessages()
+            .then(() => callback(...args))
+            .catch(logErrorUnlessCancelled);
+    }
+
+    _onAskQuestion({serviceName, question, secret, answerHandler}) {
         if (this._queryingService)
             this.clear();
 
         this._queryingService = serviceName;
         this.promptStep++;
 
+        this._setPendingCallback(answerHandler);
+
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
         if (preemptiveAnswer) {
-            this._userVerifier.answerQuery(this._queryingService, preemptiveAnswer);
+            this._completePendingCallback(preemptiveAnswer);
             return;
         }
 
@@ -529,7 +537,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
-    _onShowChoiceList({serviceName, promptMessage, choiceList}) {
+    _onShowChoiceList({serviceName, promptMessage, choiceList, choiceHandler}) {
         if (this._queryingService)
             this.clear();
 
@@ -537,6 +545,9 @@ export const AuthPrompt = GObject.registerClass({
         this.promptStep++;
 
         this._clearPreemptiveState();
+
+        this._connectAuthListActivate();
+        this._setPendingCallback(choiceHandler);
 
         this.setChoiceList(promptMessage, choiceList);
         this.updateSensitivity({sensitive: true});
@@ -575,10 +586,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._clearPreemptiveState();
 
-        const authButtonClickedId = this._authButton.connect('clicked', () => {
-            this._authButton.disconnect(authButtonClickedId);
-            callback();
-        });
+        this._setPendingCallback(callback);
 
         this._authButton.set_label(label);
 
@@ -753,8 +761,10 @@ export const AuthPrompt = GObject.registerClass({
         this._authListTitle.child.text = '';
         this._authList.clear();
         this._authList.hide();
+        this._disconnectAuthListActivate();
         this._authButton.hide();
         this._closeWebLoginDialog();
+        this._pendingCallback = null;
 
         [this._mainBox, this._webLoginDialog].forEach(widget => {
             widget.opacity = 255;
@@ -771,6 +781,34 @@ export const AuthPrompt = GObject.registerClass({
 
         this._fadeInElement(this._entryArea);
         this.updateSensitivity({sensitive: true});
+    }
+
+    _connectAuthListActivate() {
+        if (this._authListActivateId)
+            return;
+
+        this._authListActivateId =
+            this._authList.connect('activate', (list, key) => {
+                this._authList.reactive = false;
+                this._authList.ease({
+                    opacity: 0,
+                    duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => {
+                        this._authListTitle.child.text = '';
+                        this._authList.clear();
+                        this._authList.hide();
+                        this._completePendingCallback(key);
+                    },
+                });
+            });
+    }
+
+    _disconnectAuthListActivate() {
+        if (this._authListActivateId) {
+            this._authList.disconnect(this._authListActivateId);
+            this._authListActivateId = 0;
+        }
     }
 
     _fadeInElement(element) {

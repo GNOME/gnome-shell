@@ -77,14 +77,6 @@ export class AuthServicesLegacy extends AuthServices {
         this._fingerprintReadyTimeoutId = 0;
     }
 
-    _handleSelectChoice(serviceName, key) {
-        if (serviceName !== this._selectedMechanism?.serviceName)
-            return;
-
-        this._userVerifierChoiceList.call_select_choice(
-            serviceName, key, this._cancellable).catch(logErrorUnlessCancelled);
-    }
-
     _handleAnswerQuery(serviceName, answer) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
@@ -253,7 +245,11 @@ export class AuthServicesLegacy extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        this.emit('ask-question', {serviceName, question});
+        this.emit('ask-question', {
+            serviceName,
+            question,
+            answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
+        });
     }
 
     _handleOnSecretInfoQuery(serviceName, secretQuestion) {
@@ -265,7 +261,7 @@ export class AuthServicesLegacy extends AuthServices {
             token = this._credentialManagers[serviceName].token;
 
         if (token) {
-            this.answerQuery(serviceName, token);
+            this._handleAnswerQuery(serviceName, token);
             return;
         }
 
@@ -273,6 +269,7 @@ export class AuthServicesLegacy extends AuthServices {
             serviceName,
             question: secretQuestion,
             secret: true,
+            answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
         });
     }
 
@@ -348,7 +345,17 @@ export class AuthServicesLegacy extends AuthServices {
         for (const [key, value] of Object.entries(list.deepUnpack()))
             choiceList[key] = {title: value};
 
-        this.emit('show-choice-list', {serviceName, promptMessage, choiceList});
+        this.emit('show-choice-list', {
+            serviceName,
+            promptMessage,
+            choiceList,
+            choiceHandler: key => {
+                if (serviceName !== this._selectedMechanism?.serviceName)
+                    return;
+                this._userVerifierChoiceList.call_select_choice(
+                    serviceName, key, this._cancellable).catch(logErrorUnlessCancelled);
+            },
+        });
     }
 
     _handleGetCredentialManagerServices() {

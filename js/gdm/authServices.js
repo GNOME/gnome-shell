@@ -81,6 +81,7 @@ export class AuthServices extends GObject.Object {
          * @param {string} serviceName
          * @param {string} question
          * @param {boolean} [secret]
+         * @param {Function} answerHandler
          */
         'ask-question': {param_types: [GObject.TYPE_JSOBJECT]},
         /**
@@ -92,6 +93,7 @@ export class AuthServices extends GObject.Object {
          * @param {string} serviceName
          * @param {string} promptMessage
          * @param {object} [choiceList] - keys map to {title: string}
+         * @param {Function} [choiceHandler]
          */
         'show-choice-list': {param_types: [GObject.TYPE_JSOBJECT]},
         /**
@@ -159,14 +161,6 @@ export class AuthServices extends GObject.Object {
 
     get supportedRoles() {
         return this._handleGetSupportedRoles();
-    }
-
-    selectChoice(serviceName, key) {
-        this._handleSelectChoice(serviceName, key);
-    }
-
-    answerQuery(serviceName, answer) {
-        this._handleAnswerQuery(serviceName, answer);
     }
 
     async beginVerification(userName, userVerifierProxies) {
@@ -477,10 +471,6 @@ export class AuthServices extends GObject.Object {
     _handleGetSupportedRoles() {
         return this.constructor.SupportedRoles;
     }
-
-    _handleSelectChoice() {}
-
-    _handleAnswerQuery() {}
 
     _handleBeginVerification() {}
 
