@@ -19,6 +19,7 @@ import {LoginButton} from './loginButton.js';
 import {wiggle} from '../misc/animationUtils.js';
 
 import {loadInterfaceXML} from '../misc/fileUtils.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 
 const TimerChildIface = loadInterfaceXML('org.freedesktop.MalcontentTimer1.Child');
 const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
@@ -1039,7 +1040,8 @@ export const AuthPrompt = GObject.registerClass({
         if (!this._preemptiveInput)
             this.updateSensitivity({sensitive: false});
 
-        this._userVerifier.begin(params.userName, params.hold);
+        this._userVerifier.begin(params.userName, params.hold).catch(
+            logErrorUnlessCancelled);
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     }
 
