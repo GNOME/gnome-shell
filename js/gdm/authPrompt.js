@@ -408,8 +408,13 @@ export const AuthPrompt = GObject.registerClass({
                 this.reset({softReset: true});
             } else {
                 this._closeWebLoginDialog();
-                this._fadeInElement(this._webLoginIntro);
-                this.updateSensitivity({sensitive: true});
+
+                if (this._webLoginIntro.label) {
+                    this._fadeInElement(this._webLoginIntro);
+                    this.updateSensitivity({sensitive: true});
+                } else {
+                    this._handleCancel();
+                }
             }
         });
         this._webLoginDialog.connect('loading', () => this.emit('loading', this._webLoginDialog.isLoading));
