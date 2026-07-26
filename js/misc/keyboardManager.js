@@ -30,6 +30,25 @@ export function getKeyboardManager() {
     return _keyboardManager;
 }
 
+/**
+ * @typedef {object} LayoutInfo
+ * @property {string} layout - The XKB layout name (e.g., 'us', 'ru')
+ * @property {string} variant - The XKB layout variant (e.g., 'intl' or '')
+ * @property {string} [id] - The full input source ID
+ * @property {string} [displayName] - The display name for the layout
+ * @property {string} [shortName] - The short indicator name for the layout
+ * @property {LayoutInfo[]} [group] - The chunk of layouts this layout belongs to
+ * @property {number} [groupIndex] - The index of this layout within its chunk
+ *
+ * @typedef {object} CurrentKeymap
+ * @property {string} layouts - Comma-separated layout string
+ * @property {string} variants - Comma-separated variant string
+ * @property {string} options - Comma-separated options string
+ * @property {string} model - The XKB model
+ * @property {string[]} displayNames - Array of display names
+ * @property {string[]} shortNames - Array of short names
+ */
+
 class KeyboardManager extends Signals.EventEmitter {
     constructor() {
         super();
@@ -41,9 +60,13 @@ class KeyboardManager extends Signals.EventEmitter {
         this.MAX_LAYOUTS_PER_GROUP = 4;
 
         this._xkbInfo = getXkbInfo();
+        /** @type {LayoutInfo|null} */
         this._current = null;
+        /** @type {LayoutInfo} */
         this._localeLayoutInfo = this._getLocaleLayout();
+        /** @type {{[key: string]: LayoutInfo}} */
         this._layoutInfos = {};
+        /** @type {CurrentKeymap|null} */
         this._currentKeymap = null;
 
         global.backend.connect('keymap-changed', this._onKeymapChanged.bind(this));
@@ -54,6 +77,10 @@ class KeyboardManager extends Signals.EventEmitter {
             () => this._current.groupIndex);
     }
 
+    /**
+     * @param {LayoutInfo} info
+     * @returns {boolean}
+     */
     _updateCurrentKeymap(info) {
         const options = this._buildOptionsString();
         const [layouts, variants] = this._buildGroupStrings(info.group);
@@ -79,6 +106,9 @@ class KeyboardManager extends Signals.EventEmitter {
         return true;
     }
 
+    /**
+     * @returns {Meta.KeymapDescription}
+     */
     _createKeymapDescription() {
         return Meta.KeymapDescription.new_from_rules(this._currentKeymap.model,
             this._currentKeymap.layouts,
@@ -98,6 +128,9 @@ class KeyboardManager extends Signals.EventEmitter {
         this.emit('keymap-changed');
     }
 
+    /**
+     * @param {string} id
+     */
     async _doApply(id) {
         const info = this._layoutInfos[id];
         if (!info)
@@ -122,6 +155,9 @@ class KeyboardManager extends Signals.EventEmitter {
         this._current = info;
     }
 
+    /**
+     * @param {string} id
+     */
     apply(id) {
         this._doApply(id).catch(logError);
     }
@@ -133,6 +169,9 @@ class KeyboardManager extends Signals.EventEmitter {
         this._doApply(this._current.id).catch(logError);
     }
 
+    /**
+     * @param {string[]} ids
+     */
     setUserLayouts(ids) {
         this._current = null;
         this._layoutInfos = {};
@@ -172,6 +211,9 @@ class KeyboardManager extends Signals.EventEmitter {
         }
     }
 
+    /**
+     * @returns {LayoutInfo}
+     */
     _getLocaleLayout() {
         let locale = GLib.get_language_names()[0];
         if (!locale.includes('_'))
@@ -189,6 +231,12 @@ class KeyboardManager extends Signals.EventEmitter {
             return {layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT};
     }
 
+    /**
+     * Builds the comma-separated layout and variant strings for a given group of layouts.
+     *
+     * @param {LayoutInfo[]} _group - The array of layouts currently in this chunk.
+     * @returns {[string, string]} A tuple containing the combined layout string and variant string.
+     */
     _buildGroupStrings(_group) {
         const group = _group.concat(this._localeLayoutInfo);
         const layouts = group.map(g => g.layout).join(',');
@@ -196,14 +244,23 @@ class KeyboardManager extends Signals.EventEmitter {
         return [layouts, variants];
     }
 
+    /**
+     * @param {string[]} options
+     */
     setKeyboardOptions(options) {
         this._xkbOptions = options;
     }
 
+    /**
+     * @param {string} model
+     */
     setKeyboardModel(model) {
         this._xkbModel = model;
     }
 
+    /**
+     * @returns {string}
+     */
     _buildOptionsString() {
         const options = this._xkbOptions.join(',');
         return options;
