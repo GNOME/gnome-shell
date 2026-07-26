@@ -153,7 +153,10 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._clearWebLoginTimeout();
     }
 
-    _handleOnCustomJSONRequest(_serviceName, _protocol, _version, json) {
+    _handleOnCustomJSONRequest(serviceName, _protocol, _version, json) {
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
+            return;
+
         let requestObject;
 
         if (this._mechanismsStatus !== MechanismsStatus.WAITING)
