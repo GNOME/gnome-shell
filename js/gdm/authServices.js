@@ -45,7 +45,7 @@ export const RoleProperties = {
     },
 };
 
-export class AuthServices extends GObject.Object {
+export class AuthService extends GObject.Object {
     static [GObject.signals] = {
         'destroy': {},
         'queue-message': {
@@ -93,6 +93,10 @@ export class AuthServices extends GObject.Object {
     static SupportedRoles = [];
     static RoleToService = {};
 
+    static ServiceName = null;
+
+    static Background = false;
+
     static isEnabled(_settings) {
         return true;
     }
@@ -125,8 +129,24 @@ export class AuthServices extends GObject.Object {
         return this._enabledMechanisms?.filter(m => m.ready !== false);
     }
 
+    get serviceName() {
+        return this.constructor.ServiceName;
+    }
+
+    get isBackground() {
+        return this.constructor.Background;
+    }
+
     get _roleToService() {
-        return this.constructor.RoleToService;
+        const {RoleToService, ServiceName, SupportedRoles} = this.constructor;
+
+        if (Object.keys(RoleToService).length > 0)
+            return RoleToService;
+
+        if (ServiceName)
+            return Object.fromEntries(SupportedRoles.map(r => [r, ServiceName]));
+
+        return {};
     }
 
     get supportedRoles() {
@@ -503,4 +523,12 @@ export class AuthServices extends GObject.Object {
     addCredentialManager(_serviceName, _credentialManager) {}
 
     removeCredentialManager(_serviceName) {}
+}
+
+export class BackgroundAuthService extends AuthService {
+    static {
+        GObject.registerClass(this);
+    }
+
+    static Background = true;
 }

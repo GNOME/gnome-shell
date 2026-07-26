@@ -5,7 +5,7 @@ import * as Fido2TokenManager from './fido2TokenManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as SmartcardManager from './smartcardManager.js';
 import * as Util from './util.js';
-import {AuthServices, Role} from './authServices.js';
+import {AuthService, Role} from './authServices.js';
 
 const SWITCHABLE_AUTH_SERVICE_NAME = 'gdm-switchable-auth';
 
@@ -17,7 +17,7 @@ const MechanismsStatus = {
     FOUND: 2,
 };
 
-export class AuthServicesSSSDSwitchable extends AuthServices {
+export class AuthServicesSSSDSwitchable extends AuthService {
     static SupportedRoles = [
         Role.PASSWORD,
         Role.SMARTCARD,
@@ -25,12 +25,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         Role.WEB_LOGIN,
     ];
 
-    static RoleToService = {
-        [Role.PASSWORD]: SWITCHABLE_AUTH_SERVICE_NAME,
-        [Role.SMARTCARD]: SWITCHABLE_AUTH_SERVICE_NAME,
-        [Role.PASSKEY]: SWITCHABLE_AUTH_SERVICE_NAME,
-        [Role.WEB_LOGIN]: SWITCHABLE_AUTH_SERVICE_NAME,
-    };
+    static ServiceName = SWITCHABLE_AUTH_SERVICE_NAME;
 
     static {
         GObject.registerClass(this);

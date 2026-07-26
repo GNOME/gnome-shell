@@ -429,8 +429,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.emit('verification-failed', serviceName, canRetry);
     }
 
+    get _foregroundServices() {
+        return this._authServices.filter(s => !s.isBackground);
+    }
+
+    get _backgroundServices() {
+        return this._authServices.filter(s => s.isBackground);
+    }
+
     get selectedMechanism() {
-        return this._authServices
+        return this._foregroundServices
             .find(s => s.selectedMechanism)?.selectedMechanism ?? null;
     }
 

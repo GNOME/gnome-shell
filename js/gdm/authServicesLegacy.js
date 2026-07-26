@@ -8,7 +8,7 @@ import * as SmartcardManager from './smartcardManager.js';
 import * as OVirt from './oVirt.js';
 import * as Util from './util.js';
 import * as Vmware from './vmware.js';
-import {AuthServices, Role, RoleProperties} from './authServices.js';
+import {AuthService, Role, RoleProperties} from './authServices.js';
 
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
@@ -39,7 +39,7 @@ const Mechanisms = [
     },
 ];
 
-export class AuthServicesLegacy extends AuthServices {
+export class AuthServicesLegacy extends AuthService {
     static SupportedRoles = [
         Role.PASSWORD,
         Role.SMARTCARD,
