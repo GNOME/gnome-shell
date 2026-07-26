@@ -49,6 +49,19 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
+    async beginVerification(userName, userVerifierProxies) {
+        try {
+            await super.beginVerification(userName, userVerifierProxies);
+        } catch (e) {
+            if (!(e instanceof Util.InitError) ||
+                e.serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
+                throw e;
+
+            this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
+            this.emit('mechanisms-changed');
+        }
+    }
+
     _handleSelectChoice(serviceName, key) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
@@ -154,17 +167,21 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
 
         const {authSelection} = requestObject;
+        this._mechanismsStatus = authSelection
+            ? MechanismsStatus.FOUND
+            : MechanismsStatus.NOT_FOUND;
+
         if (authSelection) {
             this._mechanisms = authSelection.mechanisms;
             this._priorityList = authSelection.priority;
 
             if (this._mechanisms)
                 this._updateEnabledMechanisms();
+            else
+                this.emit('mechanisms-changed');
+        } else {
+            this.emit('mechanisms-changed');
         }
-
-        this._mechanismsStatus = authSelection
-            ? MechanismsStatus.FOUND
-            : MechanismsStatus.NOT_FOUND;
     }
 
     _handleUpdateEnabledMechanisms() {
