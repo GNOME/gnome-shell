@@ -63,6 +63,18 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._mechanismsStatus = MechanismsStatus.WAITING;
     }
 
+    async beginVerification(userName, userVerifierProxies) {
+        try {
+            await super.beginVerification(userName, userVerifierProxies);
+        } catch (e) {
+            if (e.serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
+                throw e;
+
+            this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
+            this.emit('mechanisms-changed');
+        }
+    }
+
     _handleSelectChoice(serviceName, key) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
