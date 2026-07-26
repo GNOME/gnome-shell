@@ -142,6 +142,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         } catch (e) {
             if (e instanceof InitError)
                 this._reportInitError(e);
+            else
+                logErrorUnlessCancelled(e);
         }
 
         hold?.release();
