@@ -62,19 +62,6 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
-    _handleSelectChoice(serviceName, key) {
-        if (serviceName !== this._selectedMechanism?.serviceName)
-            return;
-
-        if (this._selectedMechanism.role === Role.SMARTCARD) {
-            const certificates = this._selectedMechanism.certificates;
-            const cert = certificates.find(c => c.keyId === key);
-            this._selectedSmartcard = cert;
-            this.emit('ask-question', serviceName, cert.pinPrompt, true,
-                answer => this._handleAnswerQuery(serviceName, answer));
-        }
-    }
-
     _handleAnswerQuery(serviceName, answer) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
@@ -383,7 +370,17 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             : _('Select Identity');
 
         this.emit('show-choice-list', serviceName, prompt, choiceList,
-            key => this._handleSelectChoice(serviceName, key));
+            key => {
+                if (serviceName !== this._selectedMechanism?.serviceName)
+                    return;
+
+                if (this._selectedMechanism.role === Role.SMARTCARD) {
+                    const cert = this._selectedMechanism.certificates.find(c => c.keyId === key);
+                    this._selectedSmartcard = cert;
+                    this.emit('ask-question', serviceName, cert.pinPrompt, true,
+                        answer => this._handleAnswerQuery(serviceName, answer));
+                }
+            });
     }
 
     _parseCertInstruction(certInstruction) {

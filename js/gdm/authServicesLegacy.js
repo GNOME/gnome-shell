@@ -79,14 +79,6 @@ export class AuthServicesLegacy extends AuthServices {
         this._fingerprintReadyTimeoutId = 0;
     }
 
-    _handleSelectChoice(serviceName, key) {
-        if (serviceName !== this._selectedMechanism?.serviceName)
-            return;
-
-        this._userVerifierChoiceList.call_select_choice(
-            serviceName, key, this._cancellable).catch(logErrorUnlessCancelled);
-    }
-
     _handleAnswerQuery(serviceName, answer) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
@@ -343,7 +335,12 @@ export class AuthServicesLegacy extends AuthServices {
             choiceList[key] = {title: value};
 
         this.emit('show-choice-list', serviceName, promptMessage, choiceList,
-            key => this._handleSelectChoice(serviceName, key));
+            key => {
+                if (serviceName !== this._selectedMechanism?.serviceName)
+                    return;
+                this._userVerifierChoiceList.call_select_choice(
+                    serviceName, key, this._cancellable).catch(logErrorUnlessCancelled);
+            });
     }
 
     _handleGetCredentialManagerServices() {
