@@ -369,6 +369,14 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._verificationFailed(serviceName, true);
     }
 
+    _handleOnServiceUnavailable(serviceName) {
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
+            return;
+
+        this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
+        this.emit('mechanisms-changed');
+    }
+
     _handleCanStartService(serviceName) {
         return serviceName === SWITCHABLE_AUTH_SERVICE_NAME &&
             this._mechanismsStatus === MechanismsStatus.WAITING;
