@@ -168,6 +168,12 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.clear();
     }
 
+    cancelRequested() {
+        const {selectedMechanism} = this;
+        return this._authServices.find(s =>
+            s.selectedMechanism === selectedMechanism)?.cancelRequested() ?? false;
+    }
+
     cancel() {
         this._authServices.forEach(s => s.cancel());
 
