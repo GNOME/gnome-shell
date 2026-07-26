@@ -22,6 +22,9 @@
     <file>gdm/vmware.js</file>
     <file>gdm/webLogin.js</file>
 
+    <file>gdm/authd.js</file>
+    <file>gdm/authdProtocol.js</file>
+
     <file>extensions/extension.js</file>
     <file>extensions/sharedInternals.js</file>
 

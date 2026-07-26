@@ -788,6 +788,11 @@ export class PopupMenuBase extends Signals.EventEmitter {
                     this._activeMenuItem = null;
             }, this);
 
+        // menuItem.connect('destroy', () => {
+        //     if (menuItem === this._activeMenuItem)
+        //         this._activeMenuItem = null;
+        // });
+
         this.connectObject('notify::sensitive',
             () => menuItem.syncSensitive(), menuItem);
     }

@@ -8,6 +8,7 @@ import * as Main from '../ui/main.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
 import {AuthServicesLegacy} from './authServicesLegacy.js';
+import {AuthServicesAuthd} from './authd.js';
 import {AuthServicesSSSDSwitchable} from './authServicesSSSDSwitchable.js';
 import {LOGIN_SCREEN_SCHEMA, ALLOWED_FAILURES_KEY} from './util.js';
 
@@ -42,6 +43,7 @@ export const MessageType = {
 // cascade to the next authServices in the array.
 const AuthServicesClasses = [
     AuthServicesSSSDSwitchable,
+    AuthServicesAuthd,
     AuthServicesLegacy,
 ];
 
@@ -123,6 +125,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async begin(userName, hold) {
+        // userName = 'user-integration-gdm-interactive';
+        userName = 'user-mfa-integration-gdm';
         this._cancellable?.cancel();
         this._cancellable = new Gio.Cancellable();
 
@@ -329,6 +333,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const proxies = {};
 
         if (userName) {
+            // userName = 'user-integration-gdm-interactive';
+            userName = 'user-mfa-integration-gdm';
             try {
                 proxies.userVerifier = await this._client.open_reauthentication_channel(
                     userName, cancellable);
