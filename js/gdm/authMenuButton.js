@@ -245,9 +245,12 @@ export class AuthMenuButton extends St.Button {
     }
 
     clearItems(searchCriteria = {}) {
+        let activeChanged = false;
+
         this._findItems(searchCriteria).forEach(itemKey => {
             const menuItem = this._items.get(itemKey);
-            this._activeItems.delete(itemKey);
+            if (this._activeItems.delete(itemKey))
+                activeChanged = true;
             menuItem.destroy();
             this._items.delete(itemKey);
         });
@@ -262,6 +265,9 @@ export class AuthMenuButton extends St.Button {
                 }
             }
         });
+
+        if (activeChanged)
+            this._updateOrnament();
 
         this.updateVisibility();
     }
