@@ -245,6 +245,7 @@ export class AuthServices extends GObject.Object {
     }
 
     _updateEnabledMechanisms() {
+        this._selectedMechanism = null;
         this._enabledMechanisms = [];
 
         this._handleUpdateEnabledMechanisms();
