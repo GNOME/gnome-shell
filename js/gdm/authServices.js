@@ -455,7 +455,10 @@ export class AuthServices extends GObject.Object {
 
     _handleBeginVerification() {}
 
-    _handleSelectMechanism() {}
+    _handleSelectMechanism() {
+        throw new GObject.NotImplementedError(
+            `_handleSelectMechanism in ${this.constructor.name}`);
+    }
 
     _handleNeedsUsername() {
         return true;
