@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-02-04 22:50+0000\n"
-"PO-Revision-Date: 2026-02-08 21:21+0500\n"
+"POT-Creation-Date: 2026-07-03 18:03+0000\n"
+"PO-Revision-Date: 2026-07-26 11:25+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -95,7 +95,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Бекітілген 9-шы қолданбаның жаңа терезесін ашу"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2296
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2334
 msgid "Screenshots"
 msgstr "Скриншоттар"
 
@@ -119,7 +119,7 @@ msgid "Record a screencast interactively"
 msgstr "Скринкастты интерактивті түрде жазу"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1311
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1325
 msgid "System"
 msgstr "Жүйе"
 
@@ -360,7 +360,8 @@ msgstr "\"Қолданбаларды көрсету\" көрінісін ашу 
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Көрініс ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер комбинациясы."
+"Іс-әрекеттер көрінісі ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер "
+"комбинациясы."
 
 #: data/org.gnome.shell.gschema.xml.in:167
 msgid "Keybinding to open the overview"
@@ -368,7 +369,7 @@ msgstr "Шолуды ашу үшін пернелер комбинациясы"
 
 #: data/org.gnome.shell.gschema.xml.in:168
 msgid "Keybinding to open the Activities Overview."
-msgstr "Көріністі ашу үшін пернелер комбинациясы."
+msgstr "Іс-әрекеттер көрінісін ашу үшін пернелер комбинациясы."
 
 #: data/org.gnome.shell.gschema.xml.in:174
 msgid "Keybinding to toggle the visibility of the notification list"
@@ -614,7 +615,7 @@ msgstr ""
 msgid "Ignore"
 msgstr "Елемеу"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
@@ -635,12 +636,12 @@ msgstr "Пароль"
 msgid "Choose Session"
 msgstr "Сессияны таңдау"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Қол жетерлілігі"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/loginDialog.js:474
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -652,7 +653,7 @@ msgstr ""
 "түрде тоқтату керек."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/loginDialog.js:477
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -662,7 +663,7 @@ msgstr ""
 "үшін қашықтағы сеанстан шығу керек немесе оны мәжбүрлі түрде тоқтату керек."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/loginDialog.js:480
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -674,7 +675,7 @@ msgstr ""
 "түрде тоқтату керек."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/loginDialog.js:483
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -683,11 +684,11 @@ msgstr ""
 "Кіру мүмкін емес, себебі %s үшін сеанс қазір орындалып тұр. Кіру үшін "
 "сеанстан шығу керек немесе оны мәжбүрлі түрде тоқтату керек."
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/loginDialog.js:492
 msgid "Session Already Running"
 msgstr "Сеанс іске қосулы болып тұр"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/loginDialog.js:504
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -695,52 +696,52 @@ msgstr ""
 "Мәжбүрлі түрде тоқтату кез келген қосылып тұрған қолданбалар мен процестерін "
 "аяқтайды және деректердің жоғалуына әкелуі мүмкін"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/loginDialog.js:524
 msgid "Force Stop"
 msgstr "Мәжбүрлі тоқтату"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:602
 msgid "Not listed?"
 msgstr "Тізімде жоқсыз ба?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1138
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(мыс., пайдаланушы немесе %s)"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Пайдаланушы аты"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1209
 msgid "Login Attempt Timed Out"
 msgstr "Жүйеге кіру талабының уақыты бітті"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1210
 msgid "Login took too long, please try again"
 msgstr "Жүйеге кіру талабы тым көп уақыт алды, қайталап көріңіз"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1555
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
-#: js/gdm/util.js:496
+#: js/gdm/util.js:503
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
+#: js/gdm/util.js:738
 msgid "(or swipe finger across reader)"
 msgstr "(немесе саусағыңызды оқу құралынан өткізіңіз)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
+#: js/gdm/util.js:743
 msgid "(or place finger on reader)"
 msgstr "(немесе саусақты оқу құралына орналастырыңыз)"
 
@@ -910,95 +911,95 @@ msgid "Brightness"
 msgstr "Жарықтылығы"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Сөндіру"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "power off;poweroff;shutdown;halt;stop;сөндіру;қайта қосу;тоқтату"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Қайта қосу"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgid "reboot;restart;"
 msgstr "reboot;restart;қайта жүктеу;қайта іске қосу;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Экранды блоктау"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgid "lock screen"
 msgstr "экранды блоктау"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Жүйеден шығу"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;шығу;жүйеден шығу"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:130
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Ұйықтату"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:129
+#: js/misc/systemActions.js:133
 msgid "suspend;sleep"
 msgstr "ұйықтату"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:138
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Пайдаланушыны ауыстыру"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:141
 msgid "switch user"
 msgstr "пайдаланушыны ауыстыру"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:144
+#: js/misc/systemActions.js:148
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;unlock orientation;screen;rotation;бұрылуды құлыптау;экран "
 "бұрылуы"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Скриншотты түсіру"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:152
+#: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "screenshot;screencast;snip;capture;record;скриншот;скринкаст;жазу;ұстау"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Экранды бұруды құлыптан босату"
 
-#: js/misc/systemActions.js:257
+#: js/misc/systemActions.js:268
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Экранды бұруды құлыптау"
@@ -1156,11 +1157,11 @@ msgstr "%B %-d, %H:%M"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%B %-d %Y, %H:%M"
 
-#: js/portalHelper/main.js:98
+#: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
 msgstr "Байланысыңыз қауіпсіз болып көрінеді"
 
-#: js/portalHelper/main.js:104
+#: js/portalHelper/main.js:110
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1169,7 +1170,7 @@ msgstr ""
 "енгізілген парольдер немесе басқа да ақпаратыңызды сол желідегі адамдар көре "
 "алады."
 
-#: js/portalHelper/main.js:115
+#: js/portalHelper/main.js:121
 msgid "Hotspot Login"
 msgstr "Қатынау нүктесіне кіру"
 
@@ -1183,21 +1184,21 @@ msgstr "Тыйым салу"
 msgid "Allow"
 msgstr "Рұқсат ету"
 
-#: js/ui/appDisplay.js:1731
+#: js/ui/appDisplay.js:1734
 msgid "Unnamed Folder"
 msgstr "Атаусыз бума"
 
-#: js/ui/appFavorites.js:89
+#: js/ui/appFavorites.js:104
 #, javascript-format
 msgid "%s has been pinned to the dash."
 msgstr "%s қолданбалар панеліне бекітілді."
 
-#: js/ui/appFavorites.js:120
+#: js/ui/appFavorites.js:135
 #, javascript-format
 msgid "%s has been unpinned from the dash."
 msgstr "%s қолданбалар панелінен босатылды."
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:304
 msgid "Undo"
 msgstr "Болдырмау"
 
@@ -1218,7 +1219,7 @@ msgstr "Қолданба ақпараты"
 msgid "Quit"
 msgstr "Шығу"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:245
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
 msgstr "Босату"
 
@@ -1411,16 +1412,16 @@ msgid "The installed udisks version does not support the PIM setting"
 msgstr "Орнатылған udisks нұсқасы PIM орнатуды қолдамайды"
 
 #. Translators: %s is the name of a partition on a external drive
-#: js/ui/components/autorunManager.js:189
+#: js/ui/components/autorunManager.js:190
 #, javascript-format
 msgid "“%s” connected"
 msgstr "\"%s\" байланысқан"
 
-#: js/ui/components/autorunManager.js:190
+#: js/ui/components/autorunManager.js:191
 msgid "Disk can now be used"
 msgstr "Диск енді пайдаланылуы мүмкін"
 
-#: js/ui/components/autorunManager.js:202
+#: js/ui/components/autorunManager.js:203
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s көмегімен ашу"
@@ -1522,13 +1523,13 @@ msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көрің
 msgid "Windows"
 msgstr "Терезелер"
 
-#: js/ui/dash.js:201 js/ui/dash.js:247
+#: js/ui/dash.js:200 js/ui/dash.js:246
 msgid "Show Apps"
 msgstr "Қолданбаларды көрсету"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:405
+#: js/ui/dash.js:400
 msgid "Dash"
 msgstr "Dash"
 
@@ -1740,13 +1741,13 @@ msgid "Boot Options"
 msgstr "Жүктеу параметрлері"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:635
+#: js/ui/endSessionDialog.js:637
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (қашықтағы)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:638
+#: js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
@@ -1850,7 +1851,7 @@ msgstr "Сөндіру"
 msgid "Leave Off"
 msgstr "Сөндірулі қалдыру"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:888
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
 msgstr "Пернетақта баптаулары"
 
@@ -1943,7 +1944,7 @@ msgstr "Экранды блоктау GNOME дисплейлер басқару�
 msgid "Unknown App"
 msgstr "Белгісіз қолданба"
 
-#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
 msgid "Notification sound"
 msgstr "Хабарландыру дыбысы"
 
@@ -1973,47 +1974,47 @@ msgstr "Қолданбалар"
 msgid "Overview"
 msgstr "Шолу"
 
-#: js/ui/padOsd.js:98
+#: js/ui/padOsd.js:99
 msgid "New shortcut…"
 msgstr "Жаңа жарлық…"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:152
 msgid "App defined"
 msgstr "Қолданбамен анықталған"
 
-#: js/ui/padOsd.js:152
+#: js/ui/padOsd.js:153
 msgid "Show on-screen help"
 msgstr "Экрандағы көмекті көрсету"
 
-#: js/ui/padOsd.js:153
+#: js/ui/padOsd.js:154
 msgid "Switch monitor"
 msgstr "Мониторды ауыстыру"
 
-#: js/ui/padOsd.js:154
+#: js/ui/padOsd.js:155
 msgid "Assign keystroke"
 msgstr "Пернелер жарлығын тағайындау"
 
-#: js/ui/padOsd.js:223
+#: js/ui/padOsd.js:224
 msgid "Done"
 msgstr "Дайын"
 
-#: js/ui/padOsd.js:743
+#: js/ui/padOsd.js:744
 msgid "Edit…"
 msgstr "Түзету…"
 
-#: js/ui/padOsd.js:791
+#: js/ui/padOsd.js:792
 msgid "None"
 msgstr "Ешнәрсе"
 
-#: js/ui/padOsd.js:868
+#: js/ui/padOsd.js:869
 msgid "Press a button to configure"
 msgstr "Баптау үшін батырманы басыңыз"
 
-#: js/ui/padOsd.js:869
+#: js/ui/padOsd.js:870
 msgid "Press Esc to exit"
 msgstr "Шығу үшін Esc басыңыз"
 
-#: js/ui/padOsd.js:872
+#: js/ui/padOsd.js:873
 msgid "Press any key to exit"
 msgstr "Шығу үшін кез-келген батырманы басыңыз"
 
@@ -2021,7 +2022,7 @@ msgstr "Шығу үшін кез-келген батырманы басыңыз"
 #. in your language, you can use the word for "Overview".
 #: js/ui/panel.js:208
 msgid "Activities"
-msgstr "Көрініс"
+msgstr "Іс-әрекеттер"
 
 #: js/ui/panel.js:289
 msgctxt "System menu in the top bar"
@@ -2053,130 +2054,130 @@ msgstr "GNOME экранды блоктау керек"
 msgid "Screen Capture"
 msgstr "Экран түсірілімі"
 
-#: js/ui/screenshot.js:1267
+#: js/ui/screenshot.js:1305
 msgid "Selection"
 msgstr "Таңдау"
 
-#: js/ui/screenshot.js:1277
+#: js/ui/screenshot.js:1315
 msgid "Area Selection"
 msgstr "Аймақты таңдау"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1320
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1292
+#: js/ui/screenshot.js:1330
 msgid "Screen Selection"
 msgstr "Экранды таңдау"
 
-#: js/ui/screenshot.js:1297
+#: js/ui/screenshot.js:1335
 msgid "Window"
 msgstr "Терезе"
 
-#: js/ui/screenshot.js:1307
+#: js/ui/screenshot.js:1345
 msgid "Window Selection"
 msgstr "Терезені таңдау"
 
-#: js/ui/screenshot.js:1332 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1370 js/ui/status/system.js:118
 msgid "Take Screenshot"
 msgstr "Скриншотты түсіру"
 
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1386
 msgid "Record Screen"
 msgstr "Экранды жазу"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1365
+#: js/ui/screenshot.js:1403
 msgid "Capture"
 msgstr "Түсіру"
 
-#: js/ui/screenshot.js:1387
+#: js/ui/screenshot.js:1425
 msgid "Show Pointer"
 msgstr "Курсорды көрсету"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2020
+#: js/ui/screenshot.js:2058
 msgid "Screencasts"
 msgstr "Скринкасттар"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2025
+#: js/ui/screenshot.js:2063
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Скринкаст, уақыты %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2071
+#: js/ui/screenshot.js:2109
 msgid "Screencast recorded"
 msgstr "Скринкаст жазылды"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
+#: js/ui/screenshot.js:2122
 msgid "Screencast failed to start"
 msgstr "Скринкаст іске қосыла алмады"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
+#: js/ui/screenshot.js:2128
 msgid "Screencast ended: Out of disk space"
 msgstr "Скринкаст күтпегенде үзілді: Диск орны бітті"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2096
+#: js/ui/screenshot.js:2134
 msgid "Screencast ended unexpectedly, please try again"
 msgstr "Скринкаст күтпегенде үзілді, қайталап көріңіз"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2099
+#: js/ui/screenshot.js:2137
 msgid "Screencast ended unexpectedly"
 msgstr "Скринкаст күтпегенде үзілді"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2112
+#: js/ui/screenshot.js:2150
 msgid "Click here to view the video"
 msgstr "Видеоны көру үшін осында шертіңіз"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2120 js/ui/screenshot.js:2363
+#: js/ui/screenshot.js:2158 js/ui/screenshot.js:2401
 msgid "Show in Files"
 msgstr "Файлдар қолданбасында көрсету"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2309
+#: js/ui/screenshot.js:2347
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Скриншот, уақыты %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2353
+#: js/ui/screenshot.js:2391
 msgid "Screenshot captured"
 msgstr "Скриншот түсірілді"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2355
+#: js/ui/screenshot.js:2393
 msgid "You can paste the image from the clipboard"
 msgstr "Суретті алмасу буферінен кірістіруге болады"
 
-#: js/ui/screenshot.js:2413 js/ui/screenshot.js:2575
+#: js/ui/screenshot.js:2451 js/ui/screenshot.js:2613
 msgid "Screenshot taken"
 msgstr "Скриншот түсірілді"
 
-#: js/ui/search.js:846
+#: js/ui/search.js:855
 msgid "Searching"
 msgstr "Іздеу"
 
-#: js/ui/search.js:849
+#: js/ui/search.js:858
 msgid "No results"
 msgstr "Нәтижелер жоқ"
 
-#: js/ui/search.js:984
+#: js/ui/search.js:994
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2343,7 +2344,7 @@ msgstr "Төмен"
 msgid "High"
 msgstr "Жоғары"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:870
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Пернетақта"
 
@@ -2426,7 +2427,7 @@ msgstr "Екінші шерту"
 msgid "Dwell Click"
 msgstr "Пернеде кідіртуден кейінгі сол жақпен шерту"
 
-#: js/ui/status/keyboard.js:887
+#: js/ui/status/keyboard.js:894
 msgid "Show Keyboard Layout"
 msgstr "Пернетақта жаймасын көрсету"
 
@@ -2704,11 +2705,11 @@ msgstr "Дыбыс шығысы"
 msgid "Open sound output menu"
 msgstr "Дыбыс шығысы мәзірін ашу"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:390
 msgid "Sound Input"
 msgstr "Дыбыс кірісі"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:391
 msgid "Open sound input menu"
 msgstr "Дыбыс кірісі мәзірін ашу"
 
@@ -2906,16 +2907,16 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Белгісіз"
 
-#: src/shell-app.c:518
+#: src/shell-app.c:517
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "\"%s\" жөнелту сәтсіз"
 
-#: src/shell-keyring-prompt.c:779
+#: src/shell-keyring-prompt.c:776
 msgid "Passwords do not match"
 msgstr "Парольдер өзара сәйкес емес"
 
-#: src/shell-keyring-prompt.c:787
+#: src/shell-keyring-prompt.c:784
 msgid "Password cannot be blank"
 msgstr "Пароль бос болуы мүмкін емес"
 
@@ -2928,7 +2929,7 @@ msgstr "Аутентификация терезесін пайдаланушы �
 msgid "Icon '%s' not present in theme %s"
 msgstr "\"%s\" таңбашасы %s темасында жоқ"
 
-#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3753
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
 msgstr "Таңбашаны жүктеу сәтсіз"
 
@@ -2949,15 +2950,15 @@ msgstr ""
 "GNOME кеңейтулері көмегімен кеңейтулерді жаңарту, баптау және оларды өшіру "
 "немесе сөндіруге болады."
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
 msgid "Main Window"
 msgstr "Басты терезе"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
 msgid "Available Updates"
 msgstr "Қолжетімді жаңартулар"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
 msgid "Search View"
 msgstr "Іздеу көрінісі"
 
