@@ -481,8 +481,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         // keeping only the first mechanism per role
         const seenRoles = new Set();
         const mechanisms = this._authServices
-            .flatMap(s => s.enabledMechanisms ?? [])
-            .filter(m => !seenRoles.has(m.role) && seenRoles.add(m.role));
+            .flatMap(authServices => {
+                const serviceMechanisms = authServices.enabledMechanisms ?? [];
+                const visibleMechanisms = serviceMechanisms.filter(m =>
+                    !seenRoles.has(m.role));
+
+                serviceMechanisms.forEach(m => seenRoles.add(m.role));
+                return visibleMechanisms;
+            });
 
         const selectedMechanism = this.selectedMechanism ??
             mechanisms.find(m => m.selectable) ??
