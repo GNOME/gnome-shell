@@ -402,14 +402,7 @@ export const AuthPrompt = GObject.registerClass({
         this._mainBox.add_child(this._authButton);
 
         this._webLoginDialog = new WebLogin.WebLoginDialog();
-        this._webLoginDialog.connect('cancel', () => {
-            if (this._webLoginDialog.isLoading) {
-                this.reset({softReset: true});
-            } else {
-                this._closeWebLoginDialog();
-                this.updateSensitivity({sensitive: true});
-            }
-        });
+        this._webLoginDialog.connect('cancel', () => this._handleCancel());
         this._webLoginDialog.connect('loading', () => this.emit('loading', this._webLoginDialog.isLoading));
         this._inputWell.add_child(this._webLoginDialog);
 
@@ -1031,8 +1024,15 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _handleCancel() {
-        if (this._userVerifier.cancelRequested())
+        if (this._userVerifier.cancelRequested()) {
+            // We substract 2 because on cancel we'll receive a new prompt signal
+            // which increments promptStep, so that ends with a result of going
+            // back one step.
+            this.promptStep -= 2;
+            if (this.promptStep < 0)
+                this.promptStep = 0;
             return;
+        }
 
         this.cancel();
     }

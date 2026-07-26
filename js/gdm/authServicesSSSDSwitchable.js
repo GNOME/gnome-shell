@@ -17,6 +17,20 @@ const MechanismsStatus = {
     FOUND: 2,
 };
 
+const PromptStatus = {
+    NONE: 0,
+    PASSWORD_PROMPT: 1,
+    PASSWORD_WAITING: 2,
+    CERT_LIST_PROMPT: 3,
+    PIN_PROMPT: 4,
+    PIN_WAITING: 5,
+    INSERT_KEY_PROMPT: 6,
+    TOUCH_PROMPT: 7,
+    WEB_LOGIN_INTRO_PROMPT: 8,
+    WEB_LOGIN_DIALOG_PROMPT: 9,
+    WEB_LOGIN_DIALOG_WAITING: 10,
+};
+
 export class AuthServicesSSSDSwitchable extends AuthServices {
     static SupportedRoles = [
         Role.PASSWORD,
@@ -57,6 +71,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             const certificates = this._selectedMechanism.certificates;
             const cert = certificates.find(c => c.keyId === key);
             this._selectedSmartcard = cert;
+            this._promptStatus = PromptStatus.PIN_PROMPT;
             this.emit('ask-question', {
                 serviceName,
                 question: cert.pinPrompt,
@@ -80,14 +95,20 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         let response;
         switch (this._selectedMechanism.role) {
         case Role.PASSWORD:
+            response = this._formatResponse(answer);
+            this._sendResponse(response);
+            this._promptStatus = PromptStatus.PASSWORD_WAITING;
+            break;
         case Role.SMARTCARD:
             response = this._formatResponse(answer);
             this._sendResponse(response);
+            this._promptStatus = PromptStatus.PIN_WAITING;
             break;
         case Role.PASSKEY:
             response = this._formatResponse(answer);
             this._sendResponse(response);
 
+            this._promptStatus = PromptStatus.TOUCH_PROMPT;
             this.emit('show-choice-list', {
                 serviceName,
                 promptMessage: this._selectedMechanism.touchInstruction,
@@ -97,6 +118,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleSelectMechanism() {
+        this._promptStatus = PromptStatus.NONE;
+
         switch (this._selectedMechanism?.role) {
         case Role.PASSWORD:
             this._startPasswordLogin();
@@ -134,6 +157,68 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
+    cancelRequested() {
+        if (!this._selectedMechanism)
+            return false;
+
+        switch (this._selectedMechanism.role) {
+        case Role.PASSWORD:
+            // Waiting for authentication response: soft reset
+            if (this._promptStatus === PromptStatus.PASSWORD_WAITING) {
+                this.emit('reset', {softReset: true});
+                return true;
+            }
+            // At password prompt: hard reset
+            return false;
+
+        case Role.SMARTCARD:
+            // Waiting for PIN verification response: soft reset
+            if (this._promptStatus === PromptStatus.PIN_WAITING) {
+                this.emit('reset', {softReset: true});
+                return true;
+            }
+            // At PIN entry after selecting from multiple certificates:
+            // step back to the certificate list
+            if (this._promptStatus === PromptStatus.PIN_PROMPT &&
+                this._selectedMechanism.certificates.length > 1) {
+                this._selectedSmartcard = null;
+                this._startSmartcardLogin();
+                return true;
+            }
+            // At certificate list or single-cert PIN: hard reset
+            return false;
+
+        case Role.PASSKEY:
+            // At touch confirmation after PIN submission: soft reset
+            // back to PIN entry (PIN response was already sent to SSSD)
+            if (this._promptStatus === PromptStatus.TOUCH_PROMPT) {
+                this.emit('reset', {softReset: true});
+                return true;
+            }
+            // At PIN entry or key insertion prompt: hard reset
+            return false;
+
+        case Role.WEB_LOGIN:
+            // At login dialog after "Done" clicked: soft reset to retry
+            if (this._promptStatus === PromptStatus.WEB_LOGIN_DIALOG_WAITING) {
+                this.emit('reset', {softReset: true});
+                return true;
+            }
+            // At login dialog with a login button available:
+            // step back to the login button
+            if (this._promptStatus === PromptStatus.WEB_LOGIN_DIALOG_PROMPT &&
+                this._selectedMechanism.initPrompt) {
+                this._startWebLogin();
+                return true;
+            }
+            // At login button or direct dialog (no initPrompt): hard reset
+            return false;
+
+        default:
+            return false;
+        }
+    }
+
     _handleClear() {
         this._mechanisms = null;
         this._priorityList = null;
@@ -142,6 +227,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._selectedSmartcard = null;
 
         this._resettingPassword = false;
+        this._promptStatus = PromptStatus.NONE;
 
         this._clearWebLoginTimeout();
     }
@@ -346,6 +432,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _startPasswordLogin() {
         const {serviceName, prompt} = this._selectedMechanism;
 
+        this._promptStatus = PromptStatus.PASSWORD_PROMPT;
         this.emit('ask-question', {serviceName, question: prompt, secret: true});
     }
 
@@ -354,6 +441,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         if (certificates.length === 1) {
             this._selectedSmartcard = certificates[0];
+            this._promptStatus = PromptStatus.PIN_PROMPT;
             this.emit('ask-question', {
                 serviceName,
                 question: certificates[0].pinPrompt,
@@ -370,6 +458,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             ? _('Insert Smartcard')
             : _('Select Identity');
 
+        this._promptStatus = PromptStatus.CERT_LIST_PROMPT;
         this.emit('show-choice-list', {serviceName, promptMessage, choiceList});
     }
 
@@ -399,10 +488,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         } = this._selectedMechanism;
 
         if (!keyConnected) {
+            this._promptStatus = PromptStatus.INSERT_KEY_PROMPT;
             this.emit('show-choice-list', {serviceName, promptMessage: initInstruction});
             return;
         }
 
+        this._promptStatus = PromptStatus.PIN_PROMPT;
         this.emit('ask-question', {serviceName, question: pinPrompt, secret: true});
 
         if (pinAttempts <= 3 && pinAttempts > 0) {
@@ -437,15 +528,19 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             action: () => this._webLoginDone(),
         }];
 
-        const showWebLogin = () => this.emit('web-login', {
-            serviceName,
-            message: linkPrompt,
-            url: uri,
-            code,
-            buttons,
-        });
+        const showWebLogin = () => {
+            this._promptStatus = PromptStatus.WEB_LOGIN_DIALOG_PROMPT;
+            this.emit('web-login', {
+                serviceName,
+                message: linkPrompt,
+                url: uri,
+                code,
+                buttons,
+            });
+        };
 
         if (initPrompt) {
+            this._promptStatus = PromptStatus.WEB_LOGIN_INTRO_PROMPT;
             this.emit('show-button', {
                 serviceName,
                 label: initPrompt,
@@ -459,6 +554,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _webLoginDone() {
         if (this._selectedMechanism?.role !== Role.WEB_LOGIN)
             return;
+
+        this._promptStatus = PromptStatus.WEB_LOGIN_DIALOG_WAITING;
 
         const response = this._formatResponse();
         this._sendResponse(response);
