@@ -251,7 +251,8 @@ export class AuthServicesLegacy extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        this.emit('ask-question', serviceName, question, false);
+        this.emit('ask-question', serviceName, question, false,
+            answer => this._handleAnswerQuery(serviceName, answer));
     }
 
     _handleOnSecretInfoQuery(serviceName, secretQuestion) {
@@ -267,7 +268,8 @@ export class AuthServicesLegacy extends AuthServices {
             return;
         }
 
-        this.emit('ask-question', serviceName, secretQuestion, true);
+        this.emit('ask-question', serviceName, secretQuestion, true,
+            answer => this._handleAnswerQuery(serviceName, answer));
     }
 
     _handleOnConversationStopped(serviceName) {
@@ -340,7 +342,8 @@ export class AuthServicesLegacy extends AuthServices {
         for (const [key, value] of Object.entries(list.deepUnpack()))
             choiceList[key] = {title: value};
 
-        this.emit('show-choice-list', serviceName, promptMessage, choiceList);
+        this.emit('show-choice-list', serviceName, promptMessage, choiceList,
+            key => this._handleSelectChoice(serviceName, key));
     }
 
     _handleGetCredentialManagerServices() {

@@ -211,22 +211,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._settings = null;
     }
 
-    selectChoice(serviceName, key) {
-        this._authServices.forEach(s => s.selectChoice(serviceName, key));
-    }
-
-    buttonClicked(serviceName) {
-        this._authServices.forEach(s => s.buttonClicked(serviceName));
-    }
-
-    async answerQuery(serviceName, answer) {
-        // Wait for pending messages to be displayed before answering to
-        // ensure no messages get lost
-        await this._handlePendingMessages().catch(logErrorUnlessCancelled);
-
-        this._authServices.forEach(s => s.answerQuery(serviceName, answer));
-    }
-
     addCredentialManager(serviceName, credentialManager) {
         this._authServices.forEach(s => s.addCredentialManager(serviceName, credentialManager));
     }
@@ -495,14 +479,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     async _waitPendingMessages(task) {
         try {
-            await this._handlePendingMessages();
+            await this.handlePendingMessages();
             task.return_boolean(true);
         } catch (e) {
             task.return_error(e);
         }
     }
 
-    _handlePendingMessages() {
+    handlePendingMessages() {
         if (!this.hasPendingMessages)
             return Promise.resolve();
 

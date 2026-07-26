@@ -276,20 +276,6 @@ export const AuthPrompt = GObject.registerClass({
 
         this._authList = new AuthList.AuthList();
         this._authList.hide();
-        this._authList.connect('activate', (list, key) => {
-            this._authList.reactive = false;
-            this._authList.ease({
-                opacity: 0,
-                duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._authListTitle.child.text = '';
-                    this._authList.clear();
-                    this._authList.hide();
-                    this._userVerifier.selectChoice(this._queryingService, key);
-                },
-            });
-        });
         this._inputWell.add_child(this._authList);
 
         // Use an insensitive button for the auth list title
@@ -361,8 +347,6 @@ export const AuthPrompt = GObject.registerClass({
                 if (!this._userVerifier.hasPendingMessages)
                     this._fadeOutMessage();
             });
-
-            entry.clutter_text.connect('activate', () => this._activateNext());
         });
 
         this._defaultButtonWell = new St.Widget({
@@ -381,7 +365,6 @@ export const AuthPrompt = GObject.registerClass({
             can_focus: false,
             icon_name: 'go-next-symbolic',
         });
-        this._nextButton.connect('clicked', () => this._activateNext());
         this._nextButton.add_style_pseudo_class('default');
         this._defaultButtonWell.add_child(this._nextButton);
 
@@ -426,8 +409,6 @@ export const AuthPrompt = GObject.registerClass({
             x_expand: true,
             y_expand: true,
         });
-        this._authButton.connect('clicked', () =>
-            this._userVerifier.buttonClicked(this._queryingService));
         this._mainBox.add_child(this._authButton);
 
         // center elements inside _mainBox between the cancel
@@ -484,7 +465,7 @@ export const AuthPrompt = GObject.registerClass({
         this._timedLoginIndicator.scale_x = 0.;
     }
 
-    _activateNext() {
+    _activateNext(answerHandler) {
         if (!this._entry.reactive)
             return;
 
@@ -495,7 +476,7 @@ export const AuthPrompt = GObject.registerClass({
             this.startSpinning({animate: true});
 
         if (this._queryingService)
-            this._userVerifier.answerQuery(this._queryingService, this._entry.text);
+            answerHandler(this._entry.text);
         else
             this._preemptiveAnswer = this._entry.text;
 
@@ -527,7 +508,7 @@ export const AuthPrompt = GObject.registerClass({
         this._capsLockWarningLabel.visible = secret;
     }
 
-    _onAskQuestion(verifier, serviceName, question, secret) {
+    _onAskQuestion(verifier, serviceName, question, secret, answerHandler) {
         if (this._queryingService)
             this.clear();
 
@@ -535,14 +516,41 @@ export const AuthPrompt = GObject.registerClass({
         this._promptStep++;
         this._updateCancelButton();
 
+        const waitingAnswerHandler = async (...args) => {
+            // Wait for pending messages to be displayed before answering to
+            // ensure no messages get lost
+            await this._userVerifier.handlePendingMessages();
+            answerHandler(...args);
+        };
+
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
         if (preemptiveAnswer) {
-            this._userVerifier.answerQuery(this._queryingService, preemptiveAnswer);
+            waitingAnswerHandler(preemptiveAnswer).catch(logErrorUnlessCancelled);
             return;
         }
 
         this._updateEntry(secret);
+
+        if (this._cancelPendingRequest)
+            throw new Error('A pending request is already active');
+
+        const tracker = {};
+        this._cancelPendingRequest = () => {
+            this._entry.disconnectObject(tracker);
+            this._nextButton.disconnectObject(tracker);
+            this._cancelPendingRequest = null;
+        };
+
+        const nextAnswerHandler = answer => {
+            this._cancelPendingRequest?.();
+            waitingAnswerHandler(answer).catch(logErrorUnlessCancelled);
+        };
+
+        this._entry.clutterText.connectObject('activate',
+            () => this._activateNext(nextAnswerHandler), tracker);
+        this._nextButton.connectObject('clicked',
+            () => this._activateNext(nextAnswerHandler), tracker);
 
         // Hack: The question string comes directly from PAM, if it's "Password:"
         // we replace it with our own to allow localization, if it's something
@@ -555,7 +563,7 @@ export const AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
-    _onShowChoiceList(userVerifier, serviceName, promptMessage, choiceList) {
+    _onShowChoiceList(userVerifier, serviceName, promptMessage, choiceList, choiceHandler) {
         if (this._queryingService)
             this.clear();
 
@@ -564,6 +572,31 @@ export const AuthPrompt = GObject.registerClass({
         this._updateCancelButton();
 
         this._clearPreemptiveState();
+
+        if (this._cancelPendingRequest)
+            throw new Error('A pending request is already active');
+
+        let choiceListActivateId = 0;
+        this._cancelPendingRequest = () => {
+            this._authList.disconnect(choiceListActivateId);
+            this._cancelPendingRequest = null;
+        };
+
+        choiceListActivateId = this._authList.connect('activate', (list, key) => {
+            this._authList.reactive = false;
+            this._authList.ease({
+                opacity: 0,
+                duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._authListTitle.child.text = '';
+                    this._authList.clear();
+                    this._authList.hide();
+                    this._cancelPendingRequest?.();
+                    choiceHandler(key);
+                },
+            });
+        });
 
         this.setChoiceList(promptMessage, choiceList);
         this.updateSensitivity({sensitive: true});
@@ -594,7 +627,7 @@ export const AuthPrompt = GObject.registerClass({
         showMessageResolver?.(wigglePromise);
     }
 
-    _onShowButton(serviceName, label) {
+    _onShowButton(serviceName, label, callback) {
         if (this._queryingService)
             this.clear();
 
@@ -603,6 +636,20 @@ export const AuthPrompt = GObject.registerClass({
         this._updateCancelButton();
 
         this._clearPreemptiveState();
+
+        if (this._cancelPendingRequest)
+            throw new Error('A pending request is already active');
+
+        let authButtonClickedId = 0;
+        this._cancelPendingRequest = () => {
+            this._authButton.disconnect(authButtonClickedId);
+            this._cancelPendingRequest = null;
+        };
+
+        authButtonClickedId = this._authButton.connect('clicked', () => {
+            this._cancelPendingRequest?.();
+            callback();
+        });
 
         this._authButton.set({label});
         this._authButton.show();
@@ -788,6 +835,7 @@ export const AuthPrompt = GObject.registerClass({
         this._webLoginIntro.hide();
         this._authButton.hide();
         this._closeWebLoginDialog();
+        this._cancelPendingRequest?.();
 
         [this._mainBox, this._webLoginDialog].forEach(widget => {
             widget.opacity = 255;

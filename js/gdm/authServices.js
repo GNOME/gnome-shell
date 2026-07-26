@@ -65,16 +65,16 @@ export class AuthServices extends GObject.Object {
         },
         'verification-complete': {},
         'ask-question': {
-            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_BOOLEAN],
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_BOOLEAN, GObject.TYPE_JSOBJECT],
         },
         'reset': {
             param_types: [GObject.TYPE_JSOBJECT],
         },
         'show-choice-list': {
-            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT],
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT, GObject.TYPE_JSOBJECT],
         },
         'show-button': {
-            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING],
+            param_types: [GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_JSOBJECT],
         },
         'mechanisms-changed': {},
         'web-login': {
@@ -131,18 +131,6 @@ export class AuthServices extends GObject.Object {
 
     get supportedRoles() {
         return this._handleGetSupportedRoles();
-    }
-
-    selectChoice(serviceName, key) {
-        this._handleSelectChoice(serviceName, key);
-    }
-
-    buttonClicked(serviceName) {
-        this._handleButtonClicked(serviceName);
-    }
-
-    answerQuery(serviceName, answer) {
-        this._handleAnswerQuery(serviceName, answer);
     }
 
     async beginVerification(userName, userVerifierProxies) {
@@ -451,10 +439,6 @@ export class AuthServices extends GObject.Object {
     _handleGetSupportedRoles() {
         return this.constructor.SupportedRoles;
     }
-
-    _handleSelectChoice() {}
-
-    _handleAnswerQuery() {}
 
     _handleBeginVerification() {}
 

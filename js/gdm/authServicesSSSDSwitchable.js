@@ -70,7 +70,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             const certificates = this._selectedMechanism.certificates;
             const cert = certificates.find(c => c.keyId === key);
             this._selectedSmartcard = cert;
-            this.emit('ask-question', serviceName, cert.pinPrompt, true);
+            this.emit('ask-question', serviceName, cert.pinPrompt, true,
+                answer => this._handleAnswerQuery(serviceName, answer));
         }
     }
 
@@ -98,7 +99,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this._sendResponse(response);
 
             this.emit('show-choice-list', serviceName,
-                this._selectedMechanism.touchInstruction, {});
+                this._selectedMechanism.touchInstruction, {}, () => {});
             break;
         }
     }
@@ -273,7 +274,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         if (serviceName === this._selectedMechanism?.serviceName &&
             this._selectedMechanism.role === Role.PASSWORD &&
             this._resettingPassword)
-            this.emit('ask-question', serviceName, secretQuestion, true);
+            this.emit('ask-question', serviceName, secretQuestion, true,
+                answer => this._handleAnswerQuery(serviceName, answer));
     }
 
     _handleOnConversationStopped(serviceName) {
@@ -358,7 +360,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _startPasswordLogin() {
         const {serviceName, prompt} = this._selectedMechanism;
 
-        this.emit('ask-question', serviceName, prompt, true);
+        this.emit('ask-question', serviceName, prompt, true,
+            answer => this._handleAnswerQuery(serviceName, answer));
     }
 
     _startSmartcardLogin() {
@@ -366,7 +369,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         if (certificates.length === 1) {
             this._selectedSmartcard = certificates[0];
-            this.emit('ask-question', serviceName, certificates[0].pinPrompt, true);
+            this.emit('ask-question', serviceName, certificates[0].pinPrompt, true,
+                answer => this._handleAnswerQuery(serviceName, answer));
             return;
         }
 
@@ -378,7 +382,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             ? _('Insert Smartcard')
             : _('Select Identity');
 
-        this.emit('show-choice-list', serviceName, prompt, choiceList);
+        this.emit('show-choice-list', serviceName, prompt, choiceList,
+            key => this._handleSelectChoice(serviceName, key));
     }
 
     _parseCertInstruction(certInstruction) {
@@ -407,11 +412,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         } = this._selectedMechanism;
 
         if (!keyConnected) {
-            this.emit('show-choice-list', serviceName, initInstruction, {});
+            this.emit('show-choice-list', serviceName, initInstruction, {}, () => {});
             return;
         }
 
-        this.emit('ask-question', serviceName, pinPrompt, true);
+        this.emit('ask-question', serviceName, pinPrompt, true,
+            answer => this._handleAnswerQuery(serviceName, answer));
 
         if (pinAttempts <= 3 && pinAttempts > 0) {
             const message = _('You have %d attempts left. If the passkey gets locked, you may not able to access your account.').format(pinAttempts);
