@@ -65,6 +65,8 @@ export class AuthServicesLegacy extends AuthServices {
     constructor(params) {
         super(params);
 
+        this._enabledRoles = [Role.PASSWORD];
+
         this._connectSmartcardManager();
         this._connectFingerprintManager();
 
