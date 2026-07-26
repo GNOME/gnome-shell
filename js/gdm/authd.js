@@ -81,13 +81,7 @@ export class AuthServicesAuthd extends AuthService {
         Constants.MESSAGE_ROLE_NAME,
     ];
 
-    static RoleToService = {
-        [Constants.CHOICE_LIST_ROLE_NAME]: SERVICE_NAME,
-        [Constants.MESSAGE_ROLE_NAME]: SERVICE_NAME,
-        [Constants.PASSWORD_ROLE_NAME]: SERVICE_NAME,
-        [Constants.PLAIN_TEXT_ROLE_NAME]: SERVICE_NAME,
-        [Constants.WEB_LOGIN_ROLE_NAME]: SERVICE_NAME,
-    };
+    static ServiceName = SERVICE_NAME;
 
     constructor(params) {
         super(params);
