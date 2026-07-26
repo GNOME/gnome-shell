@@ -4,6 +4,7 @@ import GObject from 'gi://GObject';
 import * as FingerprintManager from './fingerprintManager.js';
 import {FingerprintReaderType} from './fingerprintManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
+import * as Settings from './settings.js';
 import * as SmartcardManager from './smartcardManager.js';
 import * as OVirt from './oVirt.js';
 import * as Vmware from './vmware.js';
@@ -17,28 +18,24 @@ const PASSWORD_SERVICE_NAME = 'gdm-password';
 const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 
-const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
-const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
-const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
-
 const Mechanisms = [
     {
         serviceName: PASSWORD_SERVICE_NAME,
         role: Role.PASSWORD,
         name: _('Password'),
-        setting: PASSWORD_AUTHENTICATION_KEY,
+        setting: Settings.PASSWORD_AUTHENTICATION_KEY,
     },
     {
         serviceName: SMARTCARD_SERVICE_NAME,
         role: Role.SMARTCARD,
         name: _('Smartcard'),
-        setting: SMARTCARD_AUTHENTICATION_KEY,
+        setting: Settings.SMARTCARD_AUTHENTICATION_KEY,
     },
     {
         serviceName: FINGERPRINT_SERVICE_NAME,
         role: Role.FINGERPRINT,
         name: _('Fingerprint'),
-        setting: FINGERPRINT_AUTHENTICATION_KEY,
+        setting: Settings.FINGERPRINT_AUTHENTICATION_KEY,
     },
 ];
 
@@ -60,9 +57,9 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     static isEnabled(settings) {
-        return settings.get_boolean(PASSWORD_AUTHENTICATION_KEY) ||
-            settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
-            settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY);
+        return settings.get_boolean(Settings.PASSWORD_AUTHENTICATION_KEY) ||
+            settings.get_boolean(Settings.FINGERPRINT_AUTHENTICATION_KEY) ||
+            settings.get_boolean(Settings.SMARTCARD_AUTHENTICATION_KEY);
     }
 
     constructor(params) {

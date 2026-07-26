@@ -6,10 +6,9 @@ import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as SmartcardManager from './smartcardManager.js';
 import {AuthServices, Role} from './authServices.js';
 import {MessageType} from './userVerifier.js';
+import {SWITCHABLE_AUTHENTICATION_KEY} from './settings.js';
 
 const SWITCHABLE_AUTH_SERVICE_NAME = 'gdm-switchable-auth';
-
-const SWITCHABLE_AUTHENTICATION_KEY = 'enable-switchable-authentication';
 
 const MechanismsStatus = {
     WAITING: 0,

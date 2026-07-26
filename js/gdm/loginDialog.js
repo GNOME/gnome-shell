@@ -32,7 +32,8 @@ import * as AuthPrompt from './authPrompt.js';
 import * as Batch from './batch.js';
 import {ConflictingSessionDialog} from './conflictingSessionDialog.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
-import * as GdmUtil from './userVerifier.js';
+import * as GdmUtil from './util.js';
+import * as Settings from './settings.js';
 import * as Layout from '../ui/layout.js';
 import * as LoginManager from '../misc/loginManager.js';
 import * as Main from '../ui/main.js';
@@ -41,6 +42,7 @@ import * as PopupMenu from '../ui/popupMenu.js';
 import * as Realmd from './realmd.js';
 import * as UserWidget from '../ui/userWidget.js';
 import {QuickSettingsMenu} from '../ui/quickSettings.js';
+import {MessageType} from './userVerifier.js';
 import * as A11y from '../ui/status/accessibility.js';
 
 const _FADE_ANIMATION_TIME = 250;
@@ -393,25 +395,25 @@ export const LoginDialog = GObject.registerClass({
         } catch {
         }
 
-        this._settings = new Gio.Settings({schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA});
+        this._settings = new Gio.Settings({schema_id: Settings.LOGIN_SCREEN_SCHEMA});
 
-        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_KEY}`,
+        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_KEY}`,
             () => this._updateBanner().catch(logError));
-        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_TEXT_KEY}`,
+        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`,
             () => this._updateBanner().catch(logError));
-        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_SOURCE_KEY}`,
+        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`,
             () => {
                 if (this._updateBannerMessageFile())
                     this._updateBanner().catch(logError);
             });
-        this._settings.connect(`changed::${GdmUtil.BANNER_MESSAGE_PATH_KEY}`,
+        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_PATH_KEY}`,
             () => {
                 if (this._updateBannerMessageFile())
                     this._updateBanner().catch(logError);
             });
-        this._settings.connect(`changed::${GdmUtil.DISABLE_USER_LIST_KEY}`,
+        this._settings.connect(`changed::${Settings.DISABLE_USER_LIST_KEY}`,
             this._updateDisableUserList.bind(this));
-        this._settings.connect(`changed::${GdmUtil.LOGO_KEY}`,
+        this._settings.connect(`changed::${Settings.LOGO_KEY}`,
             this._updateLogo.bind(this));
 
         this._textureCache = St.TextureCache.get_default();
@@ -839,7 +841,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _updateDisableUserList() {
-        let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
+        let disableUserList = this._settings.get_boolean(Settings.DISABLE_USER_LIST_KEY);
 
         // Disable user list when there are no users.
         if (this._userListLoaded && this._userList.numItems() === 0)
@@ -871,8 +873,8 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _updateBannerMessageFile() {
-        const path = this._settings.get_string(GdmUtil.BANNER_MESSAGE_SOURCE_KEY) === 'file'
-            ? this._settings.get_string(GdmUtil.BANNER_MESSAGE_PATH_KEY)
+        const path = this._settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) === 'file'
+            ? this._settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY)
             : null;
         const file = path
             ? Gio.File.new_for_path(path)
@@ -899,7 +901,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     async _getBannerText() {
-        const enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
+        const enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
         if (!enabled)
             return null;
 
@@ -913,7 +915,7 @@ export const LoginDialog = GObject.registerClass({
             }
         }
 
-        return this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
+        return this._settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
     }
 
     async _updateBanner() {
@@ -959,7 +961,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _updateLogo() {
-        const path = this._settings.get_string(GdmUtil.LOGO_KEY);
+        const path = this._settings.get_string(Settings.LOGO_KEY);
 
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
@@ -1095,7 +1097,8 @@ export const LoginDialog = GObject.registerClass({
 
         // Translators: this message is shown below the username entry field
         // to clue the user in on how to login to the local network realm
-        this._authPrompt.setMessage(_('(e.g., user or %s)').format(hint), GdmUtil.MessageType.HINT);
+        this._authPrompt.setMessage(_('(e.g., user or %s)').format(hint),
+            MessageType.HINT);
     }
 
     _askForUsernameAndBeginVerification() {

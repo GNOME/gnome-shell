@@ -1,26 +1,12 @@
-import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import * as Signals from '../misc/signals.js';
 
-import * as Batch from './batch.js';
-import * as Main from '../ui/main.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as Params from '../misc/params.js';
 import {AuthServicesLegacy} from './authServicesLegacy.js';
 import {AuthServicesSSSDSwitchable} from './authServicesSSSDSwitchable.js';
-
-export const CLONE_FADE_ANIMATION_TIME = 250;
-
-export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-export const BANNER_MESSAGE_KEY = 'banner-message-enable';
-export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
-export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
-export const BANNER_MESSAGE_PATH_KEY = 'banner-message-path';
-export const ALLOWED_FAILURES_KEY = 'allowed-failures';
-
-export const LOGO_KEY = 'logo';
-export const DISABLE_USER_LIST_KEY = 'disable-user-list';
+import {LOGIN_SCREEN_SCHEMA, ALLOWED_FAILURES_KEY} from './settings.js';
 
 // Give user 48ms to read each character of a PAM message
 // or 2 seconds, whichever is longer
@@ -65,38 +51,6 @@ export class InitError extends Error {
     }
 }
 
-/**
- * @param {Clutter.Actor} actor
- */
-export function cloneAndFadeOutActor(actor) {
-    // Immediately hide actor so its sibling can have its space
-    // and position, but leave a non-reactive clone on-screen,
-    // so from the user's point of view it smoothly fades away
-    // and reveals its sibling.
-    actor.hide();
-
-    const clone = new Clutter.Clone({
-        source: actor,
-        reactive: false,
-    });
-
-    Main.uiGroup.add_child(clone);
-
-    const [x, y] = actor.get_transformed_position();
-    clone.set_position(x, y);
-
-    const hold = new Batch.Hold();
-    clone.ease({
-        opacity: 0,
-        duration: CLONE_FADE_ANIMATION_TIME,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onComplete: () => {
-            clone.destroy();
-            hold.release();
-        },
-    });
-    return hold;
-}
 
 export class ShellUserVerifier extends Signals.EventEmitter {
     constructor(client, params) {
