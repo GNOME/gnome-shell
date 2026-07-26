@@ -1,7 +1,7 @@
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
-import * as Util from './util.js';
+import {MessageType} from './userVerifier.js';
 import Gdm from 'gi://Gdm';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
@@ -341,7 +341,7 @@ export class AuthServices extends GObject.Object {
     _onConversationStopped(serviceName) {
         this._activeServices.delete(serviceName);
 
-        this.emit('filter-messages', serviceName, Util.MessageType.ERROR);
+        this.emit('filter-messages', serviceName, MessageType.ERROR);
 
         this._handleOnConversationStopped(serviceName);
     }
@@ -353,7 +353,7 @@ export class AuthServices extends GObject.Object {
             this.emit('queue-message',
                 serviceName,
                 errorMessage,
-                Util.MessageType.ERROR);
+                MessageType.ERROR);
         }
 
         this._handleOnServiceUnavailable(serviceName, errorMessage);

@@ -10,7 +10,7 @@ import St from 'gi://St';
 import * as Animation from '../ui/animation.js';
 import * as AuthList from './authList.js';
 import * as Batch from './batch.js';
-import * as GdmUtil from './util.js';
+import * as UserVerifier from './userVerifier.js';
 import * as Params from '../misc/params.js';
 import * as ShellEntry from '../ui/shellEntry.js';
 import * as UserWidget from '../ui/userWidget.js';
@@ -233,7 +233,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     _createUserVerifier(gdmClient, params) {
-        return new GdmUtil.ShellUserVerifier(gdmClient, params);
+        return new UserVerifier.ShellUserVerifier(gdmClient, params);
     }
 
     _onDestroy() {
@@ -577,7 +577,7 @@ export const AuthPrompt = GObject.registerClass({
         // If we're showing a message and no auth widget is currently visible,
         // show the entry area to allow getting a preemptive answer
         if (message &&
-            type < GdmUtil.MessageType.ERROR &&
+            type < UserVerifier.MessageType.ERROR &&
             !this._entryArea.visible &&
             !this._authList.visible &&
             !this._webLoginIntro.visible &&
@@ -861,12 +861,12 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     setMessage(message, type) {
-        if (type === GdmUtil.MessageType.ERROR)
+        if (type === UserVerifier.MessageType.ERROR)
             this._message.add_style_class_name('login-dialog-message-warning');
         else
             this._message.remove_style_class_name('login-dialog-message-warning');
 
-        if (type === GdmUtil.MessageType.HINT)
+        if (type === UserVerifier.MessageType.HINT)
             this._message.add_style_class_name('login-dialog-message-hint');
         else
             this._message.remove_style_class_name('login-dialog-message-hint');
