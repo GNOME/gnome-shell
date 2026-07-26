@@ -190,24 +190,26 @@ class KeyboardManager extends Signals.EventEmitter {
             }
         }
 
-        let i = 0;
         let group = [];
-        for (const id in this._layoutInfos) {
-            // We need to leave one slot on each group free so that we
-            // can add a layout containing the symbols for the
-            // language used in UI strings to ensure that toolkits can
-            // handle mnemonics like Alt+Ф even if the user is
-            // actually typing in a different layout.
-            const groupIndex = i % (this.MAX_LAYOUTS_PER_GROUP - 1);
-            if (groupIndex === 0)
+        for (const id of ids) {
+            const info = this._layoutInfos[id];
+            if (!info)
+                continue;
+
+            const isLocale = this._isLocaleLayout(info);
+            const hasLocale = group.some(g => this._isLocaleLayout(g));
+
+            // We need to leave one slot on the group free if we haven't included
+            // the locale layout yet. This ensures we can add a layout containing
+            // the symbols for the language used in UI strings.
+            if (group.length === this.MAX_LAYOUTS_PER_GROUP ||
+                (group.length === this.MAX_LAYOUTS_PER_GROUP - 1 && !hasLocale && !isLocale))
                 group = [];
 
-            const info = this._layoutInfos[id];
-            group[groupIndex] = info;
+            const groupIndex = group.length;
+            group.push(info);
             info.group = group;
             info.groupIndex = groupIndex;
-
-            i += 1;
         }
     }
 
@@ -232,13 +234,24 @@ class KeyboardManager extends Signals.EventEmitter {
     }
 
     /**
+     * @param {LayoutInfo} info
+     * @returns {boolean}
+     */
+    _isLocaleLayout(info) {
+        return info.layout === this._localeLayoutInfo.layout &&
+            info.variant === this._localeLayoutInfo.variant;
+    }
+
+    /**
      * Builds the comma-separated layout and variant strings for a given group of layouts.
      *
-     * @param {LayoutInfo[]} _group - The array of layouts currently in this chunk.
+     * @param {LayoutInfo[]} group - The array of layouts currently in this chunk.
      * @returns {[string, string]} A tuple containing the combined layout string and variant string.
      */
-    _buildGroupStrings(_group) {
-        const group = _group.concat(this._localeLayoutInfo);
+    _buildGroupStrings(group) {
+        if (!group.some(g => this._isLocaleLayout(g)))
+            group = group.concat(this._localeLayoutInfo);
+
         const layouts = group.map(g => g.layout).join(',');
         const variants = group.map(g => g.variant).join(',');
         return [layouts, variants];
