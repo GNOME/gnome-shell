@@ -292,17 +292,30 @@ export class AuthServicesAuthd extends AuthService {
 
         switch (mechanism.role) {
         case Constants.PASSWORD_ROLE_NAME:
-            this.emit('ask-question', SERVICE_NAME, mechanism.prompt, true);
+            this.emit('ask-question', SERVICE_NAME, mechanism.prompt, true, answer => {
+                if (this.selectedMechanism?.id !== mechanism.id)
+                    return;
+
+                this.handleAuthSelectionResponse(this.selectedMechanism,
+                    mechanism.role,
+                    {password: answer});
+            });
             break;
         case Constants.PLAIN_TEXT_ROLE_NAME:
-            this.emit('ask-question', SERVICE_NAME, mechanism.prompt, false);
+            this.emit('ask-question', SERVICE_NAME, mechanism.prompt, false, answer => {
+                if (this.selectedMechanism?.id !== mechanism.id)
+                    return;
+
+                this.handleAuthSelectionResponse(this.selectedMechanism, mechanism.role,
+                    {text: answer});
+            });
             break;
         case Constants.WEB_LOGIN_ROLE_NAME:
             this.emit('web-login', SERVICE_NAME, mechanism.init_prompt,
                 mechanism.link_prompt, mechanism.uri, mechanism.code, mechanism.buttons);
             break;
         case Constants.MESSAGE_ROLE_NAME:
-            this.emit('show-choice-list', SERVICE_NAME, mechanism.name, []);
+            this.emit('show-choice-list', SERVICE_NAME, mechanism.name, [], () => {});
             this.emit('queue-priority-message', SERVICE_NAME, mechanism.prompt, MessageType.INFO, false);
             // this.emit('show-choice-list', SERVICE_NAME, mechanism.prompt, []);
             break;
@@ -406,20 +419,6 @@ export class AuthServicesAuthd extends AuthService {
 
 
         return true;
-    }
-
-    _handleAnswerQuery(serviceName, answer) {
-        if (serviceName !== SERVICE_NAME || !this.selectedMechanism)
-            return;
-
-        const {role} = this.selectedMechanism;
-        if (role === Constants.PASSWORD_ROLE_NAME) {
-            this.handleAuthSelectionResponse(this.selectedMechanism, role,
-                {password: answer});
-        } else if (role === Constants.PLAIN_TEXT_ROLE_NAME) {
-            this.handleAuthSelectionResponse(this.selectedMechanism, role,
-                {text: answer});
-        }
     }
 
     _doStageChange(stage) {
@@ -532,7 +531,10 @@ export class AuthServicesAuthd extends AuthService {
     }
 
     _showChoiceList(id, prompt, choices) {
-        this.emit('show-choice-list', SERVICE_NAME, prompt, choices);
+        this.emit('show-choice-list', SERVICE_NAME, prompt, choices, key => {
+            // FIXME: Do it inline...
+            this._handleSelectChoice(SERVICE_NAME, key);
+        });
 
         // this._authMechanisms[id] = choiceListMechanism;
         // this._enabledMechanisms = [choiceListMechanism];
@@ -558,6 +560,9 @@ export class AuthServicesAuthd extends AuthService {
             break;
         }
     }
+
+    // FIXME: for local broker!
+    // _handleOnSecretInfoQuery()
 
     // _onChoiceSelected(mechanism, key) {
     //     switch (mechanism.id) {
