@@ -138,18 +138,20 @@ export class AuthServices extends GObject.Object {
         this._cancellable = new Gio.Cancellable();
         this._userName = userName;
 
+        let started = false;
         try {
             this._updateUserVerifier(userVerifierProxies);
-            await this._startServices(this._cancellable);
+            started = await this._startServices(this._cancellable);
         } catch (e) {
             if (e.cause?.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
+                return false;
 
             this._failCounter++;
             throw e;
         }
 
         this._handleBeginVerification();
+        return started;
     }
 
     _mechanismEquals(m1, m2) {
@@ -381,12 +383,15 @@ export class AuthServices extends GObject.Object {
     }
 
     async _startServices(cancellable) {
+        let started = false;
         for (const serviceName of this._getEnabledServices()) {
             if (this._canStartService(serviceName)) {
                 // eslint-disable-next-line no-await-in-loop
                 await this._startService(serviceName, cancellable);
+                started = true;
             }
         }
+        return started;
     }
 
     _getEnabledServices() {

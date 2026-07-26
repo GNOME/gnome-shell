@@ -131,7 +131,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             this._setUserVerifier(proxies.userVerifier);
             for (const s of this._authServices) {
                 // eslint-disable-next-line no-await-in-loop
-                await s.beginVerification(userName, proxies);
+                if (await s.beginVerification(userName, proxies) && !s.isBackground)
+                    break;
             }
         } catch (e) {
             if (e instanceof InitError)

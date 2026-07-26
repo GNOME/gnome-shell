@@ -51,7 +51,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
     async beginVerification(userName, userVerifierProxies) {
         try {
-            await super.beginVerification(userName, userVerifierProxies);
+            return await super.beginVerification(userName, userVerifierProxies);
         } catch (e) {
             if (!(e instanceof Util.InitError) ||
                 e.serviceName !== SWITCHABLE_AUTH_SERVICE_NAME)
@@ -60,6 +60,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this._mechanismsStatus = MechanismsStatus.NOT_FOUND;
             this.emit('mechanisms-changed');
         }
+        return false;
     }
 
     _handleAnswerQuery(serviceName, answer) {
