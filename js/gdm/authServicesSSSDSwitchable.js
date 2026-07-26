@@ -32,7 +32,8 @@ export class AuthServicesSSSDSwitchable extends AuthService {
     }
 
     static isEnabled(settings) {
-        return settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
+        return true;
+        // return settings.get_boolean(SWITCHABLE_AUTHENTICATION_KEY);
     }
 
     constructor(params) {

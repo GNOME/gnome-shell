@@ -662,6 +662,8 @@ export const AuthPrompt = GObject.registerClass({
         if (this._queryingService)
             this.clear();
 
+        log(`Web login requested for service ${serviceName} with message: ${message}, url: ${url}, code: ${code}, buttons: ${JSON.stringify(buttons)}`);
+
         this._queryingService = serviceName;
         this._promptStep++;
         this._updateCancelButton();
@@ -979,6 +981,7 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     selectMechanism(mechanism) {
+        log("prompt mechanism selection", mechanism)
         const invalidStatus = [
             AuthPromptStatus.VERIFICATION_SUCCEEDED,
             AuthPromptStatus.VERIFICATION_IN_PROGRESS,

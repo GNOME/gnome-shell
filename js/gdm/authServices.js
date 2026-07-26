@@ -174,6 +174,13 @@ export class AuthService extends GObject.Object {
         return started;
     }
 
+    // async startEnabledServices() {
+    //     if (!this._cancellable || !this._userVerifier)
+    //         return;
+
+    //     await this._startServices(this._cancellable);
+    // }
+
     _mechanismEquals(m1, m2) {
         return  m1?.serviceName === m2?.serviceName &&
             m1?.role === m2?.role;
@@ -183,12 +190,23 @@ export class AuthService extends GObject.Object {
         if (this._mechanismEquals(this._selectedMechanism, mechanism))
             return false;
 
+        // log("Looking for ",mechanism, "Enabled mechanisms", this._enabledMechanisms);
+
         this._selectedMechanism = this._enabledMechanisms?.find(
             m => this._mechanismEquals(m, mechanism));
 
-        this._handleSelectMechanism();
+        log("Enabled mechanism", this._selectedMechanism);
 
-        return !!this._selectedMechanism;
+        if (!this._selectedMechanism)
+            logError(new Error(`Mechanism ${JSON.stringify(mechanism)} not found in enabled mechanisms: ${JSON.stringify(this._enabledMechanisms)}`));
+
+        if (!this._selectedMechanism)
+            return false;
+
+        // log(this._enabledMechanisms?.map(m=>m.serviceName), "authService mechanism selection", mechanism, '=>', this.selectedMechanism)
+
+        this._handleSelectMechanism();
+        return true;
     }
 
     needsUsername() {
@@ -378,6 +396,7 @@ export class AuthService extends GObject.Object {
         this._handleOnChoiceListQuery(serviceName, promptMessage, list);
     }
 
+    // IMHO serviceName is not needed, it's alreayd one service
     _onCustomJSONRequest(serviceName, protocol, version, json) {
         this._handleOnCustomJSONRequest(serviceName, protocol, version, json);
     }
@@ -404,12 +423,17 @@ export class AuthService extends GObject.Object {
 
     async _startServices(cancellable) {
         let started = false;
+        print("Starting service, Enabled services", this._getEnabledServices())
         for (const serviceName of this._getEnabledServices()) {
+            // try {
+            print("can start", serviceName, this._canStartService(serviceName))
             if (this._canStartService(serviceName)) {
                 // eslint-disable-next-line no-await-in-loop
+                print("Really starting...", serviceName)
                 await this._startService(serviceName, cancellable);
                 started = true;
             }
+        // } catch (e) {logError(e)}
         }
         return started;
     }
@@ -447,6 +471,10 @@ export class AuthService extends GObject.Object {
             }
         } catch (e) {
             this._activeServices.delete(serviceName);
+
+            // if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+            //     return;
+
             if (e instanceof GLib.Error &&
                 Gio.DBusError.is_remote_error(e) &&
                 Gio.DBusError.get_remote_error(e) ===
@@ -461,61 +489,99 @@ export class AuthService extends GObject.Object {
         }
     }
 
-    _handleGetSupportedRoles() {
+    _handleGetSupportedRoles(...args) {
+        print("_handleGetSupportedRoles", ...args);
         return this.constructor.SupportedRoles;
     }
 
-    _handleBeginVerification() {}
+    _handleBeginVerification(...args) {
+        print("_handleBeginVerification", ...args);
+    }
 
-    _handleSelectMechanism() {
+    _handleSelectMechanism(...args) {
+        print("_handleSelectMechanism", ...args);
         throw new GObject.NotImplementedError(
             `_handleSelectMechanism in ${this.constructor.name}`);
     }
 
-    _handleNeedsUsername() {
+    _handleNeedsUsername(...args) {
+        print("_handleNeedsUsername", ...args);
         return true;
     }
 
-    _handleReset() {}
+    _handleReset(...args) {
+        print("_handleReset", ...args);
+    }
 
-    _handleCancel() {}
+    _handleCancel(...args) {
+        print("_handleCancel", ...args);
+    }
 
-    _handleClear() {}
+    _handleClear(...args) {
+        print("_handleClear", ...args);
+    }
 
-    _handleUpdateEnabledRoles() {}
+    _handleUpdateEnabledRoles(...args) {
+        print("_handleUpdateEnabledRoles", ...args);
+    }
 
-    _handleUpdateEnabledMechanisms() {
+    _handleUpdateEnabledMechanisms(...args) {
+        print("_handleUpdateEnabledMechanisms", ...args);
         throw new GObject.NotImplementedError(
             `_handleUpdateEnabledMechanisms in ${this.constructor.name}`);
     }
 
-    _handleOnInfo() {}
+    _handleOnInfo(...args) {
+        print("_handleOnInfo", ...args);
+    }
 
-    _handleOnProblem() {}
+    _handleOnProblem(...args) {
+        print("_handleOnProblem", ...args);
+    }
 
-    _handleOnInfoQuery() {}
+    _handleOnInfoQuery(...args) {
+        print("_handleOnInfoQuery", ...args);
+    }
 
-    _handleOnSecretInfoQuery() {}
+    _handleOnSecretInfoQuery(...args) {
+        print("_handleOnSecretInfoQuery", ...args);
+    }
 
-    _handleOnConversationStarted() {}
+    _handleOnConversationStarted(...args) {
+        print("_handleOnConversationStarted", ...args);
+    }
 
-    _handleOnConversationStopped() {}
+    _handleOnConversationStopped(...args) {
+        print("_handleOnConversationStopped", ...args);
+    }
 
-    _handleOnServiceUnavailable() {}
+    _handleOnServiceUnavailable(...args) {
+        print("_handleOnServiceUnavailable", ...args);
+    }
 
-    _handleOnVerificationComplete() {}
+    _handleOnVerificationComplete(...args) {
+        print("_handleOnVerificationComplete", ...args);
+    }
 
-    _handleOnChoiceListQuery() {}
+    _handleOnChoiceListQuery(...args) {
+        print("_handleOnChoiceListQuery", ...args);
+    }
 
-    _handleOnCustomJSONRequest() {}
+    _handleOnCustomJSONRequest(...args) {
+        // print("_handleOnCustomJSONRequest", ...args);
+    }
 
-    _handleVerificationFailed() {}
+    _handleVerificationFailed(...args) {
+        print("_handleVerificationFailed", ...args);
+    }
 
-    _handleGetCredentialManagerServices() {
+    _handleGetCredentialManagerServices(...args) {
+        print("_handleGetCredentialManagerServices", ...args);
         return [];
     }
 
-    _handleCanStartService() {
+    _handleCanStartService(...args) {
+        print("_handleCanStartService", ...args);
         throw new GObject.NotImplementedError(
             `_handleCanStartService in ${this.constructor.name}`);
     }

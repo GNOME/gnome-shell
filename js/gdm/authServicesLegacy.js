@@ -157,6 +157,7 @@ export class AuthServicesLegacy extends AuthService {
     }
 
     _handleUpdateEnabledMechanisms() {
+        print("Fingerprint manager: ", this._fingerprintManager, this._fingerprintManager?.readerFound);
         if (!this._fingerprintManager?.readerFound) {
             this._enabledMechanisms.push(...Mechanisms.filter(m =>
                 this._enabledRoles.includes(m.role) &&
@@ -406,6 +407,8 @@ export class AuthServicesLegacy extends AuthService {
     }
 
     _onFingerprintChanged() {
+        print("Fingerprint reader type changed: ", this._fingerprintManager?.readerType);
+        log("Enabled roles", this._enabledRoles);
         if (!this._enabledRoles.includes(Role.FINGERPRINT))
             return;
 

@@ -681,6 +681,8 @@ export class AuthServicesAuthd extends AuthService {
                     selectable: true,
                     /* FIXME: we can't really define the real role until the mechanism is selected */
                     role: Constants.PASSWORD_ROLE_NAME,
+                    // FIXME: We can probably just use the ID as role now, prefixed to avoid collisions, but we need to check if the role is used in other places.
+                    // Since a role is an unique string.
                     id: authMode.id,
                     prompt: authMode.label,
                     serviceName: SERVICE_NAME,

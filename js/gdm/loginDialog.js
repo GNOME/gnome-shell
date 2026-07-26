@@ -540,6 +540,7 @@ export const LoginDialog = GObject.registerClass({
             if (!item)
                 return;
 
+            log("Selecting mechanism", item)
             if (sectionName === _PRIMARY_LOGIN_METHOD_SECTION_NAME)
                 this._selectAuthMechanism(item);
             else if (sectionName === _SESSION_TYPE_SECTION_NAME)

@@ -97,6 +97,8 @@ export function cloneAndFadeOutActor(actor) {
 export class ShellUserVerifier extends Signals.EventEmitter {
     constructor(client, params) {
         super();
+
+        // `reAuthenticationOnly` ?
         params = Params.parse(params, {reauthenticationOnly: false});
         this._reauthOnly = params.reauthenticationOnly;
 
@@ -169,6 +171,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     cancelRequested() {
         const {selectedMechanism} = this;
+        print('Cancel requested for selected mechanism', selectedMechanism?.id);
+        print("Auth service", this._authServices.find(s =>
+            s.selectedMechanism === selectedMechanism));
         return this._authServices.find(s =>
             s.selectedMechanism === selectedMechanism)?.cancelRequested() ?? false;
     }
@@ -321,6 +326,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _reportInitError(initError) {
+        print('Reporting init error', initError.serviceName, initError.message);
         const {cause, message, serviceName} = initError;
 
         logError(cause, message);
@@ -386,6 +392,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             return;
 
         this._enabledAuthServicesClasses = enabledAuthServicesClasses;
+        print("Enabled services", this._enabledAuthServicesClasses?.length);
+
         this._createAuthServices();
     }
 
@@ -428,6 +436,12 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 'web-login', (_, ...args) => this.emit('web-login', ...args),
                 this);
         });
+    }
+
+    _onAskQuestion(serviceName, question, secretQuestion) {
+        print('Ask question for service', serviceName, 'question', question);
+        log('Selected mechanism', this.selectedMechanism);
+        this.emit('ask-question', serviceName, question, secretQuestion);
     }
 
     _verificationFailed(serviceName, canRetry) {
@@ -484,6 +498,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 serviceMechanisms.forEach(m => seenRoles.add(m.role));
                 return visibleMechanisms;
             });
+        print("Actual mechanisms", JSON.stringify(mechanisms))
 
         const selectedMechanism = this.selectedMechanism ??
             mechanisms.find(m => m.selectable) ??
