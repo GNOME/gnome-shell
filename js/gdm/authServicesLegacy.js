@@ -177,6 +177,11 @@ export class AuthServicesLegacy extends AuthServices {
             // it's working for this user
             this._setFingerprintReady(false);
         }
+
+        if (!this._smartcardManager?.hasInsertedTokens()) {
+            this._enabledMechanisms = this._enabledMechanisms.filter(m =>
+                m.role !== Role.SMARTCARD);
+        }
     }
 
     _handleOnInfo(serviceName, info) {
