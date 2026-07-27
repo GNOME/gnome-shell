@@ -4,8 +4,8 @@ import GObject from 'gi://GObject';
 import * as Fido2TokenManager from './fido2TokenManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as SmartcardManager from './smartcardManager.js';
-import * as Util from './util.js';
 import {AuthServices, Role} from './authServices.js';
+import {MessageType} from './userVerifier.js';
 
 const SWITCHABLE_AUTH_SERVICE_NAME = 'gdm-switchable-auth';
 
@@ -331,7 +331,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this.emit('queue-message', {
                 serviceName,
                 message: info,
-                messageType: Util.MessageType.INFO,
+                messageType: MessageType.INFO,
             });
         }
     }
@@ -344,7 +344,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this.emit('queue-priority-message', {
                 serviceName,
                 message: problem,
-                messageType: Util.MessageType.ERROR,
+                messageType: MessageType.ERROR,
             });
         }
     }
@@ -521,7 +521,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             this.emit('queue-message', {
                 serviceName,
                 message,
-                messageType: Util.MessageType.INFO,
+                messageType: MessageType.INFO,
             });
         }
     }

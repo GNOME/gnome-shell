@@ -1,7 +1,7 @@
 import * as Params from '../misc/params.js';
 import {registerDestroyableType} from '../misc/signalTracker.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
-import * as Util from './util.js';
+import {InitError, MessageType} from './userVerifier.js';
 import Gdm from 'gi://Gdm';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
@@ -366,7 +366,7 @@ export class AuthServices extends GObject.Object {
     _onConversationStopped(serviceName) {
         this._activeServices.delete(serviceName);
 
-        this.emit('filter-messages', {serviceName, messageType: Util.MessageType.ERROR});
+        this.emit('filter-messages', {serviceName, messageType: MessageType.ERROR});
 
         this._handleOnConversationStopped(serviceName);
     }
@@ -378,7 +378,7 @@ export class AuthServices extends GObject.Object {
             this.emit('queue-message', {
                 serviceName,
                 message: errorMessage,
-                messageType: Util.MessageType.ERROR,
+                messageType: MessageType.ERROR,
             });
         }
 
@@ -466,7 +466,7 @@ export class AuthServices extends GObject.Object {
                 'org.gnome.DisplayManager.SessionWorker.Error.ServiceUnavailable')
                 this._unavailableServices.add(serviceName);
 
-            throw new Util.InitError(e,
+            throw new InitError(e,
                 this._userName
                     ? `Failed to start ${serviceName} verification for user`
                     : `Failed to start ${serviceName} verification`,

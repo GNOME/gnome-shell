@@ -6,9 +6,9 @@ import {FingerprintReaderType} from './fingerprintManager.js';
 import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as SmartcardManager from './smartcardManager.js';
 import * as OVirt from './oVirt.js';
-import * as Util from './util.js';
 import * as Vmware from './vmware.js';
 import {AuthServices, Role, RoleProperties} from './authServices.js';
+import {MessageType} from './userVerifier.js';
 
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 const FINGERPRINT_READY_TIMEOUT_MS = 500;
@@ -190,7 +190,7 @@ export class AuthServicesLegacy extends AuthServices {
             this.emit('queue-message', {
                 serviceName,
                 message: info,
-                messageType: Util.MessageType.INFO,
+                messageType: MessageType.INFO,
             });
         } else if (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName)) {
@@ -206,7 +206,7 @@ export class AuthServicesLegacy extends AuthServices {
                     // Translators: this message is shown below the password entry field
                     // to indicate the user can place their finger on the fingerprint reader instead
                     : _('(or place finger on reader)'),
-                messageType: Util.MessageType.HINT,
+                messageType: MessageType.HINT,
             });
         }
     }
@@ -218,7 +218,7 @@ export class AuthServicesLegacy extends AuthServices {
             this.emit('queue-priority-message', {
                 serviceName,
                 message: problem,
-                messageType: Util.MessageType.ERROR,
+                messageType: MessageType.ERROR,
                 wiggle: serviceName === FINGERPRINT_SERVICE_NAME,
             });
         }
@@ -321,7 +321,7 @@ export class AuthServicesLegacy extends AuthServices {
         this.emit('queue-message', {
             serviceName,
             message: errorMessage,
-            messageType: Util.MessageType.ERROR,
+            messageType: MessageType.ERROR,
             wiggle: serviceName === FINGERPRINT_SERVICE_NAME,
         });
     }

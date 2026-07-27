@@ -32,7 +32,7 @@ import * as AuthPrompt from './authPrompt.js';
 import * as Batch from './batch.js';
 import {ConflictingSessionDialog} from './conflictingSessionDialog.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
-import * as GdmUtil from './util.js';
+import * as GdmUtil from './userVerifier.js';
 import * as Layout from '../ui/layout.js';
 import * as LoginManager from '../misc/loginManager.js';
 import * as Main from '../ui/main.js';
