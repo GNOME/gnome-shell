@@ -34,6 +34,7 @@ const WorkspacesViewBase = GObject.registerClass({
             style_class: 'workspaces-view',
             x_expand: true,
             y_expand: true,
+            reactive: true,
         });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
