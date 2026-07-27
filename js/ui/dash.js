@@ -333,6 +333,7 @@ export const Dash = GObject.registerClass({
             name: 'dash',
             offscreen_redirect: Clutter.OffscreenRedirect.ALWAYS,
             layout_manager: new Clutter.BinLayout(),
+            reactive: true,
         });
 
         this._dashContainer = new St.BoxLayout({
