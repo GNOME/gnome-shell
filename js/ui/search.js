@@ -23,6 +23,46 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 const SEARCH_SPINNER_SIZE = 64;
 
+export class SearchEntry extends St.Entry {
+    static [GObject.signals] = {
+        'activate-new-instance': {},
+    };
+
+    static {
+        GObject.registerClass(this);
+
+        const bindingPool = this.get_binding_pool();
+
+        bindingPool.install_closure(
+            'activate-new-instance',
+            Clutter.KEY_Return,
+            Clutter.ModifierType.CONTROL_MASK,
+            obj => {
+                obj.emit('activate-new-instance');
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate-new-instance',
+            Clutter.KEY_KP_Enter,
+            Clutter.ModifierType.CONTROL_MASK,
+            obj => {
+                obj.emit('activate-new-instance');
+                return Clutter.EVENT_STOP;
+            }
+        );
+        bindingPool.install_closure(
+            'activate-new-instance',
+            Clutter.KEY_ISO_Enter,
+            Clutter.ModifierType.CONTROL_MASK,
+            obj => {
+                obj.emit('activate-new-instance');
+                return Clutter.EVENT_STOP;
+            }
+        );
+    }
+}
+
 const MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
     vfunc_allocate(box) {

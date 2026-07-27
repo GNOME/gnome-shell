@@ -61,6 +61,9 @@ export const SearchController = GObject.registerClass({
         this._text.connect('activate', () => {
             this._searchResults.activateDefault();
         });
+        this._entry.connect('activate-new-instance', () => {
+            this._searchResults.activateDefault();
+        });
         this._entry.connect('popup-menu', () => {
             if (!this._searchActive)
                 return;

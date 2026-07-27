@@ -10,6 +10,7 @@ import * as AppDisplay from './appDisplay.js';
 import * as Dash from './dash.js';
 import * as Main from './main.js';
 import * as Overview from './overview.js';
+import * as Search from './search.js';
 import * as SearchController from './searchController.js';
 import * as Util from '../misc/util.js';
 import * as WindowManager from './windowManager.js';
@@ -321,7 +322,7 @@ class ControlsManager extends St.Widget {
 
         this._ignoreShowAppsButtonToggle = false;
 
-        this._searchEntry = new St.Entry({
+        this._searchEntry = new Search.SearchEntry({
             style_class: 'search-entry',
             /* Translators: this is the text displayed
                in the search entry when no search is
