@@ -2,7 +2,7 @@
     {
         "filename": "sw-resize.svg",
         "hotspot_x": 10,
-        "hotspot_y": 15,
-        "nominal_size": 24
+        "hotspot_y": 23,
+        "nominal_size": 32
     }
 ]

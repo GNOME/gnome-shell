@@ -1,8 +1,8 @@
 [
     {
         "filename": "context-menu.svg",
-        "hotspot_x": 3,
-        "hotspot_y": 1,
-        "nominal_size": 24
+        "hotspot_x": 8,
+        "hotspot_y": 7,
+        "nominal_size": 32
     }
 ]

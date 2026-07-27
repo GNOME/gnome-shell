@@ -1,8 +1,8 @@
 [
     {
         "filename": "zoom-in.svg",
-        "hotspot_x": 11,
-        "hotspot_y": 10,
-        "nominal_size": 24
+        "hotspot_x": 15,
+        "hotspot_y": 15,
+        "nominal_size": 32
     }
 ]

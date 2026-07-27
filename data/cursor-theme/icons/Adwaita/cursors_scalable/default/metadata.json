@@ -1,8 +1,8 @@
 [
     {
         "filename": "default.svg",
-        "hotspot_x": 7,
-        "hotspot_y": 5,
-        "nominal_size": 24
+        "hotspot_x": 8,
+        "hotspot_y": 7,
+        "nominal_size": 32
     }
 ]
