@@ -20,6 +20,9 @@ export const Ornament = {
     NO_DOT: 4,
 };
 
+/**
+ * @param {St.Widget} child
+ */
 function isPopupMenuItemVisible(child) {
     if (child._delegate instanceof PopupMenuSection) {
         if (child._delegate.isEmpty())
