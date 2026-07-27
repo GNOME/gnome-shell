@@ -180,19 +180,19 @@ const StreamSlider = GObject.registerClass({
         let value = this.slider.value;
         let volume = value * this._control.get_vol_max_norm();
         let prevMuted = this._stream.is_muted;
-        let prevVolume = this._stream.volume;
+        let volumeChanged;
         if (volume < 1) {
-            this._stream.volume = 0;
+            volumeChanged = this._stream.set_volume(0);
             if (!prevMuted)
                 this._stream.change_is_muted(true);
         } else {
-            this._stream.volume = volume;
+            volumeChanged = this._stream.set_volume(volume);
             if (prevMuted)
                 this._stream.change_is_muted(false);
         }
-        this._stream.push_volume();
+        if (volumeChanged)
+            this._stream.push_volume();
 
-        let volumeChanged = this._stream.volume !== prevVolume;
         if (volumeChanged && !this._notifyVolumeChangeId && !this._inDrag) {
             this._notifyVolumeChangeId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 30, () => {
                 this._notifyVolumeChange();
