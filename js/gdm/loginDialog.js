@@ -375,7 +375,11 @@ export const LoginDialog = GObject.registerClass({
     },
 }, class LoginDialog extends St.Widget {
     _init(parentActor) {
-        super._init({style_class: 'login-dialog', visible: false});
+        super._init({
+            style_class: 'login-dialog',
+            visible: false,
+            reactive: true,
+        });
 
         this.get_accessible().set_role(Atk.Role.WINDOW);
 
