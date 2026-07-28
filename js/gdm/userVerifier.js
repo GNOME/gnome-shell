@@ -61,6 +61,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._client = client;
         this._cancellable = null;
         this._authServices = [];
+        this._driverService = null;
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
@@ -112,6 +113,15 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     needsUsername() {
         return this._authServices.some(s => s.needsUsername());
+    }
+
+    setDriverService(serviceName) {
+        if (this._driverService === serviceName)
+            return;
+
+        this._driverService = serviceName;
+        this.reset();
+        this._updateAuthServices();
     }
 
     reset() {
@@ -346,8 +356,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     _updateAuthServices() {
-        const enabledAuthServicesClasses = AuthServicesClasses
+        let enabledAuthServicesClasses = AuthServicesClasses
             .filter(C => C.isEnabled(this._settings));
+
+        if (this._driverService) {
+            enabledAuthServicesClasses = enabledAuthServicesClasses
+                .filter(C => C.hasService(this._driverService));
+        }
 
         if (enabledAuthServicesClasses.length === this._enabledAuthServicesClasses?.length &&
             enabledAuthServicesClasses.every(c => this._enabledAuthServicesClasses.includes(c)))

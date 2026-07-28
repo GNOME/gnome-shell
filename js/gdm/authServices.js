@@ -125,6 +125,10 @@ export class AuthServices extends GObject.Object {
         return true;
     }
 
+    static hasService(serviceName) {
+        return Object.values(this.RoleToService).includes(serviceName);
+    }
+
     constructor(params) {
         super();
         params = Params.parse(params, {
