@@ -706,6 +706,9 @@ export const SearchResultsView = GObject.registerClass({
 
     _unregisterProvider(provider) {
         const index = this._providers.indexOf(provider);
+        if (index < 0)
+            return;
+
         this._providers.splice(index, 1);
 
         if (provider.display)
