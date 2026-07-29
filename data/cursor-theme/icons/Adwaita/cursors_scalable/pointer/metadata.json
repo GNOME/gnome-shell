@@ -1,8 +1,8 @@
 [
     {
         "filename": "pointer.svg",
-        "hotspot_x": 13,
-        "hotspot_y": 10,
-        "nominal_size": 32
+        "hotspot_x": 9.75,
+        "hotspot_y": 7.5,
+        "nominal_size": 24
     }
 ]

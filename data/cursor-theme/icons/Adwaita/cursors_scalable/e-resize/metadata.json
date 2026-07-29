@@ -1,8 +1,8 @@
 [
     {
         "filename": "e-resize.svg",
-        "hotspot_x": 23,
-        "hotspot_y": 17,
-        "nominal_size": 32
+        "hotspot_x": 17.25,
+        "hotspot_y": 12.75,
+        "nominal_size": 24
     }
 ]
