@@ -599,6 +599,41 @@ reminder_watcher_snooze_by_id (EReminderWatcher *reminder_watcher,
     }
 }
 
+static GAppInfo *
+reminder_watcher_get_calendar_app (void)
+{
+  g_autolist(GAppInfo) recommended = NULL;
+  g_autoptr(GAppInfo) default_app = NULL;
+
+  recommended = g_app_info_get_recommended_for_type ("text/calendar");
+
+  if (recommended == NULL)
+    {
+      print_debug ("GetCalendarApp: No recommended application for 'text/calendar' found");
+      return NULL;
+    }
+
+  default_app = g_app_info_get_default_for_type ("text/calendar", FALSE);
+  if (default_app)
+    {
+      GList *l;
+
+      for (l = recommended; l; l = l->next)
+        {
+          GAppInfo *app_info = G_APP_INFO (l->data);
+
+          if (g_app_info_equal (app_info, default_app))
+            {
+              print_debug ("GetCalendarApp: Using default application for 'text/calendar'");
+              return g_steal_pointer (&default_app);
+            }
+        }
+    }
+
+  print_debug ("GetCalendarApp: Using last used application for 'text/calendar'");
+  return g_steal_pointer (&recommended->data);
+}
+
 void
 reminder_watcher_open_in_app_by_id (EReminderWatcher *reminder_watcher,
                                     const char *id)
@@ -606,26 +641,11 @@ reminder_watcher_open_in_app_by_id (EReminderWatcher *reminder_watcher,
   g_autoptr(GAppInfo) app_info = NULL;
   g_autoptr(GError) local_error = NULL;
 
-  app_info = g_app_info_get_default_for_type ("text/calendar", FALSE);
+  app_info = reminder_watcher_get_calendar_app ();
   if (app_info == NULL)
     {
-      GList *recommended;
-
-      print_debug ("OpenInApp: No default application for 'text/calendar' found");
-
-      recommended = g_app_info_get_recommended_for_type ("text/calendar");
-      if (recommended)
-        {
-          /* pick the last used, when there's no default app */
-          app_info = g_object_ref (recommended->data);
-
-          g_list_free_full (recommended, g_object_unref);
-        }
-       else
-        {
-          print_debug ("OpenInApp: No recommended application for 'text/calendar' found");
-          return;
-        }
+      print_debug ("OpenInApp: No recommended application for 'text/calendar' found");
+      return;
     }
 
   if (g_app_info_launch_uris (app_info, NULL, NULL, &local_error))
