@@ -677,6 +677,13 @@ export const UnlockDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
+    vfunc_key_press_event(event) {
+        if (global.focus_manager.navigate_from_event(event))
+            return Clutter.EVENT_STOP;
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _onKeyPress() {
         if (this._activePage === this._promptBox ||
             (this._promptBox && this._promptBox.visible))
