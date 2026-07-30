@@ -852,29 +852,66 @@ class CalendarMessageList extends St.Widget {
         this._messageView.bind_property('can-clear',
             this._clearButton, 'reactive',
             GObject.BindingFlags.SYNC_CREATE);
+
+        this._clickGesture = new Clutter.ClickGesture();
+        this._clickGesture.connect('may-recognize', () => {
+            const event = this._clickGesture.get_point_event(0);
+            const targetActor = global.stage.get_event_actor(event);
+            const onScrollbar =
+                  this._scrollView.contains(targetActor) &&
+                  !this._messageView.contains(targetActor);
+
+            // Collapse expanded group when the user clicks outside
+            return !this._messageView.expandedGroup.contains(targetActor) &&
+                !onScrollbar;
+        });
+        this._clickGesture.connect('recognize', () => {
+            this._messageView.collapse();
+        });
+        this._messageView.bind_property_full(
+            'expanded-group',
+            this._clickGesture, 'enabled',
+            GObject.BindingFlags.SYNC_CREATE,
+            (_bind, value) => [true, value !== null],
+            null);
+
+        this._keyController = new Clutter.KeyController();
+        this._keyController.connect('key-press', () => {
+            const [, symbol] = this._keyController.get_key();
+            if (symbol === Clutter.KEY_Escape) {
+                this._messageView.collapse();
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
+        });
+        this._messageView.bind_property_full(
+            'expanded-group',
+            this._keyController, 'enabled',
+            GObject.BindingFlags.SYNC_CREATE,
+            (_bind, value) => [true, value !== null],
+            null);
     }
 
-    maybeCollapseMessageGroupForEvent(event) {
-        if (!this._messageView.expandedGroup)
-            return Clutter.EVENT_PROPAGATE;
+    setCaptureContainer(container) {
+        if (container === this._captureContainer)
+            return;
 
-        if (event.type() === Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() === Clutter.KEY_Escape) {
-            this._messageView.collapse();
-            return Clutter.EVENT_STOP;
+        if (this._captureContainer) {
+            this._captureContainer.remove_action(this._clickGesture);
+            this._captureContainer.remove_action(this._keyController);
         }
 
-        const targetActor = global.stage.get_event_actor(event);
-        const onScrollbar =
-            this._scrollView.contains(targetActor) &&
-            !this._messageView.contains(targetActor);
+        this._captureContainer = container;
 
-        if ((event.type() === Clutter.EventType.BUTTON_PRESS ||
-            event.type() === Clutter.EventType.TOUCH_BEGIN) &&
-            !this._messageView.expandedGroup.contains(targetActor) &&
-            !onScrollbar)
-            this._messageView.collapse();
-
-        return Clutter.EVENT_PROPAGATE;
+        if (container) {
+            this._captureContainer.add_action_full(
+                'calendar-close-expanded-group-click',
+                Clutter.EventPhase.CAPTURE,
+                this._clickGesture);
+            this._captureContainer.add_action_full(
+                'calendar-close-expanded-group-key',
+                Clutter.EventPhase.CAPTURE,
+                this._keyController);
+        }
     }
 });
