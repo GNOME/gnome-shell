@@ -1423,6 +1423,7 @@ class LookingGlass extends St.BoxLayout {
         this._entryArea.add_child(label);
 
         this._entry = new St.Entry({
+            input_purpose: Clutter.InputContentPurpose.TERMINAL,
             can_focus: true,
             x_expand: true,
         });
