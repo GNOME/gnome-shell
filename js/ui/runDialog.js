@@ -79,6 +79,7 @@ export class RunDialog extends ModalDialog.ModalDialog {
 
         const entry = new St.Entry({
             style_class: 'run-dialog-entry',
+            input_purpose: Clutter.InputContentPurpose.TERMINAL,
             labelActor,
             can_focus: true,
         });
