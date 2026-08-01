@@ -32,7 +32,7 @@ heuristic based on the layout descriptions, in this order:
 - if the CLDR layout description matches one word of an XKB layout description,
   chose its XKB identifier
 
-That doesn't always work. For instance it fails for "en" language, that should
+That doesn't always work. For instance, it fails for "en" language, that should
 match "us" XKB identifier. For such cases, there is a mapping in
 LOCALE_TO_XKB_OVERRIDES at the top of the script. If you discover a weird
 mapping of if you get a "failed to find XKB mapping for <locale>" warning then
