@@ -14,7 +14,7 @@ style][gnome-coding-style], with some additions described below.
    instead of `gint`, `unsigned int` instead of `guint` if unsignedness
    is of importance, `uint8_t` instead of `guchar`, and so on.
 
- * Try to to limit line length to 80 characters, although it's not a
+ * Try to limit line length to 80 characters, although it's not a
    strict limit.
 
  * Usage of `g_autofree` and `g_autoptr` is encouraged. The style to use is
