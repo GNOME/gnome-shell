@@ -11,5 +11,8 @@
     "ci-run-eslint": "git+https://gitlab.gnome.org/World/javascript/ci-run-eslint.git#f94b653606476d151439793ab8a8a93aa4a146de",
     "eslint-config-gnome": "git+https://gitlab.gnome.org/World/javascript/eslint-config-gnome.git#c479d059e8d9ea99c3b53c2ea43abf7fdb05eb51",
     "eslint-formatter-junit": "^9.0.1"
+  },
+  "overrides": {
+    "brace-expansion": "1.1.16"
   }
 }
