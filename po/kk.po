@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-20 10:00+0000\n"
-"PO-Revision-Date: 2026-07-26 11:31+0500\n"
+"POT-Creation-Date: 2026-07-31 20:10+0000\n"
+"PO-Revision-Date: 2026-08-01 14:28+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -595,11 +595,11 @@ msgstr "Қате ақпараты"
 msgid "Copy Error"
 msgstr "Көшіріп алу қатесі"
 
-#: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
 msgid "Screen Time Limit Reached"
 msgstr "Экран уақытының шегіне жетті"
 
-#: js/gdm/authPrompt.js:64
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr ""
@@ -607,26 +607,83 @@ msgstr ""
 "жалғастырыңыз."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:72
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "Елемеу"
 
-#: js/gdm/authPrompt.js:256 js/gdm/conflictingSessionDialog.js:94
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
-#: js/ui/shellMountOperation.js:409
-msgid "Cancel"
-msgstr "Бас тарту"
+#: js/gdm/authPrompt.js:269
+msgid "Back"
+msgstr "Артқа"
 
-#: js/gdm/authPrompt.js:434 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:349
+#: js/gdm/authPrompt.js:366
+msgid "Submit"
+msgstr "Жіберу"
+
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Пароль"
+
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "Смарт-картаны салыңыз"
+
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "Қауіпсіздік кілтін салыңыз"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "Саусақ ізімен құлыпты ашу"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "Смарт-карта"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "Саусақ ізі"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(немесе саусағыңызды оқу құралынан өткізіңіз)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(немесе саусақты оқу құралына орналастырыңыз)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+msgid "Insert Smartcard"
+msgstr "Смарт-картаны салыңыз"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+msgid "Select Identity"
+msgstr "Жеке мәліметтерді таңдау"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "Ұйым"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"Сенде %d талап саны қалды. Егер қол жеткізу кілті құлыпталып қалса, "
+"тіркелгіңізге қол жеткізе алмауыңыз мүмкін болады."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "Дайын"
 
 #. Translators: is running for <username>
 #: js/gdm/conflictingSessionDialog.js:50
@@ -684,62 +741,66 @@ msgstr ""
 "Мәжбүрлі түрде тоқтату кез келген қосылып тұрған қолданбалар мен процестерін "
 "аяқтайды және деректердің жоғалуына әкелуі мүмкін"
 
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
+msgid "Cancel"
+msgstr "Бас тарту"
+
 #: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "Мәжбүрлі тоқтату"
 
-#: js/gdm/loginDialog.js:330
-msgid "Choose Session"
-msgstr "Сессияны таңдау"
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+msgid "Login Options"
+msgstr "Кіру опциялары"
 
-#: js/gdm/loginDialog.js:424 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:54
+msgid "Session Type"
+msgstr "Сессия түрі"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Қол жетерлілігі"
 
-#: js/gdm/loginDialog.js:534
+#: js/gdm/loginDialog.js:450
 msgid "Not listed?"
 msgstr "Тізімде жоқсыз ба?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1070
+#: js/gdm/loginDialog.js:1100
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(мыс., пайдаланушы немесе %s)"
 
-#: js/gdm/loginDialog.js:1075 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Пайдаланушы аты"
 
-#: js/gdm/loginDialog.js:1141
+#: js/gdm/loginDialog.js:1171
 msgid "Login Attempt Timed Out"
 msgstr "Жүйеге кіру талабының уақыты бітті"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1172
 msgid "Login took too long, please try again"
 msgstr "Жүйеге кіру талабы тым көп уақыт алды, қайталап көріңіз"
 
-#: js/gdm/loginDialog.js:1503
+#: js/gdm/loginDialog.js:1534
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
-#: js/gdm/util.js:503
+#: js/gdm/userVerifier.js:306
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:738
-msgid "(or swipe finger across reader)"
-msgstr "(немесе саусағыңызды оқу құралынан өткізіңіз)"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:743
-msgid "(or place finger on reader)"
-msgstr "(немесе саусақты оқу құралына орналастырыңыз)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "Кіру коды: "
 
 #: js/misc/breakManager.js:776
 msgid "Break complete sound"
@@ -1527,7 +1588,7 @@ msgstr "Аутентификациялау"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көріңіз."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:408
 msgid "Windows"
 msgstr "Терезелер"
 
@@ -1968,11 +2029,11 @@ msgstr "Белгісіз атауы"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:330
+#: js/ui/overviewControls.js:331
 msgid "Type to search"
 msgstr "Іздеу үшін теріңіз"
 
-#: js/ui/overviewControls.js:395
+#: js/ui/overviewControls.js:396
 msgid "Apps"
 msgstr "Қолданбалар"
 
@@ -2001,10 +2062,6 @@ msgstr "Мониторды ауыстыру"
 #: js/ui/padOsd.js:154
 msgid "Assign keystroke"
 msgstr "Пернелер жарлығын тағайындау"
-
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "Дайын"
 
 #: js/ui/padOsd.js:743
 msgid "Edit…"
@@ -2177,21 +2234,21 @@ msgstr "Суретті алмасу буферінен кірістіруге б
 msgid "Screenshot taken"
 msgstr "Скриншот түсірілді"
 
-#: js/ui/search.js:844
+#: js/ui/search.js:884
 msgid "Searching"
 msgstr "Іздеу"
 
-#: js/ui/search.js:847
+#: js/ui/search.js:887
 msgid "No results"
 msgstr "Нәтижелер жоқ"
 
-#: js/ui/search.js:983
+#: js/ui/search.js:1023
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "тағы %d"
 
-#: js/ui/searchController.js:94
+#: js/ui/searchController.js:97
 msgid "Search"
 msgstr "Іздеу"
 
@@ -2649,7 +2706,7 @@ msgstr "Сөндіру…"
 msgid "Log Out…"
 msgstr "Жүйеден шығу…"
 
-#: js/ui/status/system.js:204
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "Пайдаланушыны ауыстыру…"
 
@@ -2748,27 +2805,35 @@ msgstr "Тек сыртқы"
 msgid "Built-in Only"
 msgstr "Тек құрамындағы"
 
+#: js/ui/unlockDialog.js:25
+msgid "Unlock Options"
+msgstr "Құлыпты ашу опциялары"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:415
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:421
-msgid "Swipe up to unlock"
-msgstr "Босату үшін жоғары өткізіңіз"
+#: js/ui/unlockDialog.js:435
+msgid "Swipe up"
+msgstr "Жоғары сырғыту"
 
-#: js/ui/unlockDialog.js:422
-msgid "Click or press a key to unlock"
-msgstr "Босату үшін шертіңіз немесе пернені басыңыз"
+#: js/ui/unlockDialog.js:437
+msgid "Click or press a key"
+msgstr "Шерту немесе пернені басу"
 
-#: js/ui/unlockDialog.js:616
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "Блоктауды алу терезесі"
 
-#: js/ui/unlockDialog.js:625
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
+
+#: js/ui/unlockDialog.js:695
+msgid "Background Authentication Methods"
+msgstr "Фондық аутентификация тәсілдері"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -3478,6 +3543,9 @@ msgstr[0] "%u кірісі"
 msgid "System Sounds"
 msgstr "Жүйелік дыбыстар"
 
+#~ msgid "Choose Session"
+#~ msgstr "Сессияны таңдау"
+
 #, javascript-format
 #~ msgid "%s has been pinned to the dash."
 #~ msgstr "%s қолданбалар панеліне бекітілді."
@@ -4184,9 +4252,6 @@ msgstr "Жүйелік дыбыстар"
 #~ msgctxt "event list time"
 #~ msgid "%l∶%M %p"
 #~ msgstr "%l∶%M %p"
-
-#~ msgid "Invitation"
-#~ msgstr "Шақыру"
 
 #~ msgid "Call"
 #~ msgstr "Қоңырау"
