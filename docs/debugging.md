@@ -10,24 +10,24 @@ It can be accessed by entering `lg` into the run dialog (Alt+F2).
 
 [lg]: looking-glass.md
 
-## Javascript stacktraces
+## JavaScript stacktraces
 
 gnome-shell is split between C and JavaScript. It is sometimes necessary
-to debug the interaction between the two, for example when javascript
+to debug the interaction between the two, for example when JavaScript
 code triggers a warning or crash on the C side.
 
-In gdb, the javascript stacktrace can be printed with
+In gdb, the JavaScript stacktrace can be printed with
 ```
 <gdb> gjs_dumpstack()
 ```
 
 The `SHELL_DEBUG` environment variable can be used to print
-the javascript stack automatically:
+the JavaScript stack automatically:
 
  * `backtrace-warning`: when a warning is logged
  * `backtrace-segfault`: on segfaults
 
-To log a stacktrace when some particular javascript code is reached, you
+To log a stacktrace when some particular JavaScript code is reached, you
 can insert the following code:
 
 ```js

@@ -4,7 +4,7 @@ Like most projects, gnome-shell has a few rules and conventions around the codin
 
 ## Look at MRs that were merged already
 
-In general it's a good idea to look at a few [merged MRs](https://gitlab.gnome.org/GNOME/gnome-shell/-/merge_requests?scope=all&state=merged) before making your first MR. This will help you get a good idea of what commit messages and code changes usually look like. 
+In general, it's a good idea to look at a few [merged MRs](https://gitlab.gnome.org/GNOME/gnome-shell/-/merge_requests?scope=all&state=merged) before making your first MR. This will help you get a good idea of what commit messages and code changes usually look like.
 
 ## JavaScript coding style
 
