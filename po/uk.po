@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-30 13:55+0000\n"
-"PO-Revision-Date: 2026-07-30 21:50+0300\n"
+"POT-Creation-Date: 2026-07-31 20:10+0000\n"
+"PO-Revision-Date: 2026-08-01 17:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -608,11 +608,11 @@ msgstr "Подробиці щодо помилки"
 msgid "Copy Error"
 msgstr "Помилка копіювання"
 
-#: js/gdm/authPrompt.js:59 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
 msgid "Screen Time Limit Reached"
 msgstr "Досягнуто граничного часу роботи за дисплеєм"
 
-#: js/gdm/authPrompt.js:65
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr ""
@@ -620,26 +620,84 @@ msgstr ""
 "завтра."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:73
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "Ігнорувати"
 
-#: js/gdm/authPrompt.js:255
+#: js/gdm/authPrompt.js:269
 msgid "Back"
 msgstr "Назад"
 
-#: js/gdm/authPrompt.js:365
+#: js/gdm/authPrompt.js:366
 msgid "Submit"
 msgstr "Надіслати"
 
-#: js/gdm/authPrompt.js:497 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:349
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Пароль"
+
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "Вставте картку пам'яті"
+
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "Вставте ключ захисту"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "Розблокувати за допомогою відбитка"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "Картка пам'яті"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "Відбиток"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(або проведіть пальцем на зчитувачі)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(або розташуйте палець на зчитувачі)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+msgid "Insert Smartcard"
+msgstr "Вставте картку пам'яті"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+#| msgid "Identity"
+msgid "Select Identity"
+msgstr "Вибір профілю"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "Організація"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"У вас лишилося %d спроб. Якщо буде заблоковано пароль, ви не зможете отримати"
+" доступ до вашого облікового запису."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "Зроблено"
 
 #. Translators: is running for <username>
 #: js/gdm/conflictingSessionDialog.js:50
@@ -697,10 +755,11 @@ msgstr ""
 "Примусове припинення сеансу призведе до завершення роботи усіх запущених у "
 "ньому програм і процесів, а отже, може призвести до втрати даних"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/ui/audioDeviceSelection.js:60
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:144
-#: js/ui/endSessionDialog.js:402 js/ui/extensionDownloader.js:276
-#: js/ui/shellMountOperation.js:399 js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -708,58 +767,56 @@ msgstr "Скасувати"
 msgid "Force Stop"
 msgstr "Примусово зупинити"
 
-#: js/gdm/loginDialog.js:331
-msgid "Choose Session"
-msgstr "Виберіть сеанс"
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+#| msgctxt "button"
+#| msgid "Boot Options"
+msgid "Login Options"
+msgstr "Параметри входу"
 
-#: js/gdm/loginDialog.js:425 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:54
+msgid "Session Type"
+msgstr "Тип сеансу"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Доступність"
 
-#: js/gdm/loginDialog.js:536
+#: js/gdm/loginDialog.js:450
 msgid "Not listed?"
 msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1103
+#: js/gdm/loginDialog.js:1100
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
 
-#: js/gdm/loginDialog.js:1109 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1174
+#: js/gdm/loginDialog.js:1171
 msgid "Login Attempt Timed Out"
 msgstr "Перевищення часу очікування у спробі входу"
 
-#: js/gdm/loginDialog.js:1175
+#: js/gdm/loginDialog.js:1172
 msgid "Login took too long, please try again"
 msgstr "Спроба входу тривала надто довго. Будь ласка, повторіть спробу"
 
-#: js/gdm/loginDialog.js:1536
+#: js/gdm/loginDialog.js:1534
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: js/gdm/util.js:503
+#: js/gdm/userVerifier.js:306
 msgid "Authentication error"
 msgstr "Помилка автентифікації"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:742
-msgid "(or swipe finger across reader)"
-msgstr "(або проведіть пальцем на зчитувачі)"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:747
-msgid "(or place finger on reader)"
-msgstr "(або розташуйте палець на зчитувачі)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "Код входу: "
 
 #: js/misc/breakManager.js:776
 msgid "Break complete sound"
@@ -2114,10 +2171,6 @@ msgstr "Перемкнути монітор"
 msgid "Assign keystroke"
 msgstr "Призначити клавішу"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "Зроблено"
-
 #: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Редагувати…"
@@ -2773,7 +2826,7 @@ msgstr "Вимкнути…"
 msgid "Log Out…"
 msgstr "Вийти…"
 
-#: js/ui/status/system.js:204
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "Змінити користувача…"
 
@@ -2872,27 +2925,40 @@ msgstr "Тільки зовнішній"
 msgid "Built-in Only"
 msgstr "Тільки вбудований"
 
+#: js/ui/unlockDialog.js:25
+#| msgctxt "button"
+#| msgid "Boot Options"
+msgid "Unlock Options"
+msgstr "Параметри розблокування"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:417
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:423
-msgid "Swipe up to unlock"
-msgstr "Проведіть вгору для розблокування"
+#: js/ui/unlockDialog.js:435
+#| msgid "Swipe up to unlock"
+msgid "Swipe up"
+msgstr "Проведення вгору"
 
-#: js/ui/unlockDialog.js:424
-msgid "Click or press a key to unlock"
-msgstr "Клацніть або натисніть клавішу для розблокування"
+#: js/ui/unlockDialog.js:437
+#| msgid "Click or press a key to unlock"
+msgid "Click or press a key"
+msgstr "Клацніть або натисніть клавішу"
 
-#: js/ui/unlockDialog.js:618
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
 
-#: js/ui/unlockDialog.js:627
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "Увійти як інший користувач"
+
+#: js/ui/unlockDialog.js:695
+#| msgid "Authentication error"
+msgid "Background Authentication Methods"
+msgstr "Способи фонової автентифікації"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -3607,6 +3673,9 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "Choose Session"
+#~ msgstr "Виберіть сеанс"
 
 #~ msgid "Manage your GNOME Extensions"
 #~ msgstr "Керуйте вашими розширеннями GNOME"
