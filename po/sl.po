@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-31 20:10+0000\n"
-"PO-Revision-Date: 2026-07-31 22:39+0200\n"
+"POT-Creation-Date: 2026-08-01 18:43+0000\n"
+"PO-Revision-Date: 2026-08-01 21:36+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -556,6 +556,10 @@ msgstr "Mesto, za katero naj bo pokazana napoved"
 #: data/org.gnome.Shell.Extensions.desktop.in:4
 msgid "Extensions"
 msgstr "Razširitve lupine"
+
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "Obveščanje z opomniki"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -3060,6 +3064,18 @@ msgstr "Premakni na zaslon desno"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Zapri"
+
+#: src/calendar-server/reminder-watcher.c:124
+msgid "Reminders"
+msgstr "Opomniki"
+
+#: src/calendar-server/reminder-watcher.c:129
+msgid "Snooze"
+msgstr "Dremež"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Dismiss"
+msgstr "Opusti"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
