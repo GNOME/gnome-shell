@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-30 13:55+0000\n"
-"PO-Revision-Date: 2026-07-31 06:48+0200\n"
+"POT-Creation-Date: 2026-07-31 20:10+0000\n"
+"PO-Revision-Date: 2026-08-01 02:28+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -588,36 +588,93 @@ msgstr "შეცდომის დეტალები"
 msgid "Copy Error"
 msgstr "შეცდომის კოპირება"
 
-#: js/gdm/authPrompt.js:59 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
 msgid "Screen Time Limit Reached"
 msgstr "მიღწეულია ეკრანის დროის ზღვარი"
 
-#: js/gdm/authPrompt.js:65
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr "მიღწეულია ეკრანის დღიური ზღვარი ამ მოწყობილობისთვის. ხვალ გააგრძელეთ."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:73
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "იგნორი"
 
-#: js/gdm/authPrompt.js:255
+#: js/gdm/authPrompt.js:269
 msgid "Back"
 msgstr "უკან"
 
-#: js/gdm/authPrompt.js:365
+#: js/gdm/authPrompt.js:366
 msgid "Submit"
 msgstr "გაგზავნა"
 
-#: js/gdm/authPrompt.js:497 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:349
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "პაროლი"
+
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "შეაერთეთ სმარტ ბარათი"
+
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "შეერთეთ უსაფრთხოების გასაღები"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "განბლოკვა თითის ანაბეჭდით"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "Smart ბარათი"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "თითის ანაბეჭდი"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(ან გადაუსვით თითი წამკითხველს)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(ან მოათავსეთ თითი წამკითხველზე)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+msgid "Insert Smartcard"
+msgstr "შეაერთეთ სმარტ ბარათი"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+msgid "Select Identity"
+msgstr "აირჩიეთ იდენტიფიკატორი"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "ორგანიზაცია"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"გაქვთ დარჩენილი %d მცდელობა. თუ საკვანძო გასაღები ჩაიკეტება, შეიძლება, "
+"ანგარიშში ვეღარ შეხვიდეთ."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "დასრულდა"
 
 #. Translators: is running for <username>
 #: js/gdm/conflictingSessionDialog.js:50
@@ -676,10 +733,11 @@ msgstr ""
 "ძალით დასრულება ასევე ძალით დაასრულებს ყველა გაშვებულ აპს და პროცესს და, "
 "შეიძლება, მონაცემების კარგვა გამოიწვიოს"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/ui/audioDeviceSelection.js:60
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:144
-#: js/ui/endSessionDialog.js:402 js/ui/extensionDownloader.js:276
-#: js/ui/shellMountOperation.js:399 js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
 msgid "Cancel"
 msgstr "გაუქმება"
 
@@ -687,58 +745,54 @@ msgstr "გაუქმება"
 msgid "Force Stop"
 msgstr "ძალით გაჩერება"
 
-#: js/gdm/loginDialog.js:331
-msgid "Choose Session"
-msgstr "აირჩიეთ სესია"
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+msgid "Login Options"
+msgstr "შესვლის პარამეტრები"
 
-#: js/gdm/loginDialog.js:425 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:54
+msgid "Session Type"
+msgstr "სესიის ტიპი"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "წვდომადობა"
 
-#: js/gdm/loginDialog.js:536
+#: js/gdm/loginDialog.js:450
 msgid "Not listed?"
 msgstr "არაა სიაში?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1103
+#: js/gdm/loginDialog.js:1100
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(მაგ, user ან %s)"
 
-#: js/gdm/loginDialog.js:1109 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "მომხმარებლის სახელი"
 
-#: js/gdm/loginDialog.js:1174
+#: js/gdm/loginDialog.js:1171
 msgid "Login Attempt Timed Out"
 msgstr "შესვლის მცდელობის მოლოდინის ვადა ამოიწურა"
 
-#: js/gdm/loginDialog.js:1175
+#: js/gdm/loginDialog.js:1172
 msgid "Login took too long, please try again"
 msgstr "შესვლას მეტისმეტად დიდხანს ცდილობდით. თავიდან სცადეთ"
 
-#: js/gdm/loginDialog.js:1536
+#: js/gdm/loginDialog.js:1534
 msgid "Login Window"
 msgstr "შესვლის ფანჯარა"
 
-#: js/gdm/util.js:503
+#: js/gdm/userVerifier.js:306
 msgid "Authentication error"
 msgstr "ავთენტიკაციის შეცდომა"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:742
-msgid "(or swipe finger across reader)"
-msgstr "(ან გადაუსვით თითი წამკითხველს)"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:747
-msgid "(or place finger on reader)"
-msgstr "(ან მოათავსეთ თითი წამკითხველზე)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "შესვლის კოდი: "
 
 #: js/misc/breakManager.js:776
 msgid "Break complete sound"
@@ -2023,10 +2077,6 @@ msgstr "ეკრანის შეცვლა"
 msgid "Assign keystroke"
 msgstr "ღილაკების თანამიმდევრობის მინიჭება"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "დასრულდა"
-
 #: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "ჩასწორება…"
@@ -2675,7 +2725,7 @@ msgstr "გამორთვა…"
 msgid "Log Out…"
 msgstr "გასვლა…"
 
-#: js/ui/status/system.js:204
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "მომხმარებლის გადართვა…"
 
@@ -2775,27 +2825,35 @@ msgstr "მხოლოდ გარე"
 msgid "Built-in Only"
 msgstr "მხოლოდ ჩაშენებული"
 
+#: js/ui/unlockDialog.js:25
+msgid "Unlock Options"
+msgstr "გაბლოკვის პარამეტრები"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:417
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:423
-msgid "Swipe up to unlock"
-msgstr "გადაუსვით ბლოკის მოსახსნელად"
+#: js/ui/unlockDialog.js:435
+msgid "Swipe up"
+msgstr "ზემოთ აუსვით"
 
-#: js/ui/unlockDialog.js:424
-msgid "Click or press a key to unlock"
-msgstr "ბლოკის მოსახსნელად დააწექით ნებისმიერ ღილაკს"
+#: js/ui/unlockDialog.js:437
+msgid "Click or press a key"
+msgstr "დააწკაპუნეთ, ან დააჭირეთ ღილაკს"
 
-#: js/ui/unlockDialog.js:618
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "ფანჯრის განბლოკვა"
 
-#: js/ui/unlockDialog.js:627
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "სხვა მომხმარებლით შესვლა"
+
+#: js/ui/unlockDialog.js:695
+msgid "Background Authentication Methods"
+msgstr "ფონური ავთენტიკაციის მეთოდები"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -3503,6 +3561,9 @@ msgstr[1] "%u შეტანა"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "სისტემური ხმები"
+
+#~ msgid "Choose Session"
+#~ msgstr "აირჩიეთ სესია"
 
 #, javascript-format
 #~ msgid "%s has been pinned to the dash."
