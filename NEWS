@@ -1,3 +1,18 @@
+49.9
+====
+* Fix glitch when switching to minimized window on another workspace
+  [Florian; !4199]
+* Fix miscaled magnified cursor on HiDPI [Daniel; !4290]
+* Fix sound glitch when pushing redundant volume changes [Andre; !4302]
+* Fix removing arbitrary provider when removing unregistered search provider
+  [htrex; !4308]
+* Misc. bug fixes and cleanups [Daniel, Florian, Marco, Alessandro, Carlos,
+  Joan; !4119, !4193, !4276, !4275, !4248, !4293, !4296, !4306, !4312]
+
+Contributors:
+  Alessandro Bono, Andre Eikmeyer, Carlos Garnacho, htrex, Florian Müllner,
+  Daniel Rusek, Joan Torres Lopez, Marco Trevisan (Treviño), Daniel van Vugt
+
 49.8
 ====
 * Fix regression in screenshot area resizing [Sebastian; !4265]
