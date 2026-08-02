@@ -1,3 +1,38 @@
+51.beta
+=======
+* Fix glitch when switching to minimized window on another workspace
+  [Florian; !4199]
+* Add initial support for 'reduced-motion' setting [Florian; !4208]
+* Explicitly disallow async disable() methods in extensions [Marco; !4276]
+* Add SVG-based cursor implementations [Carlos; !4278]
+* Continue port from raw event handlers to controllers [Carlos; !4248]
+* Improve keyboard navigation of screenshot area selection [Zoey; !4013]
+* Support COPY, CUT and PASTE action keys in entries [Yaacov; !4257]
+* Fix miscaled magnified cursor on HiDPI [Daniel; !4290]
+* Fix sound glitch when pushing redundant volume changes [Andre; !4302]
+* Refine auth prompt UX [Joan, Ray; !4306]
+* Add support for web login and unified auth mechanism [Ray, Joan, Marco; !3212]
+* Handle event reminder notifications [Milan, Florian; !1064]
+* Fix removing arbitrary provider when removing unregistered search provider
+  [htrex; !4308]
+* Misc. bug fixes and cleanups [Jonas, Florian, Alessandro B., Alessandro A.,
+  Carlos, Adarsh, Marco, Sergio, Sebastian, Jakub, Bilal, Joan; !4249, !4193,
+  !4275, !4261, !4281, !4292, !4293, !4288, !4294, !4296, !4297, !4303, !4305,
+  !4301, !4283, !4117, !4082, !4314, !4312]
+
+Contributors:
+  Zoey Ahmed, Yaacov Akiba Slama, Alessandro Astone, Alessandro Bono,
+  Sergio Costas Rodriguez, Milan Crha, Andre Eikmeyer, Bilal Elmoussaoui,
+  Adarsh G M, Carlos Garnacho, htrex, Sebastian Keller, Florian Müllner,
+  Jakub Steiner, Ray Strode, Joan Torres Lopez, Marco Trevisan (Treviño),
+  Daniel van Vugt, Jonas Ådahl
+
+Translators:
+  Victoria Niedzielska [pl], Baurzhan Muftakhidinov [kk], Daniel Rusek [cs],
+  Yuri Chornoivan [uk], luming zh [zh_CN], Ekaterine Papava [ka], Martin [sl],
+  Antonio Marin [ro], Yaron Shahrabani [he], Danial Behzadi [fa],
+  Quentin PAGÈS [oc], Vasil Pupkin [be]
+
 51.alpha
 ========
 * Fix extending screenshot area selection to monitor edges [Ramez; !4158]
