@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-31 20:10+0000\n"
-"PO-Revision-Date: 2026-08-01 17:53+0330\n"
+"POT-Creation-Date: 2026-08-01 18:43+0000\n"
+"PO-Revision-Date: 2026-08-02 12:08+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian\n"
 "Language: fa\n"
@@ -538,6 +538,10 @@ msgstr "مکان برای نمایش پیش‌بینی"
 #: data/org.gnome.Shell.Extensions.desktop.in:4
 msgid "Extensions"
 msgstr "افزونه‌ها"
+
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "آگاهی‌های یادآوری"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -2950,6 +2954,18 @@ msgstr "انتقال به نمایشگر راست"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "بستن"
+
+#: src/calendar-server/reminder-watcher.c:124
+msgid "Reminders"
+msgstr "یادآوری‌ها"
+
+#: src/calendar-server/reminder-watcher.c:129
+msgid "Snooze"
+msgstr "چُرت"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Dismiss"
+msgstr "رها کردن"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
