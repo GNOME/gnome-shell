@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-31 20:10+0000\n"
-"PO-Revision-Date: 2026-08-01 16:45+0200\n"
+"POT-Creation-Date: 2026-08-01 18:43+0000\n"
+"PO-Revision-Date: 2026-08-02 11:43+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -570,6 +570,10 @@ msgstr "Lo lòc ont mostrar las previsions metèo"
 #: data/org.gnome.Shell.Extensions.desktop.in:4
 msgid "Extensions"
 msgstr "Extensions"
+
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "Notificacions de rapèl"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -3048,6 +3052,18 @@ msgstr "Desplaçar cap a l'ecran de dreita"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Tampar"
+
+#: src/calendar-server/reminder-watcher.c:124
+msgid "Reminders"
+msgstr "Rapèls"
+
+#: src/calendar-server/reminder-watcher.c:129
+msgid "Snooze"
+msgstr "Repetir"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Dismiss"
+msgstr "Ignorar"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
