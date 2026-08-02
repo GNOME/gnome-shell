@@ -137,8 +137,7 @@ transfer_cb (MetaSelection *selection,
 
       data_size =
         g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (data->stream));
-      text = g_new0 (char, data_size + 1);
-      memcpy (text, g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->stream)), data_size);
+      text = g_strndup (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->stream)), data_size);
     }
 
   ((StClipboardCallbackFunc) data->callback) (data->clipboard, text,
