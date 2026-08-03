@@ -75,6 +75,16 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
+    vfunc_map() {
+        global.compositor.disable_unredirect();
+        super.vfunc_map();
+    }
+
+    vfunc_unmap() {
+        global.compositor.enable_unredirect();
+        super.vfunc_unmap();
+    }
+
     _redisplayAllPopups() {
         for (const popup of this)
             popup.redisplay(this._activeWorkspaceIndex);
