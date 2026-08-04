@@ -133,6 +133,10 @@ export const TimeLimitsManager = GObject.registerClass({
             'grayscale-enabled', null, null,
             GObject.ParamFlags.READABLE,
             false),
+        'should-lock-session': GObject.ParamSpec.boolean(
+            'should-lock-session', null, null,
+            GObject.ParamFlags.READABLE,
+            false),
     },
     Signals: {
         'daily-limit-reached': {},
@@ -180,6 +184,7 @@ export const TimeLimitsManager = GObject.registerClass({
                 this._onSessionLimitsChanged().catch(logError);
                 this.notify('daily-limit-time');
                 this.notify('daily-limit-enabled');
+                this.notify('should-lock-session');
             }, this);
 
         this._estimatedTimes = [];
@@ -1010,6 +1015,7 @@ export const TimeLimitsManager = GObject.registerClass({
             this._state = newState;
             this._lastStateChangeTimeSecs = nowSecs;
             this.notify('state');
+            this.notify('should-lock-session');
             this.notify('daily-limit-time');
 
             if (newState === TimeLimitsState.LIMIT_REACHED)
@@ -1144,6 +1150,16 @@ export const TimeLimitsManager = GObject.registerClass({
     get grayscaleEnabled() {
         return this._screenTimeLimitSettings.get_boolean('grayscale');
     }
+
+    /** Whether the session should be locked; true when the screen time limits
+     *  has been reached with parental controls enabled.
+     *
+     *  @type {boolean}
+     */
+    get shouldLockSession() {
+        return this._state === TimeLimitsState.LIMIT_REACHED &&
+            this.parentalControlsSessionLimitsEnabled;
+    }
 });
 
 /**
@@ -1222,7 +1238,7 @@ class TimeLimitsDispatcher extends GObject.Object {
         }
 
         case TimeLimitsState.LIMIT_REACHED: {
-            if (this._manager.parentalControlsSessionLimitsEnabled) {
+            if (this._manager.shouldLockSession) {
                 // Trying to lock the screen will fail if the action is not
                 // available. This happens when admin disables lock screen,
                 // or when not running under GDM/logind. Those are corner cases
