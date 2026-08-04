@@ -15,7 +15,6 @@ import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
-import {TimeLimitsState} from '../misc/timeLimitsManager.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
 import {AuthPromptStatus} from '../gdm/authPrompt.js';
 import {MprisSource} from './mpris.js';
@@ -647,7 +646,7 @@ export const UnlockDialog = GObject.registerClass({
         // locked upon reaching the time limit. In those cases, tweak the lock screen,
         // so that the children cannot unlock without parental supervision.
         Main.timeLimitsManager.connectObject(
-            'notify::state', () => this._updateAuthBlocked(),
+            'notify::should-lock-session', () => this._updateAuthBlocked(),
             this);
         this._updateAuthBlocked();
 
@@ -929,7 +928,7 @@ export const UnlockDialog = GObject.registerClass({
 
     _updateAuthBlocked() {
         this._authPrompt?.setAuthBlocked(
-            Main.timeLimitsManager.state === TimeLimitsState.LIMIT_REACHED);
+            Main.timeLimitsManager.shouldLockSession);
     }
 
     cancel() {
