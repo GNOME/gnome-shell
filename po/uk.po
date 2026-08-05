@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-31 20:10+0000\n"
-"PO-Revision-Date: 2026-08-01 17:18+0300\n"
+"POT-Creation-Date: 2026-08-02 12:05+0000\n"
+"PO-Revision-Date: 2026-08-02 21:55+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -570,6 +570,11 @@ msgstr "Місцевість для прогнозу погоди"
 msgid "Extensions"
 msgstr "Розширення"
 
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+#| msgid "No Notifications"
+msgid "Reminder Notifications"
+msgstr "Сповіщення нагадування"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
 msgstr "Мережевий вхід"
@@ -678,7 +683,6 @@ msgid "Insert Smartcard"
 msgstr "Вставте картку пам'яті"
 
 #: js/gdm/authServicesSSSDSwitchable.js:468
-#| msgid "Identity"
 msgid "Select Identity"
 msgstr "Вибір профілю"
 
@@ -692,8 +696,8 @@ msgid ""
 "You have %d attempts left. If the passkey gets locked, you may not able to "
 "access your account."
 msgstr ""
-"У вас лишилося %d спроб. Якщо буде заблоковано пароль, ви не зможете отримати"
-" доступ до вашого облікового запису."
+"У вас лишилося %d спроб. Якщо буде заблоковано пароль, ви не зможете "
+"отримати доступ до вашого облікового запису."
 
 #: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
 msgid "Done"
@@ -768,8 +772,6 @@ msgid "Force Stop"
 msgstr "Примусово зупинити"
 
 #: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
-#| msgctxt "button"
-#| msgid "Boot Options"
 msgid "Login Options"
 msgstr "Параметри входу"
 
@@ -2214,7 +2216,7 @@ msgstr "Відкрити меню"
 msgid "Run a Command"
 msgstr "Виконати команду"
 
-#: js/ui/runDialog.js:92
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "Натисніть клавішу «Esc», щоб закрити"
 
@@ -2342,15 +2344,15 @@ msgstr "Ви можете вставити зображення з буфера 
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
-#: js/ui/search.js:884
+#: js/ui/search.js:887
 msgid "Searching"
 msgstr "Пошук"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:890
 msgid "No results"
 msgstr "Нічого не знайдено"
 
-#: js/ui/search.js:1023
+#: js/ui/search.js:1026
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2926,8 +2928,6 @@ msgid "Built-in Only"
 msgstr "Тільки вбудований"
 
 #: js/ui/unlockDialog.js:25
-#| msgctxt "button"
-#| msgid "Boot Options"
 msgid "Unlock Options"
 msgstr "Параметри розблокування"
 
@@ -2938,12 +2938,10 @@ msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
 #: js/ui/unlockDialog.js:435
-#| msgid "Swipe up to unlock"
 msgid "Swipe up"
 msgstr "Проведення вгору"
 
 #: js/ui/unlockDialog.js:437
-#| msgid "Click or press a key to unlock"
 msgid "Click or press a key"
 msgstr "Клацніть або натисніть клавішу"
 
@@ -2956,7 +2954,6 @@ msgid "Log in as another user"
 msgstr "Увійти як інший користувач"
 
 #: js/ui/unlockDialog.js:695
-#| msgid "Authentication error"
 msgid "Background Authentication Methods"
 msgstr "Способи фонової автентифікації"
 
@@ -3082,6 +3079,18 @@ msgstr "Перемістити до монітору праворуч"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Закрити"
+
+#: src/calendar-server/reminder-watcher.c:124
+msgid "Reminders"
+msgstr "Нагадування"
+
+#: src/calendar-server/reminder-watcher.c:129
+msgid "Snooze"
+msgstr "Відкласти"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Dismiss"
+msgstr "Відкинути"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
