@@ -283,7 +283,11 @@ reminders_process_one (ReminderWatcher *rw,
 
           case E_CAL_COMPONENT_ALARM_TRIGGER_RELATIVE_START:
           case E_CAL_COMPONENT_ALARM_TRIGGER_RELATIVE_END:
+#if defined(ICAL_CHECK_VERSION) && ICAL_CHECK_VERSION(4, 0, 0)
+            offset = i_cal_duration_as_seconds (e_cal_component_alarm_trigger_get_duration (trigger));
+#else
             offset = i_cal_duration_as_int (e_cal_component_alarm_trigger_get_duration (trigger));
+#endif
             break;
 
           default:

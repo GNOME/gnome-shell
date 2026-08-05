@@ -113,7 +113,11 @@ static gboolean
 get_time_from_property (ECalClient            *cal,
                         ICalComponent         *icomp,
                         ICalPropertyKind       prop_kind,
+#if defined(ICAL_CHECK_VERSION) && ICAL_CHECK_VERSION(4, 0, 0)
+                        ICalTime * (* get_prop_func) (const ICalProperty *prop),
+#else
                         ICalTime * (* get_prop_func) (ICalProperty *prop),
+#endif
                         ICalTimezone          *default_zone,
                         ICalTime              **out_itt,
                         ICalTimezone          **out_timezone)
