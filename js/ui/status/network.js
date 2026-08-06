@@ -25,6 +25,7 @@ import {registerDestroyableType} from '../../misc/signalTracker.js';
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(NM.Client, 'new_async');
 Gio._promisify(NM.Client.prototype, 'check_connectivity_async');
+Gio._promisify(NM.Client.prototype, 'dbus_set_property');
 Gio._promisify(NM.DeviceWifi.prototype, 'request_scan_async');
 
 const WIFI_SCAN_FREQUENCY = 15;
@@ -1827,7 +1828,20 @@ class NMWirelessToggle extends NMDeviceToggle {
         if (primaryItem?.is_hotspot)
             primaryItem.activate();
         else
-            this._client.wireless_enabled = !this._client.wireless_enabled;
+            this._toggleWirelessEnabled().catch(logError);
+    }
+
+    async _toggleWirelessEnabled() {
+        const enabled = !this._client.wireless_enabled;
+
+        await this._client.dbus_set_property(
+            NM.DBUS_PATH,
+            NM.DBUS_INTERFACE,
+            'WirelessEnabled',
+            new GLib.Variant('b', enabled),
+            2000,
+            null
+        );
     }
 
     async _scanDevice(device) {
