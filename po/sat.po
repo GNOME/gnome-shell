@@ -1,0 +1,3641 @@
+# Santali translation for gnome-shell.
+# Copyright (C) 2026 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Prasanta Hembram <prasantahembram720@gmail.com>, 2026.
+#
+msgid ""
+msgstr "Project-Id-Version: gnome-shell gnome-50\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
+"POT-Creation-Date: 2026-07-03 18:03+0000\n"
+"PO-Revision-Date: 2026-07-03 18:03+0000\n"
+"Last-Translator: Prasanta Hembram <prasantahembram720@gmail.com>\n"
+"Language-Team: Santali <sat@li.org>\n"
+"Language: sat\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n==2 ? 1 : 2;\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "ᱞᱚᱧᱪᱚᱨ"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate pinned app 1"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 1 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate pinned app 2"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 2 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate pinned app 3"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 3 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate pinned app 4"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 4 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate pinned app 5"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 5 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate pinned app 6"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 6 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate pinned app 7"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 7 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate pinned app 8"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 8 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate pinned app 9"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 9 ᱩᱥᱨᱟᱹᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:46
+msgid "Open new window of pinned app 1"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 1 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:50
+msgid "Open new window of pinned app 2"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 2 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:54
+msgid "Open new window of pinned app 3"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 3 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:58
+msgid "Open new window of pinned app 4"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 4 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:62
+msgid "Open new window of pinned app 5"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 5 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:66
+msgid "Open new window of pinned app 6"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 6 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:70
+msgid "Open new window of pinned app 7"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 7 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:74
+msgid "Open new window of pinned app 8"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 8 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-launchers.xml:78
+msgid "Open new window of pinned app 9"
+msgstr "ᱯᱤᱱ ᱟᱠᱟᱱ ᱮᱯ 9 ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱣᱤᱱᱰᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2334
+msgid "Screenshots"
+msgstr "ᱥᱠᱨᱤᱱᱥᱚᱴ"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:267
+msgid "Take a screenshot interactively"
+msgstr "ᱢᱤᱫ ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱤᱱᱴᱟᱨᱮᱠᱴᱤᱵᱷ ᱞᱮᱠᱟᱛᱮ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:279
+msgid "Take a screenshot"
+msgstr "ᱢᱤᱫ ᱥᱠᱨᱤᱱᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Take a screenshot of a window"
+msgstr "ᱢᱤᱫ ᱡᱷᱚᱨᱠᱟ ᱨᱮᱭᱟᱜ ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:271
+msgid "Record a screencast interactively"
+msgstr "ᱢᱤᱫ ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱤᱱᱴᱟᱨᱮᱠᱴᱤᱵᱷ ᱞᱮᱠᱟᱛᱮ ᱨᱮᱠᱚᱨᱰ ᱢᱮ"
+
+#: data/50-gnome-shell-system.xml:6
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1325
+msgid "System"
+msgstr "ᱥᱤᱥᱴᱚᱢ"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "ᱤᱛᱞᱟᱹᱭ ᱛᱟᱞᱠᱟ ᱩᱫᱩᱜᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Open the quick settings menu"
+msgstr "ᱩᱥᱟᱹᱨᱟ ᱥᱟᱡᱟᱣ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Focus the active notification"
+msgstr "ᱪᱚᱴᱠᱟᱨ ᱤᱛᱞᱟᱹᱭ ᱨᱮ ᱩᱫᱩᱜ ᱨᱟᱠᱟᱵ ᱢᱮ"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show the overview"
+msgstr "ᱢᱟᱲᱟᱝ ᱧᱮᱱᱮᱞ ᱛᱮᱭᱟᱜ ᱫᱮᱠᱷᱟᱣ ᱢᱮ"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Show all apps"
+msgstr "ᱥᱟᱱᱟᱢ ᱮᱯᱥ ᱩᱫᱩᱜᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Alt-F2 ᱠᱷᱚᱱ ᱰᱮᱵᱷᱞᱚᱯᱟᱹᱨ ᱠᱚ ᱟᱨ ᱵᱤᱱᱤᱰᱤᱭᱟᱹ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱹᱠᱛᱤᱭᱟᱱ ᱵᱷᱤᱛᱨᱤ ᱦᱟᱹᱛᱤᱭᱟᱨ ᱠᱚ ᱮᱢ ᱪᱷᱚᱭ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr "Alt-F2 ᱠᱟᱛᱷᱟ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱵᱷᱤᱛᱨᱤ ᱰᱤᱵᱟᱜᱽ ᱟᱨ ᱧᱮᱞ ᱦᱟᱹᱛᱤᱭᱟᱨ ᱠᱚ ᱥᱮᱴᱮᱨᱚᱜ ᱨᱮᱭᱟᱜ ᱟᱫᱮᱨ ᱮᱢᱚᱜ ᱠᱟᱱᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "ᱮᱢ ᱪᱷᱚ ᱞᱟᱹᱜᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱨᱮᱭᱟᱜ UUIDs"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr "GNOME ᱥᱮᱞ ᱠᱷᱚᱧᱡᱟ ᱨᱮᱭᱟᱜ ᱢᱤᱫᱴᱟᱹᱝ UUID ᱫᱩᱨᱤᱵ ᱢᱮᱱᱟᱜᱼᱟ; ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱨᱮᱭᱟᱜ ᱛᱟᱹᱞᱤᱠᱟ ᱞᱟᱫᱮᱪᱷᱚ ᱭᱟ ᱾ ᱡᱟᱦᱟᱸ ᱠᱷᱚᱧᱡᱟ ᱞᱟᱫᱮ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ ᱚᱱᱟ ᱱᱚᱶᱟ ᱛᱟᱞᱠᱟ ᱨᱮ ᱛᱟᱦᱮᱸᱱ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ ᱾ ᱟᱢ ᱫᱚ org.gnome.Shell. ᱨᱮ EnableExtension ᱟᱨ DisableExtension D-Bus ᱛᱚᱨᱠᱟ ᱛᱮ ᱱᱚᱶᱟ ᱛᱟᱞᱠᱟ ᱠᱚ ᱠᱚᱵᱚᱡᱽ ᱨᱮᱢ ᱫᱚᱦᱚ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr "ᱡᱩᱨ ᱵᱚᱸᱫ ᱞᱟᱹᱜᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱨᱮᱭᱟᱜ UUIDs"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr "GNOME ᱥᱮᱞ ᱮᱠᱥᱴᱟᱱᱥᱚᱱ ᱨᱮᱭᱟᱜ ᱢᱤᱫᱴᱟᱹᱝ UUID ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱢᱮᱱᱟᱜᱼᱟ; ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱨᱮᱭᱟᱜ ᱛᱟᱹᱞᱤᱠᱟ ᱞᱟᱫᱮᱪᱷᱚ ᱭᱟ ᱡᱟᱦᱟᱸ ᱫᱚ ᱵᱚᱸᱫ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ, ᱡᱩᱫᱤ ᱦᱚᱸ ᱚᱱᱟ ᱱᱤᱛᱚᱜᱟᱜ ᱢᱳᱰ ᱨᱮᱭᱟᱜ ᱦᱟᱹᱴᱤᱧ ᱞᱮᱠᱟᱛᱮ ᱞᱟᱫᱮ ᱠᱟᱱᱟ ᱾ ᱟᱢ ᱫᱚ org.gnome.Shell. ᱨᱮ EnableExtension ᱟᱨ DisableExtension D-Bus ᱛᱚᱨᱠᱟ ᱛᱮ ᱱᱚᱶᱟ ᱛᱟᱞᱠᱟ ᱠᱚ ᱠᱚᱵᱚᱡᱽ ᱨᱮᱢ ᱫᱚᱦᱚ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱫᱚ \"ᱮᱢᱠᱟᱱ ᱠᱷᱚᱧᱡᱟ\" ᱥᱮᱴᱤᱝ ᱠᱷᱚᱱ ᱪᱮᱛᱟᱱ ᱨᱮ ᱢᱮᱱᱟᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:37
+msgid "Disable user extensions"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱠᱷᱚᱧᱡᱟ ᱚᱠᱟᱹᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱠᱚ ᱫᱚ “ᱮᱱᱮᱵᱟᱞᱰ-ᱠᱷᱚᱧᱡᱟ” ᱥᱮᱴᱤᱝ ᱵᱤᱱ ᱮᱥᱮᱨ ᱠᱟᱛᱮ ᱮᱱᱮᱵᱟᱞ ᱟᱠᱟᱫ ᱡᱷᱚᱛᱚ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱢᱮ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Allow extension installation"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱚᱦᱟᱞ ᱨᱮᱭᱟᱜ ᱪᱷᱟᱹᱲ ᱮᱢᱚᱜ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱠᱚ ᱟᱠᱚᱣᱟᱜ ᱚᱲᱟᱜ ᱨᱮᱭᱟᱜ ᱯᱚᱴᱚᱢ ᱨᱮ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱵᱚᱦᱟᱞ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱣ ᱮᱢᱟ ᱠᱚᱢ ᱾ ᱡᱚᱫᱤ ᱵᱚᱸᱫ ᱠᱟᱱᱟ, ᱮᱱᱰᱮ ᱠᱷᱟᱱ InstallRemoteExtension D-Bus ᱛᱚᱨᱠᱟ ᱫᱚ ᱵᱟᱭ ᱠᱟᱹᱢᱤ ᱟ, ᱟᱨ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱫᱚ ᱠᱷᱟᱹᱞᱤ ᱮᱛᱦᱚᱵ ᱨᱮ ᱥᱤᱥᱴᱤᱢ ᱩᱫᱩᱜ (ᱰᱟᱭᱨᱮᱠᱴᱚᱨᱤ) ᱠᱷᱚᱱ ᱜᱮ ᱞᱟᱫᱮᱜ ᱟ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱞᱟᱦᱟ ᱠᱷᱚᱱ ᱞᱟᱫᱮ ᱟᱠᱟᱱ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱪᱮᱛᱟᱱ ᱨᱮ ᱯᱨᱚᱵᱷᱟᱣ ᱵᱟᱭ ᱯᱚᱠᱟᱣᱟᱭ, ᱚᱱᱟᱛᱮ ᱵᱚᱫᱚᱞ ᱫᱚ ᱮᱠᱮᱱ ᱫᱚᱥᱟᱨ ᱞᱚᱜᱤᱱ ᱨᱮ ᱜᱮ ᱯᱩᱨᱟᱹ ᱯᱨᱚᱵᱷᱟᱣ ᱮᱢᱟᱭ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:56
+msgid "Disables the validation of extension version compatibility"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱦᱟᱹᱞᱤᱭᱟᱠ ᱵᱟᱹᱭᱥᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱵᱟᱲᱟᱭ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱮᱫᱟᱭ"
+
+#: data/org.gnome.shell.gschema.xml.in:57
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr "GNOME ᱥᱮᱞ ᱫᱚ ᱮᱠᱷᱮᱱ ᱚᱱᱠᱟᱱ ᱠᱷᱚᱧᱡᱟ ᱞᱟᱫᱮ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱭ ᱚᱠᱟ ᱫᱚ ᱱᱤᱛᱚᱜ ᱪᱟᱹᱞᱩ ᱦᱟᱹᱞᱤᱭᱟᱠ ᱥᱚᱦᱚᱫ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱹᱵᱤ ᱮᱫᱟᱭ᱾ ᱱᱚᱶᱟ ᱢᱚᱱᱮ ᱛᱮᱭᱟᱜ ᱪᱟᱹᱞᱩ ᱞᱮᱠᱷᱟᱱ ᱱᱚᱶᱟ ᱪᱤᱱᱦᱟᱹ ᱚᱠᱟᱹᱡᱽᱣᱟᱹᱜᱼᱟ ᱟᱨ ᱩᱱᱠᱩ ᱥᱟᱯᱚᱨᱴ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱹᱵᱤ ᱟᱠᱟᱱ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱵᱮᱜᱚᱨ ᱛᱮ ᱥᱟᱱᱟᱢ ᱮᱠᱥᱴᱮᱱᱥᱚᱱ ᱞᱟᱫᱮ ᱨᱮᱭᱟᱜ ᱠᱚ ᱠᱩᱨᱩᱢᱩᱴᱩᱭᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "List of desktop file IDs for favorite applications"
+msgstr "ᱠᱩᱥᱤ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱠᱚ ᱞᱟᱹᱜᱤᱫ ᱰᱮᱥᱠᱴᱚᱯ ᱨᱮᱫᱽ ᱟᱭᱰᱤ ᱠᱚ ᱨᱮᱭᱟᱜ ᱛᱟᱞᱠᱟ"
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr "ᱱᱚᱶᱟ ᱩᱨᱩᱢ ᱠᱚ ᱥᱟᱶ ᱞᱮᱠᱟᱱ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱠᱚ ᱫᱚ ᱠᱩᱥᱤ ᱴᱚᱴᱷᱟ ᱨᱮ ᱩᱫᱩᱜᱚᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid "History for command (Alt-F2) dialog"
+msgstr "ᱟᱫᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱱᱟᱜᱟᱢ ᱰᱟᱭᱞᱚᱜᱽ (Alt-F2)"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
+#: data/org.gnome.shell.gschema.xml.in:80
+msgid "History for the looking glass dialog"
+msgstr "ᱧᱮᱞᱚᱜ ᱜᱞᱟᱥ ᱰᱟᱭᱞᱚᱜᱽ ᱞᱟᱹᱜᱤᱫ ᱱᱟᱜᱟᱢ"
+
+#: data/org.gnome.shell.gschema.xml.in:84
+msgid "Always show the “Log Out” action in the system menu"
+msgstr "ᱥᱤᱥᱴᱚᱢ ᱢᱮᱱᱩ ᱨᱮ ᱥᱟᱨᱟ ᱜᱷᱟᱹᱲᱤᱡ \"ᱚᱰᱚᱠ ᱫᱩᱣᱟᱹᱨ\" ᱠᱟᱹᱢᱤ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
+msgstr "ᱱᱚᱶᱟ ᱠᱤᱴ ᱫᱚ ᱞᱚᱜᱚᱱ ᱥᱛᱤᱛᱤ ᱞᱟᱹᱜᱤᱫ ᱥᱤᱥᱴᱚᱢ ᱢᱮᱱᱩ ᱨᱮ “Log out” ᱠᱟᱹᱢᱤ ᱨᱮᱭᱟᱜ ᱟᱡ ᱛᱮ ᱩᱠᱩ ᱫᱚ ᱚᱵᱷᱟᱨᱟᱭᱤᱰ ᱠᱟᱱᱟ ᱡᱟᱦᱟᱸ ᱨᱮ ᱢᱤᱫ, ᱞᱚᱠᱟᱞ, ᱵᱟᱝ ᱥᱤᱥᱴᱚᱨ ᱵᱮᱵᱚᱦᱟᱨᱤᱭᱟᱹ ᱟᱨ ᱮᱷᱠᱮᱱ ᱢᱤᱫ ᱥᱮᱥᱚᱱ ᱞᱮᱠᱟ (e.g. GNOME on Wayland) ᱢᱮᱱᱟᱜ- ᱾ "
+
+#: data/org.gnome.shell.gschema.xml.in:94
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr "ᱮᱱᱠᱨᱤᱯᱴᱮᱰ ᱥᱮ ᱨᱤᱢᱚᱴ ᱨᱮᱫᱽ ᱥᱤᱥᱴᱚᱢ ᱢᱟᱣᱱᱴᱤᱝ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱩᱭᱦᱟᱹᱨ ᱦᱩᱭᱩᱜᱼᱟ ᱥᱮ ᱵᱟᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:95
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr "ᱢᱤᱫᱴᱟᱝ ᱮᱱᱠᱨᱤᱯᱴᱰ ᱥᱟᱫᱷᱚᱱ ᱵᱟᱝᱠᱷᱟᱱ ᱢᱤᱫᱴᱟᱹᱝ ᱨᱤᱢᱳᱴ ᱨᱮᱫᱽ ᱥᱤᱥᱴᱚᱢ ᱢᱟᱣᱩᱱᱴ ᱠᱚᱨᱟᱣ ᱚᱠᱛᱚ ᱥᱮᱞ ᱢᱤᱫᱴᱟᱹᱝ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱨᱮᱭᱟᱜ ᱟᱨᱡᱤ ᱮᱢᱼᱟ ᱾ ᱡᱩᱫᱤ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱫᱚ ᱛᱟᱭᱚᱢ ᱫᱟᱨᱟᱢ ᱵᱮᱣᱦᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱧᱪᱟᱣ ᱠᱚᱨᱟᱣ ᱦᱩᱭᱩᱜᱼᱟ, ᱮᱱᱠᱷᱟᱱ ᱢᱤᱫᱴᱟᱹᱝ \"ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱢᱚᱱᱮ ᱫᱚᱦᱚ\" ᱛᱤᱱᱦᱟᱹ ᱵᱟᱠᱚᱥ ᱛᱟᱦᱮᱸᱱᱟ ᱾ ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱫᱚ ᱪᱤᱱᱦᱟᱹ ᱵᱟᱠᱚᱥ ᱨᱮᱭᱟᱜ ᱢᱩᱞ ᱫᱚᱥᱟ ᱞᱮᱠᱟᱛᱮ ᱫᱚᱦᱚᱭᱟᱭ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:104
+msgid "The last selected non-default power profile"
+msgstr "ᱢᱩᱪᱟᱹᱫ ᱵᱟᱪᱷᱟᱣ ᱵᱤᱱᱼᱢᱩᱞ ᱯᱟᱣᱟᱨ ᱯᱨᱚᱯᱷᱟᱭᱤᱞ"
+
+#: data/org.gnome.shell.gschema.xml.in:105
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
+msgstr "ᱛᱤᱱᱟᱹᱜ ᱜᱟᱱ ᱥᱤᱥᱴᱚᱢ ᱫᱚ ᱵᱟᱨᱭᱟ ᱠᱷᱚᱱ ᱦᱚᱸ ᱰᱷᱮᱨ ᱫᱟᱲᱮ ᱨᱮᱭᱟᱜ ᱥᱚᱦᱚᱫ ᱠᱚ ᱮᱢ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱱᱤᱛᱦᱚᱸ ᱵᱟᱨᱭᱟ ᱢᱚᱦᱲᱟ ᱢᱩᱫᱨᱮ ᱩᱪᱟᱹᱲ ᱨᱮᱭᱟᱜ ᱜᱚᱲᱚ ᱞᱟᱹᱜᱤᱫ, ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱨᱮᱭᱟᱜ ᱛᱟᱹᱞᱤᱠᱟ ᱞᱟᱫᱮᱪᱷᱚ ᱭᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:113
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr "ᱢᱩᱪᱟᱹᱫ ᱦᱟᱹᱞᱤᱭᱟᱠ \"GNOME ᱨᱮ ᱥᱟᱹᱜᱩᱱ ᱫᱟᱨᱟᱢ\" ᱰᱟᱭᱞᱚᱜᱽ ᱞᱟᱹᱜᱤᱫ ᱩᱫᱩᱜ ᱞᱮᱱᱟ"
+
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr "ᱱᱚᱶᱟ ᱪᱟᱹᱵᱤ ᱫᱚ ᱱᱚᱶᱟ ᱵᱟᱛᱟᱣᱟᱭ, \"GNOME ᱨᱮ ᱥᱟᱹᱜᱩᱱ ᱫᱟᱨᱟᱢ\" ᱠᱟᱛᱷᱟ ᱫᱚ ᱢᱩᱪᱟᱹᱫ ᱚᱠᱛᱮ ᱨᱮ ᱚᱠᱟ ᱦᱟᱹᱞᱤᱭᱟᱠ ᱩᱫᱩᱜ ᱦᱩᱭ ᱞᱮᱱᱟ ᱾ ᱢᱤᱫᱴᱟᱹᱝ ᱠᱷᱟᱹᱞᱤ ᱥᱴᱨᱤᱝ ᱡᱷᱚᱛᱚ ᱠᱷᱚᱱ ᱢᱟᱨᱮᱱ ᱦᱩᱭᱫᱟᱲᱮᱭᱟᱜ ᱵᱚᱨᱱᱚᱱ ᱮ ᱩᱫᱩᱜ ᱥᱚᱫᱚᱨᱼᱟ, ᱟᱨ ᱢᱤᱫᱴᱟᱹᱝ ᱟᱹᱰᱤ ᱢᱟᱨᱟᱝ ᱮᱞ ᱚᱱᱟ ᱵᱚᱨᱱᱚᱱ ᱠᱚ ᱩᱫᱩᱜ ᱥᱚᱫᱚᱨᱼᱟ ᱡᱟᱦᱟᱸ ᱱᱤᱛ ᱦᱟᱹᱵᱤᱡ ᱵᱟᱹᱱᱩᱜ ᱠᱟᱫᱟ ᱾ ᱱᱚᱣᱟ ᱟᱹᱰᱤ ᱢᱟᱨᱟᱝ ᱮᱞ ᱫᱚ ᱠᱟᱛᱷᱟ ᱫᱚ ᱠᱟᱹᱢᱤ ᱞᱮᱠᱟᱛᱮ ᱵᱮᱼᱥᱟᱠᱷᱟ ᱞᱟᱹᱜᱤᱫ ᱵᱮᱣᱦᱟᱨ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:125
+msgid "Layout of the app picker"
+msgstr "ᱮᱯ ᱵᱟᱪᱷᱟᱣᱤᱡ ᱨᱮᱭᱟᱜ ᱞᱮᱭᱟᱣᱩᱴ"
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr "ᱮᱯ ᱵᱟᱪᱷᱟᱣᱤᱡ ᱨᱮᱭᱟᱜ ᱞᱮᱭᱟᱣᱩᱴ᱾ ᱮᱨᱮ ᱨᱮ ᱥᱟᱱᱟᱢ ᱵᱚᱞᱚᱱ ᱜᱮ ᱢᱤᱫ ᱥᱟᱦᱴᱟ ᱠᱟᱱᱟ ᱾ ᱥᱟᱦᱴᱟ ᱠᱚ ᱫᱚ GNOME ᱥᱮᱞ ᱨᱮ ᱧᱮᱞᱚᱜ ᱞᱮᱠᱟ ᱜᱮ ᱡᱟᱣᱨᱟ ᱢᱮᱱᱟᱜᱼᱟ ᱾ ᱥᱟᱱᱟᱢ ᱥᱟᱦᱴᱟ ᱨᱮ ᱢᱤᱫᱴᱟᱹᱝ \"ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱟᱭᱤ ᱰᱤ\" → 'ᱰᱟᱴᱟ' ᱡᱚᱲ ᱛᱟᱦᱮᱱᱟ ᱾ ᱱᱤᱛᱚᱜ, ᱱᱚᱶᱟ ᱜᱚᱱᱚᱝ ᱠᱚ ᱫᱚ 'ᱰᱟᱴᱟ' ᱞᱮᱠᱟᱛᱮ ᱡᱟᱣᱨᱟ ᱢᱮᱱᱟᱜᱼᱟ: • “ᱛᱷᱟᱶ”: ᱥᱟᱦᱴᱟ ᱨᱮ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱪᱤᱱᱦᱟᱹ ᱨᱮᱭᱟᱜ ᱴᱷᱟᱶ"
+
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
+msgid "Keybinding to shift between overview states"
+msgstr "ᱚᱵᱷᱟᱨᱵᱷᱤᱭᱩ ᱥᱴᱮᱴ ᱠᱚ ᱛᱟᱞᱟ ᱨᱮ ᱥᱤᱯᱷᱴ ᱞᱟᱹᱜᱤᱫ ᱠᱤ ᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:146
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr "ᱥᱮᱥᱚᱱ, ᱣᱤᱱᱰᱚ ᱯᱤᱠᱟᱨ ᱟᱨ ᱮᱯ ᱜᱽᱨᱤᱰ ᱛᱟᱞᱟ ᱨᱮ ᱥᱤᱯᱷᱴ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:153
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr "ᱮᱯ ᱜᱽᱨᱤᱰ, ᱣᱤᱱᱰᱚ ᱯᱤᱠᱟᱨ ᱟᱨ ᱥᱮᱥᱚᱱ ᱛᱟᱞᱟ ᱨᱮ ᱥᱤᱯᱷᱴ ᱞᱟᱹᱜᱤᱫ ᱠᱤ ᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱡᱷᱤᱡᱽ ᱞᱟᱹᱜᱤᱫ \"ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱩᱫᱩᱜ ᱢᱮ\" ᱧᱮᱞ"
+
+#: data/org.gnome.shell.gschema.xml.in:160
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr "ᱠᱟᱹᱢᱤᱦᱚᱨᱟ ᱚᱵᱷᱟᱨᱵᱷᱤᱭᱩ ᱨᱮᱭᱟᱜ \"ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱩᱫᱩᱜ\" ᱧᱮᱞ ᱡᱷᱤᱡᱽ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Keybinding to open the overview"
+msgstr "ᱚᱵᱷᱟᱨᱵᱷᱤᱭᱩ ᱡᱷᱤᱡᱽ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:168
+msgid "Keybinding to open the Activities Overview."
+msgstr "ᱠᱟᱹᱢᱤᱦᱚᱨᱟ ᱚᱵᱷᱟᱨᱵᱷᱤᱭᱩ ᱡᱷᱤᱡᱽ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱛᱟᱞᱠᱟ ᱨᱮᱭᱟᱜ ᱧᱮᱞᱚᱜ ᱴᱚᱜᱽᱞ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱛᱟᱞᱠᱟ ᱨᱮᱭᱟᱜ ᱧᱮᱞᱚᱜ ᱴᱚᱜᱽᱞ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:181
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "ᱩᱥᱟᱹᱨᱟ ᱥᱮᱴᱤᱝ ᱢᱮᱱᱩ ᱴᱚᱜᱽᱞ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "ᱩᱥᱟᱹᱨᱟ ᱥᱮᱴᱤᱝ ᱢᱮᱱᱩ ᱴᱚᱜᱽᱞ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:188
+msgid "Keybinding to focus the active notification"
+msgstr "ᱮᱠᱴᱤᱵᱷ ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱯᱷᱚᱠᱟᱥ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Keybinding to focus the active notification."
+msgstr "ᱮᱠᱴᱤᱵᱷ ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱯᱷᱚᱠᱟᱥ ᱞᱟᱹᱜᱤᱫ ᱠᱤᱵᱟᱭᱤᱱᱰᱤᱝ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:195
+msgid "Switch to application 1"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 1 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:199
+msgid "Switch to application 2"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 2 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:203
+msgid "Switch to application 3"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 3 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:207
+msgid "Switch to application 4"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 4 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:211
+msgid "Switch to application 5"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 5 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:215
+msgid "Switch to application 6"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 6 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:219
+msgid "Switch to application 7"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 7 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid "Switch to application 8"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 8 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:227
+msgid "Switch to application 9"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 9 ᱨᱮ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:231
+msgid "Open a new instance of application 1"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 1 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "Open a new instance of application 2"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 2 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:239
+msgid "Open a new instance of application 3"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 3 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:243
+msgid "Open a new instance of application 4"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 4 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:247
+msgid "Open a new instance of application 5"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 5 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:251
+msgid "Open a new instance of application 6"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 6 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:255
+msgid "Open a new instance of application 7"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 7 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:259
+msgid "Open a new instance of application 8"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 8 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:263
+msgid "Open a new instance of application 9"
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ 9 ᱨᱮᱭᱟᱜ ᱢᱤᱫ ᱱᱟᱶᱟ ᱫᱟᱹᱭᱠᱟᱹ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid "Screen brightness up"
+msgstr "ᱥᱠᱨᱤᱱ ᱨᱮᱭᱟᱜ ᱡᱷᱟᱞᱠᱟᱣ ᱪᱮᱛᱟᱱ"
+
+#: data/org.gnome.shell.gschema.xml.in:287
+msgid "Screen brightness up on current monitor"
+msgstr "ᱱᱤᱛᱚᱜ ᱢᱚᱱᱤᱴᱚᱨ ᱨᱮ ᱥᱠᱨᱤᱱ ᱨᱮᱭᱟᱜ ᱡᱷᱟᱞᱠᱟᱣ ᱪᱮᱛᱟᱱ ᱮᱱᱟ"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Screen brightness down"
+msgstr "ᱥᱠᱨᱤᱱ ᱨᱮᱭᱟᱜ ᱡᱷᱟᱞᱠᱟᱣ ᱞᱟᱛᱟᱨ"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+msgid "Screen brightness down on current monitor"
+msgstr "ᱱᱤᱛᱚᱜ ᱢᱚᱱᱤᱴᱚᱨ ᱨᱮ ᱥᱠᱨᱤᱱ ᱨᱮᱭᱟᱜ ᱡᱷᱟᱞᱠᱟᱣ ᱞᱟᱛᱟᱨ ᱮᱱᱟ"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Screen brightness cycle"
+msgstr "ᱥᱠᱨᱤᱱ ᱵᱨᱟᱭᱤᱴᱱᱮᱥ ᱥᱟᱭᱠᱟᱞ"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+msgid "Screen brightness cycle on current monitor"
+msgstr "ᱱᱤᱛᱚᱜ ᱢᱚᱱᱤᱴᱚᱨ ᱨᱮ ᱥᱠᱨᱤᱱ ᱵᱨᱟᱭᱤᱴᱱᱮᱥ ᱥᱟᱭᱠᱟᱞ"
+
+#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:339
+msgid "Limit switcher to current workspace."
+msgstr "ᱥᱣᱤᱪᱟᱨ ᱫᱚ ᱱᱤᱛᱚᱜ ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱨᱮ ᱥᱤᱢᱟᱹ ᱢᱮ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:313
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr "ᱡᱩᱫᱤ ᱥᱟᱹᱨᱤ ᱠᱟᱱᱟ, ᱥᱩᱢᱩᱝ ᱚᱱᱟ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱠᱚ ᱡᱟᱦᱟᱸ ᱨᱮ ᱱᱤᱛᱚᱜ ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱨᱮ ᱣᱤᱱᱰᱚᱣ ᱢᱮᱱᱟᱜᱼᱟ ᱚᱱᱟ ᱠᱚ ᱥᱣᱤᱪᱟᱨ ᱨᱮ ᱩᱫᱩᱜᱚᱜᱼᱟ ᱾ ᱟᱨ ᱵᱟᱝᱠᱷᱟᱱ, ᱥᱟᱱᱟᱢ ᱟᱹᱨᱡᱤ ᱥᱟᱠᱟᱢ ᱥᱮᱞᱮᱫ ᱢᱮᱱᱟᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:330
+msgid "The application icon mode."
+msgstr "ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱟᱭᱠᱚᱱ ᱢᱚᱰ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:331
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "ᱥᱣᱤᱪᱟᱨ ᱨᱮ ᱣᱤᱱᱰᱚᱣ ᱠᱚ ᱪᱮᱫ ᱞᱮᱠᱟ ᱩᱫᱩᱜᱚᱜ ᱠᱟᱱᱟ ᱚᱱᱟ ᱠᱚᱱᱯᱷᱤᱜᱟᱨ ᱢᱮ ᱾ ᱢᱟᱱᱭᱟ ᱥᱚᱢᱵᱷᱚᱵᱚᱱ ᱠᱚ ᱫᱚ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ “ᱥᱩᱢᱩᱝ ᱛᱷᱟᱢᱱᱮᱞ” (ᱣᱤᱱᱰᱚ ᱨᱮᱭᱟᱜ ᱛᱷᱟᱢᱱᱮᱞ ᱩᱫᱩᱜ), “ᱮᱯ-ᱟᱭᱠᱚᱱ-ᱥᱩᱢᱩᱝ” (ᱥᱩᱢᱩᱝ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱟᱭᱠᱚᱱ ᱩᱫᱩᱜ) ᱥᱮ “ᱵᱟᱱᱟᱨ”᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:340
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr "ᱡᱩᱫᱤ ᱥᱟᱹᱨᱤ ᱠᱟᱱᱟ, ᱥᱩᱢᱩᱝ ᱱᱤᱛᱚᱜ ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱠᱷᱚᱱ ᱣᱤᱱᱰᱚᱣ ᱠᱚ ᱥᱣᱤᱪᱟᱨ ᱨᱮ ᱩᱫᱩᱜᱚᱜᱼᱟ ᱾ ᱟᱨ ᱵᱟᱝᱠᱷᱟᱱ, ᱥᱟᱱᱟᱢ ᱡᱷᱚᱨᱠᱟ ᱥᱮᱞᱮᱫ ᱢᱮᱱᱟᱜᱼᱟ ᱾"
+
+#: data/org.gnome.shell.gschema.xml.in:350
+msgid "Locations"
+msgstr "ᱴᱷᱟᱶᱠᱚ"
+
+#: data/org.gnome.shell.gschema.xml.in:351
+msgid "The locations to show in world clocks"
+msgstr "ᱡᱮᱜᱮᱛ ᱜᱷᱚᱰᱤ ᱨᱮ ᱩᱫᱩᱜ ᱞᱟᱹᱜᱤᱫ ᱴᱷᱟᱶ ᱠᱚ"
+
+#: data/org.gnome.shell.gschema.xml.in:361
+msgid "Automatic location"
+msgstr "ᱟᱡ ᱛᱮ ᱪᱟᱞᱟᱜ ᱴᱷᱟᱶ"
+
+#: data/org.gnome.shell.gschema.xml.in:362
+msgid "Whether to fetch the current location or not"
+msgstr "ᱱᱤᱛᱚᱜ ᱴᱷᱟᱶ ᱟᱹᱜᱩ ᱦᱩᱭᱩᱜᱼᱟ ᱥᱮ ᱵᱟᱝ"
+
+#: data/org.gnome.shell.gschema.xml.in:369
+msgid "Location"
+msgstr "ᱡᱟᱜᱟ"
+
+#: data/org.gnome.shell.gschema.xml.in:370
+msgid "The location for which to show a forecast"
+msgstr "ᱚᱱᱟ ᱴᱷᱟᱶ ᱡᱟᱦᱟᱸ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱢᱟᱲᱟᱝ ᱩᱫᱩᱜ ᱩᱫᱩᱜ ᱦᱩᱭᱩᱜᱼᱟ"
+
+#. Keep in sync with subprojects/extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in:4
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
+#: subprojects/extensions-app/data/ui/extensions-window.ui:57
+msgid "Extensions"
+msgstr "ᱠᱷᱚᱧᱡᱟ"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in:2
+msgid "Network Login"
+msgstr "ᱱᱮᱴᱣᱟᱨᱠ ᱞᱚᱜᱤᱱ"
+
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
+msgid "Utilities"
+msgstr "ᱵᱮᱵᱷᱟᱨᱚᱜ ᱠᱚ"
+
+#: js/dbusServices/extensions/extensionPrefsDialog.js:70
+msgid "Extension Error"
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱦᱩᱰᱟᱹᱜ"
+
+#. Translators: %s is an extension name
+#: js/dbusServices/extensions/extensionPrefsDialog.js:103
+#, javascript-format
+msgid "Unable to display the settings for “%s”."
+msgstr "“%s” ᱞᱟᱹᱜᱤᱫ ᱥᱮᱴᱤᱝ ᱩᱫᱩᱜ ᱵᱟᱝ ᱫᱟᱲᱮᱭᱟᱜ ᱠᱟᱱᱟ᱾"
+
+#. Translators: Link label in the phrase "Information about this
+#. problem may be available on the extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:109
+msgid "extension website"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱣᱮᱵᱽᱥᱟᱭᱤᱴ"
+
+#. Translators: %s is "extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:113
+#, javascript-format
+msgid "Information about this problem may be available on the %s."
+msgstr "ᱱᱚᱣᱟ ᱮᱴᱠᱮᱴᱚᱬᱮ ᱵᱟᱵᱚᱛ ᱵᱟᱰᱟᱭ %s ᱨᱮ ᱧᱟᱢᱚᱜᱼᱟ ᱾"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:19
+#: subprojects/extensions-app/data/ui/extension-row.ui:13
+msgid "Error Details"
+msgstr "ᱦᱩᱰᱟᱹᱜ ᱵᱤᱵᱨᱚᱬ"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:26
+msgid "Copy Error"
+msgstr "ᱱᱚᱠᱚᱞ ᱦᱩᱰᱟᱹᱜ"
+
+#: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1427
+msgid "Screen Time Limit Reached"
+msgstr "ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ ᱥᱮᱴᱮᱨ ᱮᱱᱟ"
+
+#: js/gdm/authPrompt.js:64
+msgid ""
+"Daily limit for screen time on this device has been reached. Resume tomorrow."
+msgstr "ᱱᱚᱣᱟ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱨᱮ ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱨᱮᱭᱟᱜ ᱫᱤᱱᱟᱹᱢ ᱥᱤᱢᱟᱹ ᱥᱮᱴᱮᱨ ᱮᱱᱟ ᱾ ᱜᱟᱯᱟ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ ᱾"
+
+#. Translators: this is for ignoring a screen time limit for parental controls
+#: js/gdm/authPrompt.js:72
+msgid "Ignore"
+msgstr "ᱮᱨᱮᱲ ᱜᱤᱰᱤ"
+
+#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:516
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
+#: js/ui/shellMountOperation.js:392
+msgid "Cancel"
+msgstr "ᱵᱟᱹᱰᱨᱟᱹ"
+
+#: js/gdm/authPrompt.js:434 js/ui/components/networkAgent.js:214
+#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
+#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
+#: js/ui/shellMountOperation.js:332
+#: subprojects/extensions-tool/src/command-upload.c:252
+msgid "Password"
+msgstr "ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ"
+
+#: js/gdm/loginDialog.js:327
+msgid "Choose Session"
+msgstr "ᱥᱮᱥᱚᱱ ᱵᱟᱪᱷᱟᱣ ᱢᱮ"
+
+#: js/gdm/loginDialog.js:421 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "ᱥᱮᱴᱮᱨᱚᱜ ᱫᱟᱲᱮ"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:474
+#, javascript-format
+msgid ""
+"Remote login is not possible because a remote session is already running for "
+"%s. To login remotely, you must log out from the remote session or force "
+"stop it."
+msgstr "ᱨᱤᱢᱚᱴ ᱞᱚᱜᱤᱱ ᱫᱚ ᱵᱟᱝ ᱥᱚᱢᱵᱷᱚᱵᱚᱱᱟ ᱪᱮᱫᱟᱜ ᱥᱮ ᱨᱤᱢᱚᱴ ᱥᱮᱥᱚᱱ ᱫᱚ %s ᱞᱟᱹᱜᱤᱫ ᱞᱟᱦᱟ ᱠᱷᱚᱱ ᱜᱮ ᱪᱟᱹᱞᱩᱜ ᱠᱟᱱᱟ᱾ ᱨᱤᱢᱚᱴ ᱠᱷᱚᱱ ᱞᱚᱜᱤᱱ ᱞᱟᱹᱜᱤᱫ, ᱟᱢ ᱫᱚ ᱨᱤᱢᱚᱴ ᱥᱮᱥᱚᱱ ᱠᱷᱚᱱ ᱞᱚᱜᱤᱱ ᱟᱣᱩᱴ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱟᱨᱵᱟᱝ ᱠᱷᱟᱱ ᱡᱚᱵᱽᱨ ᱛᱮ ᱵᱚᱱᱫᱚ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ᱾"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:477
+#, javascript-format
+msgid ""
+"Login is not possible because a remote session is already running for %s. To "
+"login, you must log out from the remote session or force stop it."
+msgstr "ᱞᱚᱜᱤᱱ ᱫᱚ ᱵᱟᱝ ᱥᱚᱢᱵᱷᱚᱵᱚᱱᱟ ᱪᱮᱫᱟᱜ ᱥᱮ ᱢᱤᱫ ᱨᱤᱢᱚᱴ ᱥᱮᱥᱚᱱ ᱞᱟᱦᱟ ᱠᱷᱚᱱ ᱜᱮ %s ᱞᱟᱹᱜᱤᱫ ᱪᱟᱹᱞᱩ ᱠᱟᱱᱟ᱾ ᱞᱚᱜᱤᱱ ᱞᱟᱹᱜᱤᱫ, ᱟᱢ ᱫᱚ ᱨᱤᱢᱚᱴ ᱥᱮᱥᱚᱱ ᱠᱷᱚᱱ ᱞᱚᱜᱤᱱ ᱟᱣᱩᱴ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱟᱨᱵᱟᱝ ᱠᱷᱟᱱ ᱡᱚᱵᱽᱨ ᱛᱮ ᱵᱚᱱᱫᱚ ᱢᱮ ᱾"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:480
+#, javascript-format
+msgid ""
+"Remote login is not possible because a local session is already running for "
+"%s. To login remotely, you must log out from the local session or force stop "
+"it."
+msgstr "ᱨᱤᱢᱚᱴ ᱞᱚᱜᱤᱱ ᱫᱚ ᱵᱟᱝ ᱥᱚᱢᱵᱷᱚᱵᱚᱱᱟ ᱪᱮᱫᱟᱜ ᱥᱮ ᱢᱤᱫ ᱞᱚᱠᱟᱞ ᱥᱮᱥᱚᱱ ᱫᱚ %s ᱞᱟᱹᱜᱤᱫ ᱞᱟᱦᱟ ᱠᱷᱚᱱ ᱜᱮ ᱪᱟᱹᱞᱩᱜ ᱠᱟᱱᱟ᱾ ᱨᱤᱢᱚᱴ ᱠᱷᱚᱱ ᱞᱚᱜᱤᱱ ᱞᱟᱹᱜᱤᱫ, ᱟᱢ ᱫᱚ ᱞᱚᱠᱟᱞ ᱥᱮᱥᱚᱱ ᱠᱷᱚᱱ ᱞᱚᱜᱤᱱ ᱟᱣᱩᱴ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱟᱨᱵᱟᱝ ᱠᱷᱟᱱ ᱡᱚᱵᱽᱨ ᱛᱮ ᱵᱚᱱᱫᱚ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱾"
+
+#. Translators: is running for <username>
+#: js/gdm/loginDialog.js:483
+#, javascript-format
+msgid ""
+"Login is not possible because a session is already running for %s. To login, "
+"you must log out from the session or force stop it."
+msgstr "ᱵᱚᱫᱚ ᱫᱚ ᱵᱟᱭ ᱜᱟᱱ ᱫᱟᱲᱮᱭᱟᱫᱼᱟ ᱪᱮᱫᱟᱜ ᱥᱮ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ ᱫᱚ ᱢᱟᱲᱟᱝ ᱠᱷᱚᱱ %s ᱞᱟᱹᱜᱤᱫ ᱪᱟᱹᱞᱩ ᱞᱟᱱᱟ ᱾  ᱞᱚᱜᱤᱱ ᱞᱟᱹᱜᱤᱫ, ᱟᱢ ᱫᱚ ᱨᱤᱢᱚᱴ ᱥᱮᱥᱚᱱ ᱠᱷᱚᱱ ᱚᱰᱚᱠ ᱫᱩᱣᱟᱹᱨ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱟᱨᱵᱟᱝ ᱠᱷᱟᱱ ᱡᱚᱵᱚᱨ ᱛᱮ ᱵᱚᱸᱫᱚᱭ ᱢᱮ ᱾"
+
+#: js/gdm/loginDialog.js:492
+msgid "Session Already Running"
+msgstr "ᱥᱮᱥᱚᱱ ᱞᱟᱦᱟ ᱠᱷᱚᱱ ᱜᱮ ᱪᱟᱹᱞᱩ ᱠᱟᱱᱟ"
+
+#: js/gdm/loginDialog.js:504
+msgid ""
+"Force stopping will quit any running apps and processes, and could result in "
+"data loss"
+msgstr "ᱡᱚᱵᱽᱨᱟ ᱛᱮ ᱵᱚᱱᱫᱚ ᱠᱷᱟᱱ ᱪᱟᱞᱟᱜ ᱠᱟᱱ ᱡᱟᱦᱟᱱ ᱮᱯᱥ ᱟᱨ ᱯᱨᱚᱥᱮᱥ ᱵᱟᱹᱜᱤᱭᱟᱜᱼᱟ, ᱟᱨ ᱚᱱᱟ ᱨᱮᱭᱟᱜ ᱚᱨᱡᱚ ᱛᱮ ᱰᱟᱴᱟ ᱦᱟᱹᱱ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ"
+
+#: js/gdm/loginDialog.js:524
+msgid "Force Stop"
+msgstr "ᱡᱚᱵᱽᱨ ᱛᱮ ᱛᱷᱤᱨ ᱢᱮ"
+
+#: js/gdm/loginDialog.js:602
+msgid "Not listed?"
+msgstr "ᱵᱟᱝ ᱥᱩᱪᱤ ᱟᱠᱟᱱᱟ?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:1138
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(ᱡᱮᱞᱠᱟ, ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱵᱟᱝᱠᱷᱟᱱ %s)"
+
+#: js/gdm/loginDialog.js:1143 js/ui/components/networkAgent.js:258
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
+msgid "Username"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟ."
+
+#: js/gdm/loginDialog.js:1209
+msgid "Login Attempt Timed Out"
+msgstr "ᱞᱚᱜᱤᱱ ᱪᱮᱥᱴᱟ ᱚᱠᱛᱚ ᱪᱟᱵᱟ ᱮᱱᱟ"
+
+#: js/gdm/loginDialog.js:1210
+msgid "Login took too long, please try again"
+msgstr "ᱞᱚᱜᱤᱱ ᱟᱹᱰᱤ ᱚᱠᱛᱚ ᱞᱟᱜᱟᱣ ᱮᱱᱟ, ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱫᱚᱦᱲᱟ ᱠᱩᱨᱩᱢᱩᱴᱩᱭ ᱢᱮ"
+
+#: js/gdm/loginDialog.js:1555
+msgid "Login Window"
+msgstr "ᱞᱚᱜᱤᱱ ᱡᱷᱚᱨᱠᱟ"
+
+#: js/gdm/util.js:503
+msgid "Authentication error"
+msgstr "ᱯᱨᱚᱢᱟᱱᱴᱤᱠᱮᱥᱚᱱ ᱦᱩᱰᱟᱹᱜ"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:738
+msgid "(or swipe finger across reader)"
+msgstr "(ᱵᱟᱝᱠᱷᱟᱱ ᱯᱟᱲᱦᱟᱣᱤᱡ ᱯᱟᱨᱚᱢ ᱠᱟᱛᱮ ᱠᱟᱹᱴᱩᱵ ᱥᱣᱟᱭᱤᱯ)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:743
+msgid "(or place finger on reader)"
+msgstr "(ᱵᱟᱝᱠᱷᱟᱱ ᱯᱟᱲᱦᱟᱣᱤᱡ ᱨᱮ ᱠᱟᱹᱴᱩᱵ ᱫᱚᱦᱚᱭ ᱢᱮ)"
+
+#: js/misc/breakManager.js:774
+msgid "Break complete sound"
+msgstr "ᱯᱩᱨᱟᱹ ᱥᱟᱰᱮ ᱨᱟᱹᱯᱩᱫ ᱢᱮ"
+
+#: js/misc/breakManager.js:983
+#, javascript-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d ᱴᱤᱡ"
+msgstr[1] "%d ᱴᱤᱡ"
+msgstr[2] "%d ᱴᱤᱡ"
+
+#: js/misc/breakManager.js:989
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d ᱴᱤᱯᱤᱡ"
+msgstr[1] "%d ᱴᱤᱯᱤᱡ"
+msgstr[2] "%d ᱴᱤᱯᱤᱡ"
+
+#: js/misc/breakManager.js:995
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d ᱴᱟᱲᱟᱝ"
+msgstr[1] "%d ᱴᱟᱲᱟᱝ"
+msgstr[2] "%d ᱴᱟᱲᱟᱝ"
+
+#: js/misc/breakManager.js:1001
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d ᱢᱟᱦᱟᱸ"
+msgstr[1] "%d ᱢᱟᱦᱟᱸ"
+msgstr[2] "%d ᱢᱟᱦᱟᱸ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1083
+#, javascript-format
+msgid "It will be time for a break in %s"
+msgid_plural "It will be time for a break in %s"
+msgstr[0] "ᱱᱚᱣᱟ ᱫᱚ %s ᱨᱮ ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[1] "ᱱᱚᱣᱟ ᱫᱚ %s ᱨᱮ ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[2] "ᱱᱚᱣᱟ ᱫᱚ %s ᱨᱮ ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱦᱩᱭᱩᱜᱼᱟ"
+
+#: js/misc/breakManager.js:1091
+msgid "Movement Break Soon"
+msgstr "ᱞᱟᱲᱦᱟᱭ ᱞᱚᱜᱚᱱ ᱜᱮ ᱨᱟᱹᱯᱩᱫᱚᱜᱼᱟ"
+
+#: js/misc/breakManager.js:1094
+msgid "Eyesight Break Soon"
+msgstr "ᱢᱮᱫ ᱧᱮᱞ ᱞᱚᱜᱚᱱ ᱜᱮ ᱨᱟᱹᱯᱩᱫᱚᱜᱼᱟ"
+
+#: js/misc/breakManager.js:1097
+msgid "Break Soon"
+msgstr "ᱞᱚᱜᱚᱱ ᱜᱮ ᱵᱨᱮᱠ"
+
+#: js/misc/breakManager.js:1142
+msgid "Movement Break in Progress"
+msgstr "ᱞᱟᱦᱟᱱᱛᱤ ᱨᱮ ᱞᱟᱲᱦᱟᱭ ᱵᱷᱩᱜᱟᱹᱜ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1145
+#, javascript-format
+msgid "Continue moving around for %s"
+msgid_plural "Continue moving around for %s"
+msgstr[0] "%s ᱞᱟᱹᱜᱤᱫ ᱪᱟᱞᱟᱣ ᱞᱟᱦᱟ ᱛᱟᱦᱮᱱ ᱢᱮ"
+msgstr[1] "%s ᱞᱟᱹᱜᱤᱫ ᱪᱟᱞᱟᱣ ᱞᱟᱦᱟ ᱛᱟᱦᱮᱱ ᱢᱮ"
+msgstr[2] "%s ᱞᱟᱹᱜᱤᱫ ᱪᱟᱞᱟᱣ ᱞᱟᱦᱟ ᱛᱟᱦᱮᱱ ᱢᱮ"
+
+#: js/misc/breakManager.js:1151
+msgid "Eyesight Break in Progress"
+msgstr "ᱢᱮᱫ ᱧᱮᱞ ᱞᱟᱦᱟᱱᱛᱤ ᱨᱮ ᱨᱟᱹᱯᱩᱫᱚᱜ ᱠᱟᱱᱟ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1154
+#, javascript-format
+msgid "Continue looking away for %s"
+msgid_plural "Continue looking away for %s"
+msgstr[0] "%s ᱞᱟᱹᱜᱤᱫ ᱥᱟᱦᱟ ᱠᱚᱭᱚᱜ ᱞᱟᱦᱟᱭ ᱢᱮ"
+msgstr[1] "%s ᱞᱟᱹᱜᱤᱫ ᱥᱟᱦᱟ ᱠᱚᱭᱚᱜ ᱞᱟᱦᱟᱭ ᱢᱮ"
+msgstr[2] "%s ᱞᱟᱹᱜᱤᱫ ᱥᱟᱦᱟ ᱠᱚᱭᱚᱜ ᱞᱟᱦᱟᱭ ᱢᱮ"
+
+#: js/misc/breakManager.js:1160
+msgid "Break in Progress"
+msgstr "ᱞᱟᱦᱟᱱᱛᱤ ᱨᱮ ᱡᱤᱨᱟᱹᱣ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1163
+#, javascript-format
+msgid "%s left in your break"
+msgid_plural "%s left in your break"
+msgstr[0] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱵᱟᱹᱠᱤ ᱢᱮᱱᱟᱜᱼᱟ"
+msgstr[1] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱵᱟᱹᱠᱤ ᱢᱮᱱᱟᱜᱼᱟ"
+msgstr[2] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱵᱟᱹᱠᱤ ᱢᱮᱱᱟᱜᱼᱟ"
+
+#: js/misc/breakManager.js:1202
+msgid "Time for a Movement Break"
+msgstr "ᱞᱟᱲᱦᱟᱭ ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1205
+#, javascript-format
+msgid "Take a break from the device and move around for %s"
+msgid_plural "Take a break from the device and move around for %s"
+msgstr[0] "ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱡᱤᱨᱟᱹᱣ ᱢᱮ ᱟᱨ %s ᱞᱟᱹᱜᱤᱫ ᱩᱰᱩᱝ ᱢᱮ"
+msgstr[1] "ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱡᱤᱨᱟᱹᱣ ᱢᱮ ᱟᱨ %s ᱞᱟᱹᱜᱤᱫ ᱩᱰᱩᱝ ᱢᱮ"
+msgstr[2] "ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱡᱤᱨᱟᱹᱣ ᱢᱮ ᱟᱨ %s ᱞᱟᱹᱜᱤᱫ ᱩᱰᱩᱝ ᱢᱮ"
+
+#: js/misc/breakManager.js:1211
+msgid "Time for an Eyesight Break"
+msgstr "ᱢᱮᱫ ᱧᱮᱞ ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1214
+#, javascript-format
+msgid ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgid_plural ""
+"Take a break from the screen. Look at least 6 meters away for at least %s"
+msgstr[0] "ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱢᱮ ᱾ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ 6 ᱢᱤᱴᱟᱨ ᱥᱟᱺᱜᱤᱧ ᱨᱮ ᱧᱮᱞ ᱢᱮ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ %s"
+msgstr[1] "ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱢᱮ ᱾ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ 6 ᱢᱤᱴᱟᱨ ᱥᱟᱺᱜᱤᱧ ᱨᱮ ᱧᱮᱞ ᱢᱮ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ %s"
+msgstr[2] "ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱢᱮ ᱾ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ 6 ᱢᱤᱴᱟᱨ ᱥᱟᱺᱜᱤᱧ ᱨᱮ ᱧᱮᱞ ᱢᱮ ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ %s"
+
+#: js/misc/breakManager.js:1220
+msgid "Time for a Break"
+msgstr "ᱡᱤᱨᱟᱹᱣ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1223
+#, javascript-format
+msgid "It’s time to take a break. Get away from the device for %s!"
+msgid_plural "It’s time to take a break. Get away from the device for %s!"
+msgstr[0] "ᱱᱚᱣᱟ ᱫᱚ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱲ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱠᱟᱱᱟ ᱾ %s ᱞᱟᱹᱜᱤᱫ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱥᱟᱦᱟᱨᱮ ᱛᱟᱦᱮᱱ ᱢᱮ!"
+msgstr[1] "ᱱᱚᱣᱟ ᱫᱚ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱲ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱠᱟᱱᱟ ᱾ %s ᱞᱟᱹᱜᱤᱫ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱥᱟᱦᱟᱨᱮ ᱛᱟᱦᱮᱱ ᱢᱮ!"
+msgstr[2] "ᱱᱚᱣᱟ ᱫᱚ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱲ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱠᱟᱱᱟ ᱾ %s ᱞᱟᱹᱜᱤᱫ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱷᱚᱱ ᱥᱟᱦᱟᱨᱮ ᱛᱟᱦᱮᱱ ᱢᱮ!"
+
+#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
+#: js/misc/breakManager.js:1247
+#, javascript-format
+msgid "You were due to take a break %s ago"
+msgid_plural "You were due to take a break %s ago"
+msgstr[0] "ᱟᱢ ᱫᱚ %s ᱞᱟᱦᱟ ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱛᱟᱦᱮᱸ ᱠᱟᱱᱟᱢ"
+msgstr[1] "ᱟᱢ ᱫᱚ %s ᱞᱟᱦᱟ ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱛᱟᱦᱮᱸ ᱠᱟᱱᱟᱢ"
+msgstr[2] "ᱟᱢ ᱫᱚ %s ᱞᱟᱦᱟ ᱢᱤᱫ ᱡᱤᱨᱟᱹᱣ ᱦᱟᱛᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱛᱟᱦᱮᱸ ᱠᱟᱱᱟᱢ"
+
+#: js/misc/breakManager.js:1253
+msgid "Break Overdue"
+msgstr "ᱵᱽᱨᱮᱠ ᱚᱵᱷᱟᱨᱰᱭᱩ"
+
+#: js/misc/breakManager.js:1269
+#, javascript-format
+msgid "There is %s remaining in your break"
+msgid_plural "There are %s remaining in your break"
+msgstr[0] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱛᱟᱦᱮᱸ ᱠᱟᱱᱟ"
+msgstr[1] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱚᱠᱛᱚ ᱥᱟᱨᱮᱡ ᱠᱟᱱᱟ"
+msgstr[2] "ᱟᱢᱟᱜ ᱡᱤᱨᱟᱹᱣ ᱨᱮ %s ᱚᱠᱛᱚ ᱥᱟᱨᱮᱡ ᱠᱟᱱᱟ"
+
+#: js/misc/breakManager.js:1275
+msgid "Break Interrupted"
+msgstr "ᱵᱽᱨᱮᱠ ᱛᱟᱲᱟᱢ ᱮᱱᱟ"
+
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1353
+msgid "Delay"
+msgstr "ᱵᱤᱞᱚᱢ"
+
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+msgid "Skip"
+msgstr "ᱵᱟᱫ"
+
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1397
+msgid "Take"
+msgstr "ᱦᱟᱛᱟᱣ"
+
+#. Translators: This is a notification to warn the user that a
+#. screen time break will start shortly.
+#: js/misc/breakManager.js:1460
+#, javascript-format
+msgid "Break in %d second"
+msgid_plural "Break in %d seconds"
+msgstr[0] "%d ᱴᱤᱡ ᱨᱮ ᱵᱨᱮᱠ"
+msgstr[1] "%d ᱴᱤᱡ ᱨᱮ ᱵᱨᱮᱠ"
+msgstr[2] "%d ᱴᱤᱡ ᱨᱮ ᱵᱨᱮᱠ"
+
+#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
+msgid "Brightness"
+msgstr "ᱥᱟᱯᱷᱟ"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:98
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "ᱯᱟᱣᱟᱨ ᱵᱚᱸᱫᱽ"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:101
+msgid "power off;poweroff;shutdown;halt;stop"
+msgstr "ᱯᱟᱣᱟᱨ ᱚᱯᱷ; ᱯᱟᱣᱟᱨ ᱚᱯᱷ; ᱥᱟᱴᱰᱟᱣᱩᱱ; ᱦᱚᱞᱴ; ᱥᱴᱚᱯ"
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:106
+msgctxt "search-result"
+msgid "Restart"
+msgstr "ᱫᱚᱦᱲᱟ ᱮᱦᱚᱵ"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:109
+msgid "reboot;restart;"
+msgstr "ᱨᱤᱵᱩᱴ;ᱨᱤᱥᱴᱟᱨᱴ;"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:114
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱢᱮ"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:117
+msgid "lock screen"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱢᱮ"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:122
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "ᱵᱟᱦᱨᱮ ᱛᱮ ᱚᱰᱚᱠ"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:125
+msgid "logout;log out;sign off"
+msgstr "ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ;ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ;ᱚᱰᱚᱠ ᱪᱟᱞᱟᱜ"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:130
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "ᱵᱚᱸᱫᱚᱭ ᱢᱮ"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:133
+msgid "suspend;sleep"
+msgstr "ᱥᱟᱥᱯᱮᱱᱰ; ᱡᱟᱹᱯᱤᱫ"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:138
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱵᱚᱫᱚᱞ ᱢᱮ"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:141
+msgid "switch user"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱵᱚᱫᱚᱞ"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:148
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr "ᱠᱩᱞᱩᱯ ᱚᱨᱤᱭᱮᱱᱴᱮᱥᱚᱱ; ᱠᱷᱩᱞᱟᱹ ᱚᱨᱤᱭᱮᱱᱴᱮᱥᱚᱱ; ᱥᱠᱨᱤᱱ; ᱟᱹᱪᱩᱨᱚᱜ"
+
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:153
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "ᱢᱤᱫ ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:156
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "ᱥᱠᱨᱤᱱᱥᱚᱴ;ᱥᱠᱨᱤᱱᱠᱟᱥᱴ;ᱥᱱᱤᱯ;ᱠᱮᱯᱪᱚᱨ;ᱨᱮᱠᱚᱨᱰ"
+
+#: js/misc/systemActions.js:267
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "ᱥᱠᱨᱤᱱ ᱟᱹᱪᱩᱨᱚᱜ ᱟᱱᱞᱚᱠ"
+
+#: js/misc/systemActions.js:268
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱟᱹᱪᱩᱨᱚᱜ"
+
+#: js/misc/timeLimitsManager.js:468
+msgid "GNOME needs to save screen time data"
+msgstr "GNOME ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱰᱟᱴᱟ ᱵᱟᱧᱪᱟᱣ ᱞᱟᱹᱠᱛᱤᱭᱟᱭ"
+
+#: js/misc/timeLimitsManager.js:1392
+msgid "Screen Time Limit is almost up"
+msgstr "ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ ᱫᱚ ᱯᱨᱟᱭ ᱪᱟᱵᱟ ᱮᱱᱟ"
+
+#: js/misc/timeLimitsManager.js:1394
+#, javascript-format
+msgid "The computer will lock in %d second."
+msgid_plural "The computer will lock in %d seconds."
+msgstr[0] "ᱠᱚᱢᱯᱭᱩᱴᱟᱨ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱠᱩᱞᱩᱯᱚᱜᱼᱟ ᱾"
+msgstr[1] "ᱠᱚᱢᱯᱭᱩᱴᱟᱨ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱠᱩᱞᱩᱯᱚᱜᱼᱟ ᱾"
+msgstr[2] "ᱠᱚᱢᱯᱭᱩᱴᱟᱨ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱠᱩᱞᱩᱯᱚᱜᱼᱟ ᱾"
+
+#: js/misc/timeLimitsManager.js:1402
+#, javascript-format
+msgid "Screen Time Limit in %d Minute"
+msgid_plural "Screen Time Limit in %d Minutes"
+msgstr[0] "ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ %d ᱴᱤᱯᱤᱡ ᱨᱮ"
+msgstr[1] "ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ %d ᱴᱤᱯᱤᱡ ᱨᱮ"
+msgstr[2] "ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ %d ᱴᱤᱯᱤᱡ ᱨᱮ"
+
+#: js/misc/timeLimitsManager.js:1406
+msgid "Your screen time limit is approaching"
+msgstr "ᱟᱢᱟᱜ ᱥᱠᱨᱤᱱ ᱚᱠᱛᱚ ᱥᱤᱢᱟᱹ ᱥᱮᱴᱮᱨᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/misc/timeLimitsManager.js:1428
+msgid "It’s time to stop using the device"
+msgstr "ᱱᱚᱣᱟ ᱫᱚ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱵᱮᱵᱷᱟᱨ ᱵᱚᱱᱫᱚ ᱨᱮᱭᱟᱜ ᱚᱠᱛᱚ ᱠᱟᱱᱟ"
+
+#: js/misc/util.js:131
+msgid "Command not found"
+msgstr "ᱟᱫᱮᱥ ᱵᱟᱝ ᱧᱟᱢ ᱟᱠᱟᱱᱟ"
+
+#: js/misc/util.js:169
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "“%s” ᱨᱮᱭᱟᱜ ᱪᱟᱹᱞᱩ ᱵᱟᱝ ᱥᱟᱹᱛ ᱟᱠᱟᱱᱟ:"
+
+#: js/misc/dateUtils.js:69
+msgid "Just now"
+msgstr "ᱱᱤᱛᱚᱜ ᱜᱮ"
+
+#: js/misc/dateUtils.js:72
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d ᱴᱤᱯᱤᱡ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱴᱤᱯᱤᱡ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱴᱤᱯᱤᱡ ᱞᱟᱦᱟ"
+
+#: js/misc/dateUtils.js:79
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d ᱴᱟᱲᱟᱝ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱴᱟᱲᱟᱝ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱴᱟᱲᱟᱝ ᱞᱟᱦᱟ"
+
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
+msgid "Yesterday"
+msgstr "ᱦᱚᱞᱟ"
+
+#: js/misc/dateUtils.js:88
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d ᱢᱟᱦᱟ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱢᱟᱦᱟ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱢᱟᱦᱟ ᱞᱟᱦᱟ"
+
+#: js/misc/dateUtils.js:95
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d ᱦᱟᱴ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱦᱟᱴ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱦᱟᱴ ᱞᱟᱦᱟ"
+
+#: js/misc/dateUtils.js:102
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d ᱪᱟᱸᱫᱚ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱪᱟᱸᱫᱚ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱪᱟᱸᱫᱚ ᱞᱟᱦᱟ"
+
+#: js/misc/dateUtils.js:108
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d ᱥᱮᱨᱢᱟ ᱞᱟᱦᱟ"
+msgstr[1] "%d ᱥᱮᱨᱢᱟ ᱞᱟᱦᱟ"
+msgstr[2] "%d ᱥᱮᱨᱢᱟ ᱞᱟᱦᱟ"
+
+#. Translators: Time in 24h format
+#: js/misc/dateUtils.js:155
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/dateUtils.js:161
+#, no-c-format
+msgid "Yesterday, %H:%M"
+msgstr "ᱦᱚᱞᱟ, %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/dateUtils.js:167
+#, no-c-format
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/dateUtils.js:173
+#, no-c-format
+msgid "%B %-d, %H:%M"
+msgstr "%B %-d, %H:%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/dateUtils.js:179
+#, no-c-format
+msgid "%B %-d %Y, %H:%M"
+msgstr "%B %-d %Y, %H:%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/dateUtils.js:184
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/dateUtils.js:190
+#, no-c-format
+msgid "Yesterday, %l:%M %p"
+msgstr "ᱦᱚᱞᱟ, %l:%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/dateUtils.js:196
+#, no-c-format
+msgid "%A, %l:%M %p"
+msgstr "%A, %l:%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/dateUtils.js:202
+#, no-c-format
+msgid "%B %-d, %l:%M %p"
+msgstr "%B %-d, %l:%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/dateUtils.js:208
+#, no-c-format
+msgid "%B %-d %Y, %l:%M %p"
+msgstr "%B %-d %Y, %l:%M %p"
+
+#: js/portalHelper/main.js:104
+msgid "Your connection seems to be secure"
+msgstr "ᱟᱢᱟᱜ ᱡᱚᱯᱲᱟᱣ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱞᱮᱠᱟ ᱧᱮᱞᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/portalHelper/main.js:110
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr "ᱱᱚᱣᱟ ᱦᱚᱴᱥᱯᱚᱴ ᱞᱚᱜᱤᱱ ᱥᱟᱶ ᱟᱢᱟᱜ ᱡᱚᱯᱲᱟᱣ ᱨᱟᱠᱷᱟ ᱵᱟᱝ ᱠᱟᱱᱟ ᱾ ᱟᱢ ᱱᱚᱣᱟ ᱥᱟᱦᱴᱟ ᱨᱮ ᱮᱢ ᱟᱠᱟᱫ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱟᱨ ᱵᱟᱝ ᱮᱴᱟᱜ ᱵᱤᱵᱨᱚᱬ ᱠᱚ ᱥᱩᱨ ᱨᱮᱱ ᱦᱚᱲ ᱠᱚ ᱧᱮᱞ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾"
+
+#: js/portalHelper/main.js:121
+msgid "Hotspot Login"
+msgstr "ᱦᱚᱴᱥᱯᱚᱴ ᱵᱚᱞᱚᱱ"
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:51 js/ui/inhibitShortcutsDialog.js:92
+msgid "Deny"
+msgstr "ᱢᱟᱱᱟ"
+
+#: js/ui/accessDialog.js:52 js/ui/inhibitShortcutsDialog.js:101
+msgid "Allow"
+msgstr "ᱟᱝᱜᱚᱡ"
+
+#: js/ui/appDisplay.js:1734
+msgid "Unnamed Folder"
+msgstr "ᱵᱤᱱ ᱧᱩᱛᱩᱢ ᱯᱚᱴᱚᱢ"
+
+#: js/ui/appFavorites.js:104
+#, javascript-format
+msgid "%s has been pinned to the dash."
+msgstr "%s ᱫᱚ ᱰᱮᱥ ᱨᱮ ᱯᱤᱱ ᱦᱩᱭ ᱟᱠᱟᱱᱟ᱾"
+
+#: js/ui/appFavorites.js:135
+#, javascript-format
+msgid "%s has been unpinned from the dash."
+msgstr "%s ᱫᱚ ᱰᱮᱥ ᱠᱷᱚᱱ ᱟᱱᱯᱤᱱ ᱦᱩᱭ ᱟᱠᱟᱱᱟ᱾"
+
+#: js/ui/appFavorites.js:149 js/ui/main.js:304
+msgid "Undo"
+msgstr "ᱩᱞᱴᱟᱹ"
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:49
+msgid "Open Windows"
+msgstr "ᱡᱷᱚᱨᱠᱟ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/appMenu.js:57
+msgid "New Window"
+msgstr "ᱱᱟᱶᱟ ᱡᱷᱚᱨᱠᱟ"
+
+#: js/ui/appMenu.js:84
+msgid "App Details"
+msgstr "ᱮᱯ ᱵᱤᱵᱨᱚᱬ"
+
+#: js/ui/appMenu.js:100
+msgid "Quit"
+msgstr "ᱵᱟᱹᱜᱤ ᱢᱮ"
+
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
+msgid "Unpin"
+msgstr "ᱟᱱᱯᱤᱱ"
+
+#: js/ui/appMenu.js:161
+msgid "Pin to Dash"
+msgstr "ᱰᱮᱥ ᱨᱮ ᱯᱤᱱ"
+
+#: js/ui/appMenu.js:178
+msgid "Launch Using Integrated Graphics Card"
+msgstr "ᱤᱱᱴᱮᱜᱽᱨᱮᱴᱮᱰ ᱜᱽᱨᱟᱯᱷᱤᱠᱥ ᱠᱟᱨᱰ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱯᱟᱨᱥᱟᱞ ᱢᱮ"
+
+#: js/ui/appMenu.js:179
+msgid "Launch Using Discrete Graphics Card"
+msgstr "ᱰᱤᱥᱠᱨᱮᱴ ᱜᱽᱨᱟᱯᱷᱤᱠᱥ ᱠᱟᱨᱰ ᱵᱮᱵᱷᱟᱨ ᱠᱟᱛᱮ ᱯᱟᱨᱥᱟᱞ ᱢᱮ"
+
+#: js/ui/audioDeviceSelection.js:46
+msgid "Select Audio Device"
+msgstr "ᱚᱰᱤᱭᱚ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱵᱟᱪᱷᱟᱣ ᱢᱮ"
+
+#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+msgid "Sound Settings"
+msgstr "ᱯᱚᱴᱚᱢ ᱥᱟᱡᱟᱣ ᱠᱚ"
+
+#: js/ui/audioDeviceSelection.js:75
+msgid "Headphones"
+msgstr "ᱦᱮᱰᱯᱷᱚᱱ"
+
+#: js/ui/audioDeviceSelection.js:77
+msgid "Headset"
+msgstr "ᱦᱮᱰᱥᱮᱴ"
+
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+msgid "Microphone"
+msgstr "ᱢᱟᱭᱠᱨᱚᱯᱷᱚᱱ"
+
+#: js/ui/backgroundMenu.js:13
+msgid "Change Background…"
+msgstr "ᱯᱟᱹᱪᱷᱞᱟᱹ ᱵᱚᱫᱚᱞ ᱢᱮ..."
+
+#: js/ui/backgroundMenu.js:15
+msgid "Display Settings"
+msgstr "ᱥᱮᱴᱤᱝ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: js/ui/backgroundMenu.js:16
+msgid "Settings"
+msgstr "ᱥᱮᱴᱤᱝ"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:34
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:60
+msgctxt "grid sunday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:62
+msgctxt "grid monday"
+msgid "M"
+msgstr "M"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:64
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:66
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "W"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:68
+msgctxt "grid thursday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:70
+msgctxt "grid friday"
+msgid "F"
+msgstr "F"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:72
+msgctxt "grid saturday"
+msgid "S"
+msgstr "S"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:425
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:435
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:505
+msgid "Previous month"
+msgstr "ᱞᱟᱦᱟ ᱪᱟᱸᱫᱚ"
+
+#: js/ui/calendar.js:523
+msgid "Next month"
+msgstr "ᱫᱚᱥᱟᱨ ᱪᱟᱸᱫᱚ"
+
+#: js/ui/calendar.js:675
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:734
+msgid "Week %V"
+msgstr "ᱦᱟᱴ %V"
+
+#: js/ui/calendar.js:787
+msgid "No Notifications"
+msgstr "ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱵᱟᱹᱱᱩᱜᱼᱟ"
+
+#: js/ui/calendar.js:828
+msgid "Clear"
+msgstr "ᱥᱟᱯᱷᱟ"
+
+#: js/ui/calendar.js:832
+msgctxt "action"
+msgid "Clear all notifications"
+msgstr "ᱥᱟᱱᱟᱢ ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱥᱟᱯᱷᱟᱭ ᱢᱮ"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:40
+#, javascript-format
+msgid "“%s” Is Not Responding"
+msgstr "“%s” ᱛᱮᱞᱟ ᱵᱟᱭ ᱮᱢᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/closeDialog.js:41
+msgid ""
+"You may choose to wait a short while for it to continue or force the app to "
+"quit entirely"
+msgstr "ᱟᱢ ᱱᱚᱣᱟ ᱞᱟᱦᱟᱜ ᱞᱟᱹᱜᱤᱫ ᱠᱟᱹᱡ ᱚᱠᱛᱚ ᱛᱟᱺᱜᱤ ᱵᱟᱪᱷᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ ᱟᱨᱵᱟᱝᱠᱷᱟᱱ ᱮᱯ ᱫᱚ ᱯᱩᱨᱟᱹ ᱵᱟᱹᱜᱤ ᱞᱟᱹᱜᱤᱫ ᱡᱚᱵᱽᱨ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ"
+
+#: js/ui/closeDialog.js:69
+msgid "Force Quit"
+msgstr "ᱡᱚᱵᱽᱨ ᱛᱮ ᱵᱟᱹᱜᱤ"
+
+#: js/ui/closeDialog.js:74
+msgid "Wait"
+msgstr "ᱛᱟᱺᱜᱤ"
+
+#: js/ui/components/automountManager.js:81
+msgid "External drive connected"
+msgstr "ᱵᱟᱦᱨᱮ ᱰᱨᱟᱭᱤᱵᱷ ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/components/automountManager.js:93
+msgid "External drive disconnected"
+msgstr "ᱵᱟᱦᱨᱮ ᱰᱨᱟᱭᱤᱵᱷ ᱡᱚᱯᱲᱟᱣ ᱜᱮᱫ ᱮᱱᱟ"
+
+#: js/ui/components/automountManager.js:207
+msgid "Unable to unlock volume"
+msgstr "ᱵᱷᱚᱞᱭᱩᱢ ᱠᱷᱩᱞᱟᱹ ᱵᱟᱝ ᱫᱟᱲᱮᱭᱟᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/components/automountManager.js:208
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "ᱵᱚᱦᱟᱞ ᱟᱠᱟᱱ ᱭᱩᱰᱤᱥᱠ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱫᱚ ᱯᱤ ᱟᱭᱤ ᱮᱢ ᱥᱮᱴᱤᱝ ᱵᱟᱭ ᱥᱟᱯᱚᱨᱴ ᱮᱫᱟ"
+
+#. Translators: %s is the name of a partition on a external drive
+#: js/ui/components/autorunManager.js:190
+#, javascript-format
+msgid "“%s” connected"
+msgstr "“%s” ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/components/autorunManager.js:191
+msgid "Disk can now be used"
+msgstr "ᱰᱤᱥᱠ ᱫᱚ ᱱᱤᱛᱚᱜ ᱵᱮᱵᱷᱟᱨ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ"
+
+#: js/ui/components/autorunManager.js:203
+#, javascript-format
+msgid "Open with %s"
+msgstr "%s ᱥᱟᱶ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/components/networkAgent.js:96
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router"
+msgstr "ᱵᱚᱫᱚᱞ ᱛᱮ ᱟᱢ ᱟᱢᱟᱜ ᱨᱟᱣᱴᱟᱨ ᱨᱮ \"WPS\" ᱵᱩᱛᱟᱢ ᱫᱟᱵᱟᱣ ᱠᱟᱛᱮ ᱡᱚᱯᱲᱟᱣ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ"
+
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
+#: js/ui/status/network.js:360 js/ui/status/network.js:444
+msgid "Connect"
+msgstr "ᱡᱚᱲᱟᱣ ᱢᱮ"
+
+#: js/ui/components/networkAgent.js:223
+msgid "Key"
+msgstr "ᱪᱟᱹᱵᱤ"
+
+#: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
+msgid "Private key password"
+msgstr "ᱯᱨᱟᱭᱣᱮᱴ ᱠᱤ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ"
+
+#: js/ui/components/networkAgent.js:307
+msgid "Identity"
+msgstr "ᱪᱤᱱᱦᱟᱹᱯ"
+
+#: js/ui/components/networkAgent.js:333
+msgid "Service"
+msgstr "ᱥᱮᱵᱟ"
+
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
+msgid "Authentication required"
+msgstr "ᱟᱫᱮᱨ ᱫᱚᱨᱠᱟᱨ ᱠᱟᱱᱟ"
+
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network “%s”"
+msgstr "ᱣᱟᱭᱟᱨᱞᱮᱥ ᱱᱮᱴᱣᱟᱨᱠ “%s” ᱮᱠᱥᱮᱥ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱵᱟᱝᱠᱷᱟᱱ ᱮᱱᱠᱨᱤᱯᱥᱚᱱ ᱪᱟᱹᱵᱤ ᱠᱚ ᱞᱟᱹᱠᱛᱤᱭᱟᱱᱟ"
+
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
+msgid "Wired 802.1X authentication"
+msgstr "ᱣᱟᱭᱟᱨᱰ 802.1X ᱚᱛᱷᱮᱱᱴᱤᱠᱮᱥᱚᱱ"
+
+#: js/ui/components/networkAgent.js:379
+msgid "Network name"
+msgstr "ᱱᱮᱴᱣᱟᱨᱠ ᱧᱩᱛᱩᱢ"
+
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
+msgid "DSL authentication"
+msgstr "DSL ᱚᱛᱷᱮᱱᱴᱤᱠᱮᱥᱚᱱ"
+
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
+msgid "PIN code required"
+msgstr "PIN ᱠᱳᱰ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "ᱢᱚᱵᱟᱭᱤᱞ ᱵᱨᱚᱰᱵᱮᱱᱰ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱞᱟᱹᱜᱤᱫ ᱯᱤᱱ ᱠᱳᱰ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/components/networkAgent.js:397
+msgid "PIN"
+msgstr "PIN"
+
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
+#, javascript-format
+msgid "A password is required to connect to “%s”"
+msgstr "“%s” ᱥᱟᱶ ᱡᱚᱯᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/components/networkAgent.js:769
+msgid "VPN password"
+msgstr "VPN ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ"
+
+#: js/ui/components/polkitAgent.js:44
+msgid "Authentication Required"
+msgstr "ᱯᱨᱚᱢᱟᱱᱴᱤᱠᱮᱥᱚᱱ ᱞᱟᱹᱠᱛᱤᱭᱟᱱᱟ"
+
+#: js/ui/components/polkitAgent.js:84
+msgid "Administrator"
+msgstr "ᱮᱰᱢᱤᱱᱤᱥᱴᱨᱮᱴᱚᱨ"
+
+#: js/ui/components/polkitAgent.js:149
+msgid "Authenticate"
+msgstr "ᱟᱫᱮᱨ"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "ᱤᱠᱟᱹ ᱠᱟᱹᱧ ᱢᱮ, ᱚᱱᱟ ᱵᱟᱝ ᱠᱟᱹᱢᱤ ᱞᱮᱱᱟ ᱾ ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱫᱚᱦᱲᱟ ᱠᱩᱨᱩᱢᱩᱴᱩᱭ ᱢᱮ᱾"
+
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
+msgid "Windows"
+msgstr "ᱡᱷᱚᱨᱠᱟ"
+
+#: js/ui/dash.js:200 js/ui/dash.js:246
+msgid "Show Apps"
+msgstr "ᱮᱯᱥ ᱩᱫᱩᱜᱽ ᱢᱮ"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the bottom of the overview
+#: js/ui/dash.js:400
+msgid "Dash"
+msgstr "ᱰᱮᱥ"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:99
+msgid "%B %-d %Y"
+msgstr "%B %-d %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:106
+msgid "%A %B %e %Y"
+msgstr "%A %B %e %Y"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:173
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%B %-d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:176
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%B %-d %Y"
+
+#: js/ui/dateMenu.js:182
+msgid "Today"
+msgstr "ᱛᱮᱦᱮᱸᱧ"
+
+#: js/ui/dateMenu.js:186
+msgid "Tomorrow"
+msgstr "ᱜᱟᱯᱟ"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:217
+msgctxt "event list time"
+msgid "All Day"
+msgstr "ᱥᱟᱱᱟᱢ ᱢᱟᱦᱟ"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:239
+msgid "%m/%d"
+msgstr "%m/%d"
+
+#: js/ui/dateMenu.js:290
+msgid "No Events"
+msgstr "ᱪᱮᱫ ᱜᱷᱚᱴᱚᱱ ᱵᱟᱹᱱᱩᱜᱼᱟ"
+
+#: js/ui/dateMenu.js:412
+msgid "Add World Clocks…"
+msgstr "ᱡᱮᱜᱮᱛ ᱜᱷᱚᱰᱤ ᱥᱮᱞᱮᱫ ᱢᱮ..."
+
+#: js/ui/dateMenu.js:413
+msgid "World Clocks"
+msgstr "ᱡᱮᱜᱮᱛ ᱜᱷᱩᱲᱤ"
+
+#: js/ui/dateMenu.js:704
+msgid "Loading…"
+msgstr "ᱞᱟᱫᱮᱜ ᱠᱟᱱᱟ..."
+
+#: js/ui/dateMenu.js:714
+msgid "Go Online for Weather Information"
+msgstr "ᱦᱚᱭ ᱦᱤᱥᱤᱫ ᱵᱟᱰᱟᱭ ᱞᱟᱹᱜᱤᱫ ᱚᱱᱞᱟᱭᱤᱱ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/dateMenu.js:716
+msgid "Weather Information Unavailable"
+msgstr "ᱦᱚᱭ ᱦᱤᱥᱤᱫ ᱵᱤᱵᱨᱚᱬ ᱵᱟᱝ ᱧᱟᱢᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/dateMenu.js:726
+msgid "Weather"
+msgstr "ᱦᱚᱭ ᱦᱤᱥᱤᱫ"
+
+#: js/ui/dateMenu.js:728
+msgid "Select Weather Location…"
+msgstr "ᱦᱚᱭ ᱦᱤᱥᱤᱫ ᱴᱷᱟᱶ ᱵᱟᱪᱷᱟᱣ ᱢᱮ..."
+
+#: js/ui/endSessionDialog.js:46
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "%s ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ"
+
+#: js/ui/endSessionDialog.js:47
+msgctxt "title"
+msgid "Log Out"
+msgstr "ᱵᱟᱦᱨᱮ ᱛᱮ ᱚᱰᱚᱠ"
+
+#: js/ui/endSessionDialog.js:50
+#, javascript-format
+msgid "%s will be logged out automatically in %d second"
+msgid_plural "%s will be logged out automatically in %d seconds"
+msgstr[0] "%s ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[1] "%s ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[2] "%s ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+
+#: js/ui/endSessionDialog.js:56
+#, javascript-format
+msgid "You will be logged out automatically in %d second"
+msgid_plural "You will be logged out automatically in %d seconds"
+msgstr[0] "ᱟᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[1] "ᱟᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+msgstr[2] "ᱟᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱵᱟᱦᱨᱮ ᱚᱰᱚᱠ ᱦᱩᱭᱩᱜᱼᱟ"
+
+#: js/ui/endSessionDialog.js:63
+msgctxt "button"
+msgid "Log Out"
+msgstr "ᱵᱟᱦᱨᱮ ᱛᱮ ᱚᱰᱚᱠ"
+
+#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:181
+msgctxt "title"
+msgid "Power Off"
+msgstr "ᱯᱟᱣᱟᱨ ᱵᱚᱸᱫᱽ"
+
+#: js/ui/endSessionDialog.js:70
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱵᱚᱦᱟᱞ ᱢᱮ ᱟᱨ ᱯᱟᱣᱟᱨ ᱚᱯᱷ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:73
+#, javascript-format
+msgid "The system will power off automatically in %d second"
+msgid_plural "The system will power off automatically in %d seconds"
+msgstr[0] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱯᱟᱣᱟᱨ ᱚᱯᱷᱚᱜᱼᱟ"
+msgstr[1] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱯᱟᱣᱟᱨ ᱚᱯᱷᱚᱜᱼᱟ"
+msgstr[2] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ %d ᱴᱤᱡ ᱨᱮ ᱟᱡ ᱛᱮ ᱯᱟᱣᱟᱨ ᱚᱯᱷᱚᱜᱼᱟ"
+
+#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "ᱛᱟᱺᱜᱤ ᱠᱟᱱ ᱥᱚᱯᱷᱴᱣᱮᱭᱟᱨ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:81
+msgctxt "button"
+msgid "Power Off"
+msgstr "ᱯᱟᱣᱟᱨ ᱵᱚᱸᱫᱽ"
+
+#: js/ui/endSessionDialog.js:88
+msgctxt "title"
+msgid "Restart"
+msgstr "ᱫᱚᱦᱲᱟ ᱮᱦᱚᱵ"
+
+#: js/ui/endSessionDialog.js:89
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱵᱚᱦᱟᱞ ᱢᱮ ᱟᱨ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:92
+#, javascript-format
+msgid "The system will restart automatically in %d second"
+msgid_plural "The system will restart automatically in %d seconds"
+msgstr[0] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ ᱟᱡ ᱛᱮ %d ᱴᱤᱡ ᱨᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ"
+msgstr[1] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ ᱟᱡ ᱛᱮ %d ᱴᱤᱡ ᱨᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ"
+msgstr[2] "ᱥᱤᱥᱴᱚᱢ ᱫᱚ ᱟᱡ ᱛᱮ %d ᱴᱤᱡ ᱨᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ"
+
+#: js/ui/endSessionDialog.js:100
+msgctxt "button"
+msgid "Restart"
+msgstr "ᱫᱚᱦᱲᱟ ᱮᱦᱚᱵ"
+
+#: js/ui/endSessionDialog.js:108
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ ᱟᱨ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:111
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second"
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds"
+msgstr[0] "ᱥᱤᱥᱴᱚᱢ ᱟᱡ ᱛᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ ᱟᱨ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱤᱱᱥᱴᱚᱞᱚᱜᱼᱟ"
+msgstr[1] "ᱥᱤᱥᱴᱚᱢ ᱟᱡ ᱛᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ ᱟᱨ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱤᱱᱥᱴᱚᱞᱚᱜᱼᱟ"
+msgstr[2] "ᱥᱤᱥᱴᱚᱢ ᱟᱡ ᱛᱮ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱜᱼᱟ ᱟᱨ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱤᱱᱥᱴᱚᱞᱚᱜᱼᱟ"
+
+#: js/ui/endSessionDialog.js:118
+msgctxt "button"
+msgid "Restart & Install"
+msgstr "ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ ᱟᱨ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:120
+msgctxt "button"
+msgid "Install & Power Off"
+msgstr "ᱵᱚᱦᱟᱞ ᱢᱮ ᱟᱨ ᱯᱟᱣᱟᱨ ᱚᱯᱷ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:121
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱵᱚᱦᱟᱞ ᱛᱟᱭᱚᱢ ᱯᱟᱣᱟᱨ ᱵᱚᱱᱫᱚ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:262
+msgid "Low battery power: please plug in before installing updates"
+msgstr "ᱠᱚᱢ ᱵᱮᱴᱟᱨᱤ ᱯᱟᱣᱟᱨᱺ ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱵᱚᱦᱟᱞ ᱞᱟᱦᱟᱨᱮ ᱯᱞᱟᱜᱽ ᱤᱱ ᱢᱮ"
+
+#: js/ui/endSessionDialog.js:271
+msgid "Some applications are busy or have unsaved work"
+msgstr "ᱛᱤᱱᱟᱹᱜ ᱜᱟᱱ ᱮᱯᱞᱤᱠᱮᱥᱚᱱ ᱠᱚᱫᱚ ᱵᱡᱤ ᱜᱮᱭᱟ ᱵᱟᱝᱠᱷᱟᱱ ᱠᱟᱹᱢᱤ ᱵᱟᱝ ᱥᱟᱺᱧᱟᱣ ᱠᱟᱱᱟ"
+
+#: js/ui/endSessionDialog.js:276
+msgid "Other users are logged in"
+msgstr "ᱮᱴᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱠᱚ ᱞᱚᱜᱽ ᱤᱱ ᱟᱠᱟᱱᱟ ᱠᱚ"
+
+#: js/ui/endSessionDialog.js:431
+msgctxt "button"
+msgid "Boot Options"
+msgstr "ᱵᱩᱴ ᱚᱯᱥᱚᱱ ᱠᱚ"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:637
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (ᱨᱤᱢᱚᱴ)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:640
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (ᱠᱚᱱᱥᱚᱞ)"
+
+#: js/ui/extensionDownloader.js:280
+msgid "Install"
+msgstr "ᱵᱚᱦᱟᱞ"
+
+#: js/ui/extensionDownloader.js:286
+msgid "Install Extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: js/ui/extensionDownloader.js:287
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "ᱠᱷᱚᱧᱡᱟ.ᱜᱱᱳᱢ.ᱚᱨᱜᱽ ᱠᱷᱚᱱ “%s” ᱰᱟᱩᱱᱞᱳᱰ ᱟᱨ ᱵᱚᱦᱟᱞ ᱢᱮ?"
+
+#: js/ui/extensionSystem.js:353
+msgid "Extension Updates Available"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱢᱮᱱᱟᱜᱼᱟ"
+
+#: js/ui/extensionSystem.js:354
+msgid "Extension updates are ready to be installed"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱫᱚ ᱵᱚᱦᱟᱞ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱯᱲᱟᱣ ᱜᱮᱭᱟ"
+
+#: js/ui/inhibitShortcutsDialog.js:70
+msgid "Allow inhibiting shortcuts"
+msgstr "ᱥᱚᱴᱠᱟᱴ ᱵᱟᱨᱚᱱ ᱨᱮᱭᱟᱜ ᱫᱟᱣ ᱮᱢᱚᱜ ᱢᱮ"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:73
+#, javascript-format
+msgid "The app %s wants to inhibit shortcuts"
+msgstr "ᱮᱯ %s ᱥᱚᱴᱠᱟᱴ ᱵᱟᱨᱚᱱ ᱥᱟᱱᱟᱭᱮ ᱠᱟᱱᱟ"
+
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "An app wants to inhibit shortcuts"
+msgstr "ᱢᱤᱫ ᱮᱯ ᱥᱚᱴᱠᱟᱴ ᱵᱟᱨᱚᱱ ᱥᱟᱱᱟᱭᱮ ᱠᱟᱱᱟ"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:81
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s"
+msgstr "ᱟᱢ %s ᱞᱤᱱ ᱠᱟᱛᱮ ᱥᱚᱴᱠᱟᱴ ᱨᱤᱥᱴᱚᱨ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned On"
+msgstr "ᱵᱟᱹᱭ ᱵᱟᱹᱭ ᱛᱮ ᱪᱟᱹᱵᱤ ᱠᱚ ᱪᱟᱹᱞᱩ ᱮᱱᱟ"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid "Slow Keys Turned Off"
+msgstr "ᱵᱟᱹᱭ ᱵᱟᱹᱭ ᱛᱮ ᱪᱟᱹᱵᱤ ᱠᱚ ᱵᱚᱱᱫᱚ ᱮᱱᱟ"
+
+#: js/ui/kbdA11yDialog.js:36
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr "ᱟᱢ ᱥᱤᱯᱷᱴ ᱠᱤ 8 ᱴᱤᱯᱤᱡ ᱞᱟᱹᱜᱤᱫ ᱥᱟᱵ ᱫᱚᱦᱚ ᱠᱮᱫᱟᱢ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱥᱞᱚ ᱠᱤᱡᱽ ᱯᱷᱤᱪᱟᱨ ᱨᱮᱭᱟᱜ ᱥᱚᱴᱠᱟᱴ ᱠᱟᱱᱟ, ᱡᱟᱦᱟᱸ ᱫᱚ ᱟᱢᱟᱜ ᱠᱤᱵᱚᱨᱰ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ ᱨᱮ ᱮᱥᱮᱨ ᱮᱢᱟᱭᱟ ᱾"
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "ᱥᱴᱤᱠᱤ ᱪᱟᱹᱵᱤ ᱠᱚ ᱪᱟᱹᱞᱩ ᱮᱱᱟ"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "ᱞᱟᱴᱷᱟ ᱪᱟᱵᱷᱤ ᱠᱚ ᱵᱚᱱᱫᱚ ᱮᱱᱟ"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr "ᱟᱢ ᱛᱷᱟᱨ ᱨᱮ 5 ᱫᱷᱟᱣ ᱥᱤᱯᱷᱴ ᱠᱤ ᱞᱤᱱ ᱠᱮᱫᱟᱢ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱥᱴᱤᱠᱤ ᱠᱤᱡᱽ ᱯᱷᱤᱪᱟᱨ ᱨᱮᱭᱟᱜ ᱥᱚᱴᱠᱟᱴ ᱠᱟᱱᱟ, ᱡᱟᱦᱟᱸ ᱫᱚ ᱟᱢᱟᱜ ᱠᱤᱵᱚᱨᱰ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ ᱨᱮ ᱮᱥᱮᱨ ᱮᱢᱟᱭᱟ ᱾"
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr "ᱟᱢ ᱫᱚ ᱢᱤᱫ ᱫᱷᱟᱣ ᱛᱮ ᱵᱟᱨ ᱠᱤ ᱞᱤᱱ ᱠᱮᱫᱟᱢ, ᱟᱨᱵᱟᱝ ᱥᱤᱯᱷᱴ ᱠᱤ 5 ᱫᱷᱟᱣ ᱛᱷᱟᱨ ᱨᱮ ᱞᱤᱱ ᱠᱮᱫᱟᱢ ᱾ ᱱᱚᱣᱟ ᱫᱚ ᱥᱴᱤᱠᱤ ᱠᱤᱡᱽ ᱯᱷᱤᱪᱟᱨ ᱵᱚᱱᱫᱚᱭᱟᱭ, ᱡᱟᱦᱟᱸ ᱫᱚ ᱟᱢᱟᱜ ᱠᱤᱵᱚᱨᱰ ᱠᱟᱹᱢᱤ ᱦᱚᱨᱟ ᱨᱮ ᱮᱥᱮᱨ ᱮᱢᱟᱭᱟ ᱾"
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Leave On"
+msgstr "ᱪᱟᱹᱞᱩ ᱟᱲᱟᱜ ᱢᱮ"
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Turn On"
+msgstr "ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+msgid "Turn Off"
+msgstr "ᱵᱚᱱᱫᱚ ᱢᱮ"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "ᱵᱟᱹᱜᱤᱭᱟᱜ ᱢᱮ"
+
+#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:895
+msgid "Keyboard Settings"
+msgstr "ᱠᱤᱵᱚᱨᱰ ᱥᱮᱴᱤᱝ"
+
+#: js/ui/lookingGlass.js:737
+msgid "No extensions installed"
+msgstr "ᱪᱮᱫ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱝ ᱵᱚᱦᱟᱞ ᱟᱠᱟᱱᱟ"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:800
+#, javascript-format
+msgid "%s has not emitted any errors"
+msgstr "%s ᱫᱚ ᱪᱮᱫ ᱦᱚᱸ ᱦᱩᱰᱟᱹᱜ ᱵᱟᱭ ᱚᱰᱚᱠ ᱟᱠᱟᱫᱟ"
+
+#: js/ui/lookingGlass.js:806
+msgid "Hide Errors"
+msgstr "ᱦᱩᱰᱟᱹᱜ ᱠᱚ ᱩᱠᱩᱭ ᱢᱮ"
+
+#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+msgid "Show Errors"
+msgstr "ᱦᱩᱰᱟᱹᱜ ᱠᱚ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: js/ui/lookingGlass.js:819
+msgid "Active"
+msgstr "ᱥᱚᱡᱟᱜ"
+
+#: js/ui/lookingGlass.js:822
+msgid "Inactive"
+msgstr "ᱤᱱᱮᱠᱴᱤᱵᱷ"
+
+#: js/ui/lookingGlass.js:824
+msgid "Error"
+msgstr "ᱦᱩᱰᱟᱹᱜ"
+
+#: js/ui/lookingGlass.js:826
+msgid "Out of date"
+msgstr "ᱢᱟᱦᱟᱸ ᱪᱟᱵᱟ ᱮᱱᱟ"
+
+#: js/ui/lookingGlass.js:828
+msgid "Downloading"
+msgstr "ᱰᱟᱩᱱᱞᱳᱰ ᱦᱩᱭᱩᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/lookingGlass.js:830
+msgid "Deactivating"
+msgstr "ᱰᱤᱮᱠᱴᱤᱵᱷᱤᱝ"
+
+#: js/ui/lookingGlass.js:832
+msgid "Activating"
+msgstr "ᱩᱥᱨᱟᱹᱣᱪᱷᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/lookingGlass.js:868
+msgid "View Source"
+msgstr "ᱥᱚᱨᱥ ᱧᱮᱞ ᱢᱮ"
+
+#: js/ui/lookingGlass.js:879
+msgid "Web Page"
+msgstr "ᱣᱮᱵᱽ ᱥᱟᱦᱴᱟ"
+
+#: js/ui/main.js:300
+msgid "System was put in unsafe mode"
+msgstr "ᱥᱤᱥᱴᱚᱢ ᱫᱚ ᱵᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱢᱚᱰ ᱨᱮ ᱫᱚᱦᱚ ᱞᱮᱱᱟ"
+
+#: js/ui/main.js:301
+msgid "Apps now have unrestricted access"
+msgstr "ᱮᱯᱥ ᱠᱚ ᱨᱮ ᱱᱤᱛᱚᱜ ᱵᱤᱱ ᱵᱟᱨᱚᱱ ᱮᱠᱥᱮᱥ ᱢᱮᱱᱟᱜᱼᱟ"
+
+#: js/ui/main.js:362
+msgid "Logged in as a privileged user"
+msgstr "ᱢᱤᱫ ᱵᱷᱟᱹᱜᱤ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱞᱮᱠᱟᱛᱮ ᱞᱚᱜᱽ ᱤᱱ ᱦᱩᱭ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/main.js:363
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr "ᱨᱩᱠᱷᱤᱭᱟᱹ ᱠᱟᱨᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱵᱷᱟᱹᱜᱤ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱞᱮᱠᱟᱛᱮ ᱢᱤᱫ ᱫᱷᱚᱱ ᱪᱟᱹᱞᱩ ᱠᱷᱚᱱ ᱥᱟᱦᱟᱨ ᱨᱮ ᱛᱟᱦᱮᱱ ᱞᱟᱹᱠᱛᱤᱭᱟ᱾ ᱡᱩᱫᱤ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜ-ᱟ, ᱟᱢ ᱫᱚ ᱥᱟᱫᱷᱟᱨᱚᱱ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱞᱮᱠᱟᱛᱮ ᱞᱚᱜᱽ ᱤᱱ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ᱾"
+
+#: js/ui/main.js:411
+msgid "Screen Lock disabled"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱜᱮᱭᱟ"
+
+#: js/ui/main.js:412
+msgid "Screen Locking requires the GNOME display manager"
+msgstr "ᱥᱠᱨᱤᱱ ᱞᱚᱠᱤᱝ ᱞᱟᱹᱜᱤᱫ GNOME ᱰᱤᱥᱯᱞᱮ ᱢᱮᱱᱮᱡᱟᱨ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ"
+
+#. Translators: this is the string displayed in the header when a message
+#. source doesn't have a name
+#: js/ui/messageList.js:403
+msgid "Unknown App"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭ ᱮᱯ"
+
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
+msgid "Notification sound"
+msgstr "ᱱᱚᱴᱤᱯᱷᱤᱠᱮᱥᱚᱱ ᱥᱟᱰᱮ"
+
+#: js/ui/mpris.js:144
+msgid "Unknown artist"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭ ᱠᱟᱹᱨᱤᱜᱚᱞ"
+
+#: js/ui/mpris.js:154
+msgid "Unknown title"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭ ᱥᱟᱛᱷᱟᱢ"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:330
+msgid "Type to search"
+msgstr "ᱥᱮᱸᱫᱽᱨᱟ ᱞᱟᱹᱜᱤᱫ ᱴᱟᱭᱤᱯ ᱢᱮ"
+
+#: js/ui/overviewControls.js:395
+msgid "Apps"
+msgstr "ᱮᱯᱥ"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:33
+msgid "Overview"
+msgstr "ᱚᱵᱷᱟᱨᱵᱷᱤᱭᱩ"
+
+#: js/ui/padOsd.js:99
+msgid "New shortcut…"
+msgstr "ᱱᱟᱶᱟ ᱥᱚᱴᱠᱟᱴ..."
+
+#: js/ui/padOsd.js:152
+msgid "App defined"
+msgstr "ᱮᱯ ᱩᱱᱩᱨᱩᱢ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/padOsd.js:153
+msgid "Show on-screen help"
+msgstr "ᱚᱱ-ᱥᱠᱨᱤᱱ ᱜᱚᱲᱚ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: js/ui/padOsd.js:154
+msgid "Switch monitor"
+msgstr "ᱢᱚᱱᱤᱴᱚᱨ ᱥᱣᱤᱪ ᱢᱮ"
+
+#: js/ui/padOsd.js:155
+msgid "Assign keystroke"
+msgstr "ᱠᱤᱥᱴᱨᱚᱠ ᱮᱢ ᱢᱮ"
+
+#: js/ui/padOsd.js:224
+msgid "Done"
+msgstr "ᱦᱩᱭᱮᱱᱟ"
+
+#: js/ui/padOsd.js:744
+msgid "Edit…"
+msgstr "ᱥᱟᱯᱲᱟᱣ…"
+
+#: js/ui/padOsd.js:792
+msgid "None"
+msgstr "ᱵᱟᱱᱝ"
+
+#: js/ui/padOsd.js:869
+msgid "Press a button to configure"
+msgstr "ᱠᱚᱱᱯᱷᱤᱜᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱵᱩᱛᱟᱢ ᱞᱤᱱ ᱢᱮ"
+
+#: js/ui/padOsd.js:870
+msgid "Press Esc to exit"
+msgstr "ᱚᱰᱚᱠᱚᱜ ᱞᱟᱹᱜᱤᱫ Esc ᱞᱤᱱ ᱢᱮ"
+
+#: js/ui/padOsd.js:873
+msgid "Press any key to exit"
+msgstr "ᱚᱰᱚᱠᱚᱜ ᱞᱟᱹᱜᱤᱫ ᱡᱟᱦᱟᱱ ᱠᱤ ᱞᱤᱱ ᱢᱮ"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:208
+msgid "Activities"
+msgstr "ᱮᱠᱟᱟᱛᱤᱵᱷᱤᱴᱤᱥ"
+
+#: js/ui/panel.js:289
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "ᱥᱤᱥᱴᱚᱢ"
+
+#: js/ui/panel.js:470
+msgid "Top Bar"
+msgstr "ᱪᱮᱛᱟᱱ ᱵᱟᱨ"
+
+#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
+msgid "Open menu"
+msgstr "ᱢᱮᱱᱭᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/runDialog.js:61
+msgid "Run a Command"
+msgstr "ᱢᱤᱫ ᱟᱫᱮᱥ ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#: js/ui/runDialog.js:79
+msgid "Press ESC to close"
+msgstr "ᱵᱚᱸᱫ ᱞᱟᱹᱜᱤᱫ ESC ᱚᱛᱟᱭ ᱢᱮ"
+
+#: js/ui/screenShield.js:220
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ"
+
+#. Translators: notification source name for screenshots and recordings.
+#: js/ui/screenshot.js:40
+msgid "Screen Capture"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱮᱯᱪᱚᱨ"
+
+#: js/ui/screenshot.js:1305
+msgid "Selection"
+msgstr "ᱵᱟᱪᱷᱟᱣ"
+
+#: js/ui/screenshot.js:1315
+msgid "Area Selection"
+msgstr "ᱴᱚᱴᱷᱟ ᱵᱟᱪᱷᱟᱣ"
+
+#: js/ui/screenshot.js:1320
+msgid "Screen"
+msgstr "ᱮᱥᱠᱤᱨᱤᱱ"
+
+#: js/ui/screenshot.js:1330
+msgid "Screen Selection"
+msgstr "ᱥᱠᱨᱤᱱ ᱵᱟᱪᱷᱟᱣ"
+
+#: js/ui/screenshot.js:1335
+msgid "Window"
+msgstr "ᱡᱷᱚᱨᱠᱟ"
+
+#: js/ui/screenshot.js:1345
+msgid "Window Selection"
+msgstr "ᱡᱷᱚᱨᱠᱟ ᱵᱟᱪᱷᱟᱣ"
+
+#: js/ui/screenshot.js:1370 js/ui/status/system.js:118
+msgid "Take Screenshot"
+msgstr "ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: js/ui/screenshot.js:1386
+msgid "Record Screen"
+msgstr "ᱨᱮᱠᱚᱨᱰ ᱥᱠᱨᱤᱱ"
+
+#. Translators: since this string refers to an action,
+#. it needs to be phrased as a verb.
+#: js/ui/screenshot.js:1403
+msgid "Capture"
+msgstr "ᱦᱟᱢᱮᱴ"
+
+#: js/ui/screenshot.js:1425
+msgid "Show Pointer"
+msgstr "ᱯᱚᱭᱮᱱᱴᱟᱨ ᱩᱫᱩᱜ ᱢᱮ"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:2058
+msgid "Screencasts"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast From 07-17-2013 10:00:46 PM"
+#: js/ui/screenshot.js:2063
+#, no-c-format
+msgid "Screencast From %d %t"
+msgstr "%d %t ᱠᱷᱚᱱ ᱥᱠᱨᱤᱱᱠᱟᱥᱴ"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2109
+msgid "Screencast recorded"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱨᱮᱠᱚᱨᱰ ᱦᱩᱭ ᱮᱱᱟ"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2122
+msgid "Screencast failed to start"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱮᱦᱚᱵ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2128
+msgid "Screencast ended: Out of disk space"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱢᱩᱪᱟᱹᱫ ᱮᱱᱟᱺ ᱰᱤᱥᱠ ᱴᱷᱟᱶ ᱵᱟᱦᱨᱮ"
+
+#. We can encourage user to try again on service crashes since the
+#. recorder will auto-blocklist the pipeline that crashed.
+#. Translators: notification title.
+#: js/ui/screenshot.js:2134
+msgid "Screencast ended unexpectedly, please try again"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱵᱤᱱ ᱟᱥᱟ ᱞᱮᱠᱟᱛᱮ ᱢᱩᱪᱟᱹᱫ ᱮᱱᱟ, ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱫᱚᱦᱲᱟ ᱠᱩᱨᱩᱢᱩᱴᱩᱭ ᱢᱮ"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2137
+msgid "Screencast ended unexpectedly"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱵᱤᱱ ᱟᱥᱟ ᱞᱮᱠᱟᱛᱮ ᱪᱟᱵᱟ ᱮᱱᱟ"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:2150
+msgid "Click here to view the video"
+msgstr "ᱵᱷᱤᱰᱤᱭᱳ ᱧᱮᱞ ᱞᱟᱹᱜᱤᱫ ᱱᱚᱸᱰᱮ ᱚᱛᱟᱭ ᱢᱮ"
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:2158 js/ui/screenshot.js:2401
+msgid "Show in Files"
+msgstr "ᱨᱮᱫ ᱠᱚ ᱨᱮ ᱩᱫᱩᱜ ᱢᱮ"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2347
+#, javascript-format
+msgid "Screenshot From %s"
+msgstr "%s ᱠᱷᱚᱱ ᱥᱠᱨᱤᱱ ᱥᱚᱴ"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2391
+msgid "Screenshot captured"
+msgstr "ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱠᱮᱯᱪᱟᱨ ᱦᱩᱭ ᱮᱱᱟ"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2393
+msgid "You can paste the image from the clipboard"
+msgstr "ᱟᱢ ᱠᱞᱤᱯᱵᱚᱨᱰ ᱠᱷᱚᱱ ᱪᱤᱛᱟᱹᱨ ᱞᱟᱴᱷᱟ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱢ"
+
+#: js/ui/screenshot.js:2451 js/ui/screenshot.js:2613
+msgid "Screenshot taken"
+msgstr "ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱦᱩᱭ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/search.js:855
+msgid "Searching"
+msgstr "ᱥᱮᱸᱫᱽᱨᱟ"
+
+#: js/ui/search.js:858
+msgid "No results"
+msgstr "ᱪᱮᱫ ᱚᱨᱡᱚ ᱦᱚᱸ ᱵᱟᱝ ᱧᱟᱢ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/search.js:994
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d ᱵᱟᱹᱲᱛᱤ"
+msgstr[1] "%d ᱵᱟᱹᱲᱛᱤ"
+msgstr[2] "%d ᱵᱟᱹᱲᱛᱤ"
+
+#: js/ui/searchController.js:86
+#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+msgid "Search"
+msgstr "ᱥᱮᱸᱫᱽᱨᱟ"
+
+#: js/ui/shellEntry.js:22
+msgid "Copy"
+msgstr "ᱱᱚᱠᱚᱞ ᱢᱮ"
+
+#: js/ui/shellEntry.js:27
+msgid "Paste"
+msgstr "ᱞᱟᱴᱷᱟ"
+
+#: js/ui/shellEntry.js:79
+msgid "Show Text"
+msgstr "ᱚᱞ ᱩᱫᱩᱜᱽ ᱢᱮ"
+
+#: js/ui/shellEntry.js:81
+msgid "Hide Text"
+msgstr "ᱚᱞ ᱩᱠᱩᱭ ᱢᱮ"
+
+#: js/ui/shellEntry.js:170
+msgid "Caps lock is on"
+msgstr "ᱠᱮᱯᱥ ᱠᱩᱞᱩᱯ ᱪᱟᱹᱞᱩ ᱢᱮᱱᱟᱜᱼᱟ"
+
+#: js/ui/shellMountOperation.js:286
+msgid "Hidden Volume"
+msgstr "ᱩᱠᱩ ᱟᱠᱟᱱ ᱵᱷᱚᱞᱭᱩᱢ"
+
+#: js/ui/shellMountOperation.js:289
+msgid "Windows System Volume"
+msgstr "ᱡᱷᱚᱨᱠᱟ ᱥᱤᱥᱴᱚᱢ ᱣᱚᱞᱭᱩᱢ"
+
+#: js/ui/shellMountOperation.js:292
+msgid "Uses Keyfiles"
+msgstr "ᱠᱤᱯᱷᱟᱭᱤᱞ ᱠᱚ ᱵᱮᱵᱷᱟᱨ ᱢᱮ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:300
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
+msgstr "ᱢᱤᱫ ᱵᱷᱚᱞᱭᱩᱢ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱡᱟᱦᱟᱸ ᱫᱚ ᱠᱤ ᱨᱮᱫ ᱠᱚ ᱵᱮᱵᱷᱟᱨᱟ, ᱚᱱᱟ ᱵᱚᱫᱚᱞ ᱛᱮ <i>%s</i> ᱵᱮᱵᱷᱟᱨ ᱢᱮ"
+
+#: js/ui/shellMountOperation.js:304
+msgid ""
+"You need an external utility like <i>Disks</i> to unlock a volume that uses "
+"keyfiles"
+msgstr "ᱟᱢ ᱫᱚ ᱢᱤᱫ ᱵᱟᱦᱨᱮ ᱵᱮᱵᱷᱟᱨᱚᱜ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ ᱡᱮᱞᱠᱟ <i>ᱰᱤᱥᱠ</i> ᱢᱤᱫ ᱵᱷᱚᱞᱭᱩᱢ ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱚᱠᱟ ᱫᱚ ᱠᱤᱯᱷᱟᱭᱤᱞ ᱠᱚ ᱵᱮᱵᱷᱟᱨᱟ"
+
+#: js/ui/shellMountOperation.js:312
+msgid "PIM Number"
+msgstr "PIM ᱮᱞ"
+
+#: js/ui/shellMountOperation.js:371
+msgid "Remember Password"
+msgstr "ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱫᱤᱥᱟᱹ ᱫᱚᱦᱚᱭ ᱢᱮ"
+
+#: js/ui/shellMountOperation.js:386
+msgid "Unlock"
+msgstr "ᱠᱷᱩᱞᱟᱹ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:400
+#, javascript-format
+msgid "Open %s"
+msgstr "%s ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/shellMountOperation.js:436
+msgid "The PIM must be a number or empty"
+msgstr "PIM ᱫᱚ ᱢᱤᱫ ᱮᱞ ᱵᱟᱝᱠᱷᱟᱱ ᱠᱷᱟᱹᱞᱤ ᱦᱩᱭᱩᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ"
+
+#: js/ui/status/accessibility.js:45 js/ui/status/accessibility.js:153
+msgid "High Contrast"
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱠᱚᱱᱴᱨᱟᱥᱴ"
+
+#: js/ui/status/accessibility.js:48 js/ui/status/accessibility.js:169
+msgid "Zoom"
+msgstr "ᱡᱩᱢ"
+
+#: js/ui/status/accessibility.js:55 js/ui/status/accessibility.js:221
+msgid "Screen Reader"
+msgstr "ᱥᱠᱨᱤᱱ ᱨᱤᱰᱟᱨ"
+
+#: js/ui/status/accessibility.js:59 js/ui/status/accessibility.js:237
+msgid "Screen Keyboard"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱤᱵᱚᱨᱰ"
+
+#: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:253
+msgid "Visual Alerts"
+msgstr "ᱧᱮᱞᱚᱜ ᱦᱩᱥᱤᱭᱟᱹᱨ"
+
+#: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:269
+msgid "Sticky Keys"
+msgstr "ᱞᱟᱴᱷᱟ ᱪᱟᱵᱷᱤ"
+
+#: js/ui/status/accessibility.js:71 js/ui/status/accessibility.js:285
+msgid "Slow Keys"
+msgstr "ᱵᱟᱹᱭ ᱵᱟᱹᱭ ᱛᱮ ᱪᱟᱵᱷᱤ"
+
+#: js/ui/status/accessibility.js:75 js/ui/status/accessibility.js:301
+msgid "Bounce Keys"
+msgstr "ᱵᱟᱣᱩᱱᱥ ᱪᱟᱵᱷᱤ"
+
+#: js/ui/status/accessibility.js:79 js/ui/status/accessibility.js:317
+msgid "Mouse Keys"
+msgstr "ᱜᱳᱰᱳ ᱪᱟᱹᱵᱤ ᱠᱚ"
+
+#: js/ui/status/accessibility.js:84
+msgid "Accessibility Settings"
+msgstr "ᱥᱮᱴᱮᱨᱚᱜ ᱥᱮᱴᱤᱝ"
+
+#: js/ui/status/accessibility.js:122 js/ui/status/accessibility.js:185
+msgid "Large Text"
+msgstr "ᱢᱟᱨᱟᱝ ᱚᱞ"
+
+#: js/ui/status/autoRotate.js:14
+msgid "Auto Rotate"
+msgstr "ᱟᱡ ᱛᱮ ᱟᱹᱪᱩᱨᱚᱜ ᱢᱮ"
+
+#: js/ui/status/backgroundApps.js:155
+msgctxt "title"
+msgid "Background Apps"
+msgstr "ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱮᱯᱥ"
+
+#: js/ui/status/backgroundApps.js:170
+msgid "Apps known to be running without a window"
+msgstr "ᱮᱯᱥ ᱠᱚ ᱵᱤᱱᱟᱹ ᱡᱷᱚᱨᱠᱟ ᱛᱮ ᱪᱟᱹᱞᱩᱜ ᱠᱟᱱᱟ ᱢᱮᱱᱛᱮ ᱵᱟᱰᱟᱭᱚᱜ ᱠᱟᱱᱟ"
+
+#: js/ui/status/backgroundApps.js:181
+msgid "App Settings"
+msgstr "ᱮᱯ ᱥᱮᱴᱤᱝ"
+
+#: js/ui/status/backgroundApps.js:238
+msgid "No Background Apps"
+msgstr "ᱵᱮᱠᱜᱽᱨᱟᱣᱱᱰ ᱮᱯᱥ ᱵᱟᱹᱱᱩᱜᱼᱟ"
+
+#: js/ui/status/backgroundApps.js:240
+#, javascript-format
+msgid "%d Background App"
+msgid_plural "%d Background Apps"
+msgstr[0] "%d ᱵᱮᱠᱜᱽᱨᱟᱣᱩᱱᱰ ᱮᱯ"
+msgstr[1] "%d ᱵᱮᱠᱜᱽᱨᱟᱣᱩᱱᱰ ᱮᱯ ᱠᱚ"
+msgstr[2] "%d ᱵᱮᱠᱜᱽᱨᱟᱣᱩᱱᱰ ᱮᱯ ᱠᱚ"
+
+#: js/ui/status/backlight.js:39
+msgid "Keyboard Brightness"
+msgstr "ᱠᱤᱵᱚᱨᱰ ᱵᱨᱟᱭᱤᱴᱱᱮᱥ"
+
+#: js/ui/status/backlight.js:87
+msgid "Off"
+msgstr "ᱵᱚᱸᱫᱽ"
+
+#: js/ui/status/backlight.js:88
+msgid "Low"
+msgstr "ᱠᱚᱢ"
+
+#: js/ui/status/backlight.js:89
+msgid "High"
+msgstr "ᱩᱥᱩᱞ"
+
+#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:877
+msgid "Keyboard"
+msgstr "ᱠᱤᱵᱚᱨᱰ"
+
+#: js/ui/status/backlight.js:164
+msgid "Open keyboard brightness menu"
+msgstr "ᱠᱤᱵᱚᱨᱰ ᱵᱨᱟᱭᱤᱴᱱᱮᱥ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+msgid "Disconnect"
+msgstr "ᱡᱚᱯᱲᱟᱣ ᱨᱟᱹᱯᱩᱫ ᱢᱮ"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "%s ᱥᱟᱞᱟᱜ ᱡᱚᱯᱲᱟᱣ ᱨᱟᱹᱯᱩᱫ ᱢᱮ"
+
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#, javascript-format
+msgid "Connect to %s"
+msgstr "%s ᱥᱟᱶ ᱡᱚᱯᱲᱟᱣ ᱢᱮ"
+
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:280
+msgid "Bluetooth"
+msgstr "ᱵᱞᱩᱴᱩᱛᱷ"
+
+#: js/ui/status/bluetooth.js:277
+msgid "Open Bluetooth menu"
+msgstr "ᱵᱞᱩᱴᱩᱛᱷ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+msgid "Bluetooth Settings"
+msgstr "ᱵᱞᱩᱴᱩᱛᱷ"
+
+#: js/ui/status/bluetooth.js:350
+msgid "No available or connected devices"
+msgstr "ᱵᱟᱝ ᱧᱟᱢᱚᱜ ᱠᱟᱱᱟ ᱟᱨ ᱵᱟᱝ ᱡᱚᱯᱲᱟᱣ ᱥᱟᱫᱷᱚᱱ ᱠᱚ"
+
+#: js/ui/status/bluetooth.js:351
+msgid "Turn on Bluetooth to connect to devices"
+msgstr "ᱰᱤᱵᱷᱟᱭᱤᱥ ᱠᱚ ᱡᱚᱯᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱵᱞᱩᱴᱩᱛᱷ ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#. Translators: This is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:415
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+msgstr[1] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+msgstr[2] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/status/brightness.js:42
+msgid "Open brightness menu"
+msgstr "ᱵᱨᱟᱭᱤᱴᱱᱮᱥ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/darkMode.js:12
+msgid "Dark Style"
+msgstr "ᱧᱩᱛ ᱥᱴᱟᱭᱤᱞ"
+
+#: js/ui/status/doNotDisturb.js:10
+msgid "Do Not Disturb"
+msgstr "ᱟᱞᱚᱢ ᱟᱥᱠᱮᱛ ᱟ"
+
+#: js/ui/status/dwellClick.js:14
+msgid "Single Click"
+msgstr "ᱢᱤᱫ ᱡᱮᱠᱷᱟ ᱞᱤᱱ"
+
+#: js/ui/status/dwellClick.js:19
+msgid "Double Click"
+msgstr "ᱵᱟᱨ ᱫᱷᱟᱣ ᱚᱛᱟᱭ ᱢᱮ"
+
+#: js/ui/status/dwellClick.js:24
+msgid "Drag"
+msgstr "ᱜᱚᱦᱚᱲ"
+
+#: js/ui/status/dwellClick.js:29
+msgid "Secondary Click"
+msgstr "ᱫᱚᱫᱟᱨᱟᱱᱟᱜ ᱚᱛᱟᱭ ᱢᱮ"
+
+#: js/ui/status/dwellClick.js:38
+msgid "Dwell Click"
+msgstr "ᱰᱣᱮᱞ ᱠᱞᱤᱠ"
+
+#: js/ui/status/keyboard.js:894
+msgid "Show Keyboard Layout"
+msgstr "ᱠᱤᱵᱚᱨᱰ ᱞᱮᱭᱟᱣᱩᱴ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: js/ui/status/location.js:337
+msgid "Allow location access"
+msgstr "ᱴᱷᱟᱶ ᱮᱠᱥᱮᱥ ᱨᱮᱭᱟᱜ ᱫᱟᱣ ᱮᱢᱚᱜ ᱢᱮ"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:339
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr "ᱮᱯ %s ᱟᱢᱟᱜ ᱴᱷᱟᱶ ᱮᱠᱥᱮᱥ ᱥᱟᱱᱟᱭᱮ ᱠᱟᱱᱟ"
+
+#: js/ui/status/location.js:349
+msgid "Location access can be changed at any time from the privacy settings"
+msgstr "ᱴᱷᱟᱶ ᱥᱮᱴᱮᱨᱚᱜ ᱫᱚ ᱡᱟᱦᱟᱸ ᱚᱠᱛᱚ ᱨᱮᱜᱮ ᱯᱨᱟᱭᱣᱮᱥᱤ ᱥᱮᱴᱤᱝ ᱠᱷᱚᱱ ᱵᱚᱫᱚᱞ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ"
+
+#: js/ui/status/location.js:357
+msgid "Deny Access"
+msgstr "ᱟᱫᱮᱨ ᱢᱟᱱᱟᱭ ᱢᱮ"
+
+#: js/ui/status/location.js:362
+msgid "Grant Access"
+msgstr "ᱟᱫᱮᱨ ᱮᱢᱚᱜ ᱢᱮ"
+
+#: js/ui/status/network.js:62
+msgid "<unknown>"
+msgstr "<ᱵᱟᱝ ᱵᱟᱰᱟᱭ>"
+
+#: js/ui/status/network.js:1060
+msgid "Secure"
+msgstr "ᱥᱟᱵᱛᱷᱟᱱ"
+
+#: js/ui/status/network.js:1060
+msgid "Not secure"
+msgstr "ᱵᱟᱝ ᱨᱩᱠᱷᱤᱭᱟᱹ ᱜᱮᱭᱟ"
+
+#: js/ui/status/network.js:1061
+#, javascript-format
+msgid "Signal strength %s%%"
+msgstr "ᱥᱤᱜᱽᱱᱟᱞ ᱫᱟᱲᱮ %s%%"
+
+#. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
+#: js/ui/status/network.js:1063
+#, javascript-format
+msgid "%s, %s, %s"
+msgstr "%s, %s, %s"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1166
+#, javascript-format
+msgid "%s Hotspot"
+msgstr "%s ᱦᱚᱴᱥᱯᱚᱴ"
+
+#: js/ui/status/network.js:1447
+#, javascript-format
+msgid "%d connected"
+msgid_plural "%d connected"
+msgstr[0] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+msgstr[1] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+msgstr[2] "%d ᱡᱚᱯᱲᱟᱣ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1546
+msgid "Open VPN menu"
+msgstr "VPN ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/network.js:1547
+msgid "VPN Settings"
+msgstr "VPN ᱥᱟᱡᱟᱣ ᱠᱚ"
+
+#: js/ui/status/network.js:1807
+msgid "Wi–Fi"
+msgstr "Wi–Fi"
+
+#: js/ui/status/network.js:1808
+msgid "Open Wi–Fi menu"
+msgstr "Wi–Fi ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/network.js:1810
+msgid "All Networks"
+msgstr "ᱥᱟᱱᱟᱢ ᱱᱮᱴᱣᱟᱨᱠ"
+
+#: js/ui/status/network.js:1907
+msgid "Wired Connections"
+msgstr "ᱛᱟᱨ ᱡᱚᱯᱲᱟᱣ"
+
+#: js/ui/status/network.js:1908
+msgid "Open wired connections menu"
+msgstr "ᱛᱟᱨ ᱡᱚᱯᱲᱟᱣ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/network.js:1909
+msgid "Wired Settings"
+msgstr "ᱛᱟᱨ ᱥᱮᱴᱤᱝ"
+
+#: js/ui/status/network.js:1923
+msgid "Bluetooth Tethers"
+msgstr "ᱵᱞᱩᱴᱩᱛᱷ ᱴᱮᱰᱟᱨᱥ"
+
+#: js/ui/status/network.js:1924
+msgid "Open Bluetooth tethers menu"
+msgstr "ᱵᱞᱩᱴᱩᱛᱷ ᱴᱮᱰᱟᱨᱥ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#. Translators: "Tether" from "Bluetooth Tether"
+#: js/ui/status/network.js:1931
+msgid "Tether"
+msgstr "ᱴᱤᱛᱷᱚᱨ"
+
+#: js/ui/status/network.js:1944
+msgid "Mobile Connections"
+msgstr "ᱢᱚᱵᱟᱭᱤᱞ ᱡᱚᱯᱲᱟᱣ"
+
+#: js/ui/status/network.js:1945
+msgid "Open mobile connections menu"
+msgstr "ᱢᱚᱵᱟᱭᱤᱞ ᱡᱚᱯᱲᱟᱣ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/network.js:1947
+msgid "Mobile Broadband Settings"
+msgstr "ᱢᱚᱵᱟᱭᱤᱞ ᱵᱨᱚᱰᱵᱮᱱᱰ ᱥᱮᱴᱤᱝ"
+
+#. Translators: "Mobile" from "Mobile Broadband"
+#: js/ui/status/network.js:1956
+msgid "Mobile"
+msgstr "ᱢᱳᱵᱟᱭᱤᱞ"
+
+#: js/ui/status/network.js:1990
+msgid "Sign in to Network"
+msgstr "ᱱᱮᱴᱣᱟᱨᱠ ᱨᱮ ᱥᱟᱭᱤᱱ ᱤᱱ ᱢᱮ"
+
+#: js/ui/status/network.js:2177
+msgid "Connection failed"
+msgstr "ᱡᱚᱯᱲᱟᱣ ᱵᱟᱝ ᱥᱟᱹᱛ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/status/network.js:2178
+msgid "Activation of network connection failed"
+msgstr "ᱱᱮᱴᱣᱟᱨᱠ ᱡᱚᱯᱲᱟᱣ ᱨᱮᱭᱟᱜ ᱮᱠᱴᱤᱵᱷᱮᱥᱚᱱ ᱵᱟᱝ ᱥᱟᱹᱛ ᱟᱠᱟᱱᱟ"
+
+#: js/ui/status/nightLight.js:19
+msgid "Night Light"
+msgstr "ᱧᱤᱫᱟᱹ ᱢᱟᱨᱥᱟᱞ"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "ᱩᱫᱩᱜ ᱥᱚᱫᱚᱨ"
+
+#: js/ui/status/powerProfiles.js:24
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "ᱯᱚᱠᱥᱚᱢᱟᱱ"
+
+#: js/ui/status/powerProfiles.js:29
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "ᱯᱟᱣᱟᱨ ᱥᱮᱵᱷᱟᱨ"
+
+#: js/ui/status/powerProfiles.js:35
+msgctxt "Power profile"
+msgid "Custom"
+msgstr "ᱱᱤᱡᱮᱛᱮ"
+
+#: js/ui/status/powerProfiles.js:45
+msgctxt "Quick settings button title"
+msgid "Power Mode"
+msgstr "ᱯᱟᱣᱟᱨ ᱢᱳᱰ"
+
+#: js/ui/status/powerProfiles.js:46
+msgid "Open power profiles menu"
+msgstr "ᱯᱟᱣᱟᱨ ᱯᱨᱚᱯᱷᱟᱭᱤᱞ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/powerProfiles.js:77
+msgctxt "Quick settings menu header"
+msgid "Power Mode"
+msgstr "ᱯᱟᱣᱟᱨ ᱢᱳᱰ"
+
+#: js/ui/status/powerProfiles.js:79
+msgid "Power Settings"
+msgstr "ᱯᱟᱣᱟᱨ ᱥᱮᱴᱤᱝ"
+
+#: js/ui/status/remoteAccess.js:73
+msgid "Stop Screencast"
+msgstr "ᱥᱠᱨᱤᱱᱠᱟᱥᱴ ᱵᱚᱱᱫᱚᱭ ᱢᱮ"
+
+#: js/ui/status/remoteAccess.js:141
+msgid "Stop Screen Sharing"
+msgstr "ᱥᱠᱨᱤᱱ ᱦᱟᱹᱴᱤᱧ ᱵᱚᱱᱫᱚᱭ ᱢᱮ"
+
+#: js/ui/status/rfkill.js:97
+msgid "Airplane Mode"
+msgstr "ᱩᱰᱟᱹᱱ ᱢᱳᱰ"
+
+#: js/ui/status/system.js:175
+msgid "Power Off Menu"
+msgstr "ᱯᱟᱣᱟᱨ ᱚᱯᱷ ᱢᱮᱱᱩ"
+
+#: js/ui/status/system.js:183
+msgid "Suspend"
+msgstr "ᱵᱚᱸᱫᱚᱭ ᱢᱮ"
+
+#: js/ui/status/system.js:188
+msgid "Restart…"
+msgstr "ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ..."
+
+#: js/ui/status/system.js:193
+msgid "Power Off…"
+msgstr "ᱯᱟᱣᱟᱨ ᱵᱚᱱᱫᱚ..."
+
+#: js/ui/status/system.js:200
+msgid "Log Out…"
+msgstr "ᱚᱰᱚᱠ ᱫᱩᱣᱟᱹᱨ..."
+
+#: js/ui/status/system.js:205
+msgid "Switch User…"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱵᱚᱫᱚᱞ ᱢᱮ..."
+
+#: js/ui/status/system.js:249
+msgctxt "action"
+msgid "Lock Screen"
+msgstr "ᱥᱠᱨᱤᱱ ᱠᱩᱞᱩᱯ ᱢᱮ"
+
+#: js/ui/status/thunderbolt.js:310
+msgid "Unknown Thunderbolt device"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭ ᱛᱷᱟᱱᱰᱟᱨᱵᱚᱞᱴ ᱥᱟᱫᱷᱚᱱ"
+
+#: js/ui/status/thunderbolt.js:311
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr "ᱟᱢ ᱥᱟᱦᱟᱨᱮ ᱛᱟᱦᱮᱱ ᱡᱷᱚᱜ ᱱᱟᱶᱟ ᱥᱟᱫᱷᱚᱱ ᱵᱟᱰᱟᱭ ᱧᱟᱢ ᱮᱱᱟ ᱾ ᱫᱟᱭᱟ ᱠᱟᱛᱮ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱵᱮᱵᱷᱟᱨ ᱮᱦᱚᱵ ᱞᱟᱹᱜᱤᱫ ᱡᱚᱯᱲᱟᱣ ᱨᱟᱹᱯᱩᱫ ᱢᱮ ᱟᱨ ᱫᱚᱦᱲᱟ ᱡᱚᱯᱲᱟᱣ ᱢᱮ᱾"
+
+#: js/ui/status/thunderbolt.js:314
+msgid "Unauthorized Thunderbolt device"
+msgstr "ᱵᱤᱱ ᱟᱹᱭᱫᱟᱹᱨᱤ ᱛᱷᱟᱱᱰᱟᱨᱵᱚᱞᱴ ᱥᱟᱫᱷᱚᱱ"
+
+#: js/ui/status/thunderbolt.js:315
+msgid ""
+"New device has been detected and needs to be authorized by an administrator"
+msgstr "ᱱᱟᱶᱟ ᱥᱟᱫᱷᱚᱱ ᱵᱟᱰᱟᱭ ᱧᱟᱢ ᱟᱠᱟᱱᱟ ᱟᱨ ᱢᱤᱫ ᱮᱰᱢᱤᱱᱤᱥᱴᱨᱮᱴᱚᱨ ᱦᱚᱛᱮᱛᱮ ᱟᱹᱭᱫᱟᱹᱨ ᱞᱟᱹᱠᱛᱤ ᱠᱟᱱᱟ"
+
+#: js/ui/status/thunderbolt.js:321
+msgid "Thunderbolt authorization error"
+msgstr "ᱛᱷᱟᱱᱰᱟᱨᱵᱚᱞᱴ ᱟᱹᱭᱫᱟᱹᱨᱤ ᱦᱩᱰᱟᱹᱜ"
+
+#: js/ui/status/thunderbolt.js:322
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "ᱛᱷᱟᱱᱰᱟᱨᱵᱚᱞᱴ ᱰᱤᱵᱷᱟᱭᱤᱥ ᱵᱟᱝ ᱟᱹᱭᱫᱟᱹᱨ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ: %s"
+
+#: js/ui/status/volume.js:217
+msgid "Volume changed"
+msgstr "ᱵᱷᱚᱞᱭᱩᱢ ᱵᱚᱫᱚᱞ ᱮᱱᱟ"
+
+#: js/ui/status/volume.js:230
+msgid "Unmute"
+msgstr "ᱟᱱᱢᱭᱩᱴ"
+
+#: js/ui/status/volume.js:230
+msgid "Mute"
+msgstr "ᱛᱷᱤᱨ-ᱛᱷᱟᱨ"
+
+#: js/ui/status/volume.js:297
+msgid "Volume"
+msgstr "ᱥᱟᱰᱮ"
+
+#: js/ui/status/volume.js:313
+msgid "Sound Output"
+msgstr "ᱥᱟᱰᱮ ᱛᱮᱞᱟ"
+
+#: js/ui/status/volume.js:314
+msgid "Open sound output menu"
+msgstr "ᱥᱟᱰᱮ ᱛᱮᱞᱟ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/status/volume.js:390
+msgid "Sound Input"
+msgstr "ᱥᱟᱰᱮ ᱟᱫᱮᱨ"
+
+#: js/ui/status/volume.js:391
+msgid "Open sound input menu"
+msgstr "ᱥᱟᱰᱮ ᱤᱱᱯᱩᱴ ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:20
+msgid "Mirror"
+msgstr "ᱟᱹᱨᱥᱤ"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:29
+msgid "Join Displays"
+msgstr "ᱩᱫᱩᱜ ᱨᱮ ᱥᱮᱞᱮᱫᱚᱜ ᱢᱮ"
+
+#. Translators: this is for using only external displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:39
+msgid "External Only"
+msgstr "ᱥᱩᱢᱩᱝ ᱵᱟᱦᱨᱮ"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:47
+msgid "Built-in Only"
+msgstr "ᱥᱩᱢᱩᱝ ᱵᱤᱞᱴ-ᱤᱱ"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:415
+msgid "%A %B %-d"
+msgstr "%A %B %-d"
+
+#: js/ui/unlockDialog.js:421
+msgid "Swipe up to unlock"
+msgstr "ᱠᱷᱩᱞᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱪᱮᱛᱟᱱ ᱥᱣᱟᱭᱤᱯ ᱢᱮ"
+
+#: js/ui/unlockDialog.js:422
+msgid "Click or press a key to unlock"
+msgstr "ᱠᱩᱞᱩᱯ ᱡᱷᱤᱡᱽ ᱞᱟᱹᱜᱤᱫ ᱢᱤᱫ ᱴᱟᱹᱵᱤ ᱨᱮ ᱞᱤᱱ ᱢᱮ ᱟᱨᱵᱟᱝᱠᱷᱟᱱ ᱞᱤᱱ ᱢᱮ"
+
+#: js/ui/unlockDialog.js:610
+msgid "Unlock Window"
+msgstr "ᱡᱷᱚᱨᱠᱟ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: js/ui/unlockDialog.js:619
+msgid "Log in as another user"
+msgstr "ᱮᱴᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱞᱮᱠᱟᱛᱮ ᱞᱚᱜᱽ ᱤᱱ ᱢᱮ"
+
+#: js/ui/welcomeDialog.js:47
+#, javascript-format
+msgid "GNOME %s"
+msgstr "GNOME %s"
+
+#: js/ui/welcomeDialog.js:51
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s ᱛᱮ ᱥᱟᱹᱜᱩᱱ ᱫᱟᱨᱟᱢ"
+
+#: js/ui/welcomeDialog.js:52
+msgid "If you want to learn your way around, check out the tour"
+msgstr "ᱡᱩᱫᱤ ᱟᱢ ᱟᱢᱟᱜ ᱰᱟᱦᱟᱨ ᱪᱮᱫᱚᱜ ᱥᱟᱱᱟᱭᱮᱫ ᱢᱮᱭᱟ, ᱫᱟᱬᱟᱱ ᱧᱮᱞ ᱢᱮ"
+
+#: js/ui/welcomeDialog.js:66
+msgid "Take Tour"
+msgstr "ᱫᱟᱬᱟᱱ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: js/ui/windowAttentionHandler.js:18
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "“%s” ᱫᱚ ᱥᱟᱯᱲᱟᱣ ᱜᱮᱭᱟ"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:60
+msgid "Keep these display settings?"
+msgstr "ᱱᱚᱶᱟ ᱩᱫᱩᱜ ᱥᱮᱴᱤᱝ ᱫᱚᱦᱚ ᱠᱟᱜ ᱢᱮ?"
+
+#: js/ui/windowManager.js:70
+msgid "Revert Settings"
+msgstr "ᱥᱮᱴᱤᱝ ᱨᱩᱣᱟᱹᱲ ᱢᱮ"
+
+#: js/ui/windowManager.js:75
+msgid "Keep Changes"
+msgstr "ᱵᱚᱫᱚᱞ ᱠᱚ ᱫᱚᱦᱚᱭ ᱢᱮ"
+
+#: js/ui/windowManager.js:95
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "ᱥᱮᱴᱤᱝ ᱵᱚᱫᱚᱞ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱨᱩᱣᱟᱹᱲᱚᱜᱼᱟ"
+msgstr[1] "ᱥᱮᱴᱤᱝ ᱵᱚᱫᱚᱞ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱨᱩᱣᱟᱹᱲᱚᱜᱼᱟ"
+msgstr[2] "ᱥᱮᱴᱤᱝ ᱵᱚᱫᱚᱞ ᱠᱚ %d ᱴᱤᱡ ᱨᱮ ᱨᱩᱣᱟᱹᱲᱚᱜᱼᱟ"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:490
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:28
+msgctxt "window-menu"
+msgid "Take Screenshot"
+msgstr "ᱥᱠᱨᱤᱱ ᱥᱚᱴ ᱦᱟᱛᱟᱣ ᱢᱮ"
+
+#: js/ui/windowMenu.js:40
+msgid "Hide"
+msgstr "ᱩᱠᱩ"
+
+#: js/ui/windowMenu.js:47
+msgid "Restore"
+msgstr "ᱨᱩᱣᱟᱹᱲ"
+
+#: js/ui/windowMenu.js:51
+msgid "Maximize"
+msgstr "ᱰᱷᱮᱨ ᱢᱮ"
+
+#: js/ui/windowMenu.js:58
+msgid "Move"
+msgstr "ᱚᱪᱚᱜ"
+
+#: js/ui/windowMenu.js:72
+msgid "Resize"
+msgstr "ᱟᱨ ᱢᱤᱫ ᱜᱚᱲᱦᱚᱱ"
+
+#: js/ui/windowMenu.js:86
+msgid "Always on Top"
+msgstr "ᱥᱟᱨᱟ ᱜᱷᱟᱹᱲᱤᱡ ᱪᱮᱛᱟᱱ ᱨᱮ"
+
+#: js/ui/windowMenu.js:105
+msgid "Always on Visible Workspace"
+msgstr "ᱥᱟᱨᱟ ᱜᱷᱟᱹᱲᱤᱡ ᱧᱮᱞᱚᱜ ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱨᱮ"
+
+#: js/ui/windowMenu.js:119
+msgid "Move to Workspace Left"
+msgstr "ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱞᱮᱸᱜᱟ ᱥᱮᱫ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:125
+msgid "Move to Workspace Right"
+msgstr "ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱡᱚᱡᱚᱢ ᱥᱮᱫ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:131
+msgid "Move to Workspace Up"
+msgstr "ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱪᱮᱛᱟᱱ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:137
+msgid "Move to Workspace Down"
+msgstr "ᱠᱟᱹᱢᱤ ᱴᱷᱟᱶ ᱞᱟᱛᱟᱨ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:155
+msgid "Move to Monitor Up"
+msgstr "ᱢᱚᱱᱤᱴᱚᱨ ᱪᱮᱛᱟᱱ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:164
+msgid "Move to Monitor Down"
+msgstr "ᱞᱟᱛᱟᱨ ᱢᱚᱱᱤᱴᱚᱨ ᱞᱟᱹᱜᱤᱫ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:173
+msgid "Move to Monitor Left"
+msgstr "ᱢᱚᱱᱤᱴᱚᱨ ᱞᱮᱸᱜᱟ ᱥᱮᱫ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:182
+msgid "Move to Monitor Right"
+msgstr "ᱢᱚᱱᱤᱴᱚᱨ ᱡᱚᱡᱚᱢ ᱥᱮᱫ ᱥᱮᱱᱚᱜ ᱢᱮ"
+
+#: js/ui/windowMenu.js:190
+msgid "Close"
+msgstr "ᱵᱚᱱᱫᱚ"
+
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+msgid "Print version"
+msgstr "ᱪᱷᱟᱯᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ"
+
+#: src/main.c:521
+msgid "Mode used by GDM for login screen"
+msgstr "ᱞᱚᱜᱤᱱ ᱥᱠᱨᱤᱱ ᱞᱟᱹᱜᱤᱫ GDM ᱦᱚᱛᱮᱛᱮ ᱵᱮᱵᱷᱟᱨᱚᱜ ᱠᱟᱱ ᱢᱳᱰ"
+
+#: src/main.c:527
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "ᱢᱤᱫ ᱴᱷᱟᱹᱣᱠᱟᱹ ᱢᱚᱰ ᱵᱮᱵᱷᱟᱨ ᱢᱮ, ᱡᱮᱢᱚᱱ ᱾ ᱞᱚᱜᱤᱱ ᱥᱠᱨᱤᱱ ᱞᱟᱹᱜᱤᱫ “gdm”"
+
+#: src/main.c:533
+msgid "List possible modes"
+msgstr "ᱥᱚᱢᱵᱷᱚᱵᱚᱱ ᱢᱚᱰ ᱠᱚ ᱥᱩᱪᱤ ᱢᱮ"
+
+#: src/main.c:539
+msgid "Force animations to be enabled"
+msgstr "ᱮᱱᱤᱢᱮᱥᱚᱱ ᱠᱚ ᱪᱟᱹᱞᱩ ᱞᱟᱹᱜᱤᱫ ᱡᱚᱵᱽᱨ ᱢᱮ"
+
+#: src/shell-app.c:267
+msgctxt "program"
+msgid "Unknown"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭᱟᱜ"
+
+#: src/shell-app.c:517
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "“%s” ᱯᱟᱨᱥᱟᱞ ᱨᱮ ᱵᱟᱝ ᱥᱟᱹᱛ ᱟᱠᱟᱱᱟ"
+
+#: src/shell-keyring-prompt.c:776
+msgid "Passwords do not match"
+msgstr "ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱵᱟᱝ ᱢᱤᱞᱟᱹᱣᱜ ᱠᱟᱱᱟ"
+
+#: src/shell-keyring-prompt.c:784
+msgid "Password cannot be blank"
+msgstr "ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ ᱫᱚ ᱠᱷᱟᱹᱞᱤ ᱵᱟᱭ ᱛᱟᱦᱮᱸᱱᱟ"
+
+#: src/shell-polkit-authentication-agent.c:342
+msgid "Authentication dialog was dismissed by the user"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱫᱚ ᱟᱫᱮᱨ ᱠᱷᱚᱵᱚᱨ ᱵᱚᱸᱫ ᱠᱮᱜᱼᱟᱭ"
+
+#: src/st/st-icon-theme.c:1857
+#, c-format
+msgid "Icon '%s' not present in theme %s"
+msgstr "ᱪᱤᱱᱦᱟᱹ '%s' ᱛᱷᱤᱢ %s ᱨᱮ ᱵᱟᱹᱱᱩᱜᱼᱟ"
+
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
+msgid "Failed to load icon"
+msgstr "ᱟᱭᱠᱚᱱ ᱞᱳᱰ ᱵᱟᱝ ᱦᱩᱭ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+msgid "Manage your GNOME Extensions"
+msgstr "ᱟᱢᱟᱜ GNOME ᱠᱷᱚᱧᱡᱟ ᱪᱟᱞᱟᱣ ᱢᱮ"
+
+#. developer_name tag deprecated with Appstream 1.0
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
+msgid "The GNOME Project"
+msgstr "GNOME ᱯᱟᱱᱛᱷᱟ"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr "GNOME ᱠᱷᱚᱧᱡᱟ ᱠᱷᱚᱧᱡᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ, ᱠᱷᱚᱧᱡᱟ ᱠᱩᱥᱤᱠᱚ ᱨᱮᱭᱟᱜ ᱨᱩᱯ ᱟᱨ ᱵᱟᱝ ᱫᱚᱨᱠᱟᱨ ᱠᱷᱚᱧᱡᱟ ᱚᱪᱚᱜ ᱥᱮ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱥᱟᱢᱵᱽᱲᱟᱣ ᱮᱫᱟᱭ᱾"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:67
+msgid "Main Window"
+msgstr "ᱢᱩᱬ ᱡᱷᱚᱨᱠᱟ"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:71
+msgid "Available Updates"
+msgstr "ᱢᱮᱱᱟᱜ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:75
+msgid "Search View"
+msgstr "ᱥᱮᱸᱫᱽᱨᱟ ᱧᱮᱞ"
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
+msgid "Configure GNOME Shell Extensions"
+msgstr "GNOME ᱥᱮᱞ ᱠᱷᱚᱧᱡᱟ ᱠᱚᱱᱯᱷᱤᱜᱟᱨ ᱢᱮ"
+
+#: subprojects/extensions-app/js/extensionManager.js:237
+#, javascript-format
+msgid ""
+"The installed version of this extension (%s) is incompatible with the "
+"current version of GNOME (%s). The extension has been disabled."
+msgstr "ᱱᱚᱶᱟ ᱵᱚᱦᱟᱞ ᱠᱚᱱ ᱠᱷᱚᱧᱡᱟ (%s) ᱫᱚ ᱱᱤᱛᱚᱜᱟᱜ GNOME (%s) ᱦᱟᱹᱞᱤᱭᱟᱠ ᱥᱟᱞᱟᱜ ᱛᱮ ᱵᱮᱭ ᱵᱟᱹᱭᱥᱟᱹᱣᱜ ᱠᱟᱱᱟ ᱾ ᱠᱷᱚᱧᱡᱟ ᱫᱚ ᱵᱚᱸᱫ ᱠᱟᱱᱟ ᱾"
+
+#: subprojects/extensions-app/js/extensionManager.js:238
+#, javascript-format
+msgid ""
+"The installed version of this extension is incompatible with the current "
+"version of GNOME (%s). The extension has been disabled."
+msgstr "ᱱᱚᱶᱟ ᱵᱚᱦᱟᱞ ᱠᱚᱱ ᱠᱷᱚᱧᱡᱟ ᱫᱚ ᱱᱤᱛᱚᱜᱟᱜ GNOME (%s) ᱦᱟᱹᱞᱤᱭᱟᱠ ᱥᱟᱞᱟᱜ ᱛᱮ ᱵᱮᱭ ᱵᱟᱹᱭᱥᱟᱹᱣᱜ ᱠᱟᱱᱟ ᱾ ᱠᱷᱚᱧᱡᱟ ᱫᱚ ᱵᱚᱸᱫ ᱠᱟᱱᱟ ᱾"
+
+#: subprojects/extensions-app/js/extensionManager.js:242
+msgid ""
+"An error has occurred in this extension. This could cause issues elsewhere "
+"in the system. It is recommended to turn the extension off until the error "
+"is resolved."
+msgstr "ᱱᱚᱣᱟ ᱮᱠᱥᱴᱮᱱᱥᱚᱱ ᱨᱮ ᱢᱤᱫ ᱦᱩᱰᱟᱹᱜ ᱦᱩᱭ ᱟᱠᱟᱱᱟ ᱾ ᱱᱚᱣᱟ ᱥᱤᱥᱴᱚᱢ ᱨᱮ ᱮᱴᱟᱜ ᱡᱟᱭᱜᱟ ᱨᱮ ᱮᱴᱠᱮᱴᱚᱬᱮ ᱨᱮᱭᱟᱜ ᱠᱟᱨᱚᱱ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ ᱾ ᱦᱤᱲᱤᱡ ᱥᱚᱞᱦᱮ ᱵᱟᱝ ᱦᱩᱭᱩᱜ ᱦᱟᱹᱵᱤᱡ ᱮᱠᱥᱴᱮᱱᱥᱚᱱ ᱵᱚᱱᱫᱚ ᱞᱟᱹᱜᱤᱫ ᱢᱮᱛᱟᱜ ᱠᱚᱣᱟ ᱾"
+
+#. translators: Details for an extension error
+#: subprojects/extensions-app/js/extensionManager.js:248
+msgid "Error details:"
+msgstr "ᱵᱷᱩᱞ ᱵᱤᱵᱨᱚᱬ:"
+
+#: subprojects/extensions-app/js/extensionRow.js:82
+#, javascript-format
+msgid "Version %s"
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ %s"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:108
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "“%s” ᱚᱪᱚᱜᱽ ᱢᱮ?"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:109
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr "ᱡᱩᱫᱤ ᱟᱢ ᱠᱷᱚᱧᱡᱟ ᱮᱢ ᱚᱪᱚᱜ ᱠᱮᱫᱟ, ᱟᱢ ᱫᱚ ᱱᱚᱣᱟ ᱰᱟᱩᱱᱞᱳᱰ ᱞᱟᱹᱜᱤᱫ ᱨᱩᱣᱟᱹᱲ ᱦᱩᱭᱩᱜ ᱛᱟᱢᱟ ᱡᱩᱫᱤ ᱟᱢ ᱱᱚᱣᱟ ᱫᱚᱦᱲᱟ ᱪᱟᱹᱞᱩ ᱥᱟᱱᱟᱭᱮᱫ ᱢᱮᱭᱟ"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:112
+msgid "_Cancel"
+msgstr "ᱵᱟᱹᱰᱨᱟᱹ"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:113
+msgid "_Remove"
+msgstr "_ᱚᱪᱚᱜᱽ ᱢᱮ"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:153
+msgid "translator-credits"
+msgstr "ᱛᱚᱨᱡᱚᱢᱟ-ᱠᱨᱮᱰᱤᱴ"
+
+#: subprojects/extensions-app/js/extensionsWindow.js:198
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d ᱠᱷᱚᱧᱡᱟ ᱫᱚ ᱫᱚᱥᱟᱨ ᱞᱚᱜᱤᱱ ᱨᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱦᱩᱭᱩᱜᱼᱟ ᱾"
+msgstr[1] "%d ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱫᱚ ᱫᱚᱥᱟᱨ ᱞᱚᱜᱤᱱ ᱨᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱦᱩᱭᱩᱜᱼᱟ ᱾"
+msgstr[2] "%d ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱫᱚ ᱫᱚᱥᱟᱨ ᱞᱚᱜᱤᱱ ᱨᱮ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱦᱩᱭᱩᱜᱼᱟ ᱾"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:51
+msgid "Updates Details"
+msgstr "ᱵᱤᱵᱨᱚᱬ ᱠᱚ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱢᱮ"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:68
+msgid ""
+"A new version of this extension is ready and will be loaded on next login."
+msgstr "ᱱᱚᱣᱟ ᱠᱷᱚᱧᱡᱟ ᱨᱮᱭᱟᱜ ᱱᱟᱶᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱥᱟᱯᱲᱟᱣ ᱜᱮᱭᱟ ᱟᱨ ᱫᱚᱥᱟᱨ ᱞᱚᱜᱤᱱ ᱨᱮ ᱞᱳᱰ ᱦᱩᱭᱩᱜᱼᱟ ᱾"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+msgid "Extension Details"
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱵᱤᱵᱨᱚᱬ"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
+msgid "_Website"
+msgstr "_ᱣᱮᱵᱽᱥᱟᱭᱤᱴ"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:215
+msgid "_Settings"
+msgstr "_ᱥᱮᱴᱤᱝ"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:242
+msgid "_Remove…"
+msgstr "_ᱨᱟᱠᱵᱹ…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
+msgid "Keyboard Shortcuts"
+msgstr "ᱠᱟᱹᱴᱷᱤ ᱵᱚᱰ ᱠᱷᱟᱴᱚᱢᱟᱪᱷᱟᱠᱚ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
+msgid "About Extensions"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱟᱨᱮᱛᱮ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:64
+msgid "Main Menu"
+msgstr "ᱢᱩᱬᱩᱛ ᱢᱮᱱᱩ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:106
+msgid "Search extensions"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱥᱮᱸᱫᱽᱨᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:123
+msgid "_Log Out…"
+msgstr "ᱵᱟᱦᱨᱮ ᱛᱮ ᱚᱰᱚᱠ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:131
+msgid "_Extensions"
+msgstr "_ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:136
+msgid "More Information"
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱵᱟᱰᱟᱭ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:148
+msgid ""
+"Extensions can cause performance and stability issues. It is recommended to "
+"disable all extensions if you experience problems with your system."
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱫᱚ ᱠᱟᱹᱢᱤᱦᱚᱨᱟ ᱟᱨ ᱥᱴᱮᱵᱤᱞᱤᱴᱤ ᱮᱴᱠᱮᱴᱚᱬᱮ ᱠᱚ ᱨᱮᱭᱟᱜ ᱠᱟᱨᱚᱱ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ᱾ ᱡᱩᱫᱤ ᱟᱢᱟᱜ ᱥᱤᱥᱴᱚᱢ ᱨᱮ ᱮᱴᱠᱮᱴᱚᱬᱮᱢ ᱟᱴᱠᱟᱨ ᱠᱷᱟᱱ ᱥᱟᱱᱟᱢ ᱮᱠᱥᱴᱮᱱᱥᱚᱱ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱞᱟᱹᱜᱤᱫ ᱢᱮᱛᱟᱜ ᱠᱟᱱᱟ ᱾"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
+msgid "User Extensions"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:184
+msgid "System Extensions"
+msgstr "ᱥᱤᱥᱴᱚᱢ ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:203
+msgid "Search Results"
+msgstr "ᱥᱮᱸᱫᱽᱨᱟ ᱚᱨᱡᱚ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:217
+msgid "No Results Found"
+msgstr "ᱪᱮᱫ ᱛᱮᱞᱟ ᱵᱟᱝ ᱧᱟᱢ ᱞᱮᱱᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:218
+msgid "Try a different search"
+msgstr "ᱮᱴᱟᱜ ᱥᱮᱸᱫᱽᱨᱟ ᱨᱮᱭᱟᱜ ᱠᱩᱨᱩᱢᱩᱴᱩᱭ ᱢᱮ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:229
+msgid "No Installed Extensions"
+msgstr "ᱵᱟᱝ ᱵᱚᱦᱟᱞ ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:230
+msgid ""
+"To find and add extensions, visit <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱯᱟᱱᱛᱮ ᱧᱟᱢ ᱟᱨ ᱥᱮᱞᱮᱫ ᱢᱮᱥᱟ ᱞᱟᱹᱜᱤᱫ, ᱧᱮᱞ ᱢᱮ <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> ᱾"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:240
+msgid "Something’s gone wrong"
+msgstr "ᱡᱟᱦᱟᱱᱟᱜ ᱜᱮ ᱵᱟᱹᱲᱤᱡ ᱪᱟᱞᱟᱣ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:241
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr "ᱟᱞᱮ ᱟᱹᱰᱤ ᱤᱠᱟᱹ ᱞᱮ ᱠᱷᱚᱡᱚᱜ ᱠᱟᱱᱟ, ᱢᱮᱱᱠᱷᱟᱱ ᱵᱚᱦᱟᱞ ᱮᱠᱥᱴᱮᱱᱥᱚᱱ ᱨᱮᱭᱟᱜ ᱛᱟᱞᱠᱟ ᱧᱟᱢ ᱫᱚ ᱵᱟᱝ ᱥᱚᱢᱵᱷᱚᱵᱚᱱᱟ ᱾ ᱴᱷᱟᱹᱣᱠᱟᱹ ᱢᱮ ᱟᱢ GNOME ᱨᱮ ᱞᱚᱜᱽ ᱟᱠᱟᱱᱟᱢ ᱟᱨ ᱫᱚᱦᱲᱟ ᱠᱩᱨᱩᱢᱩᱴᱩᱭ ᱢᱮ ᱾"
+
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
+msgctxt "shortcut window"
+msgid "General"
+msgstr "ᱥᱟᱫᱷᱟᱨᱚᱬ"
+
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "Open Menu"
+msgstr "ᱢᱮᱱᱩ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:15
+msgctxt "shortcut window"
+msgid "Toggle Search"
+msgstr "ᱴᱚᱜᱽᱞ ᱥᱮᱸᱫᱽᱨᱟ"
+
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "ᱥᱚᱴᱠᱟᱴ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "ᱵᱟᱹᱜᱤ ᱢᱮ"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:284
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "ᱱᱟᱶᱟ ᱠᱷᱚᱧᱡᱟ %s ᱨᱮ ᱱᱟᱯᱟᱭ ᱥᱟᱞᱟᱜ ᱛᱮᱭᱟᱨ ᱞᱮᱱᱟ.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:376
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr "ᱧᱩᱛᱩᱢ ᱫᱚ ᱟᱹᱰᱤ ᱠᱷᱟᱴᱚ (ᱟᱫᱷᱟᱨᱚᱱ ᱵᱚᱨᱱᱟᱱ) ᱥᱴᱨᱤᱝ ᱦᱩᱭᱩᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ ᱾\n"
+"ᱫᱟᱹᱭᱠᱟᱹ ᱠᱚ ᱫᱚ : %s"
+
+#: subprojects/extensions-tool/src/command-create.c:382
+#: subprojects/extensions-tool/src/main.c:243
+msgid "Name"
+msgstr "ᱧᱩᱛᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-create.c:396
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr "ᱵᱤᱵᱨᱚᱬ ᱫᱚ ᱢᱤᱫ ᱟᱹᱭᱟᱹᱛ ᱛᱮ ᱵᱩᱡᱷᱟᱹᱣ ᱠᱟᱱᱟ ᱡᱮ ᱟᱢᱟᱜ ᱵᱟᱹᱲᱛᱤ ᱪᱮᱫ ᱪᱤᱠᱟᱹᱭᱟ ᱾\n"
+"ᱫᱟᱹᱭᱠᱟᱹ ᱠᱚ ᱫᱚ : %s"
+
+#: subprojects/extensions-tool/src/command-create.c:402
+#: subprojects/extensions-tool/src/main.c:246
+msgid "Description"
+msgstr "ᱵᱤᱵᱨᱚᱱ"
+
+#: subprojects/extensions-tool/src/command-create.c:416
+#, c-format
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
+msgstr "UUID ᱫᱚ ᱟᱢᱟᱜ ᱵᱟᱹᱲᱛᱤ ᱞᱟᱹᱜᱤᱫ ᱡᱮᱜᱮᱛᱟᱹᱨᱤ ᱞᱮᱠᱟᱱ ᱵᱷᱮᱜᱟᱨ ᱩᱨᱩᱢ ᱠᱟᱱᱟ ᱾\n"
+"ᱱᱚᱣᱟ ᱫᱚ ᱤᱢᱮᱞ ᱴᱷᱤᱠᱟᱹᱱᱟ ᱨᱮᱭᱟᱜ ᱨᱩᱯ ᱨᱮ ᱦᱩᱭᱩᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ (clicktofocus@janedoe.example.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:443
+#, c-format
+msgid "Choose one of the available templates:\n"
+msgstr "ᱢᱮᱱᱟᱜ ᱪᱷᱟᱸᱪ ᱠᱚ ᱢᱩᱫᱽ ᱨᱮ ᱢᱤᱫᱴᱟᱹᱝ ᱵᱟᱪᱷᱟᱣ ᱢᱮ:\n"
+
+#: subprojects/extensions-tool/src/command-create.c:457
+msgid "Template"
+msgstr "ᱪᱷᱟᱸᱪ"
+
+#: subprojects/extensions-tool/src/command-create.c:515
+msgid "The unique identifier of the new extension"
+msgstr "ᱱᱟᱶᱟ ᱵᱟᱹᱲᱛᱤ ᱨᱮᱭᱟᱜ ᱵᱷᱮᱜᱟᱨ ᱩᱨᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-create.c:518
+msgid "NAME"
+msgstr "ᱧᱩᱛᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-create.c:519
+msgid "The user-visible name of the new extension"
+msgstr "ᱱᱟᱶᱟ ᱠᱷᱚᱧᱡᱟ ᱨᱮᱭᱟᱜ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ-ᱧᱮᱞᱚᱜ ᱧᱩᱛᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-create.c:521
+msgid "DESCRIPTION"
+msgstr "ᱵᱤᱵᱨᱚᱱ"
+
+#: subprojects/extensions-tool/src/command-create.c:523
+msgid "A short description of what the extension does"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱪᱮᱫ ᱪᱤᱠᱟᱹᱭᱟ ᱚᱱᱟ ᱨᱮᱭᱟᱜ ᱠᱷᱟᱴᱚ ᱵᱤᱵᱚᱨᱚᱱ"
+
+#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "DOMAIN"
+msgstr "ᱰᱚᱢᱮᱱ"
+
+#: subprojects/extensions-tool/src/command-create.c:527
+msgid "The gettext domain used by the extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱦᱚᱛᱮᱛᱮ ᱵᱮᱵᱷᱟᱨᱚᱜ ᱠᱟᱱ ᱜᱮᱴᱮᱠᱥ ᱰᱚᱢᱮᱱ"
+
+#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-pack.c:448
+msgid "SCHEMA"
+msgstr "ᱥᱠᱤᱢᱟ"
+
+#: subprojects/extensions-tool/src/command-create.c:531
+msgid "The GSettings schema used by the extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱦᱚᱛᱮᱛᱮ ᱵᱮᱵᱷᱟᱨᱚᱜ ᱠᱟᱱ ᱡᱤᱥᱮᱴᱤᱝ ᱥᱠᱤᱢᱟ"
+
+#: subprojects/extensions-tool/src/command-create.c:534
+msgid "TEMPLATE"
+msgstr "ᱪᱷᱟᱸᱪ"
+
+#: subprojects/extensions-tool/src/command-create.c:535
+msgid "The template to use for the new extension"
+msgstr "ᱱᱟᱶᱟ ᱠᱷᱚᱧᱡᱟ ᱞᱟᱹᱜᱤᱫ ᱵᱮᱵᱷᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱪᱷᱟᱸᱪ"
+
+#: subprojects/extensions-tool/src/command-create.c:538
+msgid "Include prefs.js template"
+msgstr "prefs.js ᱪᱷᱟᱸᱪ ᱥᱮᱞᱮᱫ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-create.c:544
+msgid "Enter extension information interactively"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱮᱣᱨᱟ ᱤᱱᱴᱟᱨᱮᱠᱴᱤᱵᱷ ᱞᱮᱠᱟᱛᱮ ᱮᱢ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-create.c:552
+msgid "Create a new extension"
+msgstr "ᱢᱤᱫ ᱱᱟᱶᱟ ᱠᱷᱚᱧᱡᱟ ᱵᱮᱱᱟᱣ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-create.c:570
+#: subprojects/extensions-tool/src/command-list.c:190
+msgid "Unknown arguments"
+msgstr "ᱵᱟᱝ ᱵᱟᱰᱟᱭ ᱟᱨᱜᱩᱢᱮᱱᱴ"
+
+#: subprojects/extensions-tool/src/command-create.c:595
+msgid "UUID, name and description are required"
+msgstr "UUID, ᱧᱩᱛᱩᱢ ᱟᱨ ᱵᱤᱵᱨᱚᱬ ᱞᱟᱹᱠᱛᱤᱭᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-disable.c:62
+#: subprojects/extensions-tool/src/command-enable.c:62
+#, c-format
+msgid "Extension “%s” does not exist\n"
+msgstr "ᱠᱷᱚᱧᱡᱟ “%s” ᱵᱟᱹᱱᱩᱜᱼᱟ\n"
+
+#: subprojects/extensions-tool/src/command-disable.c:98
+msgid "Disable an extension"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-disable.c:116
+#: subprojects/extensions-tool/src/command-enable.c:116
+#: subprojects/extensions-tool/src/command-info.c:103
+#: subprojects/extensions-tool/src/command-prefs.c:105
+#: subprojects/extensions-tool/src/command-reset.c:76
+#: subprojects/extensions-tool/src/command-uninstall.c:104
+msgid "No UUID given"
+msgstr "ᱪᱮᱫ UUID ᱵᱟᱝ ᱮᱢ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-disable.c:121
+#: subprojects/extensions-tool/src/command-enable.c:121
+#: subprojects/extensions-tool/src/command-info.c:108
+#: subprojects/extensions-tool/src/command-prefs.c:110
+#: subprojects/extensions-tool/src/command-reset.c:81
+#: subprojects/extensions-tool/src/command-uninstall.c:109
+msgid "More than one UUID given"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱱ ᱵᱟᱹᱲᱛᱤ UUID ᱮᱢ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-enable.c:98
+msgid "Enable an extension"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:66
+#: subprojects/extensions-tool/src/main.c:150
+#, c-format
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "GNOME ᱥᱮᱞ ᱥᱟᱶ ᱡᱚᱯᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱵᱤᱰᱷᱟᱹᱣ ᱦᱩᱭ ᱮᱱᱟ\n"
+
+#: subprojects/extensions-tool/src/command-info.c:59
+#: subprojects/extensions-tool/src/main.c:159
+#, c-format
+msgid "Extension “%s” doesn't exist\n"
+msgstr "ᱠᱷᱚᱧᱡᱟ “%s” ᱵᱟᱹᱱᱩᱜᱼᱟ\n"
+
+#: subprojects/extensions-tool/src/command-info.c:85
+msgid "Show extensions info"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱟᱯᱟᱰᱟᱭ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-install.c:195
+msgid "Overwrite an existing extension"
+msgstr "ᱢᱮᱱᱟᱜ ᱠᱷᱚᱧᱡᱟ ᱚᱵᱷᱟᱨᱟᱭᱤᱴ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-install.c:198
+msgid "Print extension UUID on success"
+msgstr "ᱥᱟᱯᱲᱟᱣ ᱞᱟᱹᱜᱤᱫ ᱠᱷᱚᱧᱡᱟ UUID ᱯᱨᱤᱱᱴ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-install.c:200
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: subprojects/extensions-tool/src/command-install.c:209
+msgid "Install an extension bundle"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱱᱰᱮᱞ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-install.c:227
+msgid "No extension bundle specified"
+msgstr "ᱪᱮᱫ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱱᱰᱮᱞ ᱵᱟᱝ ᱩᱫᱩᱜ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-install.c:233
+msgid "More than one extension bundle specified"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱱ ᱵᱟᱹᱲᱛᱤ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱱᱰᱮᱞ ᱩᱫᱩᱜ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show user-installed extensions"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ-ᱵᱚᱦᱟᱞ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+msgid "Show system-installed extensions"
+msgstr "ᱥᱤᱥᱴᱚᱢ-ᱵᱚᱦᱟᱞ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:146
+msgid "Show enabled extensions"
+msgstr "ᱪᱟᱹᱞᱩ ᱟᱠᱟᱱ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:149
+msgid "Show disabled extensions"
+msgstr "ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:152
+msgid "Show extensions in active state"
+msgstr "ᱮᱠᱴᱤᱵᱷ ᱚᱵᱚᱥᱛᱟ ᱨᱮ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:155
+msgid "Show extensions in inactive state"
+msgstr "ᱤᱱᱮᱠᱴᱤᱵᱷ ᱚᱵᱚᱥᱛᱟ ᱨᱮ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:158
+msgid "Show extensions with preferences"
+msgstr "ᱠᱩᱥᱤᱠᱚ ᱥᱟᱶ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:161
+msgid "Show extensions with updates"
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱥᱟᱶ ᱠᱷᱚᱧᱡᱟ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-list.c:164
+msgid "Print extension details"
+msgstr "ᱯᱨᱤᱱᱴ ᱠᱷᱚᱧᱡᱟ ᱰᱤᱴᱮᱞᱥ"
+
+#: subprojects/extensions-tool/src/command-list.c:172
+msgid "List installed extensions"
+msgstr "ᱵᱚᱦᱟᱞ ᱠᱟᱱ ᱠᱷᱚᱧᱡᱟ ᱠᱚ ᱥᱩᱪᱤ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
+msgid "FILE"
+msgstr "ᱨᱮᱫᱽ"
+
+#: subprojects/extensions-tool/src/command-pack.c:445
+msgid "Additional source to include in the bundle"
+msgstr "ᱵᱟᱱᱰᱮᱞ ᱨᱮ ᱥᱮᱞᱮᱫ ᱞᱟᱹᱜᱤᱫ ᱵᱟᱹᱲᱛᱤ ᱥᱚᱨᱥ"
+
+#: subprojects/extensions-tool/src/command-pack.c:449
+msgid "A GSettings schema that should be included"
+msgstr "ᱢᱤᱫ GSettings ᱥᱠᱤᱢᱟ ᱡᱟᱦᱟᱸ ᱫᱚ ᱥᱮᱞᱮᱫᱚᱜ ᱞᱟᱹᱠᱛᱤᱭᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+#: subprojects/extensions-tool/src/command-pack.c:462
+msgid "DIRECTORY"
+msgstr "ᱰᱟᱭᱨᱮᱠᱴᱚᱨᱤ"
+
+#: subprojects/extensions-tool/src/command-pack.c:453
+msgid "The directory where translations are found"
+msgstr "ᱚᱱᱟ ᱰᱟᱭᱨᱮᱠᱴᱚᱨᱤ ᱡᱟᱦᱟᱸ ᱨᱮ ᱛᱚᱨᱡᱚ ᱠᱚ ᱧᱟᱢᱚᱜᱼᱟ"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+msgid "The gettext domain to use for translations"
+msgstr "ᱛᱚᱨᱡᱚ ᱞᱟᱹᱜᱤᱫ ᱵᱮᱵᱷᱟᱨ ᱞᱟᱹᱜᱤᱫ ᱜᱮᱴᱮᱠᱥ ᱰᱚᱢᱮᱱ"
+
+#: subprojects/extensions-tool/src/command-pack.c:460
+msgid "Overwrite an existing pack"
+msgstr "ᱢᱮᱱᱟᱜ ᱯᱮᱠ ᱚᱵᱷᱟᱨᱟᱭᱤᱴ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-pack.c:464
+msgid "The directory where the pack should be created"
+msgstr "ᱚᱱᱟ ᱰᱟᱭᱨᱮᱠᱴᱚᱨᱤ ᱡᱟᱦᱟᱸ ᱨᱮ ᱯᱮᱠ ᱵᱮᱱᱟᱣ ᱞᱟᱹᱠᱛᱤᱜ ᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "SOURCE_DIRECTORY"
+msgstr "SOURCE_DIRECTORY"
+
+#: subprojects/extensions-tool/src/command-pack.c:475
+msgid "Create an extension bundle"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱱᱰᱮᱞ ᱵᱮᱱᱟᱣ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-pack.c:495
+msgid "More than one source directory specified"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱱ ᱵᱟᱹᱲᱛᱤ ᱥᱚᱨᱥ ᱰᱟᱭᱨᱮᱠᱴᱚᱨᱤ ᱩᱫᱩᱜ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/command-prefs.c:47
+#, c-format
+msgid "Extension “%s” doesn't have preferences\n"
+msgstr "ᱠᱷᱚᱧᱡᱟ “%s” ᱨᱮ ᱠᱩᱥᱤᱠᱚ ᱵᱟᱹᱱᱩᱜᱼᱟ\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "ᱠᱷᱚᱧᱡᱟ “%s”: %s ᱞᱟᱹᱜᱤᱫ ᱯᱨᱤᱯᱷᱥ ᱡᱷᱤᱡᱽ ᱨᱮ ᱵᱟᱝ ᱥᱟᱹᱛ ᱟᱠᱟᱱᱟ\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
+msgid "Opens extension preferences"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱯᱨᱮᱯᱷᱮᱨᱮᱱᱥ ᱠᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-reset.c:58
+msgid "Reset an extension"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱨᱤᱥᱮᱴ"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:49
+#, c-format
+msgid "Cannot uninstall system extensions\n"
+msgstr "ᱥᱤᱥᱴᱚᱢ ᱠᱷᱚᱧᱡᱟ ᱵᱟᱝ ᱟᱱᱤᱱᱥᱴᱚᱞ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:64
+#, c-format
+msgid "Failed to uninstall “%s”\n"
+msgstr "“%s” ᱟᱱᱤᱱᱥᱴᱚᱞ ᱵᱟᱝ ᱦᱩᱭ ᱞᱮᱱᱟ\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:86
+msgid "Uninstall an extension"
+msgstr "ᱢᱤᱫ ᱠᱷᱚᱧᱡᱟ ᱟᱱᱤᱱᱥᱴᱚᱞ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
+msgid "Login to extensions.gnome.org\n"
+msgstr "ᱠᱷᱚᱧᱡᱟ.ᱜᱱᱚᱢ.ᱚᱨᱜᱽ ᱨᱮ ᱞᱚᱜᱤᱱ ᱢᱮ\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
+msgid "Warning! Password will be echoed"
+msgstr "ᱦᱩᱥᱤᱭᱟᱹᱨ ! ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱜᱩᱲᱦᱟᱹᱣᱚᱜᱼᱟ"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+msgid "USERNAME"
+msgstr "ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱧᱩᱛᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr "https://extensions.gnome.org ᱨᱮ ᱞᱚᱜᱽ ᱤᱱ ᱞᱟᱹᱜᱤᱫ ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ ᱧᱩᱛᱩᱢ"
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr "https://ᱠᱷᱚᱧᱡᱟᱥ.ᱜᱱᱚᱢ.ᱚᱨᱜᱽ ᱨᱮ ᱞᱚᱜᱽ ᱤᱱ ᱞᱟᱹᱜᱤᱫ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ"
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr "ᱨᱮᱫ ᱠᱷᱚᱱ https://extensions.gnome.org ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ ᱯᱟᱲᱦᱟᱣ ᱢᱮ, ᱮᱥᱴᱤᱰᱤᱱ ᱞᱟᱹᱜᱤᱫ \"-\" ᱵᱮᱵᱷᱟᱨ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr "https://extensions.gnome.org/upload/ ᱨᱮ ᱥᱮᱵᱟ ᱨᱮᱭᱟᱜ ᱥᱟᱨᱛ ᱟᱝᱜᱚᱪ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-upload.c:434
+msgid "FILE…"
+msgstr "ᱨᱚᱫᱽ…"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+msgid "Upload new extension versions"
+msgstr "ᱱᱟᱶᱟ ᱠᱷᱚᱧᱡᱟ ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱠᱚ ᱟᱯᱞᱳᱰ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr "ᱥᱩᱢᱩᱝ ᱢᱤᱫᱴᱟᱹᱝ --ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ ᱟᱨ --ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫ-ᱨᱮᱫ ᱵᱮᱵᱷᱟᱨ ᱦᱩᱭ ᱫᱟᱲᱮᱭᱟᱜᱼᱟ"
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱟᱯᱞᱳᱰ ᱞᱟᱹᱜᱤᱫ ᱟᱢ ᱥᱮᱵᱟ ᱨᱮᱭᱟᱜ ᱥᱟᱨᱛ ᱟᱝᱜᱚᱪ ᱞᱟᱹᱠᱛᱤᱭᱟᱢᱟ"
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+msgid "No files given"
+msgstr "ᱪᱮᱫ ᱨᱮᱫ ᱦᱚᱸ ᱵᱟᱝ ᱮᱢ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/main.c:76
+msgid "Do not print error messages"
+msgstr "ᱦᱤᱲᱤᱡ ᱠᱷᱚᱵᱚᱨ ᱟᱞᱚᱢ ᱪᱷᱟᱯᱟᱭᱟ"
+
+#: subprojects/extensions-tool/src/main.c:249
+msgid "Path"
+msgstr "ᱰᱟᱦᱟᱨ"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "URL"
+msgstr "ᱭᱩᱟᱨᱮᱞ"
+
+#: subprojects/extensions-tool/src/main.c:255
+msgid "Original author"
+msgstr "ᱟᱥᱚᱞ ᱚᱱᱚᱞᱤᱭᱟᱹ"
+
+#: subprojects/extensions-tool/src/main.c:261
+#: subprojects/extensions-tool/src/main.c:263
+#: subprojects/extensions-tool/src/main.c:265
+msgid "Version"
+msgstr "ᱵᱤᱵᱷᱟᱜ"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Enabled"
+msgstr "ᱪᱟᱹᱞᱩ ᱟᱠᱟᱱᱟ"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "Yes"
+msgstr "ᱦᱚᱭ"
+
+#: subprojects/extensions-tool/src/main.c:268
+msgid "No"
+msgstr "ᱵᱟᱝ"
+
+#: subprojects/extensions-tool/src/main.c:271
+msgid "State"
+msgstr "ᱯᱚᱱᱚᱛ"
+
+#: subprojects/extensions-tool/src/main.c:309
+msgid "“version” takes no arguments"
+msgstr "“ᱦᱟᱹᱞᱤᱭᱟᱹᱠ” ᱫᱚ ᱪᱮᱫ ᱟᱨᱜᱩᱢᱮᱱᱴ ᱵᱟᱝ ᱦᱟᱛᱟᱣᱟ"
+
+#: subprojects/extensions-tool/src/main.c:311
+#: subprojects/extensions-tool/src/main.c:331
+msgid "Usage:"
+msgstr "ᱵᱮᱵᱷᱟᱨ:"
+
+#: subprojects/extensions-tool/src/main.c:314
+msgid "Print version information and exit."
+msgstr "ᱦᱟᱹᱞᱤᱭᱟᱹᱠ ᱵᱤᱵᱨᱚᱬ ᱯᱨᱤᱱᱴ ᱢᱮ ᱟᱨ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱾"
+
+#: subprojects/extensions-tool/src/main.c:329
+#: subprojects/extensions-tool/src/main.c:332
+msgid "COMMAND"
+msgstr "ᱟᱫᱮᱥ"
+
+#: subprojects/extensions-tool/src/main.c:332
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: subprojects/extensions-tool/src/main.c:334
+msgid "Commands:"
+msgstr "ᱟᱫᱮᱥᱠᱚᱺ"
+
+#: subprojects/extensions-tool/src/main.c:335
+msgid "Print help"
+msgstr "ᱪᱷᱟᱯᱟ ᱜᱚᱲᱚ"
+
+#: subprojects/extensions-tool/src/main.c:337
+msgid "Enable extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱪᱟᱹᱞᱩᱭ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:338
+msgid "Disable extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱚᱠᱟᱹᱡᱽᱣᱟᱹ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:339
+msgid "Reset extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱨᱤᱥᱮᱴ"
+
+#: subprojects/extensions-tool/src/main.c:340
+msgid "Uninstall extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱟᱱᱤᱥᱴᱚᱞ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:341
+msgid "List extensions"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱛᱟᱞᱠᱟ"
+
+#: subprojects/extensions-tool/src/main.c:342
+#: subprojects/extensions-tool/src/main.c:343
+msgid "Show extension info"
+msgstr "ᱵᱟᱹᱲᱛᱤ ᱵᱟᱯᱟᱰᱟᱭ ᱩᱫᱩᱜ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:344
+msgid "Open extension preferences"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱠᱩᱥᱤᱠᱚ ᱡᱷᱤᱡᱽ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:345
+msgid "Create extension"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱮᱱᱟᱣ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:346
+msgid "Package extension"
+msgstr "ᱯᱮᱠᱮᱡᱽ ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-tool/src/main.c:347
+msgid "Install extension bundle"
+msgstr "ᱠᱷᱚᱧᱡᱟ ᱵᱚᱱᱰᱮᱞ ᱵᱚᱦᱟᱞ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/main.c:349
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "ᱯᱩᱥᱴᱟᱹᱣ ᱜᱚᱲᱚ ᱧᱟᱢ ᱞᱟᱹᱜᱤᱫ “%s” ᱵᱮᱵᱷᱟᱨ ᱢᱮ.\n"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
+msgid "Plain"
+msgstr "ᱰᱟᱸᱰᱤ"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "An empty extension"
+msgstr "ᱢᱤᱫ ᱠᱷᱟᱹᱞᱤ ᱠᱷᱚᱧᱡᱟ"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
+msgid "Indicator"
+msgstr "ᱤᱱᱰᱤᱠᱮᱴᱚᱨ"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Add an icon to the top bar"
+msgstr "ᱪᱮᱛᱟᱱ ᱵᱟᱨ ᱨᱮ ᱢᱤᱫ ᱪᱤᱱᱦᱟᱹ ᱥᱮᱞᱮᱫ ᱢᱮ"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
+msgid "Quick Settings Item"
+msgstr "ᱩᱥᱟᱹᱨᱟ ᱥᱮᱴᱤᱝ ᱡᱤᱱᱤᱥ"
+
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+msgid "Add an item to quick settings"
+msgstr "ᱩᱥᱟᱹᱨᱟ ᱥᱮᱴᱤᱝ ᱨᱮ ᱢᱤᱫ ᱡᱤᱱᱤᱥ ᱥᱮᱞᱮᱫ ᱢᱮ"
+
+#. translators:
+#. * The device has been disabled
+#: subprojects/gvc/gvc-mixer-control.c:1872
+msgid "Disabled"
+msgstr "ᱞᱮᱝᱨᱟ"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1879
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u ᱟᱣᱴᱯᱩᱴ"
+msgstr[1] "%u ᱟᱣᱴᱯᱩᱴ ᱠᱤᱱ"
+msgstr[2] "%u ᱟᱣᱴᱯᱩᱴ ᱠᱤᱱ"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1889
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ᱤᱱᱯᱩᱴ"
+msgstr[1] "%u ᱤᱱᱯᱩᱴ ᱠᱤᱱ"
+msgstr[2] "%u ᱤᱱᱯᱩᱴ ᱠᱤᱱ"
+
+#: subprojects/gvc/gvc-mixer-control.c:2872
+msgid "System Sounds"
+msgstr "ᱥᱤᱥᱴᱚᱢ ᱥᱟᱰᱮ"
