@@ -95,12 +95,12 @@ $_gdm_dialog_width: 25em;
     &-label {
       @include fontsize($base_font_size - 1);
       font-weight: bold;
-      color: $_gdm_fg;
+      color: $fg_color;
     }
   }
 
   .login-dialog-auth-menu-item-icon {
-    color: $_gdm_fg;
+    color: $fg_color;
     icon-size: $scalable_icon_size;
     margin-right: $base_margin * 2;
   }
@@ -109,13 +109,13 @@ $_gdm_dialog_width: 25em;
     spacing: $base_padding * .5;
 
     &-name {
-      color: $_gdm_fg;
+      color: $fg_color;
       @include fontsize($base_font_size);
       font-weight: bold;
     }
 
     &-description {
-      color: $_gdm_fg;
+      color: $fg_color;
       @include fontsize($base_font_size - 1);
     }
   }
