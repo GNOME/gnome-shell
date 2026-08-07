@@ -1476,8 +1476,6 @@ get_platform_data (ShellApp *app,
   gchar *startup_id;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
-  if (!app->info)
-    return g_variant_builder_end (&builder);
 
   global = shell_global_get ();
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
@@ -1485,7 +1483,7 @@ get_platform_data (ShellApp *app,
   if (!context)
     return g_variant_builder_end (&builder);
 
-  startup_id = g_app_launch_context_get_startup_notify_id (context, G_APP_INFO (app->info), NULL);
+  startup_id = g_app_launch_context_get_startup_notify_id (context, NULL, NULL);
 
   if (!startup_id)
     return g_variant_builder_end (&builder);
