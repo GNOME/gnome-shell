@@ -24,6 +24,8 @@
 #include <libecal/libecal.h>
 
 #include "calendar-sources.h"
+#include "gnome-shell-calendar-server.h"
+#include "reminder-launch-context.h"
 #include "reminder-watcher.h"
 
 #if !ICAL_CHECK_VERSION(4, 0, 0)
@@ -642,8 +644,11 @@ void
 reminder_watcher_open_in_app_by_id (EReminderWatcher *reminder_watcher,
                                     const char *id)
 {
+  CalendarServerApp *app = CALENDAR_SERVER_APP (g_application_get_default ());
   g_autoptr(GAppInfo) app_info = NULL;
+  g_autoptr(ReminderLaunchContext) launch_context = NULL;
   g_autoptr(GError) local_error = NULL;
+  g_autofree char *startup_notify_id = NULL;
 
   app_info = reminder_watcher_get_calendar_app ();
   if (app_info == NULL)
@@ -652,7 +657,11 @@ reminder_watcher_open_in_app_by_id (EReminderWatcher *reminder_watcher,
       return;
     }
 
-  if (g_app_info_launch_uris (app_info, NULL, NULL, &local_error))
+  startup_notify_id = calendar_server_app_take_startup_notify_id (app);
+  launch_context = reminder_launch_context_new ();
+  reminder_launch_context_set_startup_notify_id (launch_context, startup_notify_id);
+
+  if (g_app_info_launch_uris (app_info, NULL, G_APP_LAUNCH_CONTEXT (launch_context), &local_error))
     print_debug ("OpenInApp: Launched '%s'", g_app_info_get_id (app_info));
    else
     print_debug ("OpenInApp: Failed to launch '%s': %s", g_app_info_get_id (app_info), local_error ? local_error->message : "Unknown error");
