@@ -1,5 +1,6 @@
 calendar_sources = [
   'gnome-shell-calendar-server.c',
+  'gnome-shell-calendar-server.h',
   'calendar-debug.h',
   'calendar-sources.c',
   'calendar-sources.h',

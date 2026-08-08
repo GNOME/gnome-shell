@@ -27,6 +27,8 @@
 
 #include "config.h"
 
+#include "gnome-shell-calendar-server.h"
+
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -307,9 +309,6 @@ generate_instances_cb (ICalComponent *icomp,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#define CALENDAR_SERVER_TYPE_APP calendar_server_app_get_type ()
-G_DECLARE_FINAL_TYPE (CalendarServerApp, calendar_server_app, CALENDAR_SERVER, APP, GApplication)
-
 struct _CalendarServerApp
 {
   GApplication parent;
@@ -333,6 +332,8 @@ struct _CalendarServerApp
   GSList *notify_ids; /* char *, for EventsRemoved */
 
   GSList *live_views;
+
+  char *startup_notify_id;
 };
 
 G_DEFINE_FINAL_TYPE (CalendarServerApp, calendar_server_app, G_TYPE_APPLICATION)
@@ -903,6 +904,8 @@ calendar_server_app_dispose (GObject *object)
   g_clear_object (&app->reminder_watcher);
   g_clear_object (&app->sources);
 
+  g_clear_pointer (&app->startup_notify_id, g_free);
+
   G_OBJECT_CLASS (calendar_server_app_parent_class)->dispose (object);
 }
 
@@ -938,6 +941,20 @@ calendar_server_app_dbus_unregister (GApplication    *application,
 }
 
 static void
+calendar_server_app_before_emit (GApplication    *application,
+                                 GVariant        *platform_data)
+{
+  CalendarServerApp *app = CALENDAR_SERVER_APP (application);
+  const char *startup_notify_id = NULL;
+
+  g_variant_lookup (platform_data, "activation-token", "&s", &startup_notify_id);
+  if (!startup_notify_id)
+    g_variant_lookup (platform_data, "desktop-startup-id", "&s", &startup_notify_id);
+
+  g_set_str (&app->startup_notify_id, startup_notify_id);
+}
+
+static void
 calendar_server_app_class_init (CalendarServerAppClass *klass)
 {
   GObjectClass *object_class;
@@ -950,6 +967,7 @@ calendar_server_app_class_init (CalendarServerAppClass *klass)
   application_class->startup = calendar_server_app_startup;
   application_class->dbus_register = calendar_server_app_dbus_register;
   application_class->dbus_unregister = calendar_server_app_dbus_unregister;
+  application_class->before_emit = calendar_server_app_before_emit;
 }
 
 static void
@@ -1133,6 +1151,12 @@ stdin_channel_io_func (GIOChannel *source,
       g_warning ("Unhandled condition %d on GIOChannel for stdin", condition);
     }
   return FALSE; /* remove source */
+}
+
+char *
+calendar_server_app_take_startup_notify_id (CalendarServerApp *application)
+{
+  return g_steal_pointer (&application->startup_notify_id);
 }
 
 int
