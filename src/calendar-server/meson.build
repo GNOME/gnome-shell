@@ -4,6 +4,8 @@ calendar_sources = [
   'calendar-debug.h',
   'calendar-sources.c',
   'calendar-sources.h',
+  'reminder-launch-context.c',
+  'reminder-launch-context.h',
   'reminder-watcher.c',
   'reminder-watcher.h'
 ]
