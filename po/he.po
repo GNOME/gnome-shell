@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-30 13:55+0000\n"
-"PO-Revision-Date: 2026-08-01 13:54+0300\n"
+"POT-Creation-Date: 2026-08-02 12:05+0000\n"
+"PO-Revision-Date: 2026-08-04 09:50+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -550,6 +550,10 @@ msgstr "המקום להצגת תחזית עבורו"
 msgid "Extensions"
 msgstr "הרחבות"
 
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "התראות תזכורת"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
 msgstr "חיבורי רשת"
@@ -588,36 +592,92 @@ msgstr "פרטי שגיאה"
 msgid "Copy Error"
 msgstr "שגיאת העתקה"
 
-#: js/gdm/authPrompt.js:59 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
 msgid "Screen Time Limit Reached"
 msgstr "הגעת למגבלת זמן המסך"
 
-#: js/gdm/authPrompt.js:65
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr "הגעת למגבלת זמן המסך היומית המותרת במכשיר הזה. אפשר להמשיך מחר."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:73
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "התעלמות"
 
-#: js/gdm/authPrompt.js:255
+#: js/gdm/authPrompt.js:269
 msgid "Back"
 msgstr "חזרה"
 
-#: js/gdm/authPrompt.js:365
+#: js/gdm/authPrompt.js:366
 msgid "Submit"
 msgstr "הגשה"
 
-#: js/gdm/authPrompt.js:497 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:349
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "סיסמה"
+
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "הכנסת כרטיס חכם"
+
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "הכנסת מפתח אבטחה"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "שחרור עם טביעת אצבע"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "כרטיס חכם"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "טביעת אצבע"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(או להחליק אצבע על הקורא)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(או לשים אצבע על הקורא)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+msgid "Insert Smartcard"
+msgstr "הכנסת כרטיס חכם"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+msgid "Select Identity"
+msgstr "בחירת זהות"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "ארגון"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"נותרו לך %d ניסיונות. אם מפתח הגישה ננעל, לא תהיה לך אפשרות לגשת לחשבון שלך."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "בוצע"
 
 #. Translators: is running for <username>
 #: js/gdm/conflictingSessionDialog.js:50
@@ -671,10 +731,11 @@ msgid ""
 "data loss"
 msgstr "אילוץ העצירה יסגור יישומים ותהליכים פעילים ויכול להוביל לאבדן נתונים"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/ui/audioDeviceSelection.js:60
-#: js/ui/components/networkAgent.js:114 js/ui/components/polkitAgent.js:144
-#: js/ui/endSessionDialog.js:402 js/ui/extensionDownloader.js:276
-#: js/ui/shellMountOperation.js:399 js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -682,58 +743,54 @@ msgstr "ביטול"
 msgid "Force Stop"
 msgstr "אילוץ עצירה"
 
-#: js/gdm/loginDialog.js:331
-msgid "Choose Session"
-msgstr "בחירת הפעלה"
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+msgid "Login Options"
+msgstr "אפשרויות כניסה"
 
-#: js/gdm/loginDialog.js:425 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:54
+msgid "Session Type"
+msgstr "סוג הפעלה"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "נגישות"
 
-#: js/gdm/loginDialog.js:536
+#: js/gdm/loginDialog.js:450
 msgid "Not listed?"
 msgstr "אינך ברשימה?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1103
+#: js/gdm/loginDialog.js:1100
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(למשל, משתמש או %s)"
 
-#: js/gdm/loginDialog.js:1109 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "שם משתמש"
 
-#: js/gdm/loginDialog.js:1174
+#: js/gdm/loginDialog.js:1171
 msgid "Login Attempt Timed Out"
 msgstr "הזמן שהוקצב לניסיון הכניסה תם"
 
-#: js/gdm/loginDialog.js:1175
+#: js/gdm/loginDialog.js:1172
 msgid "Login took too long, please try again"
 msgstr "הכניסה למערכת ארכה זמן רב מדי, נא לנסות שוב"
 
-#: js/gdm/loginDialog.js:1536
+#: js/gdm/loginDialog.js:1534
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: js/gdm/util.js:503
+#: js/gdm/userVerifier.js:306
 msgid "Authentication error"
 msgstr "שגיאת אימות"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:742
-msgid "(or swipe finger across reader)"
-msgstr "(או להחליק אצבע על הקורא)"
-
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:747
-msgid "(or place finger on reader)"
-msgstr "(או לשים אצבע על הקורא)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "קוד כניסה:"
 
 #: js/misc/breakManager.js:776
 msgid "Break complete sound"
@@ -2075,10 +2132,6 @@ msgstr "החלפת צגים"
 msgid "Assign keystroke"
 msgstr "הקצאת מקש"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "בוצע"
-
 #: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "עריכה…"
@@ -2122,7 +2175,7 @@ msgstr "פתיחת תפריט"
 msgid "Run a Command"
 msgstr "הרצת פקודה"
 
-#: js/ui/runDialog.js:92
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "יש להקיש Esc לסגירה"
 
@@ -2251,15 +2304,15 @@ msgstr "אפשר להדביק את התמונה מלוח הגזירים"
 msgid "Screenshot taken"
 msgstr "המסך צולם"
 
-#: js/ui/search.js:884
+#: js/ui/search.js:887
 msgid "Searching"
 msgstr "בחיפוש"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:890
 msgid "No results"
 msgstr "אין תוצאות"
 
-#: js/ui/search.js:1023
+#: js/ui/search.js:1026
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2733,7 +2786,7 @@ msgstr "כיבוי…"
 msgid "Log Out…"
 msgstr "יציאה…"
 
-#: js/ui/status/system.js:204
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "החלפת משתמש…"
 
@@ -2832,27 +2885,35 @@ msgstr "חיצוני בלבד"
 msgid "Built-in Only"
 msgstr "מובנה בלבד"
 
+#: js/ui/unlockDialog.js:25
+msgid "Unlock Options"
+msgstr "אפשרויות שחרור נעילה"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:417
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%A, %d ב%B"
 
-#: js/ui/unlockDialog.js:423
-msgid "Swipe up to unlock"
-msgstr "יש להחליק למעלה כדי לשחרר"
+#: js/ui/unlockDialog.js:435
+msgid "Swipe up"
+msgstr "החלקה למעלה"
 
-#: js/ui/unlockDialog.js:424
-msgid "Click or press a key to unlock"
-msgstr "יש ללחוץ או להקיש כדי לשחרר"
+#: js/ui/unlockDialog.js:437
+msgid "Click or press a key"
+msgstr "לחיצה בעכבר או על מקש מקלדת"
 
-#: js/ui/unlockDialog.js:618
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "שחרור החלון"
 
-#: js/ui/unlockDialog.js:627
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "כניסה בתור משתמש אחר"
+
+#: js/ui/unlockDialog.js:695
+msgid "Background Authentication Methods"
+msgstr "שיטות אימות ברקע"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -2976,6 +3037,18 @@ msgstr "הזזה לצג שמימין"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "סגירה"
+
+#: src/calendar-server/reminder-watcher.c:124
+msgid "Reminders"
+msgstr "תזכורות"
+
+#: src/calendar-server/reminder-watcher.c:129
+msgid "Snooze"
+msgstr "נודניק"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Dismiss"
+msgstr "התעלמות"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
@@ -3566,6 +3639,9 @@ msgstr[3] "‫%u ערוצי קלט"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#~ msgid "Choose Session"
+#~ msgstr "בחירת הפעלה"
 
 #, javascript-format
 #~ msgid "%s has been pinned to the dash."
@@ -4303,9 +4379,6 @@ msgstr "צלילי מערכת"
 #~ msgctxt "event list time"
 #~ msgid "%l∶%M %p"
 #~ msgstr "%l:%M %p"
-
-#~ msgid "Invitation"
-#~ msgstr "הזמנה"
 
 #~ msgid "Call"
 #~ msgstr "התקשרות"
