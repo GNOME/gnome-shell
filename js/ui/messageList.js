@@ -1538,6 +1538,8 @@ export const MessageView = GObject.registerClass({
 
         this._setupMpris();
         this._setupNotifications();
+
+        this._expandedGroup = null;
     }
 
     get empty() {
