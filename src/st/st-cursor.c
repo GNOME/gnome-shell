@@ -309,14 +309,51 @@ st_cursor_finalize (GObject *object)
   return G_OBJECT_CLASS (st_cursor_parent_class)->finalize (object);
 }
 
-static CoglTexture *
-st_cursor_get_texture (ClutterCursor *clutter_cursor,
-                       int           *hot_x,
-                       int           *hot_y)
+static void
+st_cursor_get_geometry (ClutterCursor *clutter_cursor,
+                        int           *width,
+                        int           *height,
+                        int           *hot_x,
+                        int           *hot_y)
 {
   StCursor *cursor = ST_CURSOR (clutter_cursor);
   StCursorFrame *frame;
   double scale;
+
+  if (cursor->frames->len == 0)
+    {
+      if (width)
+        *width = 0;
+      if (height)
+        *height = 0;
+      if (hot_x)
+        *hot_x = 0;
+      if (hot_y)
+        *hot_y = 0;
+      return;
+    }
+
+  g_assert (cursor->current_frame < cursor->frames->len);
+  frame = &g_array_index (cursor->frames, StCursorFrame, cursor->current_frame);
+
+  scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
+
+  if (width)
+    *width = frame->width * scale * cursor->scale;
+  if (height)
+    *height = frame->height * scale * cursor->scale;
+
+  if (hot_x)
+    *hot_x = frame->hotspot_x * scale * cursor->scale;
+  if (hot_y)
+    *hot_y = frame->hotspot_y * scale * cursor->scale;
+}
+
+static CoglTexture *
+st_cursor_get_texture (ClutterCursor *clutter_cursor)
+{
+  StCursor *cursor = ST_CURSOR (clutter_cursor);
+  StCursorFrame *frame;
 
   if (cursor->frames->len == 0)
     return NULL;
@@ -330,13 +367,6 @@ st_cursor_get_texture (ClutterCursor *clutter_cursor,
       frame->texture = create_texture_for_frame (cursor, frame);
       cursor->invalidated = FALSE;
     }
-
-  scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
-
-  if (hot_x)
-    *hot_x = frame->hotspot_x * scale * cursor->scale;
-  if (hot_y)
-    *hot_y = frame->hotspot_y * scale * cursor->scale;
 
   return frame->texture;
 }
@@ -418,6 +448,7 @@ st_cursor_class_init (StCursorClass *klass)
   object_class->finalize = st_cursor_finalize;
   object_class->constructed = st_cursor_constructed;
 
+  clutter_cursor_class->get_geometry = st_cursor_get_geometry;
   clutter_cursor_class->get_texture = st_cursor_get_texture;
   clutter_cursor_class->invalidate = st_cursor_invalidate;
   clutter_cursor_class->is_animated = st_cursor_is_animated;
