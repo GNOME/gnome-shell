@@ -85,7 +85,7 @@ export class WebLoginPrompt extends St.BoxLayout {
             this._urlTitleLabel.text = message;
 
         if (url !== null) {
-            this._qrCode.set({url});
+            this._qrCode.set({text: url});
 
             const formattedUrl = this._formatURLForDisplay(url);
             this._urlLabel.text = formattedUrl;

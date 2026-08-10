@@ -13,8 +13,8 @@ const QR_CODE_TRANSPARENT_COLOR = new GnomeQR.Color({alpha: 0});
 
 export class QrCode extends St.Bin {
     static [GObject.properties] = {
-        'url': GObject.ParamSpec.string(
-            'url', null, null,
+        'text': GObject.ParamSpec.string(
+            'text', null, null,
             GObject.ParamFlags.READWRITE,
             null),
     };
@@ -45,7 +45,7 @@ export class QrCode extends St.Bin {
 
         this._fgColor = null;
 
-        this.connect('notify::url', () =>
+        this.connect('notify::text', () =>
             this._update().catch(logErrorUnlessCancelled));
     };
 
@@ -80,7 +80,7 @@ export class QrCode extends St.Bin {
         this._cancellable = cancellable;
 
         const [pixelData, qrSize] = await GnomeQR.generate_qr_code_async(
-            this.url,
+            this.text,
             0 /* size, are fine with the minimum value */,
             QR_CODE_TRANSPARENT_COLOR,
             fgColor,
