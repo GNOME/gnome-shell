@@ -1445,56 +1445,56 @@ export class ScreenshotUI extends St.Widget {
         );
 
         bindingPool.install_closure(
-            'move-selection-left-control', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            'move-selection-left-control', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.CONTROL_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.LEFT, obj._getIncrement(St.DirectionType.LEFT, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-left-shift', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            'move-selection-left-shift', Clutter.KEY_Left, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.SHIFT_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.LEFT, obj._getIncrement(St.DirectionType.LEFT, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-right-control', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            'move-selection-right-control', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.CONTROL_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.RIGHT, obj._getIncrement(St.DirectionType.RIGHT, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-right-shift', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            'move-selection-right-shift', Clutter.KEY_Right, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.SHIFT_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.RIGHT, obj._getIncrement(St.DirectionType.RIGHT, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-up-control', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            'move-selection-up-control', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.CONTROL_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.UP, obj._getIncrement(St.DirectionType.UP, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-up-shift', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            'move-selection-up-shift', Clutter.KEY_Up, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.SHIFT_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.UP, obj._getIncrement(St.DirectionType.UP, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-down-control', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.CONTROL_MASK,
+            'move-selection-down-control', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.CONTROL_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.DOWN, obj._getIncrement(St.DirectionType.DOWN, modifier));
                 return Clutter.EVENT_STOP;
             }
         );
         bindingPool.install_closure(
-            'move-selection-down-shift', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK + Clutter.ModifierType.SHIFT_MASK,
+            'move-selection-down-shift', Clutter.KEY_Down, Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.SHIFT_MASK,
             (obj, _actionName, _keyVal, modifier) => {
                 obj._areaSelector.moveInDirection(St.DirectionType.DOWN, obj._getIncrement(St.DirectionType.DOWN, modifier));
                 return Clutter.EVENT_STOP;
