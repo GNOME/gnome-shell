@@ -34,6 +34,7 @@ typedef struct _StCursorFrame StCursorFrame;
 struct _StCursorFrame
 {
   RsvgHandle *image;
+  cairo_surface_t *surface;
   CoglTexture *texture;
   int64_t delay;
   int64_t nominal_size;
@@ -49,6 +50,7 @@ struct _StCursor
   unsigned int current_frame;
   double scale;
   gboolean invalidated;
+  gboolean texture_invalidated;
 };
 
 G_DEFINE_FINAL_TYPE_WITH_CODE (StCursor, st_cursor, META_TYPE_CURSOR,
@@ -61,6 +63,7 @@ clear_frame (gpointer user_data)
   StCursorFrame *frame = user_data;
 
   g_clear_object (&frame->image);
+  g_clear_object (&frame->surface);
   g_clear_object (&frame->texture);
 }
 
@@ -243,6 +246,34 @@ ensure_cursor (StCursor *cursor)
     }
 }
 
+static cairo_surface_t *
+create_surface_for_frame (StCursor      *cursor,
+                          StCursorFrame *frame)
+{
+  cairo_t *cairo_ctx = NULL;
+  cairo_surface_t *cairo_surface = NULL;
+  double w, h, scale;
+
+  scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
+  w = frame->width * scale * cursor->scale;
+  h = frame->height * scale * cursor->scale;
+
+  cairo_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
+  if (!cairo_surface)
+    return NULL;
+
+  cairo_ctx = cairo_create (cairo_surface);
+
+  if (!cairo_ctx ||
+      !rsvg_handle_render_document (frame->image, cairo_ctx,
+                                    &(const RsvgRectangle) { 0, 0, w, h },
+                                    NULL))
+    g_clear_pointer (&cairo_surface, cairo_surface_destroy);
+
+  g_clear_pointer (&cairo_ctx, cairo_destroy);
+  return cairo_surface;
+}
+
 static CoglTexture *
 create_texture_for_frame (StCursor      *cursor,
                           StCursorFrame *frame)
@@ -253,40 +284,18 @@ create_texture_for_frame (StCursor      *cursor,
   ClutterBackend *clutter_backend = clutter_context_get_backend (clutter_ctx);
   CoglContext *cogl_context =
     clutter_backend_get_cogl_context (clutter_backend);
-  CoglTexture *texture = NULL;
-  cairo_surface_t *cairo_surface = NULL;
-  cairo_t *cairo_ctx = NULL;
   double w, h, scale;
 
   scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
   w = frame->width * scale * cursor->scale;
   h = frame->height * scale * cursor->scale;
 
-  cairo_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
-  if (!cairo_surface)
-    goto error;
-
-  cairo_ctx = cairo_create (cairo_surface);
-  if (!cairo_ctx)
-    goto error;
-
-  if (!rsvg_handle_render_document (frame->image, cairo_ctx,
-                                    &(const RsvgRectangle) { 0, 0, w, h },
-                                    NULL))
-    goto error;
-
-  texture = cogl_texture_2d_new_from_data (cogl_context,
-                                           w, h,
-                                           COGL_PIXEL_FORMAT_ARGB32_NATIVE,
-                                           cairo_image_surface_get_stride (cairo_surface),
-                                           cairo_image_surface_get_data (cairo_surface),
-                                           NULL);
-
- error:
-  g_clear_pointer (&cairo_ctx, cairo_destroy);
-  g_clear_pointer (&cairo_surface, cairo_surface_destroy);
-
-  return texture;
+  return cogl_texture_2d_new_from_data (cogl_context,
+                                        w, h,
+                                        COGL_PIXEL_FORMAT_ARGB32_NATIVE,
+                                        cairo_image_surface_get_stride (frame->surface),
+                                        cairo_image_surface_get_data (frame->surface),
+                                        NULL);
 }
 
 static void
@@ -349,8 +358,9 @@ st_cursor_get_geometry (ClutterCursor *clutter_cursor,
     *hot_y = frame->hotspot_y * scale * cursor->scale;
 }
 
-static CoglTexture *
-st_cursor_get_texture (ClutterCursor *clutter_cursor)
+static uint8_t *
+st_cursor_get_data (ClutterCursor *clutter_cursor,
+                    int           *out_stride)
 {
   StCursor *cursor = ST_CURSOR (clutter_cursor);
   StCursorFrame *frame;
@@ -363,9 +373,35 @@ st_cursor_get_texture (ClutterCursor *clutter_cursor)
 
   if (cursor->invalidated)
     {
+      g_clear_pointer (&frame->surface, cairo_surface_destroy);
+      frame->surface = create_surface_for_frame (cursor, frame);
+      cursor->invalidated = FALSE;
+    }
+
+  if (out_stride)
+    *out_stride = cairo_image_surface_get_stride (frame->surface);
+
+  return cairo_image_surface_get_data (frame->surface);
+}
+
+static CoglTexture *
+st_cursor_get_texture (ClutterCursor *clutter_cursor)
+{
+  StCursor *cursor = ST_CURSOR (clutter_cursor);
+  StCursorFrame *frame;
+
+  if (cursor->frames->len == 0)
+    return NULL;
+
+  g_assert (cursor->current_frame < cursor->frames->len);
+  frame = &g_array_index (cursor->frames, StCursorFrame, cursor->current_frame);
+
+  if (cursor->texture_invalidated)
+    {
+      st_cursor_get_data (clutter_cursor, NULL);
       g_clear_object (&frame->texture);
       frame->texture = create_texture_for_frame (cursor, frame);
-      cursor->invalidated = FALSE;
+      cursor->texture_invalidated = FALSE;
     }
 
   return frame->texture;
@@ -377,6 +413,7 @@ st_cursor_invalidate (ClutterCursor *clutter_cursor)
   StCursor *cursor = ST_CURSOR (clutter_cursor);
 
   cursor->invalidated = TRUE;
+  cursor->texture_invalidated = TRUE;
   clutter_cursor_emit_texture_changed (clutter_cursor);
 }
 
@@ -449,6 +486,7 @@ st_cursor_class_init (StCursorClass *klass)
   object_class->constructed = st_cursor_constructed;
 
   clutter_cursor_class->get_geometry = st_cursor_get_geometry;
+  clutter_cursor_class->get_data = st_cursor_get_data;
   clutter_cursor_class->get_texture = st_cursor_get_texture;
   clutter_cursor_class->invalidate = st_cursor_invalidate;
   clutter_cursor_class->is_animated = st_cursor_is_animated;
