@@ -324,6 +324,13 @@ st_cursor_get_texture (ClutterCursor *clutter_cursor,
   g_assert (cursor->current_frame < cursor->frames->len);
   frame = &g_array_index (cursor->frames, StCursorFrame, cursor->current_frame);
 
+  if (cursor->invalidated)
+    {
+      g_clear_object (&frame->texture);
+      frame->texture = create_texture_for_frame (cursor, frame);
+      cursor->invalidated = FALSE;
+    }
+
   scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
 
   if (hot_x)
@@ -340,30 +347,7 @@ st_cursor_invalidate (ClutterCursor *clutter_cursor)
   StCursor *cursor = ST_CURSOR (clutter_cursor);
 
   cursor->invalidated = TRUE;
-}
-
-static gboolean
-st_cursor_realize_texture (ClutterCursor *clutter_cursor)
-{
-  StCursor *cursor = ST_CURSOR (clutter_cursor);
-  StCursorFrame *frame;
-  g_autoptr (CoglTexture) texture = NULL;
-
-  if (cursor->frames->len == 0)
-    return FALSE;
-  if (!cursor->invalidated)
-    return FALSE;
-
-  g_assert (cursor->current_frame < cursor->frames->len);
-  frame = &g_array_index (cursor->frames, StCursorFrame, cursor->current_frame);
-
-  texture = create_texture_for_frame (cursor, frame);
-  g_set_object (&frame->texture, texture);
-  cursor->invalidated = FALSE;
-
   clutter_cursor_emit_texture_changed (clutter_cursor);
-
-  return frame->texture != NULL;
 }
 
 static gboolean
@@ -385,7 +369,7 @@ st_cursor_tick_frame (ClutterCursor *clutter_cursor)
   if (cursor->current_frame >= cursor->frames->len)
     cursor->current_frame = 0;
 
-  cursor->invalidated = TRUE;
+  st_cursor_invalidate (clutter_cursor);
 }
 
 static unsigned int
@@ -416,7 +400,7 @@ st_cursor_prepare_at (ClutterCursor *clutter_cursor,
     return;
 
   cursor->scale = best_scale;
-  cursor->invalidated = TRUE;
+  st_cursor_invalidate (clutter_cursor);
 
   frame = &g_array_index (cursor->frames, StCursorFrame, cursor->current_frame);
   scale = (double) meta_cursor_get_size (META_CURSOR (cursor)) / frame->nominal_size;
@@ -436,7 +420,6 @@ st_cursor_class_init (StCursorClass *klass)
 
   clutter_cursor_class->get_texture = st_cursor_get_texture;
   clutter_cursor_class->invalidate = st_cursor_invalidate;
-  clutter_cursor_class->realize_texture = st_cursor_realize_texture;
   clutter_cursor_class->is_animated = st_cursor_is_animated;
   clutter_cursor_class->tick_frame = st_cursor_tick_frame;
   clutter_cursor_class->get_current_frame_time =
