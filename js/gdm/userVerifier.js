@@ -121,7 +121,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     needsUsername() {
-        return this._authServices.some(s => s.needsUsername());
+        return this._authServices.every(s => s.needsUsername());
     }
 
     setDriverService(serviceName) {
