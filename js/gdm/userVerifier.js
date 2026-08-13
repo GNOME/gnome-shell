@@ -63,6 +63,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._authServices = [];
         this._driverService = null;
 
+        this._beginPromise = null;
+        this._redistributingRoles = false;
+
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
 
@@ -87,6 +90,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._cancellable?.cancel();
         this._cancellable = new Gio.Cancellable();
 
+        const {promise, resolve} = Promise.withResolvers();
+        this._beginPromise = promise;
+
         try {
             const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
             this._setUserVerifier(proxies.userVerifier);
@@ -100,6 +106,9 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             else
                 logErrorUnlessCancelled(e);
         }
+
+        resolve();
+        this._beginPromise = null;
 
         hold?.release();
     }
@@ -408,7 +417,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 'reset', (_, args) => this.emit('reset', args),
                 'show-choice-list', (_, args) => this.emit('show-choice-list', args),
                 'show-button', (_, args) => this.emit('show-button', args),
-                'mechanisms-changed', () => this._onMechanismsChanged(),
+                'mechanisms-changed', () => this._onMechanismsChanged().catch(logError),
                 'web-login', (_, args) => this.emit('web-login', args),
                 this);
         });
@@ -442,9 +451,11 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._redistributingRoles = false;
     }
 
-    _onMechanismsChanged() {
+    async _onMechanismsChanged() {
         if (this._redistributingRoles)
             return;
+
+        await this._beginPromise;
 
         this._redistributeRoles();
 
