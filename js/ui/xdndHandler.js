@@ -36,12 +36,12 @@ export class XdndHandler extends Signals.EventEmitter {
 
     _onEnter() {
         global.window_group.connectObject('notify::visible',
-            this._onWindowGroupVisibilityChanged.bind(this), this);
+            () => this._syncCursorWindowClone(), this);
 
         this.emit('drag-begin', global.get_current_time());
     }
 
-    _onWindowGroupVisibilityChanged() {
+    _syncCursorWindowClone() {
         if (!global.window_group.visible) {
             if (this._cursorWindowClone)
                 return;
