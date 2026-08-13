@@ -27,17 +27,6 @@ const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 const SCREEN_TRANSITION_DELAY = 250; // ms
 const SCREEN_TRANSITION_DURATION = 500; // ms
 
-function isPopupMetaWindow(actor) {
-    switch (actor.meta_window.get_window_type()) {
-    case Meta.WindowType.DROPDOWN_MENU:
-    case Meta.WindowType.POPUP_MENU:
-    case Meta.WindowType.COMBO:
-        return true;
-    default:
-        return false;
-    }
-}
-
 export const MonitorConstraint = GObject.registerClass({
     Properties: {
         'primary': GObject.ParamSpec.boolean(
@@ -215,7 +204,6 @@ export const LayoutManager = GObject.registerClass({
 
         this._trackedActors = [];
         this._topActors = [];
-        this._isPopupWindowVisible = false;
         this._startingUp = true;
 
         // Set up stage hierarchy to group all UI actors under one container.
@@ -339,8 +327,6 @@ export const LayoutManager = GObject.registerClass({
             this._queueUpdateRegions.bind(this));
 
         const display = global.display;
-        display.connect('restacked',
-            this._windowsRestacked.bind(this));
         display.connect('in-fullscreen-changed',
             this._updateFullscreen.bind(this));
 
@@ -1057,18 +1043,6 @@ export const LayoutManager = GObject.registerClass({
         this._queueUpdateRegions();
     }
 
-    _windowsRestacked() {
-        let changed = false;
-
-        if (this._isPopupWindowVisible !== global.top_window_group.get_children().some(isPopupMetaWindow))
-            changed = true;
-
-        if (changed) {
-            this._updateVisibility();
-            this._queueUpdateRegions();
-        }
-    }
-
     _updateRegions() {
         if (this._updateRegionIdle) {
             const laters = global.compositor.get_laters();
@@ -1077,7 +1051,6 @@ export const LayoutManager = GObject.registerClass({
         }
 
         const struts = [];
-        const isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
 
         for (let i = 0; i < this._trackedActors.length; i++) {
             const actorData = this._trackedActors[i];
@@ -1144,8 +1117,6 @@ export const LayoutManager = GObject.registerClass({
                 struts.push(strut);
             }
         }
-
-        this._isPopupWindowVisible = isPopupMenuVisible;
 
         const workspaceManager = global.workspace_manager;
         for (let w = 0; w < workspaceManager.n_workspaces; w++) {
