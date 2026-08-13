@@ -33,6 +33,8 @@ export class XdndHandler extends Signals.EventEmitter {
             this._cursorWindowClone = null;
         }
 
+        global.compositor.get_feedback_group().show();
+
         this.emit('drag-end');
     }
 
@@ -41,6 +43,9 @@ export class XdndHandler extends Signals.EventEmitter {
             () => this._syncCursorWindowClone(), this);
         Main.sessionMode.connectObject('updated', () => {
             this._syncCursorWindowClone();
+
+            const feedbackGroup = global.compositor.get_feedback_group();
+            feedbackGroup.visible = !Main.sessionMode.isLocked;
         }, this);
 
         this.emit('drag-begin', global.get_current_time());
