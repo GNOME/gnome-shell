@@ -253,17 +253,12 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleOnSecretInfoQuery(serviceName, secretQuestion) {
+        // Try to auto-fill with credential manager token first
+        if (this._tryCredentialManagerAutoFill(serviceName))
+            return;
+
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
-
-        let token = null;
-        if (this._credentialManagers[serviceName])
-            token = this._credentialManagers[serviceName].token;
-
-        if (token) {
-            this._handleAnswerQuery(serviceName, token);
-            return;
-        }
 
         this.emit('ask-question', {
             serviceName,
@@ -271,6 +266,20 @@ export class AuthServicesLegacy extends AuthServices {
             secret: true,
             answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
         });
+    }
+
+    _tryCredentialManagerAutoFill(serviceName) {
+        const credentialManager = this._credentialManagers[serviceName];
+        if (!credentialManager)
+            return false;
+
+        const token = credentialManager.token;
+        if (!token)
+            return false;
+
+        this._userVerifier.call_answer_query(
+            serviceName, token, this._cancellable).catch(logErrorUnlessCancelled);
+        return true;
     }
 
     _handleOnConversationStopped(serviceName) {
@@ -328,13 +337,8 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleOnVerificationComplete(serviceName) {
-        if (serviceName !== this._selectedMechanism?.serviceName)
-            return;
-
-        if (this._credentialManagers[serviceName]) {
+        if (this._credentialManagers[serviceName])
             this._credentialManagers[serviceName].token = null;
-            this._selectedMechanism = null;
-        }
     }
 
     _handleOnChoiceListQuery(serviceName, promptMessage, list) {
@@ -363,10 +367,17 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _handleCanStartService(serviceName) {
+        if (this._hasAnyCredentialManagerToken())
+            return this._credentialManagers[serviceName]?.token !== null;
+
         return serviceName === this._selectedMechanism?.serviceName ||
             (serviceName === FINGERPRINT_SERVICE_NAME &&
             this._enabledMechanisms.some(m => m.serviceName === serviceName) &&
             this._userName);
+    }
+
+    _hasAnyCredentialManagerToken() {
+        return Object.values(this._credentialManagers).some(cm => cm.token !== null);
     }
 
     addCredentialManager(serviceName, credentialManager) {
