@@ -347,7 +347,7 @@ st_cursor_realize_texture (ClutterCursor *clutter_cursor)
 {
   StCursor *cursor = ST_CURSOR (clutter_cursor);
   StCursorFrame *frame;
-  CoglTexture *texture;
+  g_autoptr (CoglTexture) texture = NULL;
 
   if (cursor->frames->len == 0)
     return FALSE;
