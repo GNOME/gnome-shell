@@ -3440,7 +3440,7 @@ class PickPixel extends St.Widget {
         this.add_action(clickGesture);
 
         const motionController = new Clutter.MotionController();
-        motionController.connect('motion', (_sprite, x, y) => {
+        motionController.connect('motion', (_controller, _sprite, x, y) => {
             this._pickColor(x, y);
         });
         this.add_action(motionController);
