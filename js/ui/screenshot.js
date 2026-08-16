@@ -1283,6 +1283,13 @@ export class ScreenshotUI extends St.Widget {
                 return Clutter.EVENT_STOP;
             }
         );
+        bindingPool.install_closure(
+            'activate', Clutter.KEY_c, Clutter.ModifierType.CONTROL_MASK,
+            obj => {
+                obj._activate();
+                return Clutter.EVENT_STOP;
+            }
+        );
 
         bindingPool.install_closure(
             'selection', Clutter.KEY_s, 0,
