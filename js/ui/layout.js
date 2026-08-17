@@ -1057,6 +1057,10 @@ export const LayoutManager = GObject.registerClass({
             if (!actorData.affectsStruts)
                 continue;
 
+            const monitor = this.findMonitorForActor(actorData.actor);
+            if (!monitor)
+                continue;
+
             let [x, y] = actorData.actor.get_transformed_position();
             let [w, h] = actorData.actor.get_transformed_size();
             x = Math.round(x);
@@ -1064,58 +1068,52 @@ export const LayoutManager = GObject.registerClass({
             w = Math.round(w);
             h = Math.round(h);
 
-            let monitor = null;
-            if (actorData.affectsStruts)
-                monitor = this.findMonitorForActor(actorData.actor);
+            // Limit struts to the size of the screen
+            const x1 = Math.max(x, 0);
+            const x2 = Math.min(x + w, global.screen_width);
+            const y1 = Math.max(y, 0);
+            const y2 = Math.min(y + h, global.screen_height);
 
-            if (monitor) {
-                // Limit struts to the size of the screen
-                const x1 = Math.max(x, 0);
-                const x2 = Math.min(x + w, global.screen_width);
-                const y1 = Math.max(y, 0);
-                const y2 = Math.min(y + h, global.screen_height);
+            // Metacity wants to know what side of the monitor the
+            // strut is considered to be attached to. First, we find
+            // the monitor that contains the strut. If the actor is
+            // only touching one edge, or is touching the entire
+            // border of that monitor, then it's obvious which side
+            // to call it. If it's in a corner, we pick a side
+            // arbitrarily. If it doesn't touch any edges, or it
+            // spans the width/height across the middle of the
+            // screen, then we don't create a strut for it at all.
 
-                // Metacity wants to know what side of the monitor the
-                // strut is considered to be attached to. First, we find
-                // the monitor that contains the strut. If the actor is
-                // only touching one edge, or is touching the entire
-                // border of that monitor, then it's obvious which side
-                // to call it. If it's in a corner, we pick a side
-                // arbitrarily. If it doesn't touch any edges, or it
-                // spans the width/height across the middle of the
-                // screen, then we don't create a strut for it at all.
-
-                let side;
-                if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
-                    if (y1 <= monitor.y)
-                        side = Meta.Side.TOP;
-                    else if (y2 >= monitor.y + monitor.height)
-                        side = Meta.Side.BOTTOM;
-                    else
-                        continue;
-                } else if (y1 <= monitor.y && y2 >= monitor.y + monitor.height) {
-                    if (x1 <= monitor.x)
-                        side = Meta.Side.LEFT;
-                    else if (x2 >= monitor.x + monitor.width)
-                        side = Meta.Side.RIGHT;
-                    else
-                        continue;
-                } else if (x1 <= monitor.x) {
-                    side = Meta.Side.LEFT;
-                } else if (y1 <= monitor.y) {
+            let side;
+            if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
+                if (y1 <= monitor.y)
                     side = Meta.Side.TOP;
-                } else if (x2 >= monitor.x + monitor.width) {
-                    side = Meta.Side.RIGHT;
-                } else if (y2 >= monitor.y + monitor.height) {
+                else if (y2 >= monitor.y + monitor.height)
                     side = Meta.Side.BOTTOM;
-                } else {
+                else
                     continue;
-                }
-
-                const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
-                const strut = new Meta.Strut({rect: strutRect, side});
-                struts.push(strut);
+            } else if (y1 <= monitor.y && y2 >= monitor.y + monitor.height) {
+                if (x1 <= monitor.x)
+                    side = Meta.Side.LEFT;
+                else if (x2 >= monitor.x + monitor.width)
+                    side = Meta.Side.RIGHT;
+                else
+                    continue;
+            } else if (x1 <= monitor.x) {
+                side = Meta.Side.LEFT;
+            } else if (y1 <= monitor.y) {
+                side = Meta.Side.TOP;
+            } else if (x2 >= monitor.x + monitor.width) {
+                side = Meta.Side.RIGHT;
+            } else if (y2 >= monitor.y + monitor.height) {
+                side = Meta.Side.BOTTOM;
+            } else {
+                continue;
             }
+
+            const strutRect = new Mtk.Rectangle({x: x1, y: y1, width: x2 - x1, height: y2 - y1});
+            const strut = new Meta.Strut({rect: strutRect, side});
+            struts.push(strut);
         }
 
         const workspaceManager = global.workspace_manager;
