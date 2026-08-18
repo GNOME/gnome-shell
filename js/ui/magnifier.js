@@ -14,7 +14,6 @@ import * as Background from './background.js';
 import * as FocusCaretTracker from './focusCaretTracker.js';
 import * as Main from './main.js';
 import * as Params from '../misc/params.js';
-import * as PointerWatcher from './pointerWatcher.js';
 
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
 const NO_CHANGE = 0.0;
@@ -137,6 +136,8 @@ export class Magnifier extends Signals.EventEmitter {
 
         // Create small clutter tree for the magnified mouse.
         this._cursorTracker = global.backend.get_cursor_tracker();
+        this._pointerPositionId = 0;
+        this._pointerPositionLaterId = 0;
 
         this._mouseSprite = new Clutter.Actor({request_mode: Clutter.RequestMode.CONTENT_SIZE});
         this._mouseSprite.content = new MouseSpriteContent();
@@ -149,7 +150,7 @@ export class Magnifier extends Signals.EventEmitter {
         // Create the first ZoomRegion and initialize it according to the
         // magnification settings.
 
-        [this.xMouse, this.yMouse] = global.get_pointer();
+        [this.xMouse, this.yMouse] = this._getPointerPosition();
 
         const aZoomRegion = new ZoomRegion(this, this._cursorRoot);
         this._zoomRegions.push(aZoomRegion);
@@ -265,12 +266,12 @@ export class Magnifier extends Signals.EventEmitter {
      * Turn on mouse tracking, if not already doing so.
      */
     startTrackingMouse() {
-        if (!this._pointerWatch) {
-            const interval = 1000 / 60;
-            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(interval, this.scrollToMousePos.bind(this));
+        if (this._pointerPositionId)
+            return;
 
-            this.scrollToMousePos();
-        }
+        this._pointerPositionId = this._cursorTracker.connect(
+            'position-invalidated', () => this._queuePointerPositionUpdate());
+        this.scrollToMousePos();
     }
 
     /**
@@ -278,10 +279,17 @@ export class Magnifier extends Signals.EventEmitter {
      * Turn off mouse tracking, if not already doing so.
      */
     stopTrackingMouse() {
-        if (this._pointerWatch)
-            this._pointerWatch.remove();
+        if (!this._pointerPositionId)
+            return;
 
-        this._pointerWatch = null;
+        this._cursorTracker.disconnect(this._pointerPositionId);
+        this._pointerPositionId = 0;
+
+        if (this._pointerPositionLaterId) {
+            const laters = global.compositor.get_laters();
+            laters.remove(this._pointerPositionLaterId);
+            this._pointerPositionLaterId = 0;
+        }
     }
 
     /**
@@ -290,7 +298,25 @@ export class Magnifier extends Signals.EventEmitter {
      * @returns {boolean} whether the magnifier is currently tracking the mouse
      */
     isTrackingMouse() {
-        return !!this._pointerWatch;
+        return !!this._pointerPositionId;
+    }
+
+    _getPointerPosition() {
+        const [coords] = this._cursorTracker.get_pointer();
+        return [coords.x, coords.y];
+    }
+
+    _queuePointerPositionUpdate() {
+        if (this._pointerPositionLaterId)
+            return;
+
+        const laters = global.compositor.get_laters();
+        this._pointerPositionLaterId = laters.add(
+            Meta.LaterType.BEFORE_REDRAW, () => {
+                this._pointerPositionLaterId = 0;
+                this.scrollToMousePos();
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     /**
@@ -301,7 +327,9 @@ export class Magnifier extends Signals.EventEmitter {
      * @param {[xMouse: number, yMouse: number] | []} args
      */
     scrollToMousePos(...args) {
-        const [xMouse, yMouse] = args.length ? args : global.get_pointer();
+        const [xMouse, yMouse] = args.length
+            ? args
+            : this._getPointerPosition();
 
         if (xMouse === this.xMouse && yMouse === this.yMouse)
             return;
