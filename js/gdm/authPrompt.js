@@ -655,7 +655,6 @@ export const AuthPrompt = GObject.registerClass({
         this._queryingService = null;
         this.clear();
         this._message.opacity = 0;
-        this.setUser(null);
         this._updateEntry(true);
         this.stopSpinning();
 
