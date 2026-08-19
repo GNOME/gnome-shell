@@ -414,7 +414,7 @@ st_cursor_invalidate (ClutterCursor *clutter_cursor)
 
   cursor->invalidated = TRUE;
   cursor->texture_invalidated = TRUE;
-  clutter_cursor_emit_texture_changed (clutter_cursor);
+  clutter_cursor_emit_image_changed (clutter_cursor);
 }
 
 static gboolean
