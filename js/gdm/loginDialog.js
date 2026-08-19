@@ -1464,6 +1464,7 @@ export const LoginDialog = GObject.registerClass({
 
     _hideUserListAndBeginVerification() {
         this._hideUserList();
+        this._authPrompt.setUser(null);
         this._authPrompt.begin();
     }
 
