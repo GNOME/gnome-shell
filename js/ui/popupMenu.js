@@ -748,7 +748,10 @@ export class PopupMenuBase extends Signals.EventEmitter {
     }
 
     _subMenuActiveChanged(submenu, submenuItem) {
-        if (this._activeMenuItem && this._activeMenuItem !== submenuItem)
+        if (this._activeMenuItem === submenuItem)
+            return;
+
+        if (this._activeMenuItem)
             this._activeMenuItem.active = false;
         this._activeMenuItem = submenuItem;
         this.emit('active-changed', submenuItem);
