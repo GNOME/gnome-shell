@@ -127,7 +127,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this.smartcardDetected = false;
 
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
-        this._settings.connect('changed', () => this._onSettingsChanged());
+        this._settings.connectObject('changed', () => this._onSettingsChanged(), this);
         this._updateEnabledServices();
         this._updateDefaultService();
 
@@ -220,7 +220,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     destroy() {
         this.cancel();
 
-        this._settings.run_dispose();
+        this._settings.disconnectObject(this);
         this._settings = null;
 
         this._smartcardManager?.disconnectObject(this);
