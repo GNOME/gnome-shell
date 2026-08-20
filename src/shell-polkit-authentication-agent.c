@@ -179,6 +179,7 @@ struct _AuthRequest {
   /* not holding ref */
   ShellPolkitAuthenticationAgent *agent;
   gulong cancelled_id;
+  guint idle_id;
 
   /* copies */
   GCancellable *cancellable;
@@ -197,6 +198,7 @@ static void
 auth_request_free (AuthRequest *request)
 {
   g_cancellable_disconnect (request->cancellable, request->cancelled_id);
+  g_clear_handle_id (&request->idle_id, g_source_remove);
   g_free (request->action_id);
   g_free (request->message);
   g_free (request->icon_name);
@@ -270,6 +272,8 @@ handle_cancelled_in_idle (gpointer user_data)
 {
   AuthRequest *request = user_data;
 
+  g_clear_handle_id (&request->idle_id, g_source_remove);
+
   print_debug ("CANCELLED %s cookie %s", request->action_id, request->cookie);
   if (request == request->agent->current_request)
     {
@@ -288,14 +292,13 @@ on_request_cancelled (GCancellable *cancellable,
                       gpointer      user_data)
 {
   AuthRequest *request = user_data;
-  guint id;
 
   /* post-pone to idle to handle GCancellable deadlock in
    *
    *  https://bugzilla.gnome.org/show_bug.cgi?id=642968
    */
-  id = g_idle_add_once (handle_cancelled_in_idle, request);
-  g_source_set_name_by_id (id, "[gnome-shell] handle_cancelled_in_idle");
+  request->idle_id = g_idle_add_once (handle_cancelled_in_idle, request);
+  g_source_set_name_by_id (request->idle_id, "[gnome-shell] handle_cancelled_in_idle");
 }
 
 static void
