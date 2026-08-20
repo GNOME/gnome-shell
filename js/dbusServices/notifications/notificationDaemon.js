@@ -23,7 +23,7 @@ export const NotificationDaemon = class extends ServiceImplementation {
             '/org/freedesktop/Notifications',
             (proxy, error) => {
                 if (error)
-                    log(error.message);
+                    console.error(error.message);
             });
 
         this._proxy.connectSignal('ActivationToken',
