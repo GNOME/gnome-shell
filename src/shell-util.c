@@ -350,6 +350,32 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
                                     int                height,
                                     int                rowstride)
 {
+  g_return_val_if_fail (data != NULL, NULL);
+  g_return_val_if_fail (colorspace == GDK_COLORSPACE_RGB, NULL);
+  g_return_val_if_fail (bits_per_sample == 8, NULL);
+  g_return_val_if_fail (width > 0, NULL);
+  g_return_val_if_fail (height > 0, NULL);
+
+  unsigned int channels;
+  unsigned int row_min;
+  size_t required;
+
+  channels = has_alpha ? 4 : 3;
+
+  /* Validate that the data array length is big enough for
+   * the provided pixbuf parameters;
+   * take into account that the actual rowstride may be bigger
+   * than the minimum requirement, and that the last row may
+   * not be as wide as the full rowstride.
+   * See https://docs.gtk.org/gdk-pixbuf/class.Pixbuf.html#image-data
+   */
+
+  row_min = width * ((channels * bits_per_sample + 7) / 8);
+  g_return_val_if_fail (rowstride >= row_min, NULL);
+
+  required = (height - 1) * rowstride + row_min;
+  g_return_val_if_fail (len >= required, NULL);
+
   return gdk_pixbuf_new_from_data (data, colorspace, has_alpha,
                                    bits_per_sample, width, height, rowstride,
                                    (GdkPixbufDestroyNotify) g_free, NULL);
