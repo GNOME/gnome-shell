@@ -216,6 +216,7 @@ class Recorder extends Signals.EventEmitter {
 
     _bailOutOnError(message, errorDomain = ScreencastErrors, errorCode = ScreencastError.RECORDER_ERROR) {
         const error = new GLib.Error(errorDomain, errorCode, message);
+        console.debug(`Bailing out with error ${error}`);
 
         // If it's a PIPELINE_ERROR, we want to leave the failing pipeline on the
         // blocklist for the next time. Other errors are pipeline-independent, so
@@ -305,15 +306,18 @@ class Recorder extends Signals.EventEmitter {
         }
 
         try {
+            console.debug(`Creating pipeline for config ${pipelineConfig.id}`);
             this._pipeline = this._createPipeline(this._nodeId, pipelineConfig,
                 this._framerate);
+            console.debug('Pipeline created successfully');
 
             // Add the current pipeline to the blocklist, so it is skipped next
             // time in case we crash; we'll remove it again on success or on
             // non-pipeline-related failures.
             this._updateServiceCrashBlocklist(
                 [...this._blocklistFromPreviousCrashes, pipelineConfig.id]);
-        } catch {
+        } catch (e) {
+            console.debug(`Failed to create pipeline: ${e.message}`);
             this._tryNextPipeline();
             return;
         }
@@ -349,6 +353,7 @@ class Recorder extends Signals.EventEmitter {
     }
 
     startRecording() {
+        console.debug('Start recording');
         return new Promise((resolve, reject) => {
             this._startRequest = {resolve, reject};
 
@@ -382,6 +387,7 @@ class Recorder extends Signals.EventEmitter {
         if (this._startRequest)
             return Promise.reject(new Error('Unable to stop recorder while still starting'));
 
+        console.debug('Stop recording');
         return new Promise((resolve, reject) => {
             this._stopRequest = {resolve, reject};
 
