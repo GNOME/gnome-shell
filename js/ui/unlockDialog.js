@@ -173,8 +173,10 @@ const NotificationsBox = GObject.registerClass({
                 body = fixMarkup(bodyText, n.useBodyMarkup);
             }
 
+            const escapedTitle = fixMarkup(n.title, false);
+
             const label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
-            label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
+            label.clutter_text.set_markup(`<b>${escapedTitle}</b> ${body}`);
             textBox.add_child(label);
 
             visible = true;
