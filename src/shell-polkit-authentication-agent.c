@@ -178,10 +178,11 @@ shell_polkit_authentication_agent_new (void)
 struct _AuthRequest {
   /* not holding ref */
   ShellPolkitAuthenticationAgent *agent;
-  GCancellable *cancellable;
   gulong cancelled_id;
 
   /* copies */
+  GCancellable *cancellable;
+
   gchar          *action_id;
   gchar          *message;
   gchar          *icon_name;
@@ -203,6 +204,7 @@ auth_request_free (AuthRequest *request)
   g_list_foreach (request->identities, (GFunc) g_object_unref, NULL);
   g_list_free (request->identities);
   g_object_unref (request->task);
+  g_clear_object (&request->cancellable);
   g_free (request);
 }
 
@@ -395,7 +397,7 @@ initiate_authentication (PolkitAgentListener  *listener,
   request->cookie = g_strdup (cookie);
   request->identities = g_list_copy (identities);
   g_list_foreach (request->identities, (GFunc) g_object_ref, NULL);
-  request->cancellable = cancellable;
+  g_set_object (&request->cancellable, cancellable);
   request->task = g_task_new (listener, NULL, callback, user_data);
   g_task_set_source_tag (request->task, initiate_authentication);
   request->cancelled_id = g_cancellable_connect (request->cancellable,
