@@ -189,7 +189,7 @@ struct _AuthRequest {
   gchar          *cookie;
   GList          *identities;
 
-  GTask *simple;
+  GTask *task;
 };
 
 static void
@@ -202,7 +202,7 @@ auth_request_free (AuthRequest *request)
   g_free (request->cookie);
   g_list_foreach (request->identities, (GFunc) g_object_unref, NULL);
   g_list_free (request->identities);
-  g_object_unref (request->simple);
+  g_object_unref (request->task);
   g_free (request);
 }
 
@@ -336,12 +336,12 @@ auth_request_complete (AuthRequest *request,
   g_cancellable_disconnect (request->cancellable, request->handler_id);
 
   if (dismissed)
-    g_task_return_new_error (request->simple,
+    g_task_return_new_error (request->task,
                              POLKIT_ERROR,
                              POLKIT_ERROR_CANCELLED,
                              _("Authentication dialog was dismissed by the user"));
   else
-    g_task_return_boolean (request->simple, TRUE);
+    g_task_return_boolean (request->task, TRUE);
 
   auth_request_free (request);
 
@@ -395,9 +395,9 @@ initiate_authentication (PolkitAgentListener  *listener,
   request->cookie = g_strdup (cookie);
   request->identities = g_list_copy (identities);
   g_list_foreach (request->identities, (GFunc) g_object_ref, NULL);
-  request->simple = g_task_new (listener, NULL, callback, user_data);
-  g_task_set_source_tag (request->simple, initiate_authentication);
   request->cancellable = cancellable;
+  request->task = g_task_new (listener, NULL, callback, user_data);
+  g_task_set_source_tag (request->task, initiate_authentication);
   request->handler_id = g_cancellable_connect (request->cancellable,
                                                G_CALLBACK (on_request_cancelled),
                                                request,
