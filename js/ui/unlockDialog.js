@@ -15,6 +15,7 @@ import * as Main from './main.js';
 import * as MessageTray from './messageTray.js';
 import * as SwipeTracker from './swipeTracker.js';
 import {formatDateWithCFormatString} from '../misc/dateUtils.js';
+import {fixMarkup} from '../misc/util.js';
 import * as AuthPrompt from '../gdm/authPrompt.js';
 import {AuthPromptStatus} from '../gdm/authPrompt.js';
 import {MprisSource} from './mpris.js';
@@ -164,9 +165,7 @@ const NotificationsBox = GObject.registerClass({
             let body = '';
             if (n.body) {
                 const bodyText = n.body.replace(/\n/g, ' ');
-                body = n.useBodyMarkup
-                    ? bodyText
-                    : GLib.markup_escape_text(bodyText, -1);
+                body = fixMarkup(bodyText, n.useBodyMarkup);
             }
 
             let label = new St.Label({style_class: 'unlock-dialog-notification-count-text'});
