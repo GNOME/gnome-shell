@@ -70,7 +70,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._messageQueueTimeoutId = 0;
 
         this._settings = new Gio.Settings({schema_id: LOGIN_SCREEN_SCHEMA});
-        this._settings.connect('changed', () => this._onSettingsChanged());
+        this._settings.connectObject('changed', () => this._onSettingsChanged(), this);
         this._updateAuthServices();
     }
 
@@ -186,7 +186,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
         this.cancel();
 
-        this._settings.run_dispose();
+        this._settings.disconnectObject(this);
         this._settings = null;
     }
 
