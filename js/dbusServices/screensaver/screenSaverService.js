@@ -19,7 +19,7 @@ export const ScreenSaverService = class extends ServiceImplementation {
             '/org/gnome/ScreenSaver',
             (proxy, error) => {
                 if (error)
-                    log(error.message);
+                    console.error(error.message);
             });
 
         this._proxy.connectSignal('ActiveChanged',

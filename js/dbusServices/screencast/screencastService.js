@@ -201,7 +201,7 @@ class Recorder extends Signals.EventEmitter {
             return;
 
         if (this._pipeline.set_state(Gst.State.NULL) !== Gst.StateChangeReturn.SUCCESS)
-            log('Failed to set pipeline state to NULL');
+            console.warn('Failed to set pipeline state to NULL');
 
         this._pipelineState = PipelineState.STOPPED;
         this._pipeline = null;
@@ -299,7 +299,7 @@ class Recorder extends Signals.EventEmitter {
 
         if (this._pipeline) {
             if (this._pipeline.set_state(Gst.State.NULL) !== Gst.StateChangeReturn.SUCCESS)
-                log('Failed to set pipeline state to NULL');
+                console.warn('Failed to set pipeline state to NULL');
 
             this._pipeline = null;
         }
@@ -627,7 +627,7 @@ export const ScreencastService = class extends ServiceImplementation {
                 }
 
                 default:
-                    log(`Warning: Unknown escape ${c}`);
+                    console.warn(`Unknown escape ${c}`);
                 }
 
                 escape = false;
@@ -678,7 +678,7 @@ export const ScreencastService = class extends ServiceImplementation {
                 options,
                 invocation);
         } catch (error) {
-            log(`Failed to create recorder: ${error.message}`);
+            console.error(`Failed to create recorder: ${error.message}`);
             invocation.return_error_literal(ScreencastErrors,
                 ScreencastError.RECORDER_ERROR,
                 error.message);
@@ -692,7 +692,7 @@ export const ScreencastService = class extends ServiceImplementation {
             const pathWithExtension = await recorder.startRecording();
             invocation.return_value(GLib.Variant.new('(bs)', [true, pathWithExtension]));
         } catch (error) {
-            log(`Failed to start recorder: ${error.message}`);
+            console.error(`Failed to start recorder: ${error.message}`);
             this._removeRecorder(sender);
             if (error instanceof GLib.Error) {
                 invocation.return_gerror(error);
@@ -706,7 +706,7 @@ export const ScreencastService = class extends ServiceImplementation {
         }
 
         recorder.connect('error', (r, error) => {
-            log(`Fatal error while recording: ${error.message}`);
+            console.error(`Fatal error while recording: ${error.message}`);
             this._removeRecorder(sender);
             this._dbusImpl.emit_signal('Error',
                 new GLib.Variant('(ss)', [
@@ -749,7 +749,7 @@ export const ScreencastService = class extends ServiceImplementation {
                 options,
                 invocation);
         } catch (error) {
-            log(`Failed to create recorder: ${error.message}`);
+            console.error(`Failed to create recorder: ${error.message}`);
             invocation.return_error_literal(ScreencastErrors,
                 ScreencastError.RECORDER_ERROR,
                 error.message);
@@ -763,7 +763,7 @@ export const ScreencastService = class extends ServiceImplementation {
             const pathWithExtension = await recorder.startRecording();
             invocation.return_value(GLib.Variant.new('(bs)', [true, pathWithExtension]));
         } catch (error) {
-            log(`Failed to start recorder: ${error.message}`);
+            console.error(`Failed to start recorder: ${error.message}`);
             this._removeRecorder(sender);
             if (error instanceof GLib.Error) {
                 invocation.return_gerror(error);
@@ -777,7 +777,7 @@ export const ScreencastService = class extends ServiceImplementation {
         }
 
         recorder.connect('error', (r, error) => {
-            log(`Fatal error while recording: ${error.message}`);
+            console.error(`Fatal error while recording: ${error.message}`);
             this._removeRecorder(sender);
             this._dbusImpl.emit_signal('Error',
                 new GLib.Variant('(ss)', [
@@ -799,7 +799,7 @@ export const ScreencastService = class extends ServiceImplementation {
         try {
             await recorder.stopRecording();
         } catch (error) {
-            log(`${sender}: Error while stopping recorder: ${error.message}`);
+            console.error(`${sender}: Error while stopping recorder: ${error.message}`);
         } finally {
             this._removeRecorder(sender);
             invocation.return_value(GLib.Variant.new('(b)', [true]));
