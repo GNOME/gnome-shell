@@ -179,7 +179,7 @@ struct _AuthRequest {
   /* not holding ref */
   ShellPolkitAuthenticationAgent *agent;
   GCancellable *cancellable;
-  gulong handler_id;
+  gulong cancelled_id;
 
   /* copies */
   gchar          *action_id;
@@ -333,7 +333,7 @@ auth_request_complete (AuthRequest *request,
 
   if (!is_current)
     agent->scheduled_requests = g_list_remove (agent->scheduled_requests, request);
-  g_cancellable_disconnect (request->cancellable, request->handler_id);
+  g_cancellable_disconnect (request->cancellable, request->cancelled_id);
 
   if (dismissed)
     g_task_return_new_error (request->task,
@@ -398,10 +398,10 @@ initiate_authentication (PolkitAgentListener  *listener,
   request->cancellable = cancellable;
   request->task = g_task_new (listener, NULL, callback, user_data);
   g_task_set_source_tag (request->task, initiate_authentication);
-  request->handler_id = g_cancellable_connect (request->cancellable,
-                                               G_CALLBACK (on_request_cancelled),
-                                               request,
-                                               NULL); /* GDestroyNotify for request */
+  request->cancelled_id = g_cancellable_connect (request->cancellable,
+                                                 G_CALLBACK (on_request_cancelled),
+                                                 request,
+                                                 NULL); /* GDestroyNotify for request */
 
   print_debug ("SCHEDULING %s cookie %s", request->action_id, request->cookie);
   agent->scheduled_requests = g_list_append (agent->scheduled_requests, request);
