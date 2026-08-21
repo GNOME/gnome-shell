@@ -34,6 +34,8 @@
 #define CACHE_PREFIX_FILE "file:"
 #define CACHE_PREFIX_FILE_FOR_CAIRO "file-for-cairo:"
 
+#define MAX_PARALLEL_LOAD_TASKS 25
+
 /* This struct corresponds to a request for an texture.
  * It's creasted when something needs a new texture,
  * and destroyed when the texture data is loaded. */
@@ -75,10 +77,15 @@ typedef struct _StTextureCache
   GCancellable *cancellable;
 
   uint32_t loading_textures_counter;
+
+  GQueue *pending_tasks;
 } StTextureCache;
 
 static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
+
+static void load_texture_async (StTextureCache       *cache,
+                                AsyncTextureLoadData *data);
 
 enum
 {
@@ -226,6 +233,7 @@ st_texture_cache_init (StTextureCache *self)
                                                g_object_unref, g_object_unref);
 
   self->cancellable = g_cancellable_new ();
+  self->pending_tasks = g_queue_new ();
 }
 
 static void
@@ -234,6 +242,12 @@ st_texture_cache_dispose (GObject *object)
   StTextureCache *self = (StTextureCache*)object;
 
   g_cancellable_cancel (self->cancellable);
+
+  if (self->pending_tasks)
+    {
+      g_queue_free_full (self->pending_tasks, texture_load_data_free);
+      self->pending_tasks = NULL;
+    }
 
   g_clear_object (&self->icon_theme);
   g_clear_object (&self->cancellable);
@@ -761,6 +775,10 @@ finish_texture_load (AsyncTextureLoadData *data,
 
 out:
   g_clear_pointer (&data, texture_load_data_free);
+
+  data = g_queue_pop_head (cache->pending_tasks);
+  if (data)
+    load_texture_async (cache, data);
 }
 
 static void
@@ -800,6 +818,12 @@ static void
 load_texture_async (StTextureCache       *cache,
                     AsyncTextureLoadData *data)
 {
+  if (cache->loading_textures_counter > MAX_PARALLEL_LOAD_TASKS)
+    {
+      g_queue_push_tail (cache->pending_tasks, data);
+      return;
+    }
+
   cache->loading_textures_counter++;
 
   if (data->file)
