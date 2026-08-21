@@ -760,7 +760,7 @@ finish_texture_load (AsyncTextureLoadData *data,
     }
 
 out:
-  texture_load_data_free (data);
+  g_clear_pointer (&data, texture_load_data_free);
 }
 
 static void
