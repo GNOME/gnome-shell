@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-07-31 20:10+0000\n"
-"PO-Revision-Date: 2026-08-01 14:28+0500\n"
+"POT-Creation-Date: 2026-08-19 14:35+0000\n"
+"PO-Revision-Date: 2026-08-21 07:31+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -95,7 +95,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Бекітілген 9-шы қолданбаның жаңа терезесін ашу"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2694
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2699
 msgid "Screenshots"
 msgstr "Скриншоттар"
 
@@ -557,6 +557,10 @@ msgstr "Ауа райы болжамын көрсету үшін орналас�
 msgid "Extensions"
 msgstr "Кеңейтулер"
 
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "Еске салу хабарламалары"
+
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
 msgstr "Желілік кіру"
@@ -595,7 +599,7 @@ msgstr "Қате ақпараты"
 msgid "Copy Error"
 msgstr "Көшіріп алу қатесі"
 
-#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "Экран уақытының шегіне жетті"
 
@@ -753,7 +757,7 @@ msgstr "Бас тарту"
 msgid "Force Stop"
 msgstr "Мәжбүрлі тоқтату"
 
-#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:678
 msgid "Login Options"
 msgstr "Кіру опциялары"
 
@@ -790,11 +794,11 @@ msgstr "Жүйеге кіру талабының уақыты бітті"
 msgid "Login took too long, please try again"
 msgstr "Жүйеге кіру талабы тым көп уақыт алды, қайталап көріңіз"
 
-#: js/gdm/loginDialog.js:1534
+#: js/gdm/loginDialog.js:1535
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
-#: js/gdm/userVerifier.js:306
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
@@ -1061,31 +1065,31 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Экранды бұруды құлыптау"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME экран уақыты деректерін сақтауы қажет"
 
-#: js/misc/timeLimitsManager.js:1392
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "Экран уақытының шектеуі жақындап қалды"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
 msgstr[0] "Компьютер %d секундтан кейін құлыпталады."
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Экран уақыты шектеуі %d минуттан кейін"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "Экран уақытының шегі жақындап қалды"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "Құрылғыны пайдалануды тоқтататын уақыт келді"
 
@@ -1267,7 +1271,7 @@ msgstr "%s қолданбалар панеліне бекітілді"
 msgid "%s Unpinned From Dash"
 msgstr "%s қолданбалар панелінен босатылды"
 
-#: js/ui/appFavorites.js:149 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "Болдырмау"
 
@@ -1501,7 +1505,7 @@ msgstr ""
 "Қосымша түрде, сіз роутердегі \"WPS\" батырмасын басу арқылы байланыса аласыз"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "Байланысу"
 
@@ -1912,7 +1916,7 @@ msgstr "Іске қосулы қалдыру"
 msgid "Turn On"
 msgstr "Іске қосу"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "Сөндіру"
 
@@ -1978,19 +1982,19 @@ msgstr "Бастапқы кодын қарау"
 msgid "Web Page"
 msgstr "Веб парағы"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "Жүйе қауіпсіз емес режимге қойылды"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "Қолданбаларда енді шектелмеген рұқсаттар бар"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "Привилегияланған пайдаланушы ретінде жүйеге кірген"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1999,11 +2003,11 @@ msgstr ""
 "салдарынан аулақ болу керек. Мүмкін болса, қалыпты пайдаланушы ретінде жүйеге "
 "кіріңіз."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "Экранды блоктау сөндірілген"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Экранды блоктау GNOME дисплейлер басқарушысын талап етеді"
 
@@ -2106,7 +2110,7 @@ msgstr "Мәзірді ашу"
 msgid "Run a Command"
 msgstr "Команданы орындау"
 
-#: js/ui/runDialog.js:92
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "Жабу үшін ESC пернесін басыңыз"
 
@@ -2209,40 +2213,40 @@ msgstr "Видеоны көру үшін осында шертіңіз"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2543 js/ui/screenshot.js:2761
+#: js/ui/screenshot.js:2543 js/ui/screenshot.js:2766
 msgid "Show in Files"
 msgstr "Файлдар қолданбасында көрсету"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2707
+#: js/ui/screenshot.js:2712
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Скриншот, уақыты %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2751
+#: js/ui/screenshot.js:2756
 msgid "Screenshot Captured"
 msgstr "Скриншот түсірілді"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2753
+#: js/ui/screenshot.js:2758
 msgid "You can paste the image from the clipboard"
 msgstr "Суретті алмасу буферінен кірістіруге болады"
 
-#: js/ui/screenshot.js:2812 js/ui/screenshot.js:2975
+#: js/ui/screenshot.js:2817 js/ui/screenshot.js:2980
 msgid "Screenshot taken"
 msgstr "Скриншот түсірілді"
 
-#: js/ui/search.js:884
+#: js/ui/search.js:887
 msgid "Searching"
 msgstr "Іздеу"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:890
 msgid "No results"
 msgstr "Нәтижелер жоқ"
 
-#: js/ui/search.js:1023
+#: js/ui/search.js:1026
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2416,18 +2420,18 @@ msgstr "Пернетақта"
 msgid "Open keyboard brightness menu"
 msgstr "Пернетақта жарықтығы мәзірін ашу"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "Байланысты үзу"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "%s байланысын үзу"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "%s құрылғысымен байланысу"
@@ -2440,7 +2444,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Bluetooth мәзірін ашу"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1939
 msgid "Bluetooth Settings"
 msgstr "Bluetooth баптаулары"
 
@@ -2519,116 +2523,116 @@ msgstr "Тыйым салу"
 msgid "Grant Access"
 msgstr "Рұқсат ету"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<белгісіз>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Қауіпсіз"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Қауіпсіз емес"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Сигнал деңгейі %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s қатынау нүктесі"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1448
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d байланысқан"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1546 js/ui/status/network.js:1563
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1547
 msgid "Open VPN menu"
 msgstr "VPN мәзірін ашу"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1548
 msgid "VPN Settings"
 msgstr "VPN баптаулары"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1808
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1809
 msgid "Open Wi–Fi menu"
 msgstr "Wi–Fi мәзірін ашу"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1811
 msgid "All Networks"
 msgstr "Барлық желілер"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1921
 msgid "Wired Connections"
 msgstr "Сымды желі байланысы"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1922
 msgid "Open wired connections menu"
 msgstr "Сымды қосылымдар мәзірін ашу"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1923
 msgid "Wired Settings"
 msgstr "Сымды желі баптаулары"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1937
 msgid "Bluetooth Tethers"
 msgstr "Bluetooth модемдері"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1938
 msgid "Open Bluetooth tethers menu"
 msgstr "Bluetooth арқылы интернетті бөлісу мәзірін ашу"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1945
 msgid "Tether"
 msgstr "Модем"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1958
 msgid "Mobile Connections"
 msgstr "Мобильді желі байланыстары"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1959
 msgid "Open mobile connections menu"
 msgstr "Мобильді қосылымдар мәзірін ашу"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1961
 msgid "Mobile Broadband Settings"
 msgstr "Сымсыз кеңжолақты желісінің баптаулары"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1970
 msgid "Mobile"
 msgstr "Мобильді"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2004
 msgid "Sign in to Network"
 msgstr "Желіге кіру"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2191
 msgid "Connection failed"
 msgstr "Байланыс орнату сәтсіз"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2192
 msgid "Activation of network connection failed"
 msgstr "Желілік байланысты белсендіру сәтсіз"
 
@@ -2706,7 +2710,7 @@ msgstr "Сөндіру…"
 msgid "Log Out…"
 msgstr "Жүйеден шығу…"
 
-#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:671
 msgid "Switch User…"
 msgstr "Пайдаланушыны ауыстыру…"
 
@@ -2805,33 +2809,33 @@ msgstr "Тек сыртқы"
 msgid "Built-in Only"
 msgstr "Тек құрамындағы"
 
-#: js/ui/unlockDialog.js:25
+#: js/ui/unlockDialog.js:24
 msgid "Unlock Options"
 msgstr "Құлыпты ашу опциялары"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:419
 msgid "%A %B %-d"
 msgstr "%A %B %-d"
 
-#: js/ui/unlockDialog.js:435
+#: js/ui/unlockDialog.js:434
 msgid "Swipe up"
 msgstr "Жоғары сырғыту"
 
-#: js/ui/unlockDialog.js:437
+#: js/ui/unlockDialog.js:436
 msgid "Click or press a key"
 msgstr "Шерту немесе пернені басу"
 
-#: js/ui/unlockDialog.js:653
+#: js/ui/unlockDialog.js:652
 msgid "Unlock Window"
 msgstr "Блоктауды алу терезесі"
 
-#: js/ui/unlockDialog.js:667
+#: js/ui/unlockDialog.js:666
 msgid "Log in as another user"
 msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
 
-#: js/ui/unlockDialog.js:695
+#: js/ui/unlockDialog.js:694
 msgid "Background Authentication Methods"
 msgstr "Фондық аутентификация тәсілдері"
 
@@ -2953,6 +2957,18 @@ msgstr "Оң жақ мониторға жылжыту"
 #: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Жабу"
+
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Reminders"
+msgstr "Еске салулар"
+
+#: src/calendar-server/reminder-watcher.c:135
+msgid "Snooze"
+msgstr "Аялдату"
+
+#: src/calendar-server/reminder-watcher.c:136
+msgid "Dismiss"
+msgstr "Елемеу"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
