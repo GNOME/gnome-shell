@@ -34,6 +34,26 @@
 #define CACHE_PREFIX_FILE "file:"
 #define CACHE_PREFIX_FILE_FOR_CAIRO "file-for-cairo:"
 
+/* This struct corresponds to a request for an texture.
+ * It's creasted when something needs a new texture,
+ * and destroyed when the texture data is loaded. */
+typedef struct {
+  StTextureCache *cache;
+  StTextureCachePolicy policy;
+  char *key;
+
+  guint width;
+  guint height;
+  guint paint_scale;
+  gfloat resource_scale;
+  GSList *actors;
+
+  StIconInfo *icon_info;
+  StIconColors *colors;
+  GFile *file;
+  CoglContext *cogl_context;
+} AsyncTextureLoadData;
+
 typedef struct _StTextureCache
 {
   GObject parent;
@@ -70,6 +90,22 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_FINAL_TYPE (StTextureCache, st_texture_cache, G_TYPE_OBJECT);
+
+static void
+texture_load_data_free (gpointer p)
+{
+  AsyncTextureLoadData *data = p;
+
+  g_clear_object (&data->icon_info);
+  g_clear_pointer (&data->colors, st_icon_colors_unref);
+  g_clear_object (&data->file);
+  g_clear_pointer (&data->key, g_free);
+
+  if (data->actors)
+    g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
+
+  g_free (data);
+}
 
 /* We want to preserve the aspect ratio by default, also the default
  * pipeline for an empty texture is full opacity white, which we
@@ -281,42 +317,6 @@ typedef struct {
   int height;
   int scale;
 } Dimensions;
-
-/* This struct corresponds to a request for an texture.
- * It's creasted when something needs a new texture,
- * and destroyed when the texture data is loaded. */
-typedef struct {
-  StTextureCache *cache;
-  StTextureCachePolicy policy;
-  char *key;
-
-  guint width;
-  guint height;
-  guint paint_scale;
-  gfloat resource_scale;
-  GSList *actors;
-
-  StIconInfo *icon_info;
-  StIconColors *colors;
-  GFile *file;
-  CoglContext *cogl_context;
-} AsyncTextureLoadData;
-
-static void
-texture_load_data_free (gpointer p)
-{
-  AsyncTextureLoadData *data = p;
-
-  g_clear_object (&data->icon_info);
-  g_clear_pointer (&data->colors, st_icon_colors_unref);
-  g_clear_object (&data->file);
-  g_clear_pointer (&data->key, g_free);
-
-  if (data->actors)
-    g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
-
-  g_free (data);
-}
 
 /**
  * on_image_size_prepared:
