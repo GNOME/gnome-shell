@@ -53,6 +53,8 @@ typedef struct _StTextureCache
   GHashTable *file_monitors; /* char * -> GFileMonitor * */
 
   GCancellable *cancellable;
+
+  uint32_t loading_textures_counter;
 } StTextureCache;
 
 static void st_texture_cache_dispose (GObject *object);
@@ -100,6 +102,10 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
 
   gobject_class->dispose = st_texture_cache_dispose;
   gobject_class->finalize = st_texture_cache_finalize;
+
+  COGL_TRACE_DEFINE_COUNTER_INT (StTextureCacheLoadingTextures,
+                                 "LoadingTextures",
+                                 "number of textures loading");
 
   /**
    * StTextureCache::icon-theme-changed:
@@ -684,6 +690,12 @@ finish_texture_load (AsyncTextureLoadData *data,
 
   cache = data->cache;
 
+  g_assert (cache->loading_textures_counter > 0);
+  cache->loading_textures_counter--;
+
+  COGL_TRACE_SET_COUNTER_INT (StTextureCacheLoadingTextures,
+                              cache->loading_textures_counter);
+
   g_hash_table_remove (cache->outstanding_requests, data->key);
 
   if (pixbuf == NULL)
@@ -788,6 +800,8 @@ static void
 load_texture_async (StTextureCache       *cache,
                     AsyncTextureLoadData *data)
 {
+  cache->loading_textures_counter++;
+
   if (data->file)
     {
       GTask *task = g_task_new (cache, NULL, on_pixbuf_loaded, data);
