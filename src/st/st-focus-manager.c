@@ -80,6 +80,7 @@ on_focus_root_key_press (ClutterKeyController *key_controller,
   gboolean wrap_around = FALSE;
   uint32_t symbol;
   uint32_t pressed, latched, locked, state;
+  StKeynavFlags keynav_flags;
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (key_controller));
   stage = clutter_actor_get_stage (actor);
@@ -87,19 +88,25 @@ on_focus_root_key_press (ClutterKeyController *key_controller,
   clutter_key_controller_get_state (key_controller, &pressed, &latched, &locked);
   state = pressed | latched | locked;
 
+  keynav_flags = st_widget_get_keynav_flags (ST_WIDGET (actor));
+
   switch (symbol)
     {
     case CLUTTER_KEY_Up:
       direction = ST_DIR_UP;
+      wrap_around = (keynav_flags & ST_KEYNAV_FLAG_WRAP_VERTICALLY) != 0;
       break;
     case CLUTTER_KEY_Down:
       direction = ST_DIR_DOWN;
+      wrap_around = (keynav_flags & ST_KEYNAV_FLAG_WRAP_VERTICALLY) != 0;
       break;
     case CLUTTER_KEY_Left:
       direction = ST_DIR_LEFT;
+      wrap_around = (keynav_flags & ST_KEYNAV_FLAG_WRAP_HORIZONTALLY) != 0;
       break;
     case CLUTTER_KEY_Right:
       direction = ST_DIR_RIGHT;
+      wrap_around = (keynav_flags & ST_KEYNAV_FLAG_WRAP_HORIZONTALLY) != 0;
       break;
     case CLUTTER_KEY_Tab:
       if (state & CLUTTER_SHIFT_MASK)
