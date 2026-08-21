@@ -134,6 +134,10 @@ ClutterActor *        st_widget_get_label_actor           (StWidget        *widg
 void                  st_widget_set_label_actor           (StWidget        *widget,
                                                            ClutterActor    *label);
 
+StKeynavFlags         st_widget_get_keynav_flags          (StWidget        *widget);
+void                  st_widget_set_keynav_flags          (StWidget        *widget,
+                                                           StKeynavFlags    flags);
+
 /* Only to be used by sub-classes of StWidget */
 void                  st_widget_style_changed             (StWidget        *widget);
 StThemeNode *         st_widget_get_theme_node            (StWidget        *widget);

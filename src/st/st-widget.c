@@ -34,6 +34,7 @@
 
 #include "st-widget.h"
 
+#include "st-enum-types.h"
 #include "st-label.h"
 #include "st-private.h"
 #include "st-settings.h"
@@ -77,6 +78,8 @@ struct _StWidgetPrivate
 
   int enter_count;
 
+  StKeynavFlags keynav_flags;
+
   ClutterActor *label_actor;
 
   StWidget *last_visible_child;
@@ -109,6 +112,7 @@ enum
   PROP_HOVER,
   PROP_CAN_FOCUS,
   PROP_LABEL_ACTOR,
+  PROP_KEYNAV_FLAGS,
 
   N_PROPS
 };
@@ -210,6 +214,10 @@ st_widget_set_property (GObject      *gobject,
       st_widget_set_label_actor (actor, g_value_get_object (value));
       break;
 
+    case PROP_KEYNAV_FLAGS:
+      st_widget_set_keynav_flags (actor, g_value_get_flags (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -252,6 +260,10 @@ st_widget_get_property (GObject    *gobject,
 
     case PROP_LABEL_ACTOR:
       g_value_set_object (value, priv->label_actor);
+      break;
+
+    case PROP_KEYNAV_FLAGS:
+      g_value_set_flags (value, priv->keynav_flags);
       break;
 
     default:
@@ -1021,6 +1033,18 @@ st_widget_class_init (StWidgetClass *klass)
      g_param_spec_object ("label-actor", NULL, NULL,
                           CLUTTER_TYPE_ACTOR,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
+
+  /**
+   * StWidget:focus-flags:
+   *
+   * Flags applying as the root of a [class@FocusManager] group, modifying
+   * the behavior of focus keyboard navigation.
+   */
+  props[PROP_KEYNAV_FLAGS] =
+    g_param_spec_flags ("keynav-flags", NULL, NULL,
+                        ST_TYPE_KEYNAV_FLAGS,
+                        ST_KEYNAV_FLAG_NONE,
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 
@@ -2598,4 +2622,44 @@ GList *
 st_widget_get_focus_chain (StWidget *widget)
 {
   return ST_WIDGET_GET_CLASS (widget)->get_focus_chain (widget);
+}
+
+/**
+ * st_widget_get_keynav_flags:
+ * @widget: An `StWidget`
+ *
+ * Gets the [flags@KeynavFlags] that this widget will use as the
+ * root of a [class@FocusManager] group.
+ *
+ * Returns: The keynav flags
+ **/
+StKeynavFlags
+st_widget_get_keynav_flags (StWidget *widget)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  g_return_val_if_fail (ST_IS_WIDGET (widget), ST_KEYNAV_FLAG_NONE);
+
+  return priv->keynav_flags;
+}
+
+/**
+ * st_widget_set_keynav_flags:
+ * @widget: An `StWidget`
+ * @flags: The keynav flags
+ *
+ * Gets the [flags@KeynavFlags] that this widget will use as the
+ * root of a [class@FocusManager] group. These flags affect the behavior
+ * of keyboard navigation.
+ **/
+void
+st_widget_set_keynav_flags (StWidget      *widget,
+                            StKeynavFlags  flags)
+{
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+
+  g_return_if_fail (ST_IS_WIDGET (widget));
+
+  priv->keynav_flags = flags;
+  g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_KEYNAV_FLAGS]);
 }
