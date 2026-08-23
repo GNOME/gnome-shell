@@ -254,11 +254,14 @@ async function _initializeUI() {
     introspectService = new Introspect.IntrospectService();
 
     // Set up the global default break reminder manager and its D-Bus interface
+    const isUserSession = GLib.getenv('XDG_SESSION_CLASS') === 'user';
     breakManager = new BreakManager.BreakManager();
-    timeLimitsManager = new TimeLimitsManager.TimeLimitsManager();
     screenTimeDBus = new ShellDBus.ScreenTimeDBus(breakManager);
     breakManagerDispatcher = new BreakManager.BreakDispatcher(breakManager);
-    timeLimitsDispatcher = new TimeLimitsManager.TimeLimitsDispatcher(timeLimitsManager);
+    if (isUserSession) {
+        timeLimitsManager = new TimeLimitsManager.TimeLimitsManager();
+        timeLimitsDispatcher = new TimeLimitsManager.TimeLimitsDispatcher(timeLimitsManager);
+    }
 
     brightnessManager = new BrightnessManager.BrightnessManager();
     brightnessDBus = new ShellDBus.BrightnessDBus(brightnessManager);
@@ -268,6 +271,11 @@ async function _initializeUI() {
         const loop = new GLib.MainLoop(null, false);
         const source = GLib.idle_source_new();
         source.set_callback(() => {
+            if (!timeLimitsManager) {
+                loop.quit();
+                return GLib.SOURCE_REMOVE;
+            }
+
             timeLimitsManager.shutdown()
                 .catch(e => console.warn(`Failed to stop time limits manager: ${e.message}`))
                 .finally(() => loop.quit());

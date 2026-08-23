@@ -717,9 +717,9 @@ export const UnlockDialog = GObject.registerClass({
         // When parental controls session limits are enabled, the screen will be
         // locked upon reaching the time limit. In those cases, tweak the lock screen,
         // so that the children cannot unlock without parental supervision.
-        Main.timeLimitsManager.connectObject(
-            'notify::should-lock-session', () => this._updateAuthBlocked(),
-            this);
+        Main.timeLimitsManager?.connectObject(
+            'notify::should-lock-session',
+            () => this._updateAuthBlocked(), this);
         this._updateAuthBlocked();
 
         // Main Box
@@ -1064,7 +1064,7 @@ export const UnlockDialog = GObject.registerClass({
 
     _updateAuthBlocked() {
         this._authPrompt?.setAuthBlocked(
-            Main.timeLimitsManager.shouldLockSession);
+            Main.timeLimitsManager?.shouldLockSession ?? false);
     }
 
     cancel() {

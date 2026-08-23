@@ -530,7 +530,7 @@ export class ScreenShield extends Signals.EventEmitter {
 
     deactivate(animate) {
         // block unlock via logind etc. if locked due to parental controls
-        if (Main.timeLimitsManager.shouldLockSession) {
+        if (Main.timeLimitsManager?.shouldLockSession) {
             this.lock(false);
             return;
         }
