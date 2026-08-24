@@ -63,7 +63,7 @@ clear_frame (gpointer user_data)
   StCursorFrame *frame = user_data;
 
   g_clear_object (&frame->image);
-  g_clear_object (&frame->surface);
+  g_clear_pointer (&frame->surface, cairo_surface_destroy);
   g_clear_object (&frame->texture);
 }
 
