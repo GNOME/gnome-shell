@@ -465,13 +465,6 @@ export class Message extends St.Button {
                 return Clutter.EVENT_STOP;
             }
         );
-        bindingPool.install_closure(
-            'close', Clutter.KEY_KP_Delete, 0,
-            obj => {
-                obj._closeIfAllowed();
-                return Clutter.EVENT_STOP;
-            }
-        );
     }
 
     constructor(source) {
