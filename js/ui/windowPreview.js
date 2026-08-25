@@ -55,20 +55,6 @@ export class WindowPreview extends Shell.WindowPreview {
                 return Clutter.EVENT_STOP;
             }
         );
-        bindingPool.install_closure(
-            'activate', Clutter.KEY_KP_Enter, 0,
-            obj => {
-                obj._activate();
-                return Clutter.EVENT_STOP;
-            }
-        );
-        bindingPool.install_closure(
-            'activate', Clutter.KEY_ISO_Enter, 0,
-            obj => {
-                obj._activate();
-                return Clutter.EVENT_STOP;
-            }
-        );
     }
 
     _init(metaWindow, workspace, overviewAdjustment) {
