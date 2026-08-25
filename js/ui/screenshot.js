@@ -1263,20 +1263,6 @@ export class ScreenshotUI extends St.Widget {
             }
         );
         bindingPool.install_closure(
-            'activate', Clutter.KEY_KP_Enter, 0,
-            obj => {
-                obj._activate();
-                return Clutter.EVENT_STOP;
-            }
-        );
-        bindingPool.install_closure(
-            'activate', Clutter.KEY_ISO_Enter, 0,
-            obj => {
-                obj._activate();
-                return Clutter.EVENT_STOP;
-            }
-        );
-        bindingPool.install_closure(
             'activate', Clutter.KEY_space, 0,
             obj => {
                 obj._activate();
