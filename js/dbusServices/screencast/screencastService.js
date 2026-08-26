@@ -331,6 +331,8 @@ class Recorder extends Signals.EventEmitter {
             retval === Gst.StateChangeReturn.ASYNC) {
             // We'll wait for the state change message to PLAYING on the bus
         } else {
+            const changeString = Gst.StateChangeReturn.get_name(retval);
+            console.debug(`Setting PLAYING state on pipeline returned ${changeString}`);
             this._tryNextPipeline();
         }
     }
@@ -423,6 +425,7 @@ class Recorder extends Signals.EventEmitter {
 
             case PipelineState.STARTING:
                 // This is something we can handle, try to switch to the next pipeline
+                console.debug('Received EOS message while trying to start pipeline');
                 this._tryNextPipeline();
                 break;
 
@@ -452,7 +455,9 @@ class Recorder extends Signals.EventEmitter {
 
             break;
 
-        case Gst.MessageType.ERROR:
+        case Gst.MessageType.ERROR: {
+            const [error] = message.parse_error();
+
             switch (this._pipelineState) {
             case PipelineState.INIT:
             case PipelineState.STOPPED:
@@ -462,13 +467,12 @@ class Recorder extends Signals.EventEmitter {
 
             case PipelineState.STARTING:
                 // This is something we can handle, try to switch to the next pipeline
+                console.debug(`Received ERROR message while trying to start pipeline: ${error.message}`);
                 this._tryNextPipeline();
                 break;
 
             case PipelineState.PLAYING:
             case PipelineState.FLUSHING: {
-                const [error] = message.parse_error();
-
                 if (error.matches(Gst.ResourceError, Gst.ResourceError.NO_SPACE_LEFT)) {
                     this._handleFatalPipelineError('Out of disk space',
                         ScreencastErrors, ScreencastError.OUT_OF_DISK_SPACE);
@@ -486,6 +490,7 @@ class Recorder extends Signals.EventEmitter {
             }
 
             break;
+        }
 
         default:
             break;
