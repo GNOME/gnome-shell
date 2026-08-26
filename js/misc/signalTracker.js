@@ -198,7 +198,7 @@ class SignalTracker {
  * with a tracked object.
  *
  * All handlers for a particular object can be disconnected
- * by calling disconnectObject(). If object is a {Clutter.widget},
+ * by calling disconnectObject(). If object is a destroyable type,
  * this is done automatically when the widget is destroyed.
  *
  * @param {object} thisObj - the emitter object
