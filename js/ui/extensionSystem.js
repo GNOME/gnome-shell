@@ -691,12 +691,23 @@ export class ExtensionManager extends Signals.EventEmitter {
         return modesB.length - modesA.length;
     }
 
+
+    _queueEnabledExtensionsChanged() {
+        if (this._idleId)
+            GLib.source_remove(this._idleId);
+        this._idleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._idleId = 0;
+            this._onEnabledExtensionsChanged().catch(logError);
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
     async _loadExtensions() {
         global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`, () => {
-            this._onEnabledExtensionsChanged();
+            this._queueEnabledExtensionsChanged();
         });
         global.settings.connect(`changed::${DISABLED_EXTENSIONS_KEY}`, () => {
-            this._onEnabledExtensionsChanged();
+            this._queueEnabledExtensionsChanged();
         });
         global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`, () => {
             this._onUserExtensionsEnabledChanged();
