@@ -2014,7 +2014,7 @@ const FadeEffect = GObject.registerClass({
     }
 
     _vadjustmentChanged() {
-        const newAdj = this.actor.vadjustment;
+        const newAdj = this.actor?.vadjustment;
         if (this._vadjustment === newAdj)
             return;
 
