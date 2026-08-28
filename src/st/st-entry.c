@@ -954,14 +954,6 @@ st_entry_class_init (StEntryClass *klass)
 
   clutter_binding_pool_install_action (binding_pool,
                                        "paste-clipboard",
-                                       CLUTTER_KEY_V,
-                                       CLUTTER_CONTROL_MASK,
-                                       G_CALLBACK (st_entry_paste_clipboard),
-                                       NULL,
-                                       NULL);
-
-  clutter_binding_pool_install_action (binding_pool,
-                                       "paste-clipboard",
                                        CLUTTER_KEY_Insert,
                                        CLUTTER_SHIFT_MASK,
                                        G_CALLBACK (st_entry_paste_clipboard),
@@ -987,14 +979,6 @@ st_entry_class_init (StEntryClass *klass)
 
   clutter_binding_pool_install_action (binding_pool,
                                        "copy-clipboard",
-                                       CLUTTER_KEY_C,
-                                       CLUTTER_CONTROL_MASK,
-                                       G_CALLBACK (st_entry_copy_clipboard),
-                                       NULL,
-                                       NULL);
-
-  clutter_binding_pool_install_action (binding_pool,
-                                       "copy-clipboard",
                                        CLUTTER_KEY_Copy,
                                        0,
                                        G_CALLBACK (st_entry_copy_clipboard),
@@ -1004,14 +988,6 @@ st_entry_class_init (StEntryClass *klass)
   clutter_binding_pool_install_action (binding_pool,
                                        "cut-clipboard",
                                        CLUTTER_KEY_x,
-                                       CLUTTER_CONTROL_MASK,
-                                       G_CALLBACK (st_entry_cut_clipboard),
-                                       NULL,
-                                       NULL);
-
-  clutter_binding_pool_install_action (binding_pool,
-                                       "cut-clipboard",
-                                       CLUTTER_KEY_X,
                                        CLUTTER_CONTROL_MASK,
                                        G_CALLBACK (st_entry_cut_clipboard),
                                        NULL,
@@ -1034,26 +1010,10 @@ st_entry_class_init (StEntryClass *klass)
                                        NULL,
                                        NULL);
 
-  clutter_binding_pool_install_action (binding_pool,
-                                       "delete-to-line-start",
-                                       CLUTTER_KEY_U,
-                                       CLUTTER_CONTROL_MASK,
-                                       G_CALLBACK (st_entry_delete_to_line_start),
-                                       NULL,
-                                       NULL);
-
   /* delete to end of line */
   clutter_binding_pool_install_action (binding_pool,
                                        "delete-to-line-end",
                                        CLUTTER_KEY_k,
-                                       CLUTTER_CONTROL_MASK,
-                                       G_CALLBACK (st_entry_delete_to_line_end),
-                                       NULL,
-                                       NULL);
-
-  clutter_binding_pool_install_action (binding_pool,
-                                       "delete-to-line-end",
-                                       CLUTTER_KEY_K,
                                        CLUTTER_CONTROL_MASK,
                                        G_CALLBACK (st_entry_delete_to_line_end),
                                        NULL,
