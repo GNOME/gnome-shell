@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 typedef struct _ShellInvertLightnessEffect        ShellInvertLightnessEffect;
 typedef struct _ShellInvertLightnessEffectClass   ShellInvertLightnessEffectClass;
 
-GType shell_invert_lightness_effect_get_type (void) G_GNUC_CONST;
+GType shell_invert_lightness_effect_get_type (void);
 
 ClutterEffect *shell_invert_lightness_effect_new (void);
 
