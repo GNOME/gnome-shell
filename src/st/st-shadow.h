@@ -56,7 +56,7 @@ struct _StShadow {
     gboolean     inset;
 };
 
-GType     st_shadow_get_type (void) G_GNUC_CONST;
+GType     st_shadow_get_type (void);
 
 StShadow *st_shadow_new      (CoglColor      *color,
                               gdouble         xoffset,
@@ -77,7 +77,7 @@ void      st_shadow_get_box  (StShadow              *shadow,
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (StShadow, st_shadow_unref)
 
 
-GType     st_shadow_helper_get_type (void) G_GNUC_CONST;
+GType     st_shadow_helper_get_type (void);
 
 StShadowHelper *st_shadow_helper_new  (StShadow       *shadow);
 

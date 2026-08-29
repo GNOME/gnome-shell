@@ -26,7 +26,7 @@ struct _StIconColors {
   CoglColor success;
 };
 
-GType     st_icon_colors_get_type (void) G_GNUC_CONST;
+GType     st_icon_colors_get_type (void);
 
 StIconColors *st_icon_colors_new   (void);
 StIconColors *st_icon_colors_ref   (StIconColors *colors);
