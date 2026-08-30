@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-02-23 20:25+0000\n"
-"PO-Revision-Date: 2026-02-25 01:52+0900\n"
+"POT-Creation-Date: 2026-08-29 16:14+0000\n"
+"PO-Revision-Date: 2026-08-30 15:30+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -109,7 +109,7 @@ msgid "Open new window of pinned app 9"
 msgstr "고정 앱 9의 새 창을 엽니다"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2296
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "스크린샷"
 
@@ -134,7 +134,7 @@ msgid "Record a screencast interactively"
 msgstr "대화식으로 스크린캐스트 녹화"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1311
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1328
 msgid "System"
 msgstr "시스템"
 
@@ -281,8 +281,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"암호화 볼륨을 마운트하거나 원격 파일 시스템을 마운트할 때 암호를 저장할지 여"
-"부"
+"암호화 볼륨을 마운트하거나 원격 파일 시스템을 마운트할 때 비밀번호를 저장할"
+"지 여부"
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
@@ -291,9 +291,9 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"암호화된 저장 장치나 원격 파일 시스템을 마운트하는 경우 암호를 입력해야 합니"
-"다. 암호를 저장할 수 있으면 “암호 저장” 확인란이 나타납니다. 이 키에서는 이 "
-"확인란의 기본 상태를 지정합니다."
+"암호화된 저장 장치나 원격 파일 시스템을 마운트하는 경우 비밀번호를 입력해야 "
+"합니다. 암호를 저장할 수 있으면 “암호 저장” 확인란이 나타납니다. 이 키에서는 "
+"이 확인란의 기본 상태를 지정합니다."
 
 #: data/org.gnome.shell.gschema.xml.in:104
 msgid "The last selected non-default power profile"
@@ -549,13 +549,15 @@ msgstr "위치"
 msgid "The location for which to show a forecast"
 msgstr "날씨 표시에 사용할 위치"
 
-#. Keep in sync with subprojects/extensions-app
+#. Keep in sync with GNOME/gnome-extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in:4
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
-#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "확장"
+
+# calendar 관련 notification
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "일정 알림"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -588,7 +590,6 @@ msgid "Information about this problem may be available on the %s."
 msgstr "이 문제에 대한 정보가 %s 위치에 있을 수 있습니다."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
-#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "오류 자세히"
 
@@ -596,47 +597,97 @@ msgstr "오류 자세히"
 msgid "Copy Error"
 msgstr "복사 오류"
 
-#: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "화면 시간 제한에 도달했습니다"
 
-#: js/gdm/authPrompt.js:64
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
-msgstr "이 장치에서 화면 사용 시간의 일일 제한 시간에 다다랐습니다. 내일 계속합니다."
+msgstr ""
+"이 장치에서 화면 사용 시간의 일일 제한 시간에 다다랐습니다. 내일 계속합니다."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:72
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "무시"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
-#: js/ui/shellMountOperation.js:392
-msgid "Cancel"
-msgstr "취소"
+#: js/gdm/authPrompt.js:269
+msgid "Back"
+msgstr "뒤로"
 
-#: js/gdm/authPrompt.js:434 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:332
+#: js/gdm/authPrompt.js:366
+msgid "Submit"
+msgstr "제출"
+
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
-msgstr "암호"
+msgstr "비밀번호"
 
-#: js/gdm/loginDialog.js:327
-msgid "Choose Session"
-msgstr "세션 선택"
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "스마트카드를 넣으십시오"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
-msgid "Accessibility"
-msgstr "접근성"
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "보안 키를 넣으십시오"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "지문으로 잠금 해제"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "스마트카드"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "지문"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(또는 지문을 센서에 문지르십시오)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(또는 손가락을 센서에 대십시오)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+msgid "Insert Smartcard"
+msgstr "스마트카드를 넣으십시오"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+msgid "Select Identity"
+msgstr "신원 선택"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "조직"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"%d번 더 시도할 수 있습니다. 잠겨지면, 패스키에 잠금이 걸리면, 계정에 접근하"
+"지 못할 수도 있습니다."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "마침"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/conflictingSessionDialog.js:50
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -647,7 +698,7 @@ msgstr ""
 "로 로그인하려면 지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/conflictingSessionDialog.js:53
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -657,7 +708,7 @@ msgstr ""
 "지금 원격 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/conflictingSessionDialog.js:56
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -668,7 +719,7 @@ msgstr ""
 "로 로그인하려면 지금 로컬 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/conflictingSessionDialog.js:59
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -677,11 +728,11 @@ msgstr ""
 "로컬 세션이 이미 %s에 대해 동작 중이므로 로그인이 불가능합니다. 로그인하려면 "
 "지금 세션에서 로그아웃하거나 세션을 강제로 중지하십시오."
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/conflictingSessionDialog.js:68
 msgid "Session Already Running"
 msgstr "이미 동작 중인 세션"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/conflictingSessionDialog.js:80
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -689,152 +740,164 @@ msgstr ""
 "강제로 중지하면 실행 중인 앱과 프로세스가 중지되므로, 데이터를 잃어버릴 수 있"
 "습니다"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
+msgid "Cancel"
+msgstr "취소"
+
+#: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "강제로 중지"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:679
+msgid "Login Options"
+msgstr "로그인 옵션"
+
+#: js/gdm/loginDialog.js:54
+msgid "Session Type"
+msgstr "세션 종류"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "접근성"
+
+#: js/gdm/loginDialog.js:453
 msgid "Not listed?"
 msgstr "목록에 없습니까?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1103
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(예를 들어, 사용자 또는 %s)"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1110 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "사용자 이름"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1174
 msgid "Login Attempt Timed Out"
 msgstr "로그인 시도 제한시간 초과"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1175
 msgid "Login took too long, please try again"
 msgstr "로그인이 너무 오래 걸렸습니다. 다시 해 보십시오"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1538
 msgid "Login Window"
 msgstr "로그인 창"
 
-#: js/gdm/util.js:496
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "인증 오류"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
-msgid "(or swipe finger across reader)"
-msgstr "(또는 지문을 센서에 문지르십시오)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "로그인 코드: "
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
-msgid "(or place finger on reader)"
-msgstr "(또는 손가락을 센서에 대십시오)"
-
-#: js/misc/breakManager.js:774
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "휴식 마침 소리"
 
-#: js/misc/breakManager.js:983
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d초"
 
-#: js/misc/breakManager.js:989
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d분"
 
-#: js/misc/breakManager.js:995
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d시간"
 
-#: js/misc/breakManager.js:1001
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d일"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "%s 뒤에 휴식 시간 예정입니다"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "곧 움직임 휴식 시간"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "곧 눈 휴식 시간"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "곧 휴식 시간"
 
-#: js/misc/breakManager.js:1142
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "움직임 휴식 시간 중입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1145
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "%s 동안 움직이십시오"
 
-#: js/misc/breakManager.js:1151
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "눈 휴식 시간 중입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1154
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "%s 동안 다른 곳을 보십시오"
 
-#: js/misc/breakManager.js:1160
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "휴식 시간 중입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1163
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "휴식 시간 %s 남음"
 
-#: js/misc/breakManager.js:1202
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "움직임 휴식 시간입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1205
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "컴퓨터에서 떨어져서 %s 동안 움직이십시오"
 
-#: js/misc/breakManager.js:1211
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "눈 휴식 시간입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1214
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -842,189 +905,189 @@ msgid_plural ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
 msgstr[0] "화면에서 떨어져서 최소 6미터 거리를 %s 동안 보십시오"
 
-#: js/misc/breakManager.js:1220
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "휴식할 시간입니다"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1223
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
 msgstr[0] "휴식 시간입니다. 컴퓨터에서 %s 동안 떨어지십시오!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1247
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "휴식 시간이 %s 전이었습니다"
 
-#: js/misc/breakManager.js:1253
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "휴식 시간 지남"
 
-#: js/misc/breakManager.js:1269
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "휴식 시간이 %s 남았습니다"
 
-#: js/misc/breakManager.js:1275
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "휴식 중단됨"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1353
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "미루기"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "건너뛰기"
 
 # NOTE: take a break 의미
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1397
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "휴식"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1460
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "%d초 뒤 휴식 시간"
 
-#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "밝기"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "컴퓨터 끄기"
 
 # 주의: 키워드 번역
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "power off;poweroff;전원;끄기;shutdown;셧다운;halt;stop;중지"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
 msgstr "다시 시작"
 
 # 주의: 키워드 번역
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgid "reboot;restart;"
 msgstr "reboot;restart;재시작;다시;리부팅"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "화면 잠그기"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgid "lock screen"
 msgstr "화면 잠그기"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "로그아웃"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgid "logout;log out;sign off"
 msgstr "logout;로그아웃;log out;로그 아웃;sign off;나가기"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:130
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "절전"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:129
+#: js/misc/systemActions.js:133
 msgid "suspend;sleep"
 msgstr "suspend;sleep;절전;슬립;서스펜드"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:138
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "사용자 바꾸기"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:141
 msgid "switch user"
 msgstr "사용자 바꾸기"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:144
+#: js/misc/systemActions.js:148
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;방향 잠금;unlock orientation;방향 잠금 해제;screen;화"
 "면;rotation;회전"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "스크린샷 찍기"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:152
+#: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
 "screenshot;스크린샷;screencast;스크린캐스트;snip;스닙;capture;캡쳐;record;녹"
 "화"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "화면 회전 잠금 해제"
 
-#: js/misc/systemActions.js:257
+#: js/misc/systemActions.js:268
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "화면 회전 잠금"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "그놈에서 화면 시간 데이터를 저장해야 합니다"
 
-#: js/misc/timeLimitsManager.js:1392
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "화면 시간 제한이 거의 다 되었습니다"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
 msgstr[0] "컴퓨터가 %d초 뒤에 잠깁니다."
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "%d분 뒤에 화면 시간 제한"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "화면 시간 제한이 다가옵니다"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "컴퓨터 사용을 멈출 시간입니다"
 
@@ -1153,19 +1216,19 @@ msgstr "%B %-d일, %p %l:%M"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%Y년 %B %-d일, %p %l:%M"
 
-#: js/portalHelper/main.js:98
+#: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
 msgstr "연결이 안전해 보입니다"
 
-#: js/portalHelper/main.js:104
+#: js/portalHelper/main.js:110
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"이 핫스팟 로그인에 대한 연결은 안전하지 않습니다. 암호나 기타 이 페이지에서 "
-"입력한 정보를 주변 사람이 볼 수 있습니다."
+"이 핫스팟 로그인에 대한 연결은 안전하지 않습니다. 비밀번호나 기타 이 페이지에"
+"서 입력한 정보를 주변 사람이 볼 수 있습니다."
 
-#: js/portalHelper/main.js:115
+#: js/portalHelper/main.js:121
 msgid "Hotspot Login"
 msgstr "핫스팟 로그인"
 
@@ -1179,21 +1242,33 @@ msgstr "거부"
 msgid "Allow"
 msgstr "허용"
 
-#: js/ui/appDisplay.js:1732
+#: js/ui/appDisplay.js:158
+msgid "App grid"
+msgstr "앱 그리드"
+
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "이름 없는 폴더"
 
-#: js/ui/appFavorites.js:89
-#, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "%s을(를) 대시보드에 고정했습니다."
+#: js/ui/appDisplay.js:2563
+msgid "Folder name"
+msgstr "폴더 이름"
 
-#: js/ui/appFavorites.js:120
-#, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "%s을(를) 대시보드에서 고정 해제했습니다."
+#: js/ui/appDisplay.js:2586
+msgid "Edit folder name"
+msgstr "폴더 이름 편집"
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:304
+#: js/ui/appFavorites.js:104
+#, javascript-format
+msgid "%s Pinned to Dash"
+msgstr "%s, 대시보드에 고정"
+
+#: js/ui/appFavorites.js:135
+#, javascript-format
+msgid "%s Unpinned From Dash"
+msgstr "%s, 대시보드에서 고정 해제"
+
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "실행 취소"
 
@@ -1215,7 +1290,7 @@ msgstr "앱 자세히 보기"
 msgid "Quit"
 msgstr "끝내기"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:245
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
 msgstr "고정 해제"
 
@@ -1247,19 +1322,19 @@ msgstr "헤드폰"
 msgid "Headset"
 msgstr "헤드셋"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "마이크"
 
-#: js/ui/backgroundMenu.js:13
+#: js/ui/backgroundMenu.js:12
 msgid "Change Background…"
 msgstr "배경 바꾸기…"
 
-#: js/ui/backgroundMenu.js:15
+#: js/ui/backgroundMenu.js:14
 msgid "Display Settings"
 msgstr "디스플레이 설정"
 
-#: js/ui/backgroundMenu.js:16
+#: js/ui/backgroundMenu.js:15
 msgid "Settings"
 msgstr "설정"
 
@@ -1338,34 +1413,34 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%Y년 %OB"
 
-#: js/ui/calendar.js:505
+#: js/ui/calendar.js:513
 msgid "Previous month"
 msgstr "이전 달"
 
-#: js/ui/calendar.js:523
+#: js/ui/calendar.js:531
 msgid "Next month"
 msgstr "다음 달"
 
 # 달력의 날짜 포맷
-#: js/ui/calendar.js:675
+#: js/ui/calendar.js:676
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%e"
 
-#: js/ui/calendar.js:734
+#: js/ui/calendar.js:735
 msgid "Week %V"
 msgstr "주 %V"
 
-#: js/ui/calendar.js:787
+#: js/ui/calendar.js:788
 msgid "No Notifications"
 msgstr "알림 없음"
 
-#: js/ui/calendar.js:828
+#: js/ui/calendar.js:829
 msgid "Clear"
 msgstr "지우기"
 
-#: js/ui/calendar.js:832
+#: js/ui/calendar.js:833
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "모든 알림 지우기"
@@ -1390,33 +1465,33 @@ msgstr "강제로 끝내기"
 msgid "Wait"
 msgstr "기다리기"
 
-#: js/ui/components/automountManager.js:81
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "외부 드라이브 연결"
 
-#: js/ui/components/automountManager.js:93
+#: js/ui/components/automountManager.js:95
 msgid "External drive disconnected"
 msgstr "외부 드라이브 연결 끊김"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:209
 msgid "Unable to unlock volume"
 msgstr "볼륨을 잠글 수 없습니다"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "설치한 버전의 udisks는 PIM 설정을 지원하지 않습니다"
 
 #. Translators: %s is the name of a partition on a external drive
-#: js/ui/components/autorunManager.js:189
+#: js/ui/components/autorunManager.js:190
 #, javascript-format
 msgid "“%s” connected"
 msgstr "“%s” 연결됨"
 
-#: js/ui/components/autorunManager.js:190
+#: js/ui/components/autorunManager.js:191
 msgid "Disk can now be used"
 msgstr "이제 디스크를 사용할 수 있습니다"
 
-#: js/ui/components/autorunManager.js:202
+#: js/ui/components/autorunManager.js:203
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s 앱으로 열기"
@@ -1427,7 +1502,7 @@ msgid ""
 msgstr "다른 방법으로 라우터의 “WPS” 단추를 눌러서 연결할 수 있습니다"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:357 js/ui/status/network.js:441
 msgid "Connect"
 msgstr "연결"
 
@@ -1437,7 +1512,7 @@ msgstr "키"
 
 #: js/ui/components/networkAgent.js:274 js/ui/components/networkAgent.js:313
 msgid "Private key password"
-msgstr "개인 키 암호"
+msgstr "개인 키 비밀번호"
 
 #: js/ui/components/networkAgent.js:307
 msgid "Identity"
@@ -1456,7 +1531,7 @@ msgstr "인증 필요"
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
-msgstr "“%s” 무선 네트워크에 연결하려면 암호 또는 암호화 키가 필요합니다"
+msgstr "“%s” 무선 네트워크에 연결하려면 비밀번호 또는 암호화 키가 필요합니다"
 
 #: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
@@ -1487,11 +1562,11 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
-msgstr "“%s”에 연결하려면 암호가 필요합니다"
+msgstr "“%s”에 연결하려면 비밀번호가 필요합니다"
 
 #: js/ui/components/networkAgent.js:769
 msgid "VPN password"
-msgstr "VPN 암호"
+msgstr "VPN 비밀번호"
 
 #: js/ui/components/polkitAgent.js:44
 msgid "Authentication Required"
@@ -1509,21 +1584,21 @@ msgstr "인증"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:432
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "죄송합니다. 동작하지 않았습니다. 다시 시도하십시오."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "창"
 
-#: js/ui/dash.js:201 js/ui/dash.js:247
+#: js/ui/dash.js:200 js/ui/dash.js:246
 msgid "Show Apps"
 msgstr "앱 표시"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:405
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "대시보드"
 
@@ -1639,7 +1714,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "로그아웃"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:181
+#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "컴퓨터 끄기"
@@ -1725,19 +1800,19 @@ msgstr "일부 앱이 동작 중이거나 저장하지 않은 작업이 남아 �
 msgid "Other users are logged in"
 msgstr "다른 사용자가 로그인 중입니다"
 
-#: js/ui/endSessionDialog.js:431
+#: js/ui/endSessionDialog.js:432
 msgctxt "button"
 msgid "Boot Options"
 msgstr "부팅 옵션"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:635
+#: js/ui/endSessionDialog.js:637
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (원격)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:638
+#: js/ui/endSessionDialog.js:640
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (콘솔)"
@@ -1756,11 +1831,11 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr ""
 "extensions.gnome.org 사이트에서 “%s” 확장을 다운로드해 설치하시겠습니까?"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "확장 업데이트가 있습니다"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "확장 업데이트 설치할 준비가 되었습니다"
 
@@ -1833,7 +1908,7 @@ msgstr "계속 유지"
 msgid "Turn On"
 msgstr "켜기"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:452
 msgid "Turn Off"
 msgstr "끄기"
 
@@ -1841,77 +1916,77 @@ msgstr "끄기"
 msgid "Leave Off"
 msgstr "그만두고 끄기"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:888
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
 msgstr "키보드 설정"
 
-#: js/ui/lookingGlass.js:737
+#: js/ui/lookingGlass.js:753
 msgid "No extensions installed"
 msgstr "확장을 설치하지 않았습니다"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:816
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s에서 발생한 에러가 없습니다"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:822
 msgid "Hide Errors"
 msgstr "오류 숨기기"
 
-#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+#: js/ui/lookingGlass.js:826 js/ui/lookingGlass.js:906
 msgid "Show Errors"
 msgstr "오류 보이기"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:835
 msgid "Active"
 msgstr "활성화"
 
-#: js/ui/lookingGlass.js:822
+#: js/ui/lookingGlass.js:838
 msgid "Inactive"
 msgstr "비활성화"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:840
 msgid "Error"
 msgstr "오류"
 
-#: js/ui/lookingGlass.js:826
+#: js/ui/lookingGlass.js:842
 msgid "Out of date"
 msgstr "오래 된 버전"
 
-#: js/ui/lookingGlass.js:828
+#: js/ui/lookingGlass.js:844
 msgid "Downloading"
 msgstr "다운로드 중"
 
-#: js/ui/lookingGlass.js:830
+#: js/ui/lookingGlass.js:846
 msgid "Deactivating"
 msgstr "활성화 해제 중"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:848
 msgid "Activating"
 msgstr "활성화 중"
 
-#: js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:884
 msgid "View Source"
 msgstr "소스 보기"
 
-#: js/ui/lookingGlass.js:879
+#: js/ui/lookingGlass.js:895
 msgid "Web Page"
 msgstr "웹페이지"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "시스템이 위험 모드에 들어가 있습니다"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "현재 앱에서 제한적인 접근만 할 수 있습니다"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "관리자 권한으로 로그인"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1919,21 +1994,21 @@ msgstr ""
 "관리자 권한으로 세션을 시작하는 일은 보안 이유로 피해야 합니다. 할 수 있으면 "
 "일반 유저로 로그인해야 합니다."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "화면 잠금 사용하지 않음"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "화면 잠금은 그놈 디스플레이 관리자가 필요합니다"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:403
+#: js/ui/messageList.js:405
 msgid "Unknown App"
 msgstr "알 수 없는 앱"
 
-#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
 msgid "Notification sound"
 msgstr "알림 소리"
 
@@ -1949,11 +2024,11 @@ msgstr "알 수 없는 제목"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:330
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "검색하려면 입력하십시오"
 
-#: js/ui/overviewControls.js:395
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "앱"
 
@@ -1983,10 +2058,6 @@ msgstr "모니터 바꾸기"
 msgid "Assign keystroke"
 msgstr "키 누르기 지정"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "마침"
-
 #: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "편집…"
@@ -2009,32 +2080,32 @@ msgstr "나가려면 아무 키나 누르십시오"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:208
+#: js/ui/panel.js:226
 msgid "Activities"
 msgstr "현재 활동"
 
-#: js/ui/panel.js:289
+#: js/ui/panel.js:304
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "시스템"
 
-#: js/ui/panel.js:470
+#: js/ui/panel.js:498
 msgid "Top Bar"
 msgstr "맨 위 표시줄"
 
-#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
+#: js/ui/quickSettings.js:162 js/ui/quickSettings.js:261
 msgid "Open menu"
 msgstr "메뉴 열기"
 
-#: js/ui/runDialog.js:61
+#: js/ui/runDialog.js:74
 msgid "Run a Command"
 msgstr "명령 실행"
 
-#: js/ui/runDialog.js:79
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "닫으려면 ESC를 누르십시오"
 
-#: js/ui/screenShield.js:220
+#: js/ui/screenShield.js:226
 msgid "GNOME needs to lock the screen"
 msgstr "그놈에서 화면을 잠궈야 합니다"
 
@@ -2043,51 +2114,51 @@ msgstr "그놈에서 화면을 잠궈야 합니다"
 msgid "Screen Capture"
 msgstr "스크린샷 찍음"
 
-#: js/ui/screenshot.js:1267
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "선택"
 
-#: js/ui/screenshot.js:1277
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "영역 선택"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "화면"
 
-#: js/ui/screenshot.js:1292
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "화면 선택"
 
-#: js/ui/screenshot.js:1297
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "창"
 
-#: js/ui/screenshot.js:1307
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "창 선택"
 
-#: js/ui/screenshot.js:1332 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "스크린샷 찍기"
 
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "화면 녹화"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1365
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "스크린샷 찍기"
 
-#: js/ui/screenshot.js:1387
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "포인터 보이기"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2020
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "스크린캐스트"
 
@@ -2095,126 +2166,125 @@ msgstr "스크린캐스트"
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2025
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "스크린캐스트 %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2071
-msgid "Screencast recorded"
+#: js/ui/screenshot.js:2487
+msgid "Screencast Recorded"
 msgstr "스크린캐스트 녹화함"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
-msgid "Screencast failed to start"
-msgstr "스크린캐스트 시작 실패함"
+#: js/ui/screenshot.js:2500
+msgid "Screencast Failed to Start"
+msgstr "스크린캐스 시작 실패"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
-msgid "Screencast ended: Out of disk space"
-msgstr "스크린캐스트가 끝남: 디스크 공간 부족"
+#: js/ui/screenshot.js:2506
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "스크린캐스트 실패: 디스크 공간 부족"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2096
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "스크린캐스트가 예상치 못하게 끝남, 다시 시도해 보십시오"
+#: js/ui/screenshot.js:2512
+msgid "Screencast Failed, Please Try Again"
+msgstr "스크린캐스트 실패, 다시 시도해 보십시오"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2099
-msgid "Screencast ended unexpectedly"
-msgstr "스크린캐스트가 예상치 못하게 끝남"
+#: js/ui/screenshot.js:2515
+msgid "Screencast Failed"
+msgstr "스크린캐스트 실패"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2112
+#: js/ui/screenshot.js:2528
 msgid "Click here to view the video"
 msgstr "여기를 눌러 비디오를 보십시오"
 
 # 주의: "Show ..." 형태지만 보이기로 번역하지 않는다
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2120 js/ui/screenshot.js:2363
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "파일에서 보기"
 
 # 주의: 파일 이름
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2309
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "스크린샷 %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2353
-msgid "Screenshot captured"
+#: js/ui/screenshot.js:2749
+msgid "Screenshot Captured"
 msgstr "스크린샷 찍음"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2355
+#: js/ui/screenshot.js:2751
 msgid "You can paste the image from the clipboard"
 msgstr "클립보드에서 이미지를 붙여넣을 수 있습니다"
 
-#: js/ui/screenshot.js:2413 js/ui/screenshot.js:2575
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "찍은 스크린샷"
 
-#: js/ui/search.js:850
+#: js/ui/search.js:869
 msgid "Searching"
 msgstr "검색하는 중"
 
-#: js/ui/search.js:853
+#: js/ui/search.js:872
 msgid "No results"
 msgstr "결과가 없습니다"
 
-#: js/ui/search.js:989
+#: js/ui/search.js:1008
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d개 더"
 
-#: js/ui/searchController.js:86
-#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+#: js/ui/searchController.js:97
 msgid "Search"
 msgstr "검색"
 
-#: js/ui/shellEntry.js:22
+#: js/ui/shellEntry.js:21
 msgid "Copy"
 msgstr "복사"
 
-#: js/ui/shellEntry.js:27
+#: js/ui/shellEntry.js:26
 msgid "Paste"
 msgstr "붙여넣기"
 
-#: js/ui/shellEntry.js:79
+#: js/ui/shellEntry.js:81
 msgid "Show Text"
 msgstr "텍스트 보이기"
 
-#: js/ui/shellEntry.js:81
+#: js/ui/shellEntry.js:83
 msgid "Hide Text"
 msgstr "텍스트 숨기기"
 
-#: js/ui/shellEntry.js:170
+#: js/ui/shellEntry.js:172
 msgid "Caps lock is on"
 msgstr "Caps lock이 켜져 있습니다"
 
 # 오디오 볼륨
-#: js/ui/shellMountOperation.js:286
+#: js/ui/shellMountOperation.js:303
 msgid "Hidden Volume"
 msgstr "숨겨진 볼륨"
 
-#: js/ui/shellMountOperation.js:289
+#: js/ui/shellMountOperation.js:306
 msgid "Windows System Volume"
 msgstr "윈도우 시스템 볼륨"
 
-#: js/ui/shellMountOperation.js:292
+#: js/ui/shellMountOperation.js:309
 msgid "Uses Keyfiles"
 msgstr "keyfiles 사용"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:300
+#: js/ui/shellMountOperation.js:317
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
@@ -2223,7 +2293,7 @@ msgstr ""
 "하십시오"
 
 # gnome-disks
-#: js/ui/shellMountOperation.js:304
+#: js/ui/shellMountOperation.js:321
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2231,25 +2301,25 @@ msgstr ""
 "키파일을 사용하는 볼륨의 잠금을 해제하려면 <i>디스크</i>와 같은 외부 도구가 "
 "필요합니다."
 
-#: js/ui/shellMountOperation.js:312
+#: js/ui/shellMountOperation.js:329
 msgid "PIM Number"
 msgstr "PIM 번호"
 
-#: js/ui/shellMountOperation.js:371
+#: js/ui/shellMountOperation.js:388
 msgid "Remember Password"
-msgstr "암호 저장"
+msgstr "비밀번호 저장"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:403
 msgid "Unlock"
 msgstr "잠금 풀기"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:400
+#: js/ui/shellMountOperation.js:417
 #, javascript-format
 msgid "Open %s"
 msgstr "%s 앱 열기"
 
-#: js/ui/shellMountOperation.js:436
+#: js/ui/shellMountOperation.js:453
 msgid "The PIM must be a number or empty"
 msgstr "PIM은 숫자거나 비어 있어야 합니다"
 
@@ -2328,38 +2398,38 @@ msgstr[0] "백그라운드 앱 %d개"
 msgid "Keyboard Brightness"
 msgstr "키보드 밝기"
 
-#: js/ui/status/backlight.js:87
+#: js/ui/status/backlight.js:83
 msgid "Off"
 msgstr "꺼짐"
 
-#: js/ui/status/backlight.js:88
+#: js/ui/status/backlight.js:84
 msgid "Low"
 msgstr "낮게"
 
-#: js/ui/status/backlight.js:89
+#: js/ui/status/backlight.js:85
 msgid "High"
 msgstr "높게"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:870
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "키보드"
 
-#: js/ui/status/backlight.js:164
+#: js/ui/status/backlight.js:158
 msgid "Open keyboard brightness menu"
 msgstr "키보드 밝기 메뉴를 엽니다"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:357
 msgid "Disconnect"
 msgstr "연결 해제"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:351
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "%s 연결"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:353
 #, javascript-format
 msgid "Connect to %s"
 msgstr "%s 연결 해제"
@@ -2372,7 +2442,7 @@ msgstr "블루투스"
 msgid "Open Bluetooth menu"
 msgstr "블루투스 메뉴를 엽니다"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1935
 msgid "Bluetooth Settings"
 msgstr "블루투스 설정"
 
@@ -2423,7 +2493,7 @@ msgstr "보조 누르기"
 msgid "Dwell Click"
 msgstr "머무르면 누르기"
 
-#: js/ui/status/keyboard.js:887
+#: js/ui/status/keyboard.js:894
 msgid "Show Keyboard Layout"
 msgstr "키보드 배치 표시"
 
@@ -2449,116 +2519,116 @@ msgstr "접근 거부"
 msgid "Grant Access"
 msgstr "접근 허용"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<알 수 없음>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1057
 msgid "Secure"
 msgstr "안전함"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1057
 msgid "Not secure"
 msgstr "안전하지 않음"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1058
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "신호 세기 %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1060
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1163
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s 핫스팟"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1444
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d개 연결"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1542 js/ui/status/network.js:1559
 msgid "VPN"
 msgstr "가상사설망"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1543
 msgid "Open VPN menu"
 msgstr "VPN 메뉴를 엽니다"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1544
 msgid "VPN Settings"
 msgstr "가상사설망 설정"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1804
 msgid "Wi–Fi"
 msgstr "와이파이"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1805
 msgid "Open Wi–Fi menu"
 msgstr "와이파이 메뉴를 엽니다"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1807
 msgid "All Networks"
 msgstr "모든 네트워크"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1917
 msgid "Wired Connections"
 msgstr "유선 연결"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1918
 msgid "Open wired connections menu"
 msgstr "유선 연결 메뉴를 엽니다"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1919
 msgid "Wired Settings"
 msgstr "유선 네트워크 설정"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1933
 msgid "Bluetooth Tethers"
 msgstr "블루투스 테더링"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1934
 msgid "Open Bluetooth tethers menu"
 msgstr "블루투스 테더링 메뉴를 엽니다"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1941
 msgid "Tether"
 msgstr "테더링"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1954
 msgid "Mobile Connections"
 msgstr "모뎀 연결"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1955
 msgid "Open mobile connections menu"
 msgstr "모뎀 연결 메뉴를 엽니다"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1957
 msgid "Mobile Broadband Settings"
 msgstr "휴대전화 네트워크 설정"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1966
 msgid "Mobile"
 msgstr "휴대전화"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2000
 msgid "Sign in to Network"
 msgstr "네트워크에 로그인"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2187
 msgid "Connection failed"
 msgstr "연결이 실패했습니다"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2188
 msgid "Activation of network connection failed"
 msgstr "네트워크 연결이 실패했습니다"
 
@@ -2616,31 +2686,31 @@ msgstr "화면 공유 중지"
 msgid "Airplane Mode"
 msgstr "비행기 모드"
 
-#: js/ui/status/system.js:175
+#: js/ui/status/system.js:174
 msgid "Power Off Menu"
 msgstr "컴퓨터 끄기 메뉴"
 
-#: js/ui/status/system.js:183
+#: js/ui/status/system.js:182
 msgid "Suspend"
 msgstr "절전"
 
-#: js/ui/status/system.js:188
+#: js/ui/status/system.js:187
 msgid "Restart…"
 msgstr "다시 시작…"
 
-#: js/ui/status/system.js:193
+#: js/ui/status/system.js:192
 msgid "Power Off…"
 msgstr "컴퓨터 끄기…"
 
-#: js/ui/status/system.js:200
+#: js/ui/status/system.js:199
 msgid "Log Out…"
 msgstr "로그아웃…"
 
-#: js/ui/status/system.js:205
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "사용자 바꾸기…"
 
-#: js/ui/status/system.js:249
+#: js/ui/status/system.js:248
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "화면 잠그기"
@@ -2676,36 +2746,36 @@ msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "썬더볼트 장치에 권한을 부여할 수 없습니다: %s"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "볼륨 바꿈"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "음 소거 해제"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "음 소거"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:297
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "볼륨"
 
-#: js/ui/status/volume.js:313
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "소리 출력"
 
-#: js/ui/status/volume.js:314
+#: js/ui/status/volume.js:315
 msgid "Open sound output menu"
 msgstr "소리 출력 메뉴를 엽니다"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:391
 msgid "Sound Input"
 msgstr "소리 입력"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:392
 msgid "Open sound input menu"
 msgstr "소리 입력 메뉴를 엽니다"
 
@@ -2737,27 +2807,35 @@ msgstr "외부만 사용"
 msgid "Built-in Only"
 msgstr "내장만 사용"
 
+#: js/ui/unlockDialog.js:25
+msgid "Unlock Options"
+msgstr "잠금 해제 옵션"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:415
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%B %-d일 %A"
 
-#: js/ui/unlockDialog.js:421
-msgid "Swipe up to unlock"
-msgstr "위로 밀어 잠금 해제"
+#: js/ui/unlockDialog.js:435
+msgid "Swipe up"
+msgstr "위로 밀기"
 
-#: js/ui/unlockDialog.js:422
-msgid "Click or press a key to unlock"
-msgstr "잠금을 해제하려면 마우스 단추 또는 키를 누르십시오"
+#: js/ui/unlockDialog.js:437
+msgid "Click or press a key"
+msgstr "마우스 단추 또는 키를 누르십시오"
 
-#: js/ui/unlockDialog.js:610
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "창 잠금 해제"
 
-#: js/ui/unlockDialog.js:619
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "다른 사용자로 로그인"
+
+#: js/ui/unlockDialog.js:695
+msgid "Background Authentication Methods"
+msgstr "백그라운드 인증 방식"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -2809,77 +2887,89 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:28
+#: js/ui/windowMenu.js:27
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "스크린샷 찍기"
 
-#: js/ui/windowMenu.js:40
+#: js/ui/windowMenu.js:39
 msgid "Hide"
 msgstr "숨기기"
 
-#: js/ui/windowMenu.js:47
+#: js/ui/windowMenu.js:46
 msgid "Restore"
 msgstr "복원"
 
-#: js/ui/windowMenu.js:51
+#: js/ui/windowMenu.js:50
 msgid "Maximize"
 msgstr "최대화"
 
-#: js/ui/windowMenu.js:58
+#: js/ui/windowMenu.js:57
 msgid "Move"
 msgstr "옮기기"
 
-#: js/ui/windowMenu.js:72
+#: js/ui/windowMenu.js:71
 msgid "Resize"
 msgstr "크기 조정"
 
-#: js/ui/windowMenu.js:86
+#: js/ui/windowMenu.js:85
 msgid "Always on Top"
 msgstr "항상 위"
 
-#: js/ui/windowMenu.js:105
+#: js/ui/windowMenu.js:104
 msgid "Always on Visible Workspace"
 msgstr "항상 보이는 작업 공간에"
 
-#: js/ui/windowMenu.js:119
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Left"
 msgstr "왼쪽 작업 공간으로 옮기기"
 
-#: js/ui/windowMenu.js:125
+#: js/ui/windowMenu.js:124
 msgid "Move to Workspace Right"
 msgstr "오른쪽 작업 공간으로 옮기기"
 
-#: js/ui/windowMenu.js:131
+#: js/ui/windowMenu.js:130
 msgid "Move to Workspace Up"
 msgstr "위 작업 공간으로 옮기기"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Down"
 msgstr "아래 작업 공간으로 옮기기"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:154
 msgid "Move to Monitor Up"
 msgstr "위 모니터로 옮기기"
 
-#: js/ui/windowMenu.js:164
+#: js/ui/windowMenu.js:163
 msgid "Move to Monitor Down"
 msgstr "아래 모니터로 옮기기"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Left"
 msgstr "왼쪽 모니터로 옮기기"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Right"
 msgstr "오른쪽 모니터로 옮기기"
 
-#: js/ui/windowMenu.js:190
+#: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "닫기"
 
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Reminders"
+msgstr "미리 알림"
+
+#: src/calendar-server/reminder-watcher.c:135
+msgid "Snooze"
+msgstr "다시 알림"
+
+#: src/calendar-server/reminder-watcher.c:136
+msgid "Dismiss"
+msgstr "해제"
+
 # 커맨드라인 옵션 설명
-#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
 msgstr "버전을 표시합니다"
 
@@ -2899,25 +2989,25 @@ msgstr "가능한 모드 목록 표시"
 msgid "Force animations to be enabled"
 msgstr "애니메이션 사용 강제 설정"
 
-#: src/shell-app.c:267
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: src/shell-app.c:518
+#: src/shell-app.c:514
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” 실행에 실패했습니다"
 
-#: src/shell-keyring-prompt.c:779
+#: src/shell-keyring-prompt.c:776
 msgid "Passwords do not match"
-msgstr "암호가 일치하지 않습니다"
+msgstr "비밀번호가 일치하지 않습니다"
 
-#: src/shell-keyring-prompt.c:787
+#: src/shell-keyring-prompt.c:784
 msgid "Password cannot be blank"
-msgstr "빈 암호를 쓸 수 없습니다"
+msgstr "빈 비밀번호를 쓸 수 없습니다"
 
-#: src/shell-polkit-authentication-agent.c:342
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "인증 대화 창을 사용자가 닫았습니다"
 
@@ -2926,251 +3016,17 @@ msgstr "인증 대화 창을 사용자가 닫았습니다"
 msgid "Icon '%s' not present in theme %s"
 msgstr "'%s' 아이콘이 %s 테마에 없습니다"
 
-#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3753
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
 msgstr "아이콘 읽어들이는데 실패했습니다"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-msgid "Manage your GNOME Extensions"
-msgstr "그놈 확장을 관리합니다"
-
-#. developer_name tag deprecated with Appstream 1.0
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
-msgid "The GNOME Project"
-msgstr "그놈 프로젝트"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"그놈 확장 관리자에서는 확장 기능의 업데이트, 확장 기능의 설정, 원하지 않는 확"
-"장 기능 제거 또는 사용 중지를 처리합니다."
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
-msgid "Main Window"
-msgstr "메인 창"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
-msgid "Available Updates"
-msgstr "사용 가능 업데이트"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
-msgid "Search View"
-msgstr "검색 보기"
-
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
-msgid "Configure GNOME Shell Extensions"
-msgstr "그놈 셸 확장을 설정합니다"
-
-#: subprojects/extensions-app/js/extensionManager.js:237
-#, javascript-format
-msgid ""
-"The installed version of this extension (%s) is incompatible with the "
-"current version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"이 확장 기능의 설치된 버전이 (%s) 현재 그놈 버전과 (%s) 호환되지 않습니다. 확"
-"장 기능을 사용하지 않습니다."
-
-#: subprojects/extensions-app/js/extensionManager.js:238
-#, javascript-format
-msgid ""
-"The installed version of this extension is incompatible with the current "
-"version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"이 확장 기능의 설치된 버전이 현재 그놈 버전과 (%s) 호환되지 않습니다. 확장 기"
-"능을 사용하지 않습니다."
-
-#: subprojects/extensions-app/js/extensionManager.js:242
-msgid ""
-"An error has occurred in this extension. This could cause issues elsewhere "
-"in the system. It is recommended to turn the extension off until the error "
-"is resolved."
-msgstr ""
-"이 확장 기능에서 오류가 발생했습니다. 시스템의 다른 곳에서 문제를 일으킬 수 "
-"있습니다. 오류가 해결될 때까지 확장 기능을 끄기를 권장합니다."
-
-#. translators: Details for an extension error
-#: subprojects/extensions-app/js/extensionManager.js:248
-msgid "Error details:"
-msgstr "오류 자세히:"
-
-# 커맨드라인 옵션 설명
-#: subprojects/extensions-app/js/extensionRow.js:82
-#, javascript-format
-msgid "Version %s"
-msgstr "버전 %s"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:108
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "“%s” 확장을 제거하시겠습니까?"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:109
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr "확장을 제거한 다음 다시 사용하려면 다시 다운로드해야 합니다"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:112
-msgid "_Cancel"
-msgstr "취소(_C)"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:113
-msgid "_Remove"
-msgstr "제거(_R)"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:153
-msgid "translator-credits"
-msgstr ""
-"차영호 <ganadist@gmail.com>\n"
-"조성호 <darkcircle.0426@gmail.com>\n"
-"류창우 <cwryu@debian.org>"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:198
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "다음 로그인에 확장 %d개를 업데이트할 예정입니다."
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:51
-msgid "Updates Details"
-msgstr "업데이트 자세히"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:68
-msgid ""
-"A new version of this extension is ready and will be loaded on next login."
-msgstr ""
-"이 확장 기능의 새 버전이 준비되었고, 다음 로그인에서 읽어들일 예정입니다."
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-msgid "Extension Details"
-msgstr "확장 기능 자세히"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:188
-msgid "_Website"
-msgstr "홈페이지(_W)"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:215
-msgid "_Settings"
-msgstr "설정(_S)"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:242
-msgid "_Remove…"
-msgstr "제거(_R)…"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:6
-msgid "Keyboard Shortcuts"
-msgstr "키보드 바로 가기"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:10
-msgid "About Extensions"
-msgstr "확장 정보"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:64
-msgid "Main Menu"
-msgstr "메인 메뉴"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:106
-msgid "Search extensions"
-msgstr "확장 기능 검색"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:123
-msgid "_Log Out…"
-msgstr "로그아웃(_L)…"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:131
-msgid "_Extensions"
-msgstr "확장 기능(_E)"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:136
-msgid "More Information"
-msgstr "추가 정보"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:148
-msgid ""
-"Extensions can cause performance and stability issues. It is recommended to "
-"disable all extensions if you experience problems with your system."
-msgstr ""
-"확장 기능은 성능 저하 또는 안정성 문제를 일으킬 수 있습니다. 시스템에 문제를 "
-"발견하면 확장을 사용 중지하기를 권장합니다."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:175
-msgid "User Extensions"
-msgstr "사용자 확장 기능"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:184
-msgid "System Extensions"
-msgstr "시스템 확장 기능"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:203
-msgid "Search Results"
-msgstr "검색 결과"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:217
-msgid "No Results Found"
-msgstr "찾은 결과가 없습니다"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:218
-msgid "Try a different search"
-msgstr "다르게 검색해 보십시오"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:229
-msgid "No Installed Extensions"
-msgstr "설치한 확장 없음"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:230
-msgid ""
-"To find and add extensions, visit <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
-msgstr ""
-"확장을 찾고 추가하려면, <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a> 사이트를 방문하십시오."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:240
-msgid "Something’s gone wrong"
-msgstr "무언가 잘못되었습니다"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:241
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"대단히 죄송합니다. 설치한 확장 기능의 목록을 가져올 수 없습니다. 그놈 데스크"
-"톱에 로그인했는지 확인하시고 다시 시도하십시오."
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
-msgctxt "shortcut window"
-msgid "General"
-msgstr "일반"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:9
-msgctxt "shortcut window"
-msgid "Open Menu"
-msgstr "메뉴 열기"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:15
-msgctxt "shortcut window"
-msgid "Toggle Search"
-msgstr "검색 토글"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "바로 가기 보이기"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "끝내기"
-
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:284
+#: subprojects/extensions-tool/src/command-create.c:285
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "새 확장을 %s 안에 성공적으로 만들었습니다.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:376
+#: subprojects/extensions-tool/src/command-create.c:377
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -3179,12 +3035,12 @@ msgstr ""
 "이름은 아주 짧은 (무슨 기능인지 설명이 되면 좋은) 문자열이어야 합니다.\n"
 "예: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:382
-#: subprojects/extensions-tool/src/main.c:243
+#: subprojects/extensions-tool/src/command-create.c:383
+#: subprojects/extensions-tool/src/main.c:245
 msgid "Name"
 msgstr "이름"
 
-#: subprojects/extensions-tool/src/command-create.c:396
+#: subprojects/extensions-tool/src/command-create.c:397
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -3193,12 +3049,12 @@ msgstr ""
 "설명은 이 확장 기능이 무슨 일을 하는지 한 문장으로 설명합니다.\n"
 "예: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:402
-#: subprojects/extensions-tool/src/main.c:246
+#: subprojects/extensions-tool/src/command-create.c:403
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Description"
 msgstr "설명"
 
-#: subprojects/extensions-tool/src/command-create.c:416
+#: subprojects/extensions-tool/src/command-create.c:417
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
@@ -3208,128 +3064,128 @@ msgstr ""
 "UUID는 이 확장을 나타내는 전셰계적으로 유일한 ID 값입니다.\n"
 "전자메일 주소의 형식이어야 합니다 (clicktofocus@janedoe.example.com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:444
 #, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "다음 사용 가능한 서식 중 하나를 고르십시오:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:457
+#: subprojects/extensions-tool/src/command-create.c:458
 msgid "Template"
 msgstr "서식"
 
-#: subprojects/extensions-tool/src/command-create.c:515
+#: subprojects/extensions-tool/src/command-create.c:516
 msgid "The unique identifier of the new extension"
 msgstr "새 확장 기능의 유일한 ID"
 
-#: subprojects/extensions-tool/src/command-create.c:518
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "NAME"
 msgstr "<이름>"
 
-#: subprojects/extensions-tool/src/command-create.c:519
+#: subprojects/extensions-tool/src/command-create.c:520
 msgid "The user-visible name of the new extension"
 msgstr "사용자에게 표시할 새 확장 기능 이름"
 
-#: subprojects/extensions-tool/src/command-create.c:521
+#: subprojects/extensions-tool/src/command-create.c:522
 msgid "DESCRIPTION"
 msgstr "<설명>"
 
-#: subprojects/extensions-tool/src/command-create.c:523
+#: subprojects/extensions-tool/src/command-create.c:524
 msgid "A short description of what the extension does"
 msgstr "확장이 하는 일에 대한 짧은 설명"
 
-#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-create.c:526
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
 msgstr "<도메인>"
 
-#: subprojects/extensions-tool/src/command-create.c:527
+#: subprojects/extensions-tool/src/command-create.c:528
 msgid "The gettext domain used by the extension"
 msgstr "확장에서 사용하는 gettext 도메인"
 
-#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-create.c:530
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
 msgstr "<스키마>"
 
-#: subprojects/extensions-tool/src/command-create.c:531
+#: subprojects/extensions-tool/src/command-create.c:532
 msgid "The GSettings schema used by the extension"
 msgstr "확장에서 사용하는 GSettings 스키마"
 
-#: subprojects/extensions-tool/src/command-create.c:534
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "TEMPLATE"
 msgstr "<서식>"
 
-#: subprojects/extensions-tool/src/command-create.c:535
+#: subprojects/extensions-tool/src/command-create.c:536
 msgid "The template to use for the new extension"
 msgstr "새 확장 기능에 사용할 서식"
 
-#: subprojects/extensions-tool/src/command-create.c:538
+#: subprojects/extensions-tool/src/command-create.c:539
 msgid "Include prefs.js template"
 msgstr "prefs.js 서식 포함"
 
-#: subprojects/extensions-tool/src/command-create.c:544
+#: subprojects/extensions-tool/src/command-create.c:545
 msgid "Enter extension information interactively"
 msgstr "확장 기능 정보 대화식으로 입력하기"
 
-#: subprojects/extensions-tool/src/command-create.c:552
+#: subprojects/extensions-tool/src/command-create.c:553
 msgid "Create a new extension"
 msgstr "새 확장 만들기"
 
-#: subprojects/extensions-tool/src/command-create.c:570
-#: subprojects/extensions-tool/src/command-list.c:190
+#: subprojects/extensions-tool/src/command-create.c:571
+#: subprojects/extensions-tool/src/command-list.c:191
 msgid "Unknown arguments"
 msgstr "알 수 없는 인자"
 
-#: subprojects/extensions-tool/src/command-create.c:595
+#: subprojects/extensions-tool/src/command-create.c:596
 msgid "UUID, name and description are required"
 msgstr "UUID, 이름, 설명이 필요합니다"
 
-#: subprojects/extensions-tool/src/command-disable.c:62
-#: subprojects/extensions-tool/src/command-enable.c:62
+#: subprojects/extensions-tool/src/command-disable.c:63
+#: subprojects/extensions-tool/src/command-enable.c:63
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "“%s” 확장 기능이 없습니다\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:98
+#: subprojects/extensions-tool/src/command-disable.c:99
 msgid "Disable an extension"
 msgstr "확장 기능 사용하지 않기"
 
-#: subprojects/extensions-tool/src/command-disable.c:116
-#: subprojects/extensions-tool/src/command-enable.c:116
-#: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:105
-#: subprojects/extensions-tool/src/command-reset.c:76
-#: subprojects/extensions-tool/src/command-uninstall.c:104
+#: subprojects/extensions-tool/src/command-disable.c:117
+#: subprojects/extensions-tool/src/command-enable.c:117
+#: subprojects/extensions-tool/src/command-info.c:104
+#: subprojects/extensions-tool/src/command-prefs.c:106
+#: subprojects/extensions-tool/src/command-reset.c:77
+#: subprojects/extensions-tool/src/command-uninstall.c:105
 msgid "No UUID given"
 msgstr "UUID가 주어지지 않았습니다"
 
-#: subprojects/extensions-tool/src/command-disable.c:121
-#: subprojects/extensions-tool/src/command-enable.c:121
-#: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:110
-#: subprojects/extensions-tool/src/command-reset.c:81
-#: subprojects/extensions-tool/src/command-uninstall.c:109
+#: subprojects/extensions-tool/src/command-disable.c:122
+#: subprojects/extensions-tool/src/command-enable.c:122
+#: subprojects/extensions-tool/src/command-info.c:109
+#: subprojects/extensions-tool/src/command-prefs.c:111
+#: subprojects/extensions-tool/src/command-reset.c:82
+#: subprojects/extensions-tool/src/command-uninstall.c:110
 msgid "More than one UUID given"
 msgstr "여러 개의 UUID가 주어졌습니다"
 
-#: subprojects/extensions-tool/src/command-enable.c:98
+#: subprojects/extensions-tool/src/command-enable.c:99
 msgid "Enable an extension"
 msgstr "확장 기능 사용하기"
 
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:66
-#: subprojects/extensions-tool/src/main.c:150
+#: subprojects/extensions-tool/src/command-info.c:51
+#: subprojects/extensions-tool/src/command-list.c:67
+#: subprojects/extensions-tool/src/main.c:152
 #, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "그놈 셸 연결에 실패했습니다\n"
 
-#: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:159
+#: subprojects/extensions-tool/src/command-info.c:60
+#: subprojects/extensions-tool/src/main.c:161
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "“%s” 확장 기능이 없습니다\n"
 
-#: subprojects/extensions-tool/src/command-info.c:85
+#: subprojects/extensions-tool/src/command-info.c:86
 msgid "Show extensions info"
 msgstr "확장을 설치하지 않았습니다"
 
@@ -3357,43 +3213,43 @@ msgstr "확장 번들을 지정하지 않았습니다"
 msgid "More than one extension bundle specified"
 msgstr "여러 개의 확장 번들을 지정했습니다"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:141
 msgid "Show user-installed extensions"
 msgstr "사용자 설치 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:144
 msgid "Show system-installed extensions"
 msgstr "시스템 설치 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:146
+#: subprojects/extensions-tool/src/command-list.c:147
 msgid "Show enabled extensions"
 msgstr "사용하는 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:149
+#: subprojects/extensions-tool/src/command-list.c:150
 msgid "Show disabled extensions"
 msgstr "사용하지 않는 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:152
+#: subprojects/extensions-tool/src/command-list.c:153
 msgid "Show extensions in active state"
 msgstr "활성화 상태의 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:155
+#: subprojects/extensions-tool/src/command-list.c:156
 msgid "Show extensions in inactive state"
 msgstr "비활성화 상태의 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:159
 msgid "Show extensions with preferences"
 msgstr "설정이 있는 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:161
+#: subprojects/extensions-tool/src/command-list.c:162
 msgid "Show extensions with updates"
 msgstr "업데이트가 있는 확장 기능 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:164
+#: subprojects/extensions-tool/src/command-list.c:165
 msgid "Print extension details"
 msgstr "확장 기능 자세히 표시"
 
-#: subprojects/extensions-tool/src/command-list.c:172
+#: subprojects/extensions-tool/src/command-list.c:173
 msgid "List installed extensions"
 msgstr "설치한 확장 기능 목록 보기"
 
@@ -3443,35 +3299,35 @@ msgstr "확장 번들을 만듭니다"
 msgid "More than one source directory specified"
 msgstr "여러 개의 소스 디렉터리를 지정했습니다"
 
-#: subprojects/extensions-tool/src/command-prefs.c:47
+#: subprojects/extensions-tool/src/command-prefs.c:48
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "“%s” 확장에 설정이 없습니다\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:62
+#: subprojects/extensions-tool/src/command-prefs.c:63
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
 msgstr "확장 “%s”에 대한 기본 설정을 여는데 실패했습니다: %s\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:87
+#: subprojects/extensions-tool/src/command-prefs.c:88
 msgid "Opens extension preferences"
 msgstr "확장 기능 설정을 엽니다"
 
-#: subprojects/extensions-tool/src/command-reset.c:58
+#: subprojects/extensions-tool/src/command-reset.c:59
 msgid "Reset an extension"
 msgstr "확장 기능 초기화"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:49
+#: subprojects/extensions-tool/src/command-uninstall.c:50
 #, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "시스템 확장 기능은 설치를 제거할 수 없습니다\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:64
+#: subprojects/extensions-tool/src/command-uninstall.c:65
 #, c-format
 msgid "Failed to uninstall “%s”\n"
 msgstr "“%s” 설치 제거에 실패했습니다\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:86
+#: subprojects/extensions-tool/src/command-uninstall.c:87
 msgid "Uninstall an extension"
 msgstr "확장 기능 설치 제거"
 
@@ -3531,119 +3387,119 @@ msgstr "확장을 업로드하려면 서비스 약관에 동의해야 합니다"
 msgid "No files given"
 msgstr "파일이 주어지지 않았습니다"
 
-#: subprojects/extensions-tool/src/main.c:76
+#: subprojects/extensions-tool/src/main.c:78
 msgid "Do not print error messages"
 msgstr "오류 메시지를 인쇄하지 않습니다"
 
-#: subprojects/extensions-tool/src/main.c:249
+#: subprojects/extensions-tool/src/main.c:251
 msgid "Path"
 msgstr "경로"
 
-#: subprojects/extensions-tool/src/main.c:252
+#: subprojects/extensions-tool/src/main.c:254
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:257
 msgid "Original author"
 msgstr "원 작성자"
 
 # 커맨드라인 옵션 설명
-#: subprojects/extensions-tool/src/main.c:261
 #: subprojects/extensions-tool/src/main.c:263
 #: subprojects/extensions-tool/src/main.c:265
+#: subprojects/extensions-tool/src/main.c:267
 msgid "Version"
 msgstr "버전"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Enabled"
 msgstr "사용"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Yes"
 msgstr "예"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "No"
 msgstr "아니요"
 
-#: subprojects/extensions-tool/src/main.c:271
+#: subprojects/extensions-tool/src/main.c:273
 msgid "State"
 msgstr "상태"
 
-#: subprojects/extensions-tool/src/main.c:309
+#: subprojects/extensions-tool/src/main.c:311
 msgid "“version” takes no arguments"
 msgstr "“version” 옵션은 인수를 받지 않습니다"
 
-#: subprojects/extensions-tool/src/main.c:311
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Usage:"
 msgstr "사용법:"
 
-#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Print version information and exit."
 msgstr "버전 정보를 표시하고 끝납니다."
 
-#: subprojects/extensions-tool/src/main.c:329
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:334
 msgid "COMMAND"
 msgstr "<명령>"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:334
 msgid "[ARGS…]"
 msgstr "[인자…]"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Commands:"
 msgstr "명령어:"
 
 # 커맨드라인 옵션 설명
-#: subprojects/extensions-tool/src/main.c:335
+#: subprojects/extensions-tool/src/main.c:337
 msgid "Print help"
 msgstr "도움말을 표시합니다"
 
-#: subprojects/extensions-tool/src/main.c:337
+#: subprojects/extensions-tool/src/main.c:339
 msgid "Enable extension"
 msgstr "확장 기능 사용"
 
-#: subprojects/extensions-tool/src/main.c:338
+#: subprojects/extensions-tool/src/main.c:340
 msgid "Disable extension"
 msgstr "확장 기능 사용하지 않기"
 
-#: subprojects/extensions-tool/src/main.c:339
+#: subprojects/extensions-tool/src/main.c:341
 msgid "Reset extension"
 msgstr "확장 기능 초기화"
 
-#: subprojects/extensions-tool/src/main.c:340
+#: subprojects/extensions-tool/src/main.c:342
 msgid "Uninstall extension"
 msgstr "확장 기능 설치 제거"
 
-#: subprojects/extensions-tool/src/main.c:341
+#: subprojects/extensions-tool/src/main.c:343
 msgid "List extensions"
 msgstr "확장 기능 목록 보기"
 
-#: subprojects/extensions-tool/src/main.c:342
-#: subprojects/extensions-tool/src/main.c:343
+#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:345
 msgid "Show extension info"
 msgstr "확장 기능 정보 보기"
 
-#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:346
 msgid "Open extension preferences"
 msgstr "확장 기능 설정 열기"
 
-#: subprojects/extensions-tool/src/main.c:345
+#: subprojects/extensions-tool/src/main.c:347
 msgid "Create extension"
 msgstr "확장 기능 만들기"
 
-#: subprojects/extensions-tool/src/main.c:346
+#: subprojects/extensions-tool/src/main.c:348
 msgid "Package extension"
 msgstr "확장 기능 패키지 만들기"
 
-#: subprojects/extensions-tool/src/main.c:347
+#: subprojects/extensions-tool/src/main.c:349
 msgid "Install extension bundle"
 msgstr "확장 번들 설치"
 
 # “gnome-extensions help COMMAND”
-#: subprojects/extensions-tool/src/main.c:349
+#: subprojects/extensions-tool/src/main.c:351
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "자세한 도움말을 보려면 “%s” 명령을 사용하십시오.\n"
@@ -3697,3 +3553,199 @@ msgstr[0] "%u개 입력"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "시스템 소리"
+
+#~ msgid "Choose Session"
+#~ msgstr "세션 선택"
+
+#, javascript-format
+#~ msgid "%s has been pinned to the dash."
+#~ msgstr "%s을(를) 대시보드에 고정했습니다."
+
+#~ msgid "Screencast ended unexpectedly"
+#~ msgstr "스크린캐스트가 예상치 못하게 끝남"
+
+#~ msgid "Manage your GNOME Extensions"
+#~ msgstr "그놈 확장을 관리합니다"
+
+#~ msgid "The GNOME Project"
+#~ msgstr "그놈 프로젝트"
+
+#~ msgid ""
+#~ "GNOME Extensions handles updating extensions, configuring extension "
+#~ "preferences and removing or disabling unwanted extensions."
+#~ msgstr ""
+#~ "그놈 확장 관리자에서는 확장 기능의 업데이트, 확장 기능의 설정, 원하지 않"
+#~ "는 확장 기능 제거 또는 사용 중지를 처리합니다."
+
+#~ msgid "Main Window"
+#~ msgstr "메인 창"
+
+#~ msgid "Available Updates"
+#~ msgstr "사용 가능 업데이트"
+
+#~ msgid "Search View"
+#~ msgstr "검색 보기"
+
+#~ msgid "Configure GNOME Shell Extensions"
+#~ msgstr "그놈 셸 확장을 설정합니다"
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension (%s) is incompatible with the "
+#~ "current version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "이 확장 기능의 설치된 버전이 (%s) 현재 그놈 버전과 (%s) 호환되지 않습니"
+#~ "다. 확장 기능을 사용하지 않습니다."
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension is incompatible with the current "
+#~ "version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "이 확장 기능의 설치된 버전이 현재 그놈 버전과 (%s) 호환되지 않습니다. 확"
+#~ "장 기능을 사용하지 않습니다."
+
+#~ msgid ""
+#~ "An error has occurred in this extension. This could cause issues "
+#~ "elsewhere in the system. It is recommended to turn the extension off "
+#~ "until the error is resolved."
+#~ msgstr ""
+#~ "이 확장 기능에서 오류가 발생했습니다. 시스템의 다른 곳에서 문제를 일으킬 "
+#~ "수 있습니다. 오류가 해결될 때까지 확장 기능을 끄기를 권장합니다."
+
+#~ msgid "Error details:"
+#~ msgstr "오류 자세히:"
+
+# 커맨드라인 옵션 설명
+#, javascript-format
+#~ msgid "Version %s"
+#~ msgstr "버전 %s"
+
+#, javascript-format
+#~ msgid "Remove “%s”?"
+#~ msgstr "“%s” 확장을 제거하시겠습니까?"
+
+#~ msgid ""
+#~ "If you remove the extension, you need to return to download it if you "
+#~ "want to enable it again"
+#~ msgstr "확장을 제거한 다음 다시 사용하려면 다시 다운로드해야 합니다"
+
+#~ msgid "_Cancel"
+#~ msgstr "취소(_C)"
+
+#~ msgid "_Remove"
+#~ msgstr "제거(_R)"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "차영호 <ganadist@gmail.com>\n"
+#~ "조성호 <darkcircle.0426@gmail.com>\n"
+#~ "류창우 <cwryu@debian.org>"
+
+#, javascript-format
+#~ msgid "%d extension will be updated on next login."
+#~ msgid_plural "%d extensions will be updated on next login."
+#~ msgstr[0] "다음 로그인에 확장 %d개를 업데이트할 예정입니다."
+
+#~ msgid "Updates Details"
+#~ msgstr "업데이트 자세히"
+
+#~ msgid ""
+#~ "A new version of this extension is ready and will be loaded on next login."
+#~ msgstr ""
+#~ "이 확장 기능의 새 버전이 준비되었고, 다음 로그인에서 읽어들일 예정입니다."
+
+#~ msgid "Extension Details"
+#~ msgstr "확장 기능 자세히"
+
+#~ msgid "_Website"
+#~ msgstr "홈페이지(_W)"
+
+#~ msgid "_Settings"
+#~ msgstr "설정(_S)"
+
+#~ msgid "_Remove…"
+#~ msgstr "제거(_R)…"
+
+#~ msgid "Keyboard Shortcuts"
+#~ msgstr "키보드 바로 가기"
+
+#~ msgid "About Extensions"
+#~ msgstr "확장 정보"
+
+#~ msgid "Main Menu"
+#~ msgstr "메인 메뉴"
+
+#~ msgid "Search extensions"
+#~ msgstr "확장 기능 검색"
+
+#~ msgid "_Log Out…"
+#~ msgstr "로그아웃(_L)…"
+
+#~ msgid "_Extensions"
+#~ msgstr "확장 기능(_E)"
+
+#~ msgid "More Information"
+#~ msgstr "추가 정보"
+
+#~ msgid ""
+#~ "Extensions can cause performance and stability issues. It is recommended "
+#~ "to disable all extensions if you experience problems with your system."
+#~ msgstr ""
+#~ "확장 기능은 성능 저하 또는 안정성 문제를 일으킬 수 있습니다. 시스템에 문제"
+#~ "를 발견하면 확장을 사용 중지하기를 권장합니다."
+
+#~ msgid "User Extensions"
+#~ msgstr "사용자 확장 기능"
+
+#~ msgid "System Extensions"
+#~ msgstr "시스템 확장 기능"
+
+#~ msgid "Search Results"
+#~ msgstr "검색 결과"
+
+#~ msgid "No Results Found"
+#~ msgstr "찾은 결과가 없습니다"
+
+#~ msgid "Try a different search"
+#~ msgstr "다르게 검색해 보십시오"
+
+#~ msgid "No Installed Extensions"
+#~ msgstr "설치한 확장 없음"
+
+#~ msgid ""
+#~ "To find and add extensions, visit <a href=\"https://"
+#~ "extensions.gnome.org\">extensions.gnome.org</a>."
+#~ msgstr ""
+#~ "확장을 찾고 추가하려면, <a href=\"https://"
+#~ "extensions.gnome.org\">extensions.gnome.org</a> 사이트를 방문하십시오."
+
+#~ msgid "Something’s gone wrong"
+#~ msgstr "무언가 잘못되었습니다"
+
+#~ msgid ""
+#~ "We’re very sorry, but it was not possible to get the list of installed "
+#~ "extensions. Make sure you are logged into GNOME and try again."
+#~ msgstr ""
+#~ "대단히 죄송합니다. 설치한 확장 기능의 목록을 가져올 수 없습니다. 그놈 데스"
+#~ "크톱에 로그인했는지 확인하시고 다시 시도하십시오."
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "일반"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open Menu"
+#~ msgstr "메뉴 열기"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle Search"
+#~ msgstr "검색 토글"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show Shortcuts"
+#~ msgstr "바로 가기 보이기"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Quit"
+#~ msgstr "끝내기"
