@@ -1,7 +1,7 @@
 # Karbi translation for gnome-shell.
 # Copyright (C) 2019 nautilus-shell's The Gnome Foundation.
 # This file is distributed under the same license as the gnome-shell package.
-# Jor Teron <jor.teron@gmail.com>, 2019-20.
+# Jor Teron <jor.teron@gmail.com>, 2019-20, 2026.
 #
 msgid ""
 msgstr ""
@@ -21,7 +21,7 @@ msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
-msgstr ""
+msgstr "Launchers"
 
 #: data/50-gnome-shell-launchers.xml:10
 msgid "Activate pinned app 1"
@@ -98,6 +98,35 @@ msgstr ""
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
+msgstr "Screenshots"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:267
+#, fuzzy
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot interactively"
+msgstr "Screenshot Kenep"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:279
+#, fuzzy
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot"
+msgstr "Screenshot Kenep"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:275
+#, fuzzy
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot of a window"
+msgstr "Screenshot Kenep"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:271
+msgid "Record a screencast interactively"
 msgstr ""
 
 #: data/50-gnome-shell-system.xml:6
@@ -129,17 +158,276 @@ msgstr "Kado-kawe"
 msgid "Show all apps"
 msgstr "Kado-kawe applications ke-paklang"
 
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:16
+#, fuzzy
+#| msgid "Visit extension homepage"
+msgid "UUIDs of extensions to enable"
+msgstr "Extensions homepage lang rei tha"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:37
+#, fuzzy
+#| msgid "Enable extension"
+msgid "Disable user extensions"
+msgstr "Extension kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+
 #: data/org.gnome.shell.gschema.xml.in:45
 #, fuzzy
 #| msgid "Show extension info"
 msgid "Allow extension installation"
 msgstr "Extensions info paklang"
 
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"Allow users to install extensions in their home folder. If disabled, the "
+"InstallRemoteExtension D-Bus method will fail, and extensions are only "
+"loaded from system directories on startup. It does not affect extensions "
+"that are already loaded, so a change only takes full effect on the next "
+"login."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:56
+msgid "Disables the validation of extension version compatibility"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:57
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid "History for command (Alt-F2) dialog"
+msgstr ""
+
+#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
+#: data/org.gnome.shell.gschema.xml.in:80
+msgid "History for the looking glass dialog"
+msgstr ""
+
 #: data/org.gnome.shell.gschema.xml.in:84
 #, fuzzy
 #| msgid "Always show the “Log out” menu item in the user menu."
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "“Log out” menu user menu along do vek nangji."
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"This key overrides the automatic hiding of the “Log out” action in the "
+"system menu for logged-in situations where there is a single, local, non-"
+"system user and only a single available session type (e.g. GNOME on Wayland)."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:94
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:95
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:104
+msgid "The last selected non-default power profile"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:105
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-"
+"default profile."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:113
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:125
+msgid "Layout of the app picker"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:152
+msgid "Keybinding to shift between overview states"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:146
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:153
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Keybinding to open the “Show Applications” view"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:160
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Keybinding to open the overview"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:168
+msgid "Keybinding to open the Activities Overview."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:181
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Keybinding to toggle the quick settings menu"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Keybinding to toggle the quick settings menu."
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:188
+#, fuzzy
+#| msgid "Focus the active notification"
+msgid "Keybinding to focus the active notification"
+msgstr "Non-het notification ke paklang"
+
+#: data/org.gnome.shell.gschema.xml.in:189
+#, fuzzy
+#| msgid "Focus the active notification"
+msgid "Keybinding to focus the active notification."
+msgstr "Non-het notification ke paklang"
+
+#: data/org.gnome.shell.gschema.xml.in:195
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 1"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:199
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 2"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:203
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 3"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:207
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 4"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:211
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 5"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:215
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 6"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:219
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 7"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:223
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 8"
+msgstr "Application ason-amung kangpu"
+
+#: data/org.gnome.shell.gschema.xml.in:227
+#, fuzzy
+#| msgid "Open the application menu"
+msgid "Switch to application 9"
+msgstr "Application ason-amung kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:231
 #, fuzzy
@@ -201,13 +489,87 @@ msgstr "Application ason-amung kangpu"
 msgid "Screen brightness up"
 msgstr "Atur"
 
+#: data/org.gnome.shell.gschema.xml.in:287
+#, fuzzy
+#| msgid "Brightness"
+msgid "Screen brightness up on current monitor"
+msgstr "Atur"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+#, fuzzy
+#| msgid "Brightness"
+msgid "Screen brightness down"
+msgstr "Atur"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+#, fuzzy
+#| msgid "Brightness"
+msgid "Screen brightness down on current monitor"
+msgstr "Atur"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+#, fuzzy
+#| msgid "Brightness"
+msgid "Screen brightness cycle"
+msgstr "Atur"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+#, fuzzy
+#| msgid "Brightness"
+msgid "Screen brightness cycle on current monitor"
+msgstr "Atur"
+
+#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:339
+msgid "Limit switcher to current workspace."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:313
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:330
+msgid "The application icon mode."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:331
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:340
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+
 #: data/org.gnome.shell.gschema.xml.in:350
 msgid "Locations"
 msgstr "Dim"
 
+#: data/org.gnome.shell.gschema.xml.in:351
+msgid "The locations to show in world clocks"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:361
+msgid "Automatic location"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:362
+msgid "Whether to fetch the current location or not"
+msgstr ""
+
 #: data/org.gnome.shell.gschema.xml.in:369
 msgid "Location"
 msgstr "Dim"
+
+#: data/org.gnome.shell.gschema.xml.in:370
+msgid "The location for which to show a forecast"
+msgstr ""
 
 #. Keep in sync with GNOME/gnome-extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in:4
@@ -215,7 +577,6 @@ msgid "Extensions"
 msgstr "Extensions"
 
 #: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
-#, fuzzy
 #| msgid "No Notifications"
 msgid "Reminder Notifications"
 msgstr "Notifications Awe"
@@ -225,14 +586,10 @@ msgid "Network Login"
 msgstr "Network Login"
 
 #: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
-#, fuzzy
-#| msgid "Activities"
 msgid "Utilities"
-msgstr ""
+msgstr "Utilities"
 
 #: js/dbusServices/extensions/extensionPrefsDialog.js:70
-#, fuzzy
-#| msgid "Extensions"
 msgid "Extension Error"
 msgstr ""
 
@@ -245,7 +602,6 @@ msgstr ""
 #. Translators: Link label in the phrase "Information about this
 #. problem may be available on the extension website"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:109
-#, fuzzy
 #| msgid "Extensions"
 msgid "extension website"
 msgstr "Extensions"
@@ -257,7 +613,6 @@ msgid "Information about this problem may be available on the %s."
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
-#, fuzzy
 #| msgid "Show Details"
 msgid "Error Details"
 msgstr "Details ke-lang"
@@ -278,15 +633,15 @@ msgstr ""
 #. Translators: this is for ignoring a screen time limit for parental controls
 #: js/gdm/authPrompt.js:75
 msgid "Ignore"
-msgstr ""
+msgstr "Ignore"
 
 #: js/gdm/authPrompt.js:269
 msgid "Back"
-msgstr ""
+msgstr "Back"
 
 #: js/gdm/authPrompt.js:366
 msgid "Submit"
-msgstr ""
+msgstr "Submit"
 
 #: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
 #: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
@@ -404,7 +759,7 @@ msgstr ""
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
 #: js/ui/shellMountOperation.js:409
 msgid "Cancel"
-msgstr "Kethan"
+msgstr "Cancel"
 
 #: js/gdm/conflictingSessionDialog.js:101
 #, fuzzy
@@ -644,7 +999,7 @@ msgstr[1] ""
 
 #: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
 msgid "Brightness"
-msgstr "Atur"
+msgstr "Brightness"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:98
@@ -654,10 +1009,9 @@ msgstr "Power Off"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:101
-#, fuzzy
 #| msgid "power off;shutdown;reboot;restart;halt;stop"
 msgid "power off;poweroff;shutdown;halt;stop"
-msgstr "power off;shutdown;reboot;restart;halt;stop"
+msgstr "power off;poweroff;shutdown;halt;stop"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:106
@@ -728,7 +1082,7 @@ msgstr "Screenshot Kenep"
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
-msgstr ""
+msgstr "screenshot;screencast;snip;capture;record"
 
 #: js/misc/systemActions.js:267
 msgctxt "search-result"
@@ -836,7 +1190,7 @@ msgstr[1] "Ningkan %d aphrang"
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
@@ -849,37 +1203,36 @@ msgstr "Tumi, %H∶%M"
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%A, %H∶%M"
 msgid "%A, %H:%M"
-msgstr "%A, %H∶%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%B %-d, %H∶%M"
 msgid "%B %-d, %H:%M"
-msgstr "%d %B, %H∶%M"
+msgstr "%B %-d, %H:%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%B %-d %Y, %H∶%M"
 msgid "%B %-d %Y, %H:%M"
-msgstr "%d %B, %Y, %H∶%M"
+msgstr "%B %-d %Y, %H:%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-#, fuzzy
 #| msgid "%l∶%M %p"
 msgid "%l:%M %p"
-msgstr "%l∶%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
@@ -892,28 +1245,28 @@ msgstr "Tumi, %l∶%M %p"
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%A, %l∶%M %p"
 msgid "%A, %l:%M %p"
-msgstr "%A, %l∶%M %p"
+msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%B %-d, %l∶%M %p"
 msgid "%B %-d, %l:%M %p"
-msgstr "%d %B, %l∶%M %p"
+msgstr "%B %-d, %l:%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid "%B %-d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l:%M %p"
-msgstr "%d %B, %Y, %l∶%M %p"
+msgstr "%B %-d %Y, %l:%M %p"
 
 #: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
@@ -981,14 +1334,13 @@ msgid "New Window"
 msgstr "Windows Kimi"
 
 #: js/ui/appMenu.js:84
-#, fuzzy
 #| msgid "Show Details"
 msgid "App Details"
 msgstr "Details ke-lang"
 
 #: js/ui/appMenu.js:100
 msgid "Quit"
-msgstr "Kanghap"
+msgstr "Quit"
 
 #: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
@@ -1056,25 +1408,25 @@ msgstr "06"
 #: js/ui/calendar.js:60
 msgctxt "grid sunday"
 msgid "S"
-msgstr "B"
+msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: js/ui/calendar.js:62
 msgctxt "grid monday"
 msgid "M"
-msgstr "U"
+msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: js/ui/calendar.js:64
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "D"
+msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: js/ui/calendar.js:66
 msgctxt "grid wednesday"
 msgid "W"
-msgstr "T"
+msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: js/ui/calendar.js:68
@@ -1086,13 +1438,13 @@ msgstr "T"
 #: js/ui/calendar.js:70
 msgctxt "grid friday"
 msgid "F"
-msgstr "B"
+msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
 #: js/ui/calendar.js:72
 msgctxt "grid saturday"
 msgid "S"
-msgstr "B"
+msgstr "S"
 
 #. *
 #. * Translators: The header displaying just the month name
@@ -1149,7 +1501,7 @@ msgstr "Paprei"
 #| msgid_plural "%d new notifications"
 msgctxt "action"
 msgid "Clear all notifications"
-msgstr "%d notification kimi"
+msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:40
@@ -1308,7 +1660,6 @@ msgid "Windows"
 msgstr "Windows"
 
 #: js/ui/dash.js:200 js/ui/dash.js:246
-#, fuzzy
 #| msgid "Show Applications"
 msgid "Show Apps"
 msgstr "Apps paklang"
@@ -1326,7 +1677,7 @@ msgstr "Dash"
 #.
 #: js/ui/dateMenu.js:99
 msgid "%B %-d %Y"
-msgstr "%e %B, %Y"
+msgstr "%B %-d %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1334,23 +1685,21 @@ msgstr "%e %B, %Y"
 #.
 #: js/ui/dateMenu.js:106
 msgid "%A %B %e %Y"
-msgstr "%e %B, %Y, %A"
+msgstr "%A %B %e %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:173
-#, fuzzy
 #| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%e %B, %Y"
+msgstr "%B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:176
-#, fuzzy
 #| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%e %B, %Y"
+msgstr "%B %-d %Y"
 
 #: js/ui/dateMenu.js:182
 msgid "Today"
@@ -1373,7 +1722,7 @@ msgstr "Losoni"
 #.
 #: js/ui/dateMenu.js:239
 msgid "%m/%d"
-msgstr ""
+msgstr "%m/%d"
 
 #: js/ui/dateMenu.js:290
 msgid "No Events"
@@ -1690,7 +2039,6 @@ msgid "Show Errors"
 msgstr "Errors paklang"
 
 #: js/ui/lookingGlass.js:835
-#, fuzzy
 #| msgid "Activities"
 msgid "Active"
 msgstr "Sai (WiP)"
@@ -1701,7 +2049,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:840
 msgid "Error"
-msgstr "Chokche"
+msgstr "Error"
 
 #: js/ui/lookingGlass.js:842
 msgid "Out of date"
@@ -1760,14 +2108,12 @@ msgstr ""
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
 #: js/ui/messageList.js:405
-#, fuzzy
 #| msgctxt "program"
 #| msgid "Unknown"
 msgid "Unknown App"
 msgstr "Puthekthe"
 
 #: js/ui/messageTray.js:331 js/ui/messageTray.js:333
-#, fuzzy
 #| msgid "No Notifications"
 msgid "Notification sound"
 msgstr "Notifications Ase"
@@ -1790,13 +2136,13 @@ msgstr "Kiri phan ketok"
 
 #: js/ui/overviewControls.js:399
 msgid "Apps"
-msgstr ""
+msgstr "Apps"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:33
 msgid "Overview"
-msgstr "Sai"
+msgstr "Overview"
 
 #: js/ui/padOsd.js:98
 msgid "New shortcut…"
@@ -1824,7 +2170,7 @@ msgstr "Edit…"
 
 #: js/ui/padOsd.js:791
 msgid "None"
-msgstr "Angse"
+msgstr "None"
 
 #: js/ui/padOsd.js:868
 msgid "Press a button to configure"
@@ -1842,12 +2188,12 @@ msgstr ""
 #. in your language, you can use the word for "Overview".
 #: js/ui/panel.js:226
 msgid "Activities"
-msgstr "Sai (WiP)"
+msgstr "Activities"
 
 #: js/ui/panel.js:304
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: js/ui/panel.js:498
 msgid "Top Bar"
@@ -1894,9 +2240,6 @@ msgid "Screen"
 msgstr "Screen"
 
 #: js/ui/screenshot.js:1708
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock Screen Rotation"
 msgid "Screen Selection"
 msgstr ""
 
@@ -1918,9 +2261,6 @@ msgid "Take Screenshot"
 msgstr "Screen Kenep"
 
 #: js/ui/screenshot.js:1764
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
 msgid "Record Screen"
 msgstr ""
 
@@ -2018,7 +2358,6 @@ msgid "Searching"
 msgstr "Ri bomlo…"
 
 #: js/ui/search.js:872
-#, fuzzy
 #| msgid "No results."
 msgid "No results"
 msgstr "Satlang klangkle."
@@ -2032,7 +2371,7 @@ msgstr[1] "Son %d dolang"
 
 #: js/ui/searchController.js:97
 msgid "Search"
-msgstr "Kiri"
+msgstr "Search"
 
 #: js/ui/shellEntry.js:21
 msgid "Copy"
@@ -2180,14 +2519,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/status/backlight.js:39
-#, fuzzy
 #| msgid "Brightness"
 msgid "Keyboard Brightness"
 msgstr "Atur"
 
 #: js/ui/status/backlight.js:83
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #: js/ui/status/backlight.js:84
 msgid "Low"
@@ -2209,7 +2547,7 @@ msgstr ""
 #, fuzzy
 #| msgid "%s Disconnecting"
 msgid "Disconnect"
-msgstr "%s chethan bomlo"
+msgstr ""
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/bluetooth.js:266 js/ui/status/network.js:351
@@ -2223,7 +2561,7 @@ msgstr "%s chethan bomlo"
 #, fuzzy, javascript-format
 #| msgid "Connect"
 msgid "Connect to %s"
-msgstr "Pa-chepho"
+msgstr "Connect to %s"
 
 #: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:280
 msgid "Bluetooth"
@@ -2336,7 +2674,7 @@ msgstr ""
 #: js/ui/status/network.js:1060
 #, javascript-format
 msgid "%s, %s, %s"
-msgstr ""
+msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1163
@@ -2385,7 +2723,7 @@ msgstr "Networks awe"
 #| msgid "%s Wired Connection"
 #| msgid_plural "%s Wired Connections"
 msgid "Wired Connections"
-msgstr "%s Wired chepho"
+msgstr ""
 
 #: js/ui/status/network.js:1918
 #, fuzzy
@@ -2419,7 +2757,7 @@ msgstr "Botor"
 #| msgid "%s Modem Connection"
 #| msgid_plural "%s Modem Connections"
 msgid "Mobile Connections"
-msgstr "%s Modem chepho"
+msgstr ""
 
 #: js/ui/status/network.js:1955
 #, fuzzy
@@ -2437,7 +2775,6 @@ msgid "Mobile"
 msgstr ""
 
 #: js/ui/status/network.js:2000
-#, fuzzy
 #| msgid "Wi-Fi Networks"
 msgid "Sign in to Network"
 msgstr "Wi-Fi Networks"
@@ -2451,7 +2788,6 @@ msgid "Activation of network connection failed"
 msgstr ""
 
 #: js/ui/status/nightLight.js:19
-#, fuzzy
 #| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Night Light dam-bom"
@@ -2459,12 +2795,12 @@ msgstr "Night Light dam-bom"
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
-msgstr ""
+msgstr "Performance"
 
 #: js/ui/status/powerProfiles.js:24
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr ""
+msgstr "Balanced"
 
 #: js/ui/status/powerProfiles.js:29
 #, fuzzy
@@ -2523,7 +2859,6 @@ msgid "Airplane Mode"
 msgstr "Aeroplane Mode"
 
 #: js/ui/status/system.js:174
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Power Off"
 msgid "Power Off Menu"
@@ -2535,7 +2870,7 @@ msgstr "Suspend"
 
 #: js/ui/status/system.js:187
 msgid "Restart…"
-msgstr ""
+msgstr "Restart…"
 
 #: js/ui/status/system.js:192
 msgid "Power Off…"
@@ -2574,7 +2909,6 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "Hovang kawe Thunderbold hormu"
 
 #: js/ui/status/thunderbolt.js:315
-#, fuzzy
 #| msgid ""
 #| "New device has been detected and needs to be authorized by an "
 #| "administrator."
@@ -2605,14 +2939,14 @@ msgstr ""
 
 #: js/ui/status/volume.js:298
 msgid "Volume"
-msgstr "Aseh"
+msgstr "Volume"
 
 #: js/ui/status/volume.js:314
 #, fuzzy
 #| msgid "%u Output"
 #| msgid_plural "%u Outputs"
 msgid "Sound Output"
-msgstr "%u pen aseh ke-tet"
+msgstr ""
 
 #: js/ui/status/volume.js:315
 msgid "Open sound output menu"
@@ -2623,7 +2957,7 @@ msgstr ""
 #| msgid "%u Input"
 #| msgid_plural "%u Inputs"
 msgid "Sound Input"
-msgstr "%u pen ase kethap"
+msgstr ""
 
 #: js/ui/status/volume.js:392
 msgid "Open sound input menu"
@@ -2658,7 +2992,6 @@ msgid "Built-in Only"
 msgstr "Kedun bang anchot"
 
 #: js/ui/unlockDialog.js:25
-#, fuzzy
 #| msgid "Unlock Window"
 msgid "Unlock Options"
 msgstr "Window ingpu noi"
@@ -2667,7 +3000,7 @@ msgstr "Window ingpu noi"
 #. long format
 #: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
-msgstr "%A %d %B"
+msgstr "%A %B %-d"
 
 #: js/ui/unlockDialog.js:435
 msgid "Swipe up"
@@ -2695,7 +3028,7 @@ msgstr "Hovang chokche"
 #, fuzzy, javascript-format
 #| msgid "GNOME Shell"
 msgid "GNOME %s"
-msgstr "GNOME Shell"
+msgstr "GNOME %s"
 
 #: js/ui/welcomeDialog.js:51
 #, javascript-format
@@ -2815,7 +3148,7 @@ msgstr "Ar-eh Monitor long pon noi"
 
 #: js/ui/windowMenu.js:189
 msgid "Close"
-msgstr "Kanghap"
+msgstr "Close"
 
 #: src/calendar-server/reminder-watcher.c:130
 msgid "Reminders"
@@ -2879,7 +3212,6 @@ msgid "Icon '%s' not present in theme %s"
 msgstr ""
 
 #: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
-#, fuzzy
 #| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr "Lock un-eh"
@@ -2900,7 +3232,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:383
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Name"
-msgstr "Amen"
+msgstr "Name"
 
 #: subprojects/extensions-tool/src/command-create.c:397
 #, c-format
@@ -2912,7 +3244,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:403
 #: subprojects/extensions-tool/src/main.c:248
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: subprojects/extensions-tool/src/command-create.c:417
 #, c-format
@@ -2929,7 +3261,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:458
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
 #: subprojects/extensions-tool/src/command-create.c:516
 msgid "The unique identifier of the new extension"
@@ -3096,7 +3428,6 @@ msgid "Show extensions in active state"
 msgstr "Extensions updates do an paklang"
 
 #: subprojects/extensions-tool/src/command-list.c:156
-#, fuzzy
 #| msgid "Show extensions with updates"
 msgid "Show extensions in inactive state"
 msgstr "Extensions updates do an paklang"
@@ -3133,7 +3464,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-pack.c:451
 #: subprojects/extensions-tool/src/command-pack.c:462
 msgid "DIRECTORY"
-msgstr ""
+msgstr "DIRECTORY"
 
 #: subprojects/extensions-tool/src/command-pack.c:453
 msgid "The directory where translations are found"
@@ -3185,23 +3516,23 @@ msgstr ""
 #, fuzzy, c-format
 #| msgid "Show user-installed extensions"
 msgid "Cannot uninstall system extensions\n"
-msgstr "User kethap tang Extensions paklang"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:65
 #, fuzzy, c-format
 #| msgid "Failed to launch “%s”"
 msgid "Failed to uninstall “%s”\n"
-msgstr "“%s” ingpu un-eh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:87
 msgid "Uninstall an extension"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:226
-#, fuzzy, c-format
+#, c-format
 #| msgid "List extensions"
 msgid "Login to extensions.gnome.org\n"
-msgstr "Extensions paklang thai"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:256
 #, c-format
@@ -3235,10 +3566,9 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:434
 msgid "FILE…"
-msgstr ""
+msgstr "FILE…"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
-#, fuzzy
 #| msgid "Show extension info"
 msgid "Upload new extension versions"
 msgstr "Extensions info paklang"
@@ -3261,7 +3591,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
 msgid "Path"
-msgstr ""
+msgstr "Path"
 
 #: subprojects/extensions-tool/src/main.c:254
 msgid "URL"
@@ -3279,21 +3609,20 @@ msgstr "Version"
 
 #: subprojects/extensions-tool/src/main.c:270
 msgid "Enabled"
-msgstr ""
+msgstr "Enabled"
 
 #: subprojects/extensions-tool/src/main.c:270
 msgid "Yes"
 msgstr "Ahok"
 
 #: subprojects/extensions-tool/src/main.c:270
-#, fuzzy
 #| msgid "None"
 msgid "No"
 msgstr "Nangne"
 
 #: subprojects/extensions-tool/src/main.c:273
 msgid "State"
-msgstr ""
+msgstr "State"
 
 #: subprojects/extensions-tool/src/main.c:311
 msgid "“version” takes no arguments"
@@ -3315,7 +3644,7 @@ msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:334
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARGS…]"
 
 #: subprojects/extensions-tool/src/main.c:336
 msgid "Commands:"
@@ -3373,24 +3702,22 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
-msgstr ""
+msgstr "Plain"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
-#, fuzzy
 #| msgid "Enable extension"
 msgid "An empty extension"
 msgstr "Extension kangpu"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
-msgstr ""
+msgstr "Indicator"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr ""
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
-#, fuzzy
 #| msgid "Privacy Settings"
 msgid "Quick Settings Item"
 msgstr "Privacy amokha"
@@ -3425,16 +3752,13 @@ msgstr[1] "%u pen ase kethap"
 
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
-msgstr "System Aseh"
+msgstr "System Sounds"
 
 #~ msgid "Something’s gone wrong"
 #~ msgstr "Kopine chokche det"
 
 #~ msgid "Homepage"
 #~ msgstr "Homepage"
-
-#~ msgid "Visit extension homepage"
-#~ msgstr "Extensions homepage lang rei tha"
 
 #~ msgid "About Extensions"
 #~ msgstr "Extensions Aputhak"
