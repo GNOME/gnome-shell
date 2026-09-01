@@ -1808,11 +1808,6 @@ st_widget_ensure_style (StWidget *widget)
  * automatically to reflect whether the pointer is in @widget (or one
  * of its children), and @widget's #StWidget:pseudo-class will have
  * the "hover" class added and removed from it accordingly.
- *
- * Note that currently it is not possible to correctly track the hover
- * state when another actor has a pointer grab. You can use
- * st_widget_sync_hover() to update the property manually in this
- * case.
  */
 void
 st_widget_set_track_hover (StWidget *widget,
@@ -1862,8 +1857,7 @@ st_widget_get_track_hover (StWidget *widget)
  * pseudo class accordingly.
  *
  * If you have set #StWidget:track-hover, you should not need to call
- * this directly. You can call st_widget_sync_hover() if the hover
- * state might be out of sync due to another actor's pointer grab.
+ * this directly.
  */
 void
 st_widget_set_hover (StWidget *widget,
