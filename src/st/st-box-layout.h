@@ -49,8 +49,4 @@ ClutterOrientation st_box_layout_get_orientation (StBoxLayout *box);
 void st_box_layout_set_orientation (StBoxLayout        *box,
                                     ClutterOrientation  orientation);
 
-void     st_box_layout_set_vertical   (StBoxLayout *box,
-                                       gboolean     vertical) G_GNUC_DEPRECATED_FOR (st_box_layout_set_orientation);
-gboolean st_box_layout_get_vertical   (StBoxLayout *box) G_GNUC_DEPRECATED_FOR (st_box_layout_get_orientation);
-
 G_END_DECLS
