@@ -1,3 +1,47 @@
+51.rc
+=====
+* Fix glitch when switching workspaces with direct scanout [Sebastian; !4320]
+* Use glycin to load and cache background images [Bilal; !4134]
+* Support building with libical4 [Xi; !4215]
+* Refuse to unlock screen after screen time limit was reached [Florian; !4321]
+* Fix blocking when toggling wireless toggle [PolyMeilex; !4323]
+* Continue port from raw event handlers to controllers [Carlos; !4330, !4304]
+* Fix focusing calendar app from reminder notification [Sebastian; !4327]
+* Don't show busy cursor when activating actions [Sebastian; !4325]
+* Fix race condition that prevents password prompt from showing [Adrian; !4336]
+* Fix glitch when cancelling lock screen prompt with Esc [Joaquín; !4326]
+* Track magnifier mouse position without polling [Kacper; !4344]
+* Limit parallel texture loading operations [Georges; !4349]
+* Focus first menu item when opened via keyboard [Sergio; !4189]
+* Fix race condition when enabling extensions [Sergio; !3640]
+* Open windows created via new-window action on correct workspace
+  [Sebastian; !4071]
+* Plugged leak [Michel; !4337]
+* Misc. bug fixes and cleanups [rayjonesjay, Florian, DaPigGuy, Joan, Javad,
+  Michel, Sebastian, Marco, Maximiliano, Carlos, Joan, Milan; !4313, !4332,
+  !4340, !4342, !4335, !4338, !4329, !4345, !4346, !4339, !4348, !4354, !4341,
+  !4358, !4357, !4356, !4362, !4368, !4366, !4369, !4371, !4374, !4373, !4377,
+  !4376]
+
+Contributors:
+  Georges Basile Stavracas Neto, Sergio Costas Rodriguez, Milan Crha, DaPigGuy,
+  Michel Dänzer, Bilal Elmoussaoui, Carlos Garnacho, Prasanta Hembram, Kacper,
+  Sebastian Keller, Florian Müllner, PolyMeilex, Javad Rahmatzadeh,
+  rayjonesjay, Xi Ruoyao, Maximiliano Sandoval, Joan Torres Lopez,
+  Marco Trevisan (Treviño), Arlewatyerre Tuhoro-Bell, Joaquín Vacas Verísimo,
+  Adrian Vovk
+
+Translators:
+  Flynn Peck [kw], Zeqian Sun [zh_CN], Asier Saratsua Garmendia [eu],
+  Antonio Marin [ro], Yuri Chornoivan [uk], Brage Fuglseth [nb],
+  twlvnn kraftwerk [bg], Prasanta Hembram [sat], Davide Ferracin [it],
+  burns [pt_BR], Yaron Shahrabani [he], Andika Triwidada [id],
+  Francisco Diéguez Souto [gl], Nathan Follens [nl], Xavi Ivars [ca],
+  小山田 純 - Oyamada Jun [ja], Abduqadir Abliz [ug], Jiri Grönroos [fi],
+  Baurzhan Muftakhidinov [kk], Aurimas Aurimas Černius [lt],
+  Anders Jonsson [sv], Marcel Mrówka [pl], Lucien [fr], Emin Tufan Çetin [tr],
+  Changwoo Ryu [ko], Arlewatyerre Tuhoro-Bell [mi], Jor Teron [mjw]
+
 51.beta
 =======
 * Fix glitch when switching to minimized window on another workspace
