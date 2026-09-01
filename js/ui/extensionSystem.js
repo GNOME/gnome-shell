@@ -328,7 +328,7 @@ export class ExtensionManager extends Signals.EventEmitter {
             null,
             Gio.DBusCallFlags.NONE,
             -1,
-            null);
+            null).catch(logError);
         return true;
     }
 
