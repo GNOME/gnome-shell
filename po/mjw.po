@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator:Gedit \n"
+"X-DamnedLies-Scope: partial\n"
+"X-Generator: Gedit\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -99,26 +100,6 @@ msgstr ""
 msgid "Screenshots"
 msgstr ""
 
-#: data/50-gnome-shell-screenshots.xml:9
-#: data/org.gnome.shell.gschema.xml.in:267
-msgid "Take a screenshot interactively"
-msgstr ""
-
-#: data/50-gnome-shell-screenshots.xml:12
-#: data/org.gnome.shell.gschema.xml.in:279
-msgid "Take a screenshot"
-msgstr ""
-
-#: data/50-gnome-shell-screenshots.xml:15
-#: data/org.gnome.shell.gschema.xml.in:275
-msgid "Take a screenshot of a window"
-msgstr ""
-
-#: data/50-gnome-shell-screenshots.xml:18
-#: data/org.gnome.shell.gschema.xml.in:271
-msgid "Record a screencast interactively"
-msgstr ""
-
 #: data/50-gnome-shell-system.xml:6
 #: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1328
 msgid "System"
@@ -148,246 +129,17 @@ msgstr "Kado-kawe"
 msgid "Show all apps"
 msgstr "Kado-kawe applications ke-paklang"
 
-#: data/org.gnome.shell.gschema.xml.in:6
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:9
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:16
-msgid "UUIDs of extensions to enable"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:17
-msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:26
-msgid "UUIDs of extensions to force disabling"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:27
-msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:37
-msgid "Disable user extensions"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:38
-msgid ""
-"Disable all extensions the user has enabled without affecting the “enabled-"
-"extension” setting."
-msgstr ""
-
 #: data/org.gnome.shell.gschema.xml.in:45
 #, fuzzy
 #| msgid "Show extension info"
 msgid "Allow extension installation"
 msgstr "Extensions info paklang"
 
-#: data/org.gnome.shell.gschema.xml.in:46
-msgid ""
-"Allow users to install extensions in their home folder. If disabled, the "
-"InstallRemoteExtension D-Bus method will fail, and extensions are only "
-"loaded from system directories on startup. It does not affect extensions "
-"that are already loaded, so a change only takes full effect on the next "
-"login."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:56
-msgid "Disables the validation of extension version compatibility"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:57
-msgid ""
-"GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to "
-"load all extensions regardless of the versions they claim to support."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:67
-msgid "List of desktop file IDs for favorite applications"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:68
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:75
-msgid "History for command (Alt-F2) dialog"
-msgstr ""
-
-#. Translators: looking glass is a debugger and inspector tool, see https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/main/docs/looking-glass.md
-#: data/org.gnome.shell.gschema.xml.in:80
-msgid "History for the looking glass dialog"
-msgstr ""
-
 #: data/org.gnome.shell.gschema.xml.in:84
 #, fuzzy
 #| msgid "Always show the “Log out” menu item in the user menu."
 msgid "Always show the “Log Out” action in the system menu"
 msgstr "“Log out” menu user menu along do vek nangji."
-
-#: data/org.gnome.shell.gschema.xml.in:85
-msgid ""
-"This key overrides the automatic hiding of the “Log out” action in the "
-"system menu for logged-in situations where there is a single, local, non-"
-"system user and only a single available session type (e.g. GNOME on Wayland)."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:94
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:95
-msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"“Remember Password” checkbox will be present. This key sets the default "
-"state of the checkbox."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:104
-msgid "The last selected non-default power profile"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:105
-msgid ""
-"Some systems support more than two power profiles. In order to still support "
-"toggling between two profiles, this key records the last selected non-"
-"default profile."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:113
-msgid "The last version the “Welcome to GNOME” dialog was shown for"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:114
-msgid ""
-"This key determines for which version the “Welcome to GNOME” dialog was last "
-"shown. An empty string represents the oldest possible version, and a huge "
-"number will represent versions that do not exist yet. This huge number can "
-"be used to effectively disable the dialog."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:125
-msgid "Layout of the app picker"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:126
-msgid ""
-"Layout of the app picker. Each entry in the array is a page. Pages are "
-"stored in the order they appear in GNOME Shell. Each page contains an "
-"“application id” → 'data' pair. Currently, the following values are stored "
-"as 'data': • “position”: the position of the application icon in the page"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:145
-#: data/org.gnome.shell.gschema.xml.in:152
-msgid "Keybinding to shift between overview states"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:146
-msgid "Keybinding to shift between session, window picker and app grid"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:153
-msgid "Keybinding to shift between app grid, window picker and session"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:159
-msgid "Keybinding to open the “Show Applications” view"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:160
-msgid ""
-"Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:167
-msgid "Keybinding to open the overview"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:168
-msgid "Keybinding to open the Activities Overview."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:174
-msgid "Keybinding to toggle the visibility of the notification list"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:175
-msgid "Keybinding to toggle the visibility of the notification list."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:181
-msgid "Keybinding to toggle the quick settings menu"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:182
-msgid "Keybinding to toggle the quick settings menu."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:188
-msgid "Keybinding to focus the active notification"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:189
-msgid "Keybinding to focus the active notification."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:195
-msgid "Switch to application 1"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:199
-msgid "Switch to application 2"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:203
-msgid "Switch to application 3"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:207
-msgid "Switch to application 4"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:211
-msgid "Switch to application 5"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:215
-msgid "Switch to application 6"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:219
-msgid "Switch to application 7"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:223
-msgid "Switch to application 8"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:227
-msgid "Switch to application 9"
-msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:231
 #, fuzzy
@@ -449,77 +201,13 @@ msgstr "Application ason-amung kangpu"
 msgid "Screen brightness up"
 msgstr "Atur"
 
-#: data/org.gnome.shell.gschema.xml.in:287
-msgid "Screen brightness up on current monitor"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:291
-msgid "Screen brightness down"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:295
-msgid "Screen brightness down on current monitor"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:299
-msgid "Screen brightness cycle"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:303
-msgid "Screen brightness cycle on current monitor"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:312
-#: data/org.gnome.shell.gschema.xml.in:339
-msgid "Limit switcher to current workspace."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:313
-msgid ""
-"If true, only applications that have windows on the current workspace are "
-"shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:330
-msgid "The application icon mode."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:331
-msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
-"(shows only the application icon) or “both”."
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:340
-msgid ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
-msgstr ""
-
 #: data/org.gnome.shell.gschema.xml.in:350
 msgid "Locations"
 msgstr "Dim"
 
-#: data/org.gnome.shell.gschema.xml.in:351
-msgid "The locations to show in world clocks"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:361
-msgid "Automatic location"
-msgstr ""
-
-#: data/org.gnome.shell.gschema.xml.in:362
-msgid "Whether to fetch the current location or not"
-msgstr ""
-
 #: data/org.gnome.shell.gschema.xml.in:369
 msgid "Location"
 msgstr "Dim"
-
-#: data/org.gnome.shell.gschema.xml.in:370
-msgid "The location for which to show a forecast"
-msgstr ""
 
 #. Keep in sync with GNOME/gnome-extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in:4
@@ -540,13 +228,13 @@ msgstr "Network Login"
 #, fuzzy
 #| msgid "Activities"
 msgid "Utilities"
-msgstr "Sai (WiP)"
+msgstr ""
 
 #: js/dbusServices/extensions/extensionPrefsDialog.js:70
 #, fuzzy
 #| msgid "Extensions"
 msgid "Extension Error"
-msgstr "Extensions"
+msgstr ""
 
 #. Translators: %s is an extension name
 #: js/dbusServices/extensions/extensionPrefsDialog.js:103
@@ -627,7 +315,7 @@ msgstr ""
 
 #: js/gdm/authServicesLegacy.js:37
 msgid "Fingerprint"
-msgstr ""
+msgstr "Fingerprint"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
@@ -649,7 +337,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Identity"
 msgid "Select Identity"
-msgstr "Identity"
+msgstr "Select Identity"
 
 #: js/gdm/authServicesSSSDSwitchable.js:507
 msgid "Organization"
@@ -722,7 +410,7 @@ msgstr "Kethan"
 #, fuzzy
 #| msgid "Force Quit"
 msgid "Force Stop"
-msgstr "Jakong pen ingchir noi"
+msgstr "Jakong pen ingkir noi"
 
 #: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:679
 #, fuzzy
@@ -933,12 +621,12 @@ msgstr ""
 #. Translators: As in "Delay the break"
 #: js/misc/breakManager.js:1355
 msgid "Delay"
-msgstr ""
+msgstr "Delay"
 
 #. Translators: As in "Skip the break"
 #: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
-msgstr ""
+msgstr "Skip"
 
 #. Translators: As in "Take the break"
 #: js/misc/breakManager.js:1399
@@ -975,12 +663,12 @@ msgstr "power off;shutdown;reboot;restart;halt;stop"
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:109
 msgid "reboot;restart;"
-msgstr ""
+msgstr "reboot;restart;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:114
@@ -1024,7 +712,7 @@ msgstr "Monit chelar"
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:141
 msgid "switch user"
-msgstr "monit chelar"
+msgstr "user chelar"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:148
@@ -1035,7 +723,7 @@ msgstr "lock orientation;unlock orientation;screen;rotation"
 #: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
-msgstr ""
+msgstr "Screenshot Kenep"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:156
@@ -1097,7 +785,7 @@ msgstr ""
 
 #: js/misc/dateUtils.js:69
 msgid "Just now"
-msgstr "Non het"
+msgstr "Non het lang"
 
 #: js/misc/dateUtils.js:72
 #, javascript-format
@@ -1115,7 +803,7 @@ msgstr[1] "Porphai %d aphrang"
 
 #: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
-msgstr "Tumi"
+msgstr "Atumi"
 
 #: js/misc/dateUtils.js:88
 #, javascript-format
@@ -1257,13 +945,13 @@ msgstr ""
 
 #: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
-msgstr ""
+msgstr "Folder amen-awe"
 
 #: js/ui/appDisplay.js:2563
 #, fuzzy
 #| msgid "Username"
 msgid "Folder name"
-msgstr "Username"
+msgstr "Folder amen"
 
 #: js/ui/appDisplay.js:2586
 msgid "Edit folder name"
@@ -1286,11 +974,11 @@ msgstr "Undo"
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:49
 msgid "Open Windows"
-msgstr "Windows kangpu"
+msgstr "Windows Kangpu"
 
 #: js/ui/appMenu.js:57
 msgid "New Window"
-msgstr "Windows kimi"
+msgstr "Windows Kimi"
 
 #: js/ui/appMenu.js:84
 #, fuzzy
@@ -1300,7 +988,7 @@ msgstr "Details ke-lang"
 
 #: js/ui/appMenu.js:100
 msgid "Quit"
-msgstr ""
+msgstr "Kanghap"
 
 #: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
@@ -1468,7 +1156,7 @@ msgstr "%d notification kimi"
 #, fuzzy, javascript-format
 #| msgid "“%s” is not responding."
 msgid "“%s” Is Not Responding"
-msgstr "“%s” dam pame me."
+msgstr "“%s” damde"
 
 #: js/ui/closeDialog.js:41
 #, fuzzy
@@ -1484,7 +1172,7 @@ msgstr ""
 
 #: js/ui/closeDialog.js:69
 msgid "Force Quit"
-msgstr "Jakong pen ingchir noi"
+msgstr "Jakong pen ingkir noi"
 
 #: js/ui/closeDialog.js:74
 msgid "Wait"
@@ -1623,13 +1311,13 @@ msgstr "Windows"
 #, fuzzy
 #| msgid "Show Applications"
 msgid "Show Apps"
-msgstr "Applications paklang"
+msgstr "Apps paklang"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
 #: js/ui/dash.js:401
 msgid "Dash"
-msgstr "Adim"
+msgstr "Dash"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the top bar (e.g.,
@@ -1757,12 +1445,12 @@ msgstr[1] "Nangli phan hong pa-tet po non %d seconds lote."
 #: js/ui/endSessionDialog.js:63
 msgctxt "button"
 msgid "Log Out"
-msgstr ""
+msgstr "Log Out"
 
 #: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #: js/ui/endSessionDialog.js:70
 msgctxt "title"
@@ -1786,12 +1474,12 @@ msgstr "Pending software updates thap tha"
 #: js/ui/endSessionDialog.js:81
 msgctxt "button"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #: js/ui/endSessionDialog.js:88
 msgctxt "title"
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #: js/ui/endSessionDialog.js:89
 #, fuzzy
@@ -1813,7 +1501,7 @@ msgstr[1] "Computer amethang restart po non %d seconds lote."
 #: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #: js/ui/endSessionDialog.js:108
 msgctxt "title"
@@ -1844,7 +1532,7 @@ msgstr "Restart si Install noi"
 #| msgid "Install &amp; Power Off"
 msgctxt "button"
 msgid "Install & Power Off"
-msgstr "Thap det si Power Off noi"
+msgstr "Install det aphi Power Off noi"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "checkbox"
@@ -1868,7 +1556,7 @@ msgstr "Kaprek monit logged dolang."
 #: js/ui/endSessionDialog.js:432
 msgctxt "button"
 msgid "Boot Options"
-msgstr ""
+msgstr "Boot Options"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:637
@@ -1884,7 +1572,7 @@ msgstr "%s (console)"
 
 #: js/ui/extensionDownloader.js:280
 msgid "Install"
-msgstr ""
+msgstr "Install"
 
 #: js/ui/extensionDownloader.js:286
 msgid "Install Extension"
@@ -1963,19 +1651,19 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Leave On"
-msgstr ""
+msgstr "Leave On"
 
 #: js/ui/kbdA11yDialog.js:57
 msgid "Turn On"
-msgstr ""
+msgstr "Turn On"
 
 #: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:452
 msgid "Turn Off"
-msgstr ""
+msgstr "Turn Off"
 
 #: js/ui/kbdA11yDialog.js:67
 msgid "Leave Off"
-msgstr ""
+msgstr "Leave Off"
 
 #: js/ui/keyboard.js:219 js/ui/status/keyboard.js:895
 #, fuzzy
@@ -2082,7 +1770,7 @@ msgstr "Puthekthe"
 #, fuzzy
 #| msgid "No Notifications"
 msgid "Notification sound"
-msgstr "Notifications Awe"
+msgstr "Notifications Ase"
 
 #: js/ui/mpris.js:144
 msgid "Unknown artist"
@@ -2090,7 +1778,7 @@ msgstr ""
 
 #: js/ui/mpris.js:154
 msgid "Unknown title"
-msgstr "Amen chinine"
+msgstr "title chinine"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -2163,13 +1851,13 @@ msgstr ""
 
 #: js/ui/panel.js:498
 msgid "Top Bar"
-msgstr ""
+msgstr "Top Bar"
 
 #: js/ui/quickSettings.js:162 js/ui/quickSettings.js:261
 #, fuzzy
 #| msgid "Open %s"
 msgid "Open menu"
-msgstr "%s Kangpu"
+msgstr "Menu Kangpu"
 
 #: js/ui/runDialog.js:74
 msgid "Run a Command"
@@ -2203,20 +1891,20 @@ msgstr ""
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Screen"
-msgstr "Screen kanghap"
+msgstr "Screen"
 
 #: js/ui/screenshot.js:1708
 #, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen Rotation"
 msgid "Screen Selection"
-msgstr "Lock Screen Rotation"
+msgstr ""
 
 #: js/ui/screenshot.js:1713
 #, fuzzy
 #| msgid "Windows"
 msgid "Window"
-msgstr "Windows"
+msgstr "Window"
 
 #: js/ui/screenshot.js:1723
 msgid "Window Selection"
@@ -2227,14 +1915,14 @@ msgstr ""
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Take Screenshot"
-msgstr "Screen kanghap"
+msgstr "Screen Kenep"
 
 #: js/ui/screenshot.js:1764
 #, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Record Screen"
-msgstr "Screen kanghap"
+msgstr ""
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
@@ -2333,7 +2021,7 @@ msgstr "Ri bomlo…"
 #, fuzzy
 #| msgid "No results."
 msgid "No results"
-msgstr "Satlang klang kle."
+msgstr "Satlang klangkle."
 
 #: js/ui/search.js:1008
 #, javascript-format
@@ -2832,14 +2520,14 @@ msgstr "Lock Screen Rotation"
 #, fuzzy
 #| msgid "Airplane Mode On"
 msgid "Airplane Mode"
-msgstr "Aeroplane Mode dambom"
+msgstr "Aeroplane Mode"
 
 #: js/ui/status/system.js:174
 #, fuzzy
 #| msgctxt "search-result"
 #| msgid "Power Off"
 msgid "Power Off Menu"
-msgstr "Power Off"
+msgstr "Power Off Menu"
 
 #: js/ui/status/system.js:182
 msgid "Suspend"
@@ -2851,7 +2539,7 @@ msgstr ""
 
 #: js/ui/status/system.js:192
 msgid "Power Off…"
-msgstr "Pamep…"
+msgstr "Kanghap…"
 
 #: js/ui/status/system.js:199
 msgid "Log Out…"
@@ -2867,7 +2555,7 @@ msgstr "Monit chelar…"
 #| msgid "Lock Screen"
 msgctxt "action"
 msgid "Lock Screen"
-msgstr "Screen kanghap"
+msgstr "Screen Kanghap"
 
 #: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
@@ -3212,7 +2900,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:383
 #: subprojects/extensions-tool/src/main.c:245
 msgid "Name"
-msgstr ""
+msgstr "Amen"
 
 #: subprojects/extensions-tool/src/command-create.c:397
 #, c-format
@@ -3249,7 +2937,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:519
 msgid "NAME"
-msgstr ""
+msgstr "NAME"
 
 #: subprojects/extensions-tool/src/command-create.c:520
 msgid "The user-visible name of the new extension"
@@ -3257,7 +2945,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:522
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "DESCRIPTION"
 
 #: subprojects/extensions-tool/src/command-create.c:524
 msgid "A short description of what the extension does"
@@ -3266,7 +2954,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:526
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
-msgstr ""
+msgstr "DOMAIN"
 
 #: subprojects/extensions-tool/src/command-create.c:528
 msgid "The gettext domain used by the extension"
@@ -3275,7 +2963,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:530
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
-msgstr ""
+msgstr "SCHEMA"
 
 #: subprojects/extensions-tool/src/command-create.c:532
 msgid "The GSettings schema used by the extension"
@@ -3283,7 +2971,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:535
 msgid "TEMPLATE"
-msgstr ""
+msgstr "TEMPLATE"
 
 #: subprojects/extensions-tool/src/command-create.c:536
 msgid "The template to use for the new extension"
