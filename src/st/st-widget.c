@@ -1529,7 +1529,7 @@ st_widget_reactive_notify (StWidget   *widget,
   st_widget_update_insensitive (widget);
 
   if (priv->track_hover)
-    st_widget_sync_hover(widget);
+    st_widget_set_hover (widget, priv->enter_count > 0);
 }
 
 static ClutterActor *
@@ -1825,7 +1825,7 @@ st_widget_set_track_hover (StWidget *widget,
       g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_TRACK_HOVER]);
 
       if (priv->track_hover)
-        st_widget_sync_hover (widget);
+        st_widget_set_hover (widget, priv->enter_count > 0);
       else
         st_widget_set_hover (widget, FALSE);
     }
@@ -1885,8 +1885,11 @@ st_widget_set_hover (StWidget *widget,
  * @widget: A #StWidget
  *
  * Sets @widget's hover state according to the current pointer
- * position. This can be used to ensure that it is correct after
- * (or during) a pointer grab.
+ * position.
+ *
+ * In the past, the hover state could get out of sync after
+ * (or during) a pointer grab. This is no longer the case,
+ * so there should be no need for this method anymore.
  */
 void
 st_widget_sync_hover (StWidget *widget)

@@ -116,7 +116,7 @@ void                  st_widget_set_track_hover           (StWidget        *widg
 gboolean              st_widget_get_track_hover           (StWidget        *widget);
 void                  st_widget_set_hover                 (StWidget        *widget,
                                                            gboolean         hover);
-void                  st_widget_sync_hover                (StWidget        *widget);
+void                  st_widget_sync_hover                (StWidget        *widget) G_GNUC_DEPRECATED;
 gboolean              st_widget_get_hover                 (StWidget        *widget);
 void                  st_widget_popup_menu                (StWidget        *self);
 
