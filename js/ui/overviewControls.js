@@ -598,7 +598,9 @@ class ControlsManager extends St.Widget {
 
         this._updateThumbnailsBox();
         this._updateAppDisplayVisibility(params);
-        this.grab_key_focus();
+
+        if (params.progress === 1.0)
+            this.grab_key_focus();
     }
 
     _onSearchChanged() {
