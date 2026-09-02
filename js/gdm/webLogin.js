@@ -27,7 +27,7 @@ export class WebLoginPrompt extends St.BoxLayout {
 
         super({
             styleClass: 'web-login-prompt',
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             y_align: Clutter.ActorAlign.CENTER,
         });
 

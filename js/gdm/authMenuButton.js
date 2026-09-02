@@ -89,7 +89,7 @@ class AuthMenuItem extends PopupMenu.PopupBaseMenuItem {
             this.add_child(icon);
 
             const box = new St.BoxLayout({
-                vertical: true,
+                orientation: Clutter.Orientation.VERTICAL,
                 style_class: 'login-dialog-auth-menu-item-box',
             });
             const nameLabel = new St.Label({
