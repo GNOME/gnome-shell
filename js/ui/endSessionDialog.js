@@ -29,6 +29,7 @@ import * as CheckBox from './checkBox.js';
 import * as Dialog from './dialog.js';
 import * as GnomeSession from '../misc/gnomeSession.js';
 import * as LoginManager from '../misc/loginManager.js';
+import * as Main from './main.js';
 import * as ModalDialog from './modalDialog.js';
 import * as UserWidget from './userWidget.js';
 
@@ -298,6 +299,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
     async _ensureSoftwareOfflineUpdatesProxy() {
         if (this._softwareOfflineUpdatesProxy !== null)
+            return;
+
+        if (Main.sessionMode.isGreeter)
             return;
 
         try {
