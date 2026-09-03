@@ -904,7 +904,7 @@ export const LoginDialog = GObject.registerClass({
                         this._userManager.disconnectObject(this);
                         this._loadUserList();
                     }
-                });
+                }, this);
         } else {
             let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
