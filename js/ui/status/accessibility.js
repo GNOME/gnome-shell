@@ -201,7 +201,7 @@ class LargeTextToggle extends QuickToggle {
             this.block_signal_handler(toggledId);
             this._updateChecked();
             this.unblock_signal_handler(toggledId);
-        });
+        }, this);
         this._settings.bind_writable(KEY_TEXT_SCALING_FACTOR,
             this, 'reactive',
             false);
