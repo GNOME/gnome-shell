@@ -1799,7 +1799,7 @@ class NMWirelessToggle extends NMDeviceToggle {
                 this._startScanning();
             else
                 this._stopScanning();
-        });
+        }, this);
 
         this.menu.setHeader('network-wireless-symbolic', _('Wi–Fi'));
         this.menuButtonAccessibleName = _('Open Wi–Fi menu');
