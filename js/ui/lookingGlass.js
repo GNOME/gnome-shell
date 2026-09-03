@@ -1459,6 +1459,7 @@ export class LookingGlass extends St.BoxLayout {
             inspector.connect('closed', () => {
                 this.show();
                 global.stage.set_key_focus(this._entry);
+                inspector.destroy();
             });
             this.hide();
             return Clutter.EVENT_STOP;
