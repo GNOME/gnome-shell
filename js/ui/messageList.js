@@ -57,7 +57,8 @@ class URLHighlighter extends St.Label {
         this._clickGesture = new Clutter.ClickGesture();
         this._clickGesture.connectObject(
             'recognize', this._onClick.bind(this),
-            'may-recognize', this._checkInUrl.bind(this));
+            'may-recognize', this._checkInUrl.bind(this),
+            this);
         this.add_action(this._clickGesture);
 
         const motionController = new Clutter.MotionController();
@@ -2020,7 +2021,9 @@ const FadeEffect = GObject.registerClass({
 
         this._vadjustment?.disconnectObject(this);
         this._vadjustment = newAdj;
-        this._vadjustment?.connectObject('changed', this._updateEnabled.bind(this));
+        this._vadjustment?.connectObject(
+            'changed', this._updateEnabled.bind(this),
+            this);
         this._updateEnabled();
     }
 
@@ -2030,7 +2033,9 @@ const FadeEffect = GObject.registerClass({
 
         this.actor?.disconnectObject(this);
 
-        actor?.connectObject('notify::vadjustment', this._vadjustmentChanged.bind(this));
+        actor?.connectObject(
+            'notify::vadjustment', this._vadjustmentChanged.bind(this),
+            this);
         super.vfunc_set_actor(actor);
         this._vadjustmentChanged();
     }
