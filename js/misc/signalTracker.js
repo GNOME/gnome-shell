@@ -240,9 +240,13 @@ export function connectObject(thisObj, ...args) {
         args = rest;
     }
 
-    const obj = args.at(0) ?? globalThis;
+    const [obj] = args;
+    if (!obj) {
+        const e = new Error('No object to track signals');
+        logError(e);
+    }
     const tracker = SignalManager.getDefault().getSignalTracker(thisObj);
-    tracker.track(obj, ...signalIds);
+    tracker.track(obj ?? globalThis, ...signalIds);
 }
 
 /**
