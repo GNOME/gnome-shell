@@ -235,13 +235,14 @@ inspect() {
   Main.lookingGlass._inspector = new LookingGlass.Inspector(Main.lookingGlass);
   const inspector = Main.lookingGlass._inspector;
 
-  inspector.connectObject("target", (i, obj, stageX, stageY) => {
+  inspector.connect("target", (i, obj, stageX, stageY) => {
     let command = "inspect(" + Math.round(stageX) + ", " + Math.round(stageY) + ")";
     Main.lookingGlass._lastInspection = command;
-  },
-"closed", () => {
-  delete Main.lookingGlass._inspector;
-});
+  });
+  inspector.connect("closed", () => {
+    Main.lookingGlass._inspector.destroy();
+    delete Main.lookingGlass._inspector;
+  });
 `;
 AsyncFunction(command)();
 '
