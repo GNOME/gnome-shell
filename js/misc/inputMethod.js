@@ -94,7 +94,9 @@ export const InputMethod = GObject.registerClass({
         if (HAVE_REQUIRE_SURROUNDING_TEXT)
             this._context.connect('require-surrounding-text', this._onRequireSurroundingText.bind(this));
 
-        Main.keyboard.connectObject('visibility-changed', () => this._updateCapabilities());
+        Main.keyboard.connectObject(
+            'visibility-changed', () => this._updateCapabilities(),
+            this);
 
         this._updateCapabilities();
     }
