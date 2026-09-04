@@ -1496,15 +1496,15 @@ export class PopupMenuManager {
         this._clickGesture = new Clutter.ClickGesture({
             recognize_on_press: true,
         });
-        this._clickGesture.connectObject(
-            'may-recognize', () => {
-                const menu = this.activeMenu;
-                const event = this._clickGesture.get_point_event(0);
-                const targetActor = global.stage.get_event_actor(event);
-                return !menu.actor.contains(targetActor);
-            },
-            'recognize', () => this.activeMenu.close(),
-            this);
+        this._clickGesture.connect('may-recognize', () => {
+            const menu = this.activeMenu;
+            const event = this._clickGesture.get_point_event(0);
+            const targetActor = global.stage.get_event_actor(event);
+            return !menu.actor.contains(targetActor);
+        });
+        this._clickGesture.connect('recognize', () => {
+            this.activeMenu.close();
+        });
 
         this._motionController = new Clutter.MotionController();
         this._motionController.connect(
