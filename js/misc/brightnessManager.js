@@ -5,6 +5,7 @@ import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 
 import * as Main from '../ui/main.js';
+import * as SignalTracker from '../misc/signalTracker.js';
 
 const SCALE_VALUE_N_STEPS = 20;
 const SCALE_VALUE_CHANGE_EPSILON = 0.001;
@@ -259,6 +260,7 @@ export const BrightnessManager = GObject.registerClass({
                     .some(m => m.get_backlight() && m.is_active());
             });
 
+        this._monitorScales.values().forEach(scale => scale.destroy());
         this._monitorScales.clear();
 
         const brightnesses = this._getSavedBrightnesses(monitors);
@@ -411,6 +413,9 @@ export const BrightnessScale = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             0, 1.0, 1.0),
     },
+    Signals: {
+        'destroy': {},
+    },
 }, class BrightnessScale extends GObject.Object {
     constructor(name, value = 1.0, nSteps = SCALE_VALUE_N_STEPS) {
         super();
@@ -455,7 +460,12 @@ export const BrightnessScale = GObject.registerClass({
         this._value = Math.clamp(value, 0.0, 1.0);
         this.notify('value');
     }
+
+    destroy() {
+        this.emit('destroy');
+    }
 });
+SignalTracker.registerDestroyableType(BrightnessScale);
 
 const MonitorBrightnessScale = GObject.registerClass({
     Signals: {
