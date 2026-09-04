@@ -176,6 +176,7 @@ st_deps = [
   mutter_dep,
   gdk_pixbuf_dep,
   pango_dep,
+  cairo_dep,
 ]
 
 # Currently meson requires a shared library for building girs
@@ -188,7 +189,6 @@ libst = shared_library('st-' + mutter_api_version,
     schemas_dep,
     json_glib_dep,
     rsvg_dep,
-    cairo_dep,
   ],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
