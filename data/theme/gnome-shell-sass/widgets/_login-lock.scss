@@ -438,7 +438,7 @@ $_gdm_dialog_width: 25em;
   .web-login-prompt-button {
     padding: $base_padding * 2.5 $base_padding * 4;
     margin: $base_margin * 6 $base_margin * 2;
-    width: 8em;
+    min-width: 8em;
   }
 }
 
