@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-08-29 16:14+0000\n"
+"POT-Creation-Date: 2026-09-03 22:31+0000\n"
 "PO-Revision-Date: 2020-02-22 21:44+0530\n"
 "Last-Translator: Jor Teron <jor.teron@gmail.com>\n"
-"Language-Team: Karbi <karbi.translation@gmail.com>\n"
+"Language-Team: Karbi\n"
 "Language: mjw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Gedit\n"
+"X-Generator: Geany 2.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -102,15 +102,13 @@ msgstr "Screenshots"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:267
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Take a Screenshot"
 msgid "Take a screenshot interactively"
-msgstr "Screenshot Kenep"
+msgstr "Interactive Screenshot Kenep"
 
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:279
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Take a Screenshot"
 msgid "Take a screenshot"
@@ -118,11 +116,10 @@ msgstr "Screenshot Kenep"
 
 #: data/50-gnome-shell-screenshots.xml:15
 #: data/org.gnome.shell.gschema.xml.in:275
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Take a Screenshot"
 msgid "Take a screenshot of a window"
-msgstr "Screenshot Kenep"
+msgstr "Window Screenshot Kenep"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:271
@@ -139,10 +136,9 @@ msgid "Show the notification list"
 msgstr "Notification list ke paklang"
 
 #: data/50-gnome-shell-system.xml:12
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open the quick settings menu"
-msgstr "Application ason-amung kangpu"
+msgstr "Quick setting ason-amung kangpu"
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Focus the active notification"
@@ -153,10 +149,9 @@ msgid "Show the overview"
 msgstr "Kado-kawe"
 
 #: data/50-gnome-shell-system.xml:21
-#, fuzzy
 #| msgid "Show all applications"
 msgid "Show all apps"
-msgstr "Kado-kawe applications ke-paklang"
+msgstr "Kado-kawe apps ke-paklang"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -169,10 +164,9 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:16
-#, fuzzy
 #| msgid "Visit extension homepage"
 msgid "UUIDs of extensions to enable"
-msgstr "Extensions homepage lang rei tha"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -196,10 +190,9 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:37
-#, fuzzy
 #| msgid "Enable extension"
 msgid "Disable user extensions"
-msgstr "Extension kangpu"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:38
 msgid ""
@@ -208,10 +201,9 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:45
-#, fuzzy
 #| msgid "Show extension info"
 msgid "Allow extension installation"
-msgstr "Extensions info paklang"
+msgstr "Extensions Thap long"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid ""
@@ -253,10 +245,9 @@ msgid "History for the looking glass dialog"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:84
-#, fuzzy
 #| msgid "Always show the “Log out” menu item in the user menu."
 msgid "Always show the “Log Out” action in the system menu"
-msgstr "“Log out” menu user menu along do vek nangji."
+msgstr "“Log out” klem user menu along paklang vek nangji."
 
 #: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
@@ -352,172 +343,144 @@ msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:181
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Keybinding to toggle the quick settings menu"
-msgstr "Application ason-amung kangpu"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Keybinding to toggle the quick settings menu."
-msgstr "Application ason-amung kangpu"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:188
-#, fuzzy
 #| msgid "Focus the active notification"
 msgid "Keybinding to focus the active notification"
-msgstr "Non-het notification ke paklang"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:189
-#, fuzzy
 #| msgid "Focus the active notification"
 msgid "Keybinding to focus the active notification."
-msgstr "Non-het notification ke paklang"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:195
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 1"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 1 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:199
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 2"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 2 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:203
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 3"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 3 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:207
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 4"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 4 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:211
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 5"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 5 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:215
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 6"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 6 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:219
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 7"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 7 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:223
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 8"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 8 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:227
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Switch to application 9"
-msgstr "Application ason-amung kangpu"
+msgstr "Application 9 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:231
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 1"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 1 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:235
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 2"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 2 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:239
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 3"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 3 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:243
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 4"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 4 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:247
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 5"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 5 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:251
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 6"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 6 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:255
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 7"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 7 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:259
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 8"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 8 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:263
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open a new instance of application 9"
-msgstr "Application ason-amung kangpu"
+msgstr "Akimi Application 9 kangpu"
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness up"
-msgstr "Atur"
+msgstr "Atur pathe"
 
 #: data/org.gnome.shell.gschema.xml.in:287
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness up on current monitor"
 msgstr "Atur"
 
 #: data/org.gnome.shell.gschema.xml.in:291
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness down"
-msgstr "Atur"
+msgstr "Atur Pabi"
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness down on current monitor"
-msgstr "Atur"
+msgstr "Atur Pabi non klem bom monitor long"
 
 #: data/org.gnome.shell.gschema.xml.in:299
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness cycle"
-msgstr "Atur"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
-#, fuzzy
 #| msgid "Brightness"
 msgid "Screen brightness cycle on current monitor"
-msgstr "Atur"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:312
 #: data/org.gnome.shell.gschema.xml.in:339
@@ -577,7 +540,6 @@ msgid "Extensions"
 msgstr "Extensions"
 
 #: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
-#| msgid "No Notifications"
 msgid "Reminder Notifications"
 msgstr "Notifications Awe"
 
@@ -602,7 +564,6 @@ msgstr ""
 #. Translators: Link label in the phrase "Information about this
 #. problem may be available on the extension website"
 #: js/dbusServices/extensions/extensionPrefsDialog.js:109
-#| msgid "Extensions"
 msgid "extension website"
 msgstr "Extensions"
 
@@ -613,7 +574,6 @@ msgid "Information about this problem may be available on the %s."
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
-#| msgid "Show Details"
 msgid "Error Details"
 msgstr "Details ke-lang"
 
@@ -689,7 +649,6 @@ msgid "Insert Smartcard"
 msgstr ""
 
 #: js/gdm/authServicesSSSDSwitchable.js:468
-#, fuzzy
 #| msgid "Identity"
 msgid "Select Identity"
 msgstr "Select Identity"
@@ -755,23 +714,21 @@ msgstr ""
 
 #: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
 #: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
 #: js/ui/shellMountOperation.js:409
 msgid "Cancel"
 msgstr "Cancel"
 
 #: js/gdm/conflictingSessionDialog.js:101
-#, fuzzy
 #| msgid "Force Quit"
 msgid "Force Stop"
 msgstr "Jakong pen ingkir noi"
 
 #: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:679
-#, fuzzy
 #| msgid "Login Window"
 msgid "Login Options"
-msgstr "Login Window"
+msgstr "Login Options"
 
 #: js/gdm/loginDialog.js:54
 msgid "Session Type"
@@ -830,31 +787,28 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/misc/breakManager.js:991
-#, fuzzy, javascript-format
 #| msgid "%d minute ago"
 #| msgid_plural "%d minutes ago"
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] "%d minute aphrang"
-msgstr[1] "%d minute aphrang"
+msgstr[0] "%d minute"
+msgstr[1] "%d minutes"
 
 #: js/misc/breakManager.js:997
-#, fuzzy, javascript-format
 #| msgid "%d hour ago"
 #| msgid_plural "%d hours ago"
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] "Porphai %d aphrang"
-msgstr[1] "Porphai %d aphrang"
+msgstr[0] "Porphai %d"
+msgstr[1] "Porphai %d"
 
 #: js/misc/breakManager.js:1003
-#, fuzzy, javascript-format
 #| msgid "%d day ago"
 #| msgid_plural "%d days ago"
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] "Ni %d aphrang"
-msgstr[1] "Ni %d aphrang"
+msgstr[0] "Ni %d"
+msgstr[1] "Ni %d"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
 #: js/misc/breakManager.js:1085
@@ -1009,7 +963,6 @@ msgstr "Power Off"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:101
-#| msgid "power off;shutdown;reboot;restart;halt;stop"
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "power off;poweroff;shutdown;halt;stop"
 
@@ -1094,24 +1047,22 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Lock Screen Rotation"
 
-#: js/misc/timeLimitsManager.js:473
-#, fuzzy
+#: js/misc/timeLimitsManager.js:
 #| msgid "GNOME needs to lock the screen"
 msgid "GNOME needs to save screen time data"
-msgstr "GNOME screen lock nangji"
+msgstr ""
 
 #: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr ""
 
 #: js/misc/timeLimitsManager.js:1410
-#, fuzzy, javascript-format
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
-msgstr[0] "Computer amethang restart po non %d second lote."
-msgstr[1] "Computer amethang restart po non %d seconds lote."
+msgstr[0] "Computer lock po %d second lote."
+msgstr[1] "Computer lock po %d seconds lote."
 
 #: js/misc/timeLimitsManager.js:1418
 #, javascript-format
@@ -1195,7 +1146,6 @@ msgstr "%H:%M"
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
-#, fuzzy, no-c-format
 #| msgid "Yesterday, %H∶%M"
 msgid "Yesterday, %H:%M"
 msgstr "Tumi, %H∶%M"
@@ -1204,7 +1154,6 @@ msgstr "Tumi, %H∶%M"
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-#| msgid "%A, %H∶%M"
 msgid "%A, %H:%M"
 msgstr "%A, %H:%M"
 
@@ -1213,7 +1162,6 @@ msgstr "%A, %H:%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-#| msgid "%B %-d, %H∶%M"
 msgid "%B %-d, %H:%M"
 msgstr "%B %-d, %H:%M"
 
@@ -1222,7 +1170,6 @@ msgstr "%B %-d, %H:%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-#| msgid "%B %-d %Y, %H∶%M"
 msgid "%B %-d %Y, %H:%M"
 msgstr "%B %-d %Y, %H:%M"
 
@@ -1230,14 +1177,12 @@ msgstr "%B %-d %Y, %H:%M"
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-#| msgid "%l∶%M %p"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
-#, fuzzy, no-c-format
 #| msgid "Yesterday, %l∶%M %p"
 msgid "Yesterday, %l:%M %p"
 msgstr "Tumi, %l∶%M %p"
@@ -1246,7 +1191,6 @@ msgstr "Tumi, %l∶%M %p"
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-#| msgid "%A, %l∶%M %p"
 msgid "%A, %l:%M %p"
 msgstr "%A, %l:%M %p"
 
@@ -1255,7 +1199,6 @@ msgstr "%A, %l:%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-#| msgid "%B %-d, %l∶%M %p"
 msgid "%B %-d, %l:%M %p"
 msgstr "%B %-d, %l:%M %p"
 
@@ -1264,7 +1207,6 @@ msgstr "%B %-d, %l:%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-#| msgid "%B %-d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%B %-d %Y, %l:%M %p"
 
@@ -1301,7 +1243,6 @@ msgid "Unnamed Folder"
 msgstr "Folder amen-awe"
 
 #: js/ui/appDisplay.js:2563
-#, fuzzy
 #| msgid "Username"
 msgid "Folder name"
 msgstr "Folder amen"
@@ -1334,7 +1275,6 @@ msgid "New Window"
 msgstr "Windows Kimi"
 
 #: js/ui/appMenu.js:84
-#| msgid "Show Details"
 msgid "App Details"
 msgstr "Details ke-lang"
 
@@ -1351,13 +1291,11 @@ msgid "Pin to Dash"
 msgstr ""
 
 #: js/ui/appMenu.js:178
-#, fuzzy
 #| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch Using Integrated Graphics Card"
 msgstr "Dedicated Graphics Card pen kangpu"
 
 #: js/ui/appMenu.js:179
-#, fuzzy
 #| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Dedicated Graphics Card pen kangpu"
@@ -1496,22 +1434,17 @@ msgid "Clear"
 msgstr "Paprei"
 
 #: js/ui/calendar.js:833
-#, fuzzy
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:40
-#, fuzzy, javascript-format
 #| msgid "“%s” is not responding."
 msgid "“%s” Is Not Responding"
-msgstr "“%s” damde"
+msgstr "“%s” Damde"
 
 #: js/ui/closeDialog.js:41
-#, fuzzy
 #| msgid ""
 #| "You may choose to wait a short while for it to continue or force the "
 #| "application to quit entirely."
@@ -1519,8 +1452,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
 msgstr ""
-"Nangli inghong chet tame, lason dam bom cheme det tahai kali te application "
-"bonchek noipame phan."
+"Nangli inghong chet tame, lason dam bom cheme det tahai kali te app "
+"bonchek noi."
 
 #: js/ui/closeDialog.js:69
 msgid "Force Quit"
@@ -1548,7 +1481,6 @@ msgstr ""
 
 #. Translators: %s is the name of a partition on a external drive
 #: js/ui/components/autorunManager.js:190
-#, fuzzy, javascript-format
 #| msgid "%s Connected"
 msgid "“%s” connected"
 msgstr "%s Chepho"
@@ -1626,7 +1558,6 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
 #: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
 #: js/ui/components/networkAgent.js:770
-#, fuzzy, javascript-format
 #| msgid "A password is required to connect to “%s”."
 msgid "A password is required to connect to “%s”"
 msgstr "“%s” pen chepho ji phan password nangji"
@@ -1660,7 +1591,6 @@ msgid "Windows"
 msgstr "Windows"
 
 #: js/ui/dash.js:200 js/ui/dash.js:246
-#| msgid "Show Applications"
 msgid "Show Apps"
 msgstr "Apps paklang"
 
@@ -1689,14 +1619,12 @@ msgstr "%A %B %e %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:173
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:176
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
@@ -1741,49 +1669,44 @@ msgid "Loading…"
 msgstr "Wang bom-lo…"
 
 #: js/ui/dateMenu.js:714
-#, fuzzy
 #| msgid "Go online for weather information"
 msgid "Go Online for Weather Information"
 msgstr "Online pen botor birta kelang"
 
 #: js/ui/dateMenu.js:716
-#, fuzzy
 #| msgid "Weather information is currently unavailable"
 msgid "Weather Information Unavailable"
-msgstr "Botor birta non ko awe"
+msgstr "Botor birta awe"
 
 #: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "Botor"
 
 #: js/ui/dateMenu.js:728
-#, fuzzy
 #| msgid "Select a location…"
 msgid "Select Weather Location…"
-msgstr "Adim chongvai nangji…"
+msgstr "Botor kelang adim ingvai nangji…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s phan hong ke-wan"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Hong wang"
 
-#: js/ui/endSessionDialog.js:50
-#, fuzzy, javascript-format
+#: js/ui/endSessionDialog.js:51
 #| msgid "%s will be logged out automatically in %d second."
 #| msgid_plural "%s will be logged out automatically in %d seconds."
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
-msgstr[0] "%s phan hong pa-tet po non %d second lote."
-msgstr[1] "%s phan hong pa-tet po non %d seconds lote."
+msgstr[0] "%s phan hong tet po non %d second lote."
+msgstr[1] "%s phan hong tet po non %d seconds lote."
 
-#: js/ui/endSessionDialog.js:56
-#, fuzzy, javascript-format
+#: js/ui/endSessionDialog.js:57
 #| msgid "You will be logged out automatically in %d second."
 #| msgid_plural "You will be logged out automatically in %d seconds."
 msgid "You will be logged out automatically in %d second"
@@ -1791,23 +1714,22 @@ msgid_plural "You will be logged out automatically in %d seconds"
 msgstr[0] "Nangli phan hong pa-tet po non %d second lote."
 msgstr[1] "Nangli phan hong pa-tet po non %d seconds lote."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Log Out"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "Power Off"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Updates thapdet aphi Power Off noi"
 
-#: js/ui/endSessionDialog.js:73
-#, fuzzy, javascript-format
+#: js/ui/endSessionDialog.js:74
 #| msgid "The system will power off automatically in %d second."
 #| msgid_plural "The system will power off automatically in %d seconds."
 msgid "The system will power off automatically in %d second"
@@ -1815,31 +1737,29 @@ msgid_plural "The system will power off automatically in %d seconds"
 msgstr[0] "Computer amethang chebon po non %d second lote."
 msgstr[1] "Computer amethang chebon po non %d seconds lote."
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Pending software updates thap tha"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Power Off"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Restart"
 
-#: js/ui/endSessionDialog.js:89
-#, fuzzy
+#: js/ui/endSessionDialog.js:90
 #| msgctxt "title"
 #| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "Updates thapdet aphi Power Off noi"
+msgstr "Updates thapdet aphi Restart noi"
 
-#: js/ui/endSessionDialog.js:92
-#, fuzzy, javascript-format
+#: js/ui/endSessionDialog.js:93
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will restart automatically in %d second"
@@ -1847,18 +1767,17 @@ msgid_plural "The system will restart automatically in %d seconds"
 msgstr[0] "Computer amethang restart po non %d second lote."
 msgstr[1] "Computer amethang restart po non %d seconds lote."
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Restart"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "restart si Updates thap noi"
 
-#: js/ui/endSessionDialog.js:111
-#, fuzzy, javascript-format
+#: js/ui/endSessionDialog.js:112
 #| msgid "The system will restart automatically in %d second."
 #| msgid_plural "The system will restart automatically in %d seconds."
 msgid "The system will automatically restart and install updates in %d second"
@@ -1867,54 +1786,51 @@ msgid_plural ""
 msgstr[0] "Computer amethang restart po non %d second lote."
 msgstr[1] "Computer amethang restart po non %d seconds lote."
 
-#: js/ui/endSessionDialog.js:118
-#, fuzzy
+#: js/ui/endSessionDialog.js:119
 #| msgctxt "button"
 #| msgid "Restart &amp; Install"
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Restart si Install noi"
 
-#: js/ui/endSessionDialog.js:120
-#, fuzzy
+#: js/ui/endSessionDialog.js:121
 #| msgctxt "button"
 #| msgid "Install &amp; Power Off"
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Install det aphi Power Off noi"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Updates det bon-chek noi"
 
-#: js/ui/endSessionDialog.js:262
-#, fuzzy
+#: js/ui/endSessionDialog.js:263
 #| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates"
-msgstr "Battery pensi dambom: choningri updates de aprang charge ik noi."
+msgstr "Battery Horang Kom: choningri pen plug thon ik noi."
 
-#: js/ui/endSessionDialog.js:271
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr ""
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "Kaprek monit logged dolang."
 
-#: js/ui/endSessionDialog.js:432
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Boot Options"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:637
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remote)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:640
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1937,10 +1853,9 @@ msgid "Extension Updates Available"
 msgstr "Extensions Updates dolo"
 
 #: js/ui/extensionSystem.js:357
-#, fuzzy
 #| msgid "Extension Updates Available"
 msgid "Extension updates are ready to be installed"
-msgstr "Extensions Updates dolo"
+msgstr "Extensions Updates thap meh lo"
 
 #: js/ui/inhibitShortcutsDialog.js:70
 msgid "Allow inhibiting shortcuts"
@@ -1948,10 +1863,9 @@ msgstr ""
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:73
-#, fuzzy, javascript-format
 #| msgid "The app %s wants to access your location"
 msgid "The app %s wants to inhibit shortcuts"
-msgstr "%s app aphan nangli kedo adim pachini ji?"
+msgstr "%s app shorcutss kibi ji"
 
 #: js/ui/inhibitShortcutsDialog.js:74
 msgid "An app wants to inhibit shortcuts"
@@ -2015,10 +1929,9 @@ msgid "Leave Off"
 msgstr "Leave Off"
 
 #: js/ui/keyboard.js:219 js/ui/status/keyboard.js:895
-#, fuzzy
 #| msgid "Network Settings"
 msgid "Keyboard Settings"
-msgstr "Network ason-amung"
+msgstr "Keyboard ason-amung"
 
 #: js/ui/lookingGlass.js:753
 msgid "No extensions installed"
@@ -2039,7 +1952,6 @@ msgid "Show Errors"
 msgstr "Errors paklang"
 
 #: js/ui/lookingGlass.js:835
-#| msgid "Activities"
 msgid "Active"
 msgstr "Sai (WiP)"
 
@@ -2060,16 +1972,14 @@ msgid "Downloading"
 msgstr "San bomlo"
 
 #: js/ui/lookingGlass.js:846
-#, fuzzy
 #| msgid "Settings"
 msgid "Deactivating"
-msgstr "Settings"
+msgstr ""
 
 #: js/ui/lookingGlass.js:848
-#, fuzzy
 #| msgid "Activities"
 msgid "Activating"
-msgstr "Sai (WiP)"
+msgstr ""
 
 #: js/ui/lookingGlass.js:884
 msgid "View Source"
@@ -2107,14 +2017,11 @@ msgstr ""
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:405
-#| msgctxt "program"
-#| msgid "Unknown"
+#: js/ui/messageList.js:406
 msgid "Unknown App"
 msgstr "Puthekthe"
 
 #: js/ui/messageTray.js:331 js/ui/messageTray.js:333
-#| msgid "No Notifications"
 msgid "Notification sound"
 msgstr "Notifications Ase"
 
@@ -2200,7 +2107,6 @@ msgid "Top Bar"
 msgstr "Top Bar"
 
 #: js/ui/quickSettings.js:162 js/ui/quickSettings.js:261
-#, fuzzy
 #| msgid "Open %s"
 msgid "Open menu"
 msgstr "Menu Kangpu"
@@ -2223,17 +2129,15 @@ msgid "Screen Capture"
 msgstr ""
 
 #: js/ui/screenshot.js:1683
-#, fuzzy
 #| msgid "Select a location…"
 msgid "Selection"
-msgstr "Adim chongvai nangji…"
+msgstr "Chongvai…"
 
 #: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr ""
 
 #: js/ui/screenshot.js:1698
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Screen"
@@ -2244,7 +2148,6 @@ msgid "Screen Selection"
 msgstr ""
 
 #: js/ui/screenshot.js:1713
-#, fuzzy
 #| msgid "Windows"
 msgid "Window"
 msgstr "Window"
@@ -2254,7 +2157,6 @@ msgid "Window Selection"
 msgstr ""
 
 #: js/ui/screenshot.js:1748 js/ui/status/system.js:117
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Take Screenshot"
@@ -2271,7 +2173,6 @@ msgid "Capture"
 msgstr ""
 
 #: js/ui/screenshot.js:1803
-#, fuzzy
 #| msgid "Show Errors"
 msgid "Show Pointer"
 msgstr "Errors paklang"
@@ -2325,10 +2226,9 @@ msgstr ""
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
 #: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
-#, fuzzy
 #| msgid "Show Details"
 msgid "Show in Files"
-msgstr "Details ke-lang"
+msgstr "Files long paklang"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
@@ -2352,13 +2252,11 @@ msgid "Screenshot taken"
 msgstr ""
 
 #: js/ui/search.js:869
-#, fuzzy
 #| msgid "Searching…"
 msgid "Searching"
-msgstr "Ri bomlo…"
+msgstr "Ri bomlo"
 
 #: js/ui/search.js:872
-#| msgid "No results."
 msgid "No results"
 msgstr "Satlang klangkle."
 
@@ -2437,7 +2335,6 @@ msgid "Open %s"
 msgstr "%s Kangpu"
 
 #: js/ui/shellMountOperation.js:453
-#, fuzzy
 #| msgid "The PIM must be a number or empty."
 msgid "The PIM must be a number or empty"
 msgstr "PIM ke lakha mate angse nangji"
@@ -2479,10 +2376,9 @@ msgid "Mouse Keys"
 msgstr ""
 
 #: js/ui/status/accessibility.js:84
-#, fuzzy
 #| msgid "Accessibility"
 msgid "Accessibility Settings"
-msgstr "Accessibility"
+msgstr "Accessibility Ason-amung"
 
 #: js/ui/status/accessibility.js:122 js/ui/status/accessibility.js:185
 msgid "Large Text"
@@ -2502,10 +2398,9 @@ msgid "Apps known to be running without a window"
 msgstr ""
 
 #: js/ui/status/backgroundApps.js:181
-#, fuzzy
 #| msgid "Settings"
 msgid "App Settings"
-msgstr "Settings"
+msgstr "App Settings"
 
 #: js/ui/status/backgroundApps.js:238
 msgid "No Background Apps"
@@ -2519,7 +2414,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/status/backlight.js:39
-#| msgid "Brightness"
 msgid "Keyboard Brightness"
 msgstr "Atur"
 
@@ -2544,21 +2438,17 @@ msgid "Open keyboard brightness menu"
 msgstr ""
 
 #: js/ui/status/bluetooth.js:245 js/ui/status/network.js:357
-#, fuzzy
-#| msgid "%s Disconnecting"
 msgid "Disconnect"
 msgstr ""
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/bluetooth.js:266 js/ui/status/network.js:351
-#, fuzzy, javascript-format
 #| msgid "%s Disconnecting"
 msgid "Disconnect %s"
-msgstr "%s chethan bomlo"
+msgstr "%s chethan"
 
 #. Translators: %s is a device name like "MyPhone"
 #: js/ui/status/bluetooth.js:268 js/ui/status/network.js:353
-#, fuzzy, javascript-format
 #| msgid "Connect"
 msgid "Connect to %s"
 msgstr "Connect to %s"
@@ -2568,10 +2458,9 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:277
-#, fuzzy
 #| msgid "Bluetooth Settings"
 msgid "Open Bluetooth menu"
-msgstr "Bluwtooth amokha"
+msgstr "Bluwtooth amokha kangpu"
 
 #: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1935
 msgid "Bluetooth Settings"
@@ -2594,18 +2483,17 @@ msgstr[0] "%d Chepho"
 msgstr[1] "Son %d Chepho"
 
 #: js/ui/status/brightness.js:42
-#, fuzzy
 #| msgid "Brightness"
 msgid "Open brightness menu"
-msgstr "Atur"
+msgstr "Atur Ason-amung kangpu"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
-msgstr ""
+msgstr "Dark Style"
 
 #: js/ui/status/doNotDisturb.js:10
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "Disturb Ik Ri"
 
 #: js/ui/status/dwellClick.js:14
 msgid "Single Click"
@@ -2678,19 +2566,17 @@ msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1163
-#, fuzzy, javascript-format
 #| msgid "%s Hotspot Active"
 msgid "%s Hotspot"
-msgstr "%s Hotspot reng-dok"
+msgstr "%s Hotspot"
 
 #: js/ui/status/network.js:1444
-#, fuzzy, javascript-format
 #| msgid "%d Connected"
 #| msgid_plural "%d Connected"
 msgid "%d connected"
 msgid_plural "%d connected"
-msgstr[0] "%d Chepho"
-msgstr[1] "Son %d Chepho"
+msgstr[0] "%d chepho"
+msgstr[1] "Son %d chepho"
 
 #: js/ui/status/network.js:1542 js/ui/status/network.js:1559
 msgid "VPN"
@@ -2706,40 +2592,34 @@ msgstr "VPN amokha"
 
 #: js/ui/status/network.js:1804
 msgid "Wi–Fi"
-msgstr ""
+msgstr "Wi–Fi"
 
 #: js/ui/status/network.js:1805
 msgid "Open Wi–Fi menu"
-msgstr ""
+msgstr "Wi–Fi Ason-amung kangpu"
 
 #: js/ui/status/network.js:1807
-#, fuzzy
 #| msgid "No Networks"
 msgid "All Networks"
-msgstr "Networks awe"
+msgstr "Kadokawe Networks"
 
 #: js/ui/status/network.js:1917
-#, fuzzy
-#| msgid "%s Wired Connection"
-#| msgid_plural "%s Wired Connections"
 msgid "Wired Connections"
 msgstr ""
 
 #: js/ui/status/network.js:1918
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open wired connections menu"
-msgstr "Application ason-amung kangpu"
+msgstr "Wired connection ason-amung kangpu"
 
 #: js/ui/status/network.js:1919
 msgid "Wired Settings"
 msgstr "Wired amokha"
 
 #: js/ui/status/network.js:1933
-#, fuzzy
 #| msgid "Bluetooth Settings"
 msgid "Bluetooth Tethers"
-msgstr "Bluwtooth amokha"
+msgstr "Bluwtooth Tethers"
 
 #: js/ui/status/network.js:1934
 msgid "Open Bluetooth tethers menu"
@@ -2747,23 +2627,18 @@ msgstr ""
 
 #. Translators: "Tether" from "Bluetooth Tether"
 #: js/ui/status/network.js:1941
-#, fuzzy
 #| msgid "Weather"
 msgid "Tether"
-msgstr "Botor"
+msgstr "Tether"
 
 #: js/ui/status/network.js:1954
-#, fuzzy
-#| msgid "%s Modem Connection"
-#| msgid_plural "%s Modem Connections"
 msgid "Mobile Connections"
-msgstr ""
+msgstr "Mobile Connections"
 
 #: js/ui/status/network.js:1955
-#, fuzzy
 #| msgid "Open the application menu"
 msgid "Open mobile connections menu"
-msgstr "Application ason-amung kangpu"
+msgstr "Mobile connections ason-amung kangpu"
 
 #: js/ui/status/network.js:1957
 msgid "Mobile Broadband Settings"
@@ -2775,7 +2650,6 @@ msgid "Mobile"
 msgstr ""
 
 #: js/ui/status/network.js:2000
-#| msgid "Wi-Fi Networks"
 msgid "Sign in to Network"
 msgstr "Wi-Fi Networks"
 
@@ -2788,7 +2662,6 @@ msgid "Activation of network connection failed"
 msgstr ""
 
 #: js/ui/status/nightLight.js:19
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "Night Light dam-bom"
 
@@ -2803,11 +2676,10 @@ msgid "Balanced"
 msgstr "Balanced"
 
 #: js/ui/status/powerProfiles.js:29
-#, fuzzy
 #| msgid "Power Settings"
 msgctxt "Power profile"
 msgid "Power Saver"
-msgstr "Power amokha"
+msgstr "Power Saver"
 
 #: js/ui/status/powerProfiles.js:35
 msgctxt "Power profile"
@@ -2815,52 +2687,45 @@ msgid "Custom"
 msgstr ""
 
 #: js/ui/status/powerProfiles.js:45
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Power Off"
 msgctxt "Quick settings button title"
 msgid "Power Mode"
-msgstr "Power Off"
+msgstr "Power Mode"
 
 #: js/ui/status/powerProfiles.js:46
 msgid "Open power profiles menu"
 msgstr ""
 
 #: js/ui/status/powerProfiles.js:77
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Power Off"
 msgctxt "Quick settings menu header"
 msgid "Power Mode"
-msgstr "Power Off"
+msgstr "Power Mode"
 
 #: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "Power amokha"
 
 #: js/ui/status/remoteAccess.js:73
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgid "Stop Screencast"
-msgstr "Screen kanghap"
+msgstr ""
 
 #: js/ui/status/remoteAccess.js:141
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen Rotation"
 msgid "Stop Screen Sharing"
-msgstr "Lock Screen Rotation"
+msgstr ""
 
 #: js/ui/status/rfkill.js:97
-#, fuzzy
 #| msgid "Airplane Mode On"
 msgid "Airplane Mode"
 msgstr "Aeroplane Mode"
 
 #: js/ui/status/system.js:174
-#| msgctxt "search-result"
-#| msgid "Power Off"
 msgid "Power Off Menu"
 msgstr "Power Off Menu"
 
@@ -2885,7 +2750,6 @@ msgid "Switch User…"
 msgstr "Monit chelar…"
 
 #: js/ui/status/system.js:248
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgctxt "action"
@@ -2909,9 +2773,6 @@ msgid "Unauthorized Thunderbolt device"
 msgstr "Hovang kawe Thunderbold hormu"
 
 #: js/ui/status/thunderbolt.js:315
-#| msgid ""
-#| "New device has been detected and needs to be authorized by an "
-#| "administrator."
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr "Kimi hormu ke thon phan administrators hovang nangji."
@@ -2942,9 +2803,6 @@ msgid "Volume"
 msgstr "Volume"
 
 #: js/ui/status/volume.js:314
-#, fuzzy
-#| msgid "%u Output"
-#| msgid_plural "%u Outputs"
 msgid "Sound Output"
 msgstr ""
 
@@ -2953,9 +2811,6 @@ msgid "Open sound output menu"
 msgstr ""
 
 #: js/ui/status/volume.js:391
-#, fuzzy
-#| msgid "%u Input"
-#| msgid_plural "%u Inputs"
 msgid "Sound Input"
 msgstr ""
 
@@ -2992,7 +2847,6 @@ msgid "Built-in Only"
 msgstr "Kedun bang anchot"
 
 #: js/ui/unlockDialog.js:25
-#| msgid "Unlock Window"
 msgid "Unlock Options"
 msgstr "Window ingpu noi"
 
@@ -3019,13 +2873,11 @@ msgid "Log in as another user"
 msgstr "Kaprek amen pen Login ji"
 
 #: js/ui/unlockDialog.js:695
-#, fuzzy
 #| msgid "Authentication error"
 msgid "Background Authentication Methods"
-msgstr "Hovang chokche"
+msgstr ""
 
 #: js/ui/welcomeDialog.js:47
-#, fuzzy, javascript-format
 #| msgid "GNOME Shell"
 msgid "GNOME %s"
 msgstr "GNOME %s"
@@ -3033,7 +2885,7 @@ msgstr "GNOME %s"
 #: js/ui/welcomeDialog.js:51
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Kuwangthu %s along"
 
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
@@ -3041,7 +2893,7 @@ msgstr ""
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
-msgstr ""
+msgstr "Tour kelang"
 
 #: js/ui/windowAttentionHandler.js:18
 #, javascript-format
@@ -3051,7 +2903,7 @@ msgstr "“%s” tang lo"
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:60
 msgid "Keep these display settings?"
-msgstr "Laso display settings pado nang?"
+msgstr "Display settings pado nang?"
 
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
@@ -3077,18 +2929,16 @@ msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:27
-#, fuzzy
 #| msgctxt "search-result"
 #| msgid "Lock Screen"
 msgctxt "window-menu"
 msgid "Take Screenshot"
-msgstr "Screen kanghap"
+msgstr "Screenshot Kenep"
 
 #: js/ui/windowMenu.js:39
-#, fuzzy
 #| msgid "Hide Text"
 msgid "Hide"
-msgstr "Amek matu"
+msgstr "Matu"
 
 #: js/ui/windowMenu.js:46
 msgid "Restore"
@@ -3156,15 +3006,15 @@ msgstr ""
 
 #: src/calendar-server/reminder-watcher.c:135
 msgid "Snooze"
-msgstr ""
+msgstr "Snooze"
 
 #: src/calendar-server/reminder-watcher.c:136
 msgid "Dismiss"
-msgstr ""
+msgstr "Dismiss"
 
 #: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
-msgstr ""
+msgstr "Print version"
 
 #: src/main.c:521
 msgid "Mode used by GDM for login screen"
@@ -3193,7 +3043,6 @@ msgid "Failed to launch “%s”"
 msgstr "“%s” ingpu un-eh"
 
 #: src/shell-keyring-prompt.c:776
-#, fuzzy
 #| msgid "Passwords do not match."
 msgid "Passwords do not match"
 msgstr "Passwords homan meh"
@@ -3212,7 +3061,6 @@ msgid "Icon '%s' not present in theme %s"
 msgstr ""
 
 #: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
-#| msgid "Unable to lock"
 msgid "Failed to load icon"
 msgstr "Lock un-eh"
 
@@ -3347,7 +3195,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-reset.c:77
 #: subprojects/extensions-tool/src/command-uninstall.c:105
 msgid "No UUID given"
-msgstr ""
+msgstr "UUID kipi awe"
 
 #: subprojects/extensions-tool/src/command-disable.c:122
 #: subprojects/extensions-tool/src/command-enable.c:122
@@ -3384,10 +3232,9 @@ msgid "Overwrite an existing extension"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:198
-#, fuzzy
 #| msgid "Print extension details"
 msgid "Print extension UUID on success"
-msgstr "Extensions details print"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:200
 msgid "EXTENSION_BUNDLE"
@@ -3422,13 +3269,11 @@ msgid "Show disabled extensions"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:153
-#, fuzzy
 #| msgid "Show extensions with updates"
 msgid "Show extensions in active state"
-msgstr "Extensions updates do an paklang"
+msgstr "Extensions active do an paklang"
 
 #: subprojects/extensions-tool/src/command-list.c:156
-#| msgid "Show extensions with updates"
 msgid "Show extensions in inactive state"
 msgstr "Extensions updates do an paklang"
 
@@ -3513,14 +3358,12 @@ msgid "Reset an extension"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:50
-#, fuzzy, c-format
-#| msgid "Show user-installed extensions"
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:65
-#, fuzzy, c-format
-#| msgid "Failed to launch “%s”"
+#, c-format
 msgid "Failed to uninstall “%s”\n"
 msgstr ""
 
@@ -3530,7 +3373,6 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-upload.c:226
 #, c-format
-#| msgid "List extensions"
 msgid "Login to extensions.gnome.org\n"
 msgstr ""
 
@@ -3569,7 +3411,6 @@ msgid "FILE…"
 msgstr "FILE…"
 
 #: subprojects/extensions-tool/src/command-upload.c:443
-#| msgid "Show extension info"
 msgid "Upload new extension versions"
 msgstr "Extensions info paklang"
 
@@ -3616,7 +3457,6 @@ msgid "Yes"
 msgstr "Ahok"
 
 #: subprojects/extensions-tool/src/main.c:270
-#| msgid "None"
 msgid "No"
 msgstr "Nangne"
 
@@ -3705,7 +3545,6 @@ msgid "Plain"
 msgstr "Plain"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
-#| msgid "Enable extension"
 msgid "An empty extension"
 msgstr "Extension kangpu"
 
@@ -3718,7 +3557,6 @@ msgid "Add an icon to the top bar"
 msgstr ""
 
 #: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
-#| msgid "Privacy Settings"
 msgid "Quick Settings Item"
 msgstr "Privacy amokha"
 
