@@ -30,6 +30,9 @@ const WIDTH_OFFSET_STACKED = 6;
 const HEIGHT_OFFSET_STACKED = 10;
 const HEIGHT_OFFSET_REDUCTION_STACKED = 1.4;
 
+const MAX_TITLE_LENGTH = 150;
+const MAX_BODY_LENGTH = 850;
+
 export const URLHighlighter = GObject.registerClass(
 class URLHighlighter extends St.Label {
     _init(text = '', lineWrap, allowMarkup) {
@@ -564,7 +567,7 @@ export const Message = GObject.registerClass({
     }
 
     set title(text) {
-        this._titleText = text;
+        this._titleText = this._limitString(text, MAX_TITLE_LENGTH);
         const title = text ? Util.fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
         this.notify('title');
@@ -575,7 +578,7 @@ export const Message = GObject.registerClass({
     }
 
     set body(text) {
-        this._bodyText = text;
+        this._bodyText = this._limitString(text, MAX_BODY_LENGTH);
         this._bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
             this._useBodyMarkup);
         this.notify('body');
@@ -683,6 +686,15 @@ export const Message = GObject.registerClass({
             }
         }
         return super.vfunc_key_press_event(event);
+    }
+
+    _limitString(string, limit) {
+        const segmenter = new Intl.Segmenter();
+        const graphemes =
+            Array.from(segmenter.segment(string))
+            .splice(0, limit)
+            .map(o => o.segment);
+        return graphemes.join('');
     }
 });
 
