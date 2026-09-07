@@ -181,8 +181,10 @@ class AuthRobot extends Signals.EventEmitter {
             return;
 
         this._enrolling = true;
-        GLib.idle_add(GLib.PRIORITY_DEFAULT,
-            this._enrollDevicesIdle.bind(this));
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._enrollDevicesIdle().catch(logError);
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     async _enrollDevicesIdle() {
@@ -190,7 +192,7 @@ class AuthRobot extends Signals.EventEmitter {
 
         let dev = devices.shift();
         if (dev === undefined)
-            return GLib.SOURCE_REMOVE;
+            return;
 
         try {
             await this._client.enrollDevice(dev.Uid, Policy.DEFAULT);
@@ -199,16 +201,12 @@ class AuthRobot extends Signals.EventEmitter {
              *  of this device and remove them (and their children and
              *  their children and ....) from the device queue
              */
-            this._enrolling = this._devicesToEnroll.length > 0;
-
-            if (this._enrolling) {
-                GLib.idle_add(GLib.PRIORITY_DEFAULT,
-                    this._enrollDevicesIdle.bind(this));
-            }
+            this._enrolling = false;
+            if (this._devicesToEnroll.length > 0)
+                this._enrollDevices();
         } catch (error) {
             this.emit('enroll-failed', null, error);
         }
-        return GLib.SOURCE_REMOVE;
     }
 }
 
