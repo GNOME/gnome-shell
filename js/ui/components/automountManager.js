@@ -29,6 +29,8 @@ class AutomountManager {
     }
 
     enable() {
+        this._cancellable = new Gio.Cancellable();
+
         this._volumeMonitor.connectObject(
             'volume-added', this._onVolumeAdded.bind(this),
             'volume-removed', this._onVolumeRemoved.bind(this),
@@ -41,6 +43,9 @@ class AutomountManager {
     }
 
     disable() {
+        this._cancellable?.cancel();
+        this._cancellable = null;
+
         this._volumeMonitor.disconnectObject(this);
 
         if (this._mountAllId > 0) {
@@ -178,7 +183,7 @@ class AutomountManager {
         const mountOp = operation?.mountOp ?? null;
         this._activeOperations.set(volume, operation);
 
-        volume.mount(0, mountOp, null,
+        volume.mount(0, mountOp, this._cancellable,
             this._onVolumeMounted.bind(this));
     }
 
