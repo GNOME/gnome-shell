@@ -2,24 +2,31 @@
 # Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013, 2014, 2015.
 # Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2013.
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2013-2019.
+# Φουντουκιά (Hazel) Λεβέντη <hazeltwink@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-02-04 22:50+0000\n"
-"PO-Revision-Date: 2025-10-18 22:44+0300\n"
-"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
-"Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
+"POT-Creation-Date: 2026-09-07 17:17+0000\n"
+"PO-Revision-Date: 2026-09-08 17:38+0300\n"
+"Last-Translator: Φουντουκιά (Hazel) Λεβέντη <hazeltwink@gmail.com>\n"
+"Language-Team: Greek\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Gtranslator 50.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Project-Style: gnome\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/gnome-shell/\n"
+"X-DL-Lang: el\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: None\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -98,7 +105,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Άνοιγμα νέου παραθύρου της καρφιτσωμένης εφαρμογής 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2296
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "Στιγμιότυπα οθόνης"
 
@@ -123,7 +130,7 @@ msgid "Record a screencast interactively"
 msgstr "Καταγραφή βίντεο οθόνης διαδραστικά"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1311
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1328
 msgid "System"
 msgstr "Σύστημα"
 
@@ -566,13 +573,14 @@ msgstr "Τοποθεσία"
 msgid "The location for which to show a forecast"
 msgstr "Η τοποθεσία για την οποία θα εμφανίζεται πρόβλεψη καιρού"
 
-#. Keep in sync with subprojects/extensions-app
+#. Keep in sync with GNOME/gnome-extensions-app
 #: data/org.gnome.Shell.Extensions.desktop.in:4
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:3
-#: subprojects/extensions-app/data/ui/extensions-window.ui:57
 msgid "Extensions"
 msgstr "Επεκτάσεις"
+
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+msgid "Reminder Notifications"
+msgstr "Ειδοποιήσεις υπενθυμίσεων"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
@@ -605,7 +613,6 @@ msgid "Information about this problem may be available on the %s."
 msgstr "Πληροφορίες για αυτό το πρόβλημα μπορεί να είναι διαθέσιμες στην %s."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:19
-#: subprojects/extensions-app/data/ui/extension-row.ui:13
 msgid "Error Details"
 msgstr "Λεπτομέρειες σφάλματος"
 
@@ -613,47 +620,101 @@ msgstr "Λεπτομέρειες σφάλματος"
 msgid "Copy Error"
 msgstr "Αντιγραφή σφάλματος"
 
-#: js/gdm/authPrompt.js:58 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "Φτάσατε το Όριο Χρόνου Οθόνης"
 
-#: js/gdm/authPrompt.js:64
+#: js/gdm/authPrompt.js:67
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
-msgstr "ο ημερήσιο όριο χρήσης της οθόνης σε αυτή τη συσκευή έχει εξαντληθεί. Συνεχίστε αύριο."
+msgstr ""
+"ο ημερήσιο όριο χρήσης της οθόνης σε αυτή τη συσκευή έχει εξαντληθεί. "
+"Συνεχίστε αύριο."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
-#: js/gdm/authPrompt.js:72
+#: js/gdm/authPrompt.js:75
 msgid "Ignore"
 msgstr "Αγνόηση"
 
-#: js/gdm/authPrompt.js:256 js/gdm/loginDialog.js:514
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:401
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
-#: js/ui/shellMountOperation.js:392
-msgid "Cancel"
-msgstr "Ακύρωση"
+#: js/gdm/authPrompt.js:269
+msgid "Back"
+msgstr "Πίσω"
 
-#: js/gdm/authPrompt.js:434 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:332
+#: js/gdm/authPrompt.js:366
+msgid "Submit"
+msgstr "Υποβολή"
+
+#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Συνθηματικό"
 
-#: js/gdm/loginDialog.js:327
-msgid "Choose Session"
-msgstr "Επιλογή συνεδρίας"
+#: js/gdm/authServices.js:33
+#, fuzzy
+msgid "Insert smartcard"
+msgstr "Εισάγετε την έξυπνη κάρτα"
 
-#: js/gdm/loginDialog.js:420 js/ui/status/accessibility.js:35
-msgid "Accessibility"
-msgstr "Προσιτότητα"
+#: js/gdm/authServices.js:37
+#, fuzzy
+msgid "Insert security key"
+msgstr "Εισάγετε το κλειδί ασφαλείας"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "Ξεκλείδωμα με δακτυλικό αποτύπωμα"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "Έξυπνη κάρτα"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "Δακτυλικό αποτύπωμα"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(ή σύρετε το δάκτυλο στον αναγνώστη)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(ή τοποθετήστε το δάκτυλο στον αναγνώστη)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:467
+#, fuzzy
+msgid "Insert Smartcard"
+msgstr "Εισάγετε την έξυπνη κάρτα"
+
+#: js/gdm/authServicesSSSDSwitchable.js:468
+msgid "Select Identity"
+msgstr "Επιλέξτε Ταυτότητα"
+
+#: js/gdm/authServicesSSSDSwitchable.js:507
+msgid "Organization"
+msgstr "Οργανισμός"
+
+#: js/gdm/authServicesSSSDSwitchable.js:534
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"Σας απομένουν %d απόπειρες. Εάν το κλειδί πρόσβασης κλειδώσει, ίσως "
+"να χάσετε πρόσβαση στον λογαριασμό σας."
+
+#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "Έτοιμο"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:472
+#: js/gdm/conflictingSessionDialog.js:50
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -665,7 +726,7 @@ msgstr ""
 "αποσυνδεθείτε από την απομακρυσμένη συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:475
+#: js/gdm/conflictingSessionDialog.js:53
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -676,7 +737,7 @@ msgstr ""
 "συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:478
+#: js/gdm/conflictingSessionDialog.js:56
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -688,7 +749,7 @@ msgstr ""
 "αποσυνδεθείτε από την τοπική συνεδρία ή να τη διακόψετε εξαναγκαστικά."
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:481
+#: js/gdm/conflictingSessionDialog.js:59
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -698,11 +759,11 @@ msgstr ""
 "συνδεθείτε, πρέπει να αποσυνδεθείτε από τη συνεδρία ή να τη διακόψετε "
 "εξαναγκαστικά."
 
-#: js/gdm/loginDialog.js:490
+#: js/gdm/conflictingSessionDialog.js:68
 msgid "Session Already Running"
 msgstr "Συνεδρία εκτελείται ήδη"
 
-#: js/gdm/loginDialog.js:502
+#: js/gdm/conflictingSessionDialog.js:80
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -710,81 +771,94 @@ msgstr ""
 "Η εξαναγκαστική διακοπή θα τερματίσει όλες τις εφαρμογές και διεργασίες που "
 "εκτελούνται και θα μπορούσε να οδηγήσει σε απώλεια δεδομένων"
 
-#: js/gdm/loginDialog.js:522
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:192
+#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
+#: js/ui/shellMountOperation.js:409
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "Εξαναγκαστική διακοπή"
 
-#: js/gdm/loginDialog.js:600
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:679
+msgid "Login Options"
+msgstr "Επιλογές Σύνδεσης"
+
+#: js/gdm/loginDialog.js:54
+
+msgid "Session Type"
+msgstr "Τύπος Συνεδρίας"
+
+#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Προσιτότητα"
+
+#: js/gdm/loginDialog.js:453
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1136
+#: js/gdm/loginDialog.js:1103
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(π.χ., χρήστης ή %s)"
 
-#: js/gdm/loginDialog.js:1141 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1110 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: js/gdm/loginDialog.js:1207
+#: js/gdm/loginDialog.js:1174
 msgid "Login Attempt Timed Out"
 msgstr "Λήξη χρονικού ορίου προσπάθειας σύνδεσης"
 
-#: js/gdm/loginDialog.js:1208
+#: js/gdm/loginDialog.js:1175
 msgid "Login took too long, please try again"
 msgstr "Η σύνδεση διήρκησε πολύ, παρακαλώ δοκιμάστε ξανά"
 
-#: js/gdm/loginDialog.js:1553
+#: js/gdm/loginDialog.js:1538
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
-#: js/gdm/util.js:496
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "Σφάλμα πιστοποίησης"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:731
-msgid "(or swipe finger across reader)"
-msgstr "(ή σύρετε το δάκτυλο στον αναγνώστη)"
+#: js/gdm/webLogin.js:63
+msgid "Login code: "
+msgstr "Κωδικός σύνδεσης: "
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:736
-msgid "(or place finger on reader)"
-msgstr "(ή τοποθετήστε το δάκτυλο στον αναγνώστη)"
-
-#: js/misc/breakManager.js:774
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "Ήχος ολοκλήρωσης διαλείμματος"
 
-#: js/misc/breakManager.js:983
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d δευτερόλεπτο"
 msgstr[1] "%d δευτερόλεπτα"
 
-#: js/misc/breakManager.js:989
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d λεπτό"
 msgstr[1] "%d λεπτά"
 
-#: js/misc/breakManager.js:995
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d ώρα"
 msgstr[1] "%d ώρες"
 
-#: js/misc/breakManager.js:1001
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -792,79 +866,79 @@ msgstr[0] "%d ημέρα"
 msgstr[1] "%d ημέρες"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "Θα είναι ώρα για διάλειμμα σε %s"
 msgstr[1] "Θα είναι ώρα για διάλειμμα σε %s"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "Διάλειμμα Κίνησης Σύντομα"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "Διάλειμμα Όρασης Σύντομα"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "Διάλειμμα Σύντομα"
 
-#: js/misc/breakManager.js:1142
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "Διάλειμμα Κίνησης σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1145
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "Συνεχίστε να κινείστε για %s"
 msgstr[1] "Συνεχίστε να κινείστε για %s"
 
-#: js/misc/breakManager.js:1151
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "Διάλειμμα Όρασης σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1154
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "Συνεχίστε να κοιτάτε μακριά για %s"
 msgstr[1] "Συνεχίστε να κοιτάτε μακριά για %s"
 
-#: js/misc/breakManager.js:1160
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "Διάλειμμα σε Εξέλιξη"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1163
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "%s απομένει στο διάλειμμά σας"
 msgstr[1] "%s απομένουν στο διάλειμμά σας"
 
-#: js/misc/breakManager.js:1202
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "Ώρα για Διάλειμμα Κίνησης"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1205
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "Κάντε διάλειμμα από τη συσκευή και κινηθείτε για %s"
 msgstr[1] "Κάντε διάλειμμα από τη συσκευή και κινηθείτε για %s"
 
-#: js/misc/breakManager.js:1211
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "Ώρα για Διάλειμμα Όρασης"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1214
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -877,12 +951,12 @@ msgstr[1] ""
 "Κάντε διάλειμμα από την οθόνη. Κοιτάξτε τουλάχιστον 6 μέτρα μακριά για "
 "τουλάχιστον %s"
 
-#: js/misc/breakManager.js:1220
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "Ώρα για Διάλειμμα"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1223
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -890,179 +964,175 @@ msgstr[0] "Είναι ώρα για διάλειμμα. Απομακρυνθεί
 msgstr[1] "Είναι ώρα για διάλειμμα. Απομακρυνθείτε από τη συσκευή για %s!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1247
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "Θα έπρεπε να έχετε κάνει διάλειμμα %s πριν"
 msgstr[1] "Θα έπρεπε να έχετε κάνει διάλειμμα %s πριν"
 
-#: js/misc/breakManager.js:1253
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "Καθυστερημένο Διάλειμμα"
 
-#: js/misc/breakManager.js:1269
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "Απομένει %s στο διάλειμμά σας"
 msgstr[1] "Απομένουν %s στο διάλειμμά σας"
 
-#: js/misc/breakManager.js:1275
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "Διάλειμμα Διακοπή"
 
 #. Translators: As in "Delay the break"
-#: js/misc/breakManager.js:1353
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "Καθυστέρηση"
 
 #. Translators: As in "Skip the break"
-#: js/misc/breakManager.js:1375 js/ui/welcomeDialog.js:61
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "Παράλειψη"
 
 #. Translators: As in "Take the break"
-#: js/misc/breakManager.js:1397
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "Κάντε"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1460
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "Διάλειμμα σε %d δευτερόλεπτο"
 msgstr[1] "Διάλειμμα σε %d δευτερόλεπτα"
 
-#: js/misc/brightnessManager.js:171 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:294 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Φωτεινότητα"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Απενεργοποίηση"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "απενεργοποίηση;poweroff;τερματισμός;διακοπή;stop"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgid "reboot;restart;"
 msgstr "επανεκκίνηση;restart;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Κλείδωμα Οθόνης"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgid "lock screen"
 msgstr "κλείδωμα οθόνης"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Αποσύνδεση"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgid "logout;log out;sign off"
 msgstr "αποσύνδεση;log out;sign off"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:130
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Αναστολή"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:129
+#: js/misc/systemActions.js:133
 msgid "suspend;sleep"
 msgstr "αναστολή;sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:138
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Αλλαγή Χρήστη"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:137
+#: js/misc/systemActions.js:141
 msgid "switch user"
 msgstr "αλλαγή χρήστη"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:144
+#: js/misc/systemActions.js:148
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "κλείδωμα προσανατολισμού;ξεκλείδωμα προσανατολισμού;οθόνη;περιστροφή"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Λήψη Στιγμιότυπου Οθόνης"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:152
+#: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "στιγμιότυπο οθόνης;βίντεο οθόνης;απόκομμα;καταγραφή;εγγραφή"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Ξεκλείδωμα Περιστροφής Οθόνης"
 
-#: js/misc/systemActions.js:257
+#: js/misc/systemActions.js:268
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Κλείδωμα Περιστροφής Οθόνης"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "Το GNOME χρειάζεται να αποθηκεύσει δεδομένα χρόνου οθόνης"
 
-#: js/misc/timeLimitsManager.js:1392
-#| msgid "Screen Time Limit in %d Minute"
-#| msgid_plural "Screen Time Limit in %d Minutes"
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "Ο χρόνος χρήσης της οθόνης έχει σχεδόν τελειώσει"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
-#| msgid "The system will restart automatically in %d second"
-#| msgid_plural "The system will restart automatically in %d seconds"
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
 msgstr[0] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτο"
 msgstr[1] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτα."
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Όριο Χρόνου Οθόνης σε %d Λεπτό"
 msgstr[1] "Όριο Χρόνου Οθόνης σε %d Λεπτά"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "Το όριο χρόνου οθόνης σας πλησιάζει"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "Είναι ώρα να σταματήσετε τη χρήση της συσκευής"
 
@@ -1197,11 +1267,11 @@ msgstr "%-d %B, %l:%M %p"
 msgid "%B %-d %Y, %l:%M %p"
 msgstr "%-d %B %Y, %l:%M %p"
 
-#: js/portalHelper/main.js:98
+#: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
 msgstr "Η σύνδεσή σας φαίνεται ασφαλής"
 
-#: js/portalHelper/main.js:104
+#: js/portalHelper/main.js:110
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1210,7 +1280,7 @@ msgstr ""
 "Κωδικοί πρόσβασης ή άλλες πληροφορίες που εισάγετε σε αυτή τη σελίδα μπορούν "
 "να προβληθούν από άτομα κοντά σας."
 
-#: js/portalHelper/main.js:115
+#: js/portalHelper/main.js:121
 msgid "Hotspot Login"
 msgstr "Σύνδεση Σημείου Πρόσβασης"
 
@@ -1224,21 +1294,33 @@ msgstr "Απόρριψη"
 msgid "Allow"
 msgstr "Να επιτραπεί"
 
-#: js/ui/appDisplay.js:1731
+#: js/ui/appDisplay.js:158
+msgid "App grid"
+msgstr "Πλέγμα εφαρμογών"
+
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "Ανώνυμος Φάκελος"
 
-#: js/ui/appFavorites.js:89
-#, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "Το %s καρφιτσώθηκε στο ταμπλό."
+#: js/ui/appDisplay.js:2563
+msgid "Folder name"
+msgstr "Όνομα φακέλου"
 
-#: js/ui/appFavorites.js:120
-#, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "Το %s ξεκαρφιτσώθηκε από το ταμπλό."
+#: js/ui/appDisplay.js:2586
+msgid "Edit folder name"
+msgstr "Επεξεργασία ονόματος φακέλου"
 
-#: js/ui/appFavorites.js:134 js/ui/main.js:304
+#: js/ui/appFavorites.js:104
+#, javascript-format
+msgid "%s Pinned to Dash"
+msgstr "Το %s καρφιτσώθηκε στο Ταμπλό"
+
+#: js/ui/appFavorites.js:135
+#, javascript-format
+msgid "%s Unpinned From Dash"
+msgstr "Το %s ξεκαρφιτσώθηκε από το Ταμπλό."
+
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "Αναίρεση"
 
@@ -1259,7 +1341,7 @@ msgstr "Λεπτομέρειες Εφαρμογής"
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:245
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
 msgstr "Ξεκαρφίτσωμα"
 
@@ -1291,19 +1373,19 @@ msgstr "Ακουστικά"
 msgid "Headset"
 msgstr "Ακουστικό"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:371
+#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Μικρόφωνο"
 
-#: js/ui/backgroundMenu.js:13
+#: js/ui/backgroundMenu.js:12
 msgid "Change Background…"
 msgstr "Αλλαγή Φόντου…"
 
-#: js/ui/backgroundMenu.js:15
+#: js/ui/backgroundMenu.js:14
 msgid "Display Settings"
 msgstr "Ρυθμίσεις Οθόνης"
 
-#: js/ui/backgroundMenu.js:16
+#: js/ui/backgroundMenu.js:15
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
@@ -1382,33 +1464,33 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:505
+#: js/ui/calendar.js:513
 msgid "Previous month"
 msgstr "Προηγούμενος μήνας"
 
-#: js/ui/calendar.js:523
+#: js/ui/calendar.js:531
 msgid "Next month"
 msgstr "Επόμενος μήνας"
 
-#: js/ui/calendar.js:675
+#: js/ui/calendar.js:676
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:734
+#: js/ui/calendar.js:735
 msgid "Week %V"
 msgstr "Εβδομάδα %V"
 
-#: js/ui/calendar.js:787
+#: js/ui/calendar.js:788
 msgid "No Notifications"
 msgstr "Καμία ειδοποίηση"
 
-#: js/ui/calendar.js:828
+#: js/ui/calendar.js:829
 msgid "Clear"
 msgstr "Εκκαθάριση"
 
-#: js/ui/calendar.js:832
+#: js/ui/calendar.js:833
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "Εκκαθάριση όλων των ειδοποιήσεων"
@@ -1435,33 +1517,33 @@ msgstr "Εξαναγκασμός εξόδου"
 msgid "Wait"
 msgstr "Αναμονή"
 
-#: js/ui/components/automountManager.js:81
+#: js/ui/components/automountManager.js:82
 msgid "External drive connected"
 msgstr "Συνδέθηκε εξωτερικός δίσκος"
 
-#: js/ui/components/automountManager.js:93
+#: js/ui/components/automountManager.js:95
 msgid "External drive disconnected"
 msgstr "Αποσυνδέθηκε εξωτερικός δίσκος"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:209
 msgid "Unable to unlock volume"
 msgstr "Αδυναμία ξεκλειδώματος τόμου"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Η εγκατεστημένη έκδοση udisks δεν υποστηρίζει τη ρύθμιση PIM"
 
 #. Translators: %s is the name of a partition on a external drive
-#: js/ui/components/autorunManager.js:189
+#: js/ui/components/autorunManager.js:190
 #, javascript-format
 msgid "“%s” connected"
 msgstr "Συνδέθηκε το «%s»"
 
-#: js/ui/components/autorunManager.js:190
+#: js/ui/components/autorunManager.js:191
 msgid "Disk can now be used"
 msgstr "Ο δίσκος μπορεί τώρα να χρησιμοποιηθεί"
 
-#: js/ui/components/autorunManager.js:202
+#: js/ui/components/autorunManager.js:203
 #, javascript-format
 msgid "Open with %s"
 msgstr "Άνοιγμα με %s"
@@ -1474,7 +1556,7 @@ msgstr ""
 "σας"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "Σύνδεση"
 
@@ -1558,21 +1640,21 @@ msgstr "Πιστοποίηση"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:432
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Συγγνώμη, αυτό δεν λειτούργησε. Παρακαλούμε προσπαθήστε ξανά."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:407
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "Παράθυρα"
 
-#: js/ui/dash.js:201 js/ui/dash.js:247
+#: js/ui/dash.js:200 js/ui/dash.js:246
 msgid "Show Apps"
 msgstr "Εμφάνιση Εφαρμογών"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:405
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "Ταμπλό"
 
@@ -1660,91 +1742,91 @@ msgstr "Καιρός"
 msgid "Select Weather Location…"
 msgstr "Επιλέξτε Τοποθεσία Καιρού…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Αποσύνδεση %s"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Αποσύνδεση"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
 msgstr[0] "Ο %s θα αποσυνδεθεί αυτόματα σε %d δευτερόλεπτο"
 msgstr[1] "Ο %s θα αποσυνδεθεί αυτόματα σε %d δευτερόλεπτα"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:57
 #, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
 msgstr[0] "Θα αποσυνδεθείτε αυτόματα σε %d δευτερόλεπτο"
 msgstr[1] "Θα αποσυνδεθείτε αυτόματα σε %d δευτερόλεπτα"
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Αποσύνδεση"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:181
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "Τερματισμός"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Εγκατάσταση Ενημερώσεων & Τερματισμός"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
 msgstr[0] "Το σύστημα θα τερματιστεί αυτόματα σε %d δευτερόλεπτο"
 msgstr[1] "Το σύστημα θα τερματιστεί αυτόματα σε %d δευτερόλεπτα"
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Εγκατάσταση εκκρεμών ενημερώσεων λογισμικού"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Τερματισμός"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Εγκατάσταση Ενημερώσεων & Επανεκκίνηση"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
 msgstr[0] "Το σύστημα θα επανεκκινήσει αυτόματα σε %d δευτερόλεπτο"
 msgstr[1] "Το σύστημα θα επανεκκινήσει αυτόματα σε %d δευτερόλεπτα"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Επανεκκίνηση & Εγκατάσταση Ενημερώσεων"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:112
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
@@ -1756,49 +1838,49 @@ msgstr[1] ""
 "Το σύστημα θα επανεκκινήσει αυτόματα και θα εγκαταστήσει ενημερώσεις σε %d "
 "δευτερόλεπτα"
 
-#: js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Επανεκκίνηση & Εγκατάσταση"
 
-#: js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Εγκατάσταση & Τερματισμός"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Τερματισμός μετά την εγκατάσταση ενημερώσεων"
 
-#: js/ui/endSessionDialog.js:262
+#: js/ui/endSessionDialog.js:263
 msgid "Low battery power: please plug in before installing updates"
 msgstr ""
 "Χαμηλό επίπεδο μπαταρίας: παρακαλούμε συνδεθείτε στην πρίζα πριν την "
 "εγκατάσταση των ενημερώσεων"
 
-#: js/ui/endSessionDialog.js:271
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr ""
 "Κάποιες εφαρμογές είναι απασχολημένες ή έχουν δεδομένα που δεν αποθηκεύτηκαν"
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "Είναι συνδεδεμένοι άλλοι χρήστες"
 
-#: js/ui/endSessionDialog.js:431
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Επιλογές Εκκίνησης"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:635
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (απομακρυσμένο)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:638
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (κονσόλα)"
@@ -1816,11 +1898,11 @@ msgstr "Εγκατάσταση Επέκτασης"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Λήψη και εγκατάσταση του «%s» από το extensions.gnome.org;"
 
-#: js/ui/extensionSystem.js:353
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "Διαθέσιμες Ενημερώσεις Επεκτάσεων"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "Οι ενημερώσεις των επεκτάσεων είναι έτοιμες προς εγκατάσταση"
 
@@ -1896,7 +1978,7 @@ msgstr "Να Παραμείνει Ενεργό"
 msgid "Turn On"
 msgstr "Ενεργοποίηση"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "Απενεργοποίηση"
 
@@ -1904,77 +1986,77 @@ msgstr "Απενεργοποίηση"
 msgid "Leave Off"
 msgstr "Να Παραμείνει Ανενεργό"
 
-#: js/ui/keyboard.js:179 js/ui/status/keyboard.js:888
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
 msgstr "Ρυθμίσεις Πληκτρολογίου"
 
-#: js/ui/lookingGlass.js:737
+#: js/ui/lookingGlass.js:753
 msgid "No extensions installed"
 msgstr "Δεν Υπάρχουν Εγκατεστημένες Επεκτάσεις"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:800
+#: js/ui/lookingGlass.js:816
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "Το %s δεν έδωσε σφάλματα"
 
-#: js/ui/lookingGlass.js:806
+#: js/ui/lookingGlass.js:822
 msgid "Hide Errors"
 msgstr "Απόκρυψη Σφαλμάτων"
 
-#: js/ui/lookingGlass.js:810 js/ui/lookingGlass.js:890
+#: js/ui/lookingGlass.js:826 js/ui/lookingGlass.js:906
 msgid "Show Errors"
 msgstr "Εμφάνιση Σφαλμάτων"
 
-#: js/ui/lookingGlass.js:819
+#: js/ui/lookingGlass.js:835
 msgid "Active"
 msgstr "Ενεργό"
 
-#: js/ui/lookingGlass.js:822
+#: js/ui/lookingGlass.js:838
 msgid "Inactive"
 msgstr "Ανενεργό"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:840
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: js/ui/lookingGlass.js:826
+#: js/ui/lookingGlass.js:842
 msgid "Out of date"
 msgstr "Μη Ενημερωμένο"
 
-#: js/ui/lookingGlass.js:828
+#: js/ui/lookingGlass.js:844
 msgid "Downloading"
 msgstr "Γίνεται Λήψη"
 
-#: js/ui/lookingGlass.js:830
+#: js/ui/lookingGlass.js:846
 msgid "Deactivating"
 msgstr "Γίνεται Απενεργοποίηση"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:848
 msgid "Activating"
 msgstr "Γίνεται Ενεργοποίηση"
 
-#: js/ui/lookingGlass.js:868
+#: js/ui/lookingGlass.js:884
 msgid "View Source"
 msgstr "Προβολή Πηγής"
 
-#: js/ui/lookingGlass.js:879
+#: js/ui/lookingGlass.js:895
 msgid "Web Page"
 msgstr "Ιστοσελίδα"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "Το Σύστημα τέθηκε σε Ανασφαλή Λειτουργία"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "Οι Εφαρμογές πλέον έχουν Απεριόριστη Πρόσβαση"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "Συνδεθήκατε ως Προνομιούχος Χρήστης"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1983,21 +2065,21 @@ msgstr ""
 "αποφεύγεται για λόγους ασφαλείας. Εάν είναι δυνατόν, θα πρέπει να συνδεθείτε "
 "ως κανονικός χρήστης."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "Το Κλείδωμα Οθόνης Απενεργοποιήθηκε"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Το Κλείδωμα Οθόνης απαιτεί τον Διαχειριστή Οθόνης του GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:403
+#: js/ui/messageList.js:409
 msgid "Unknown App"
 msgstr "Άγνωστη Εφαρμογή"
 
-#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
 msgid "Notification sound"
 msgstr "Ήχος Ειδοποιήσεων"
 
@@ -2013,11 +2095,11 @@ msgstr "Άγνωστος Τίτλος"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:330
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "Πληκτρολογήστε για Αναζήτηση"
 
-#: js/ui/overviewControls.js:395
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "Εφαρμογές"
 
@@ -2047,10 +2129,6 @@ msgstr "Εναλλαγή Οθόνης"
 msgid "Assign keystroke"
 msgstr "Αντιστοίχηση Πλήκτρων"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "Έτοιμο"
-
 #: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Επεξεργασία…"
@@ -2073,32 +2151,32 @@ msgstr "Πατήστε Οποιοδήποτε Πλήκτρο για Έξοδο"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:208
+#: js/ui/panel.js:226
 msgid "Activities"
 msgstr "Δραστηριότητες"
 
-#: js/ui/panel.js:289
+#: js/ui/panel.js:304
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Σύστημα"
 
-#: js/ui/panel.js:470
+#: js/ui/panel.js:498
 msgid "Top Bar"
 msgstr "Πάνω Μπάρα"
 
-#: js/ui/quickSettings.js:164 js/ui/quickSettings.js:263
+#: js/ui/quickSettings.js:162 js/ui/quickSettings.js:261
 msgid "Open menu"
 msgstr "Άνοιγμα Μενού"
 
-#: js/ui/runDialog.js:61
+#: js/ui/runDialog.js:74
 msgid "Run a Command"
 msgstr "Εκτέλεση Εντολής"
 
-#: js/ui/runDialog.js:79
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "Πατήστε ESC για Κλείσιμο"
 
-#: js/ui/screenShield.js:220
+#: js/ui/screenShield.js:226
 msgid "GNOME needs to lock the screen"
 msgstr "Το GNOME χρειάζεται να Κλειδώσει την Οθόνη"
 
@@ -2107,175 +2185,174 @@ msgstr "Το GNOME χρειάζεται να Κλειδώσει την Οθόν�
 msgid "Screen Capture"
 msgstr "Αποτύπωση Οθόνης"
 
-#: js/ui/screenshot.js:1267
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "Επιλογή"
 
-#: js/ui/screenshot.js:1277
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "Επιλογή Περιοχής"
 
-#: js/ui/screenshot.js:1282
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "Οθόνη"
 
-#: js/ui/screenshot.js:1292
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "Επιλογή Οθόνης"
 
-#: js/ui/screenshot.js:1297
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "Παράθυρο"
 
-#: js/ui/screenshot.js:1307
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "Επιλογή Παραθύρου"
 
-#: js/ui/screenshot.js:1332 js/ui/status/system.js:118
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "Λήψη Στιγμιότυπου Οθόνης"
 
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "Εγγραφή Οθόνης"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1365
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "Αποτύπωση"
 
-#: js/ui/screenshot.js:1387
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "Εμφάνιση Δρομέα"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2020
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "Βίντεο Οθόνης"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2025
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Βίντεο Οθόνης από %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2071
-msgid "Screencast recorded"
+#: js/ui/screenshot.js:2487
+msgid "Screencast Recorded"
 msgstr "Καταγράφηκε Βίντεο Οθόνης"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2084
-msgid "Screencast failed to start"
+#: js/ui/screenshot.js:2500
+msgid "Screencast Failed to Start"
 msgstr "Αποτυχία Εκκίνησης Βίντεο Οθόνης"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2090
-msgid "Screencast ended: Out of disk space"
-msgstr "Το Βίντεο Οθόνης Τερματίστηκε: Δεν Υπάρχει Χώρος στο Δίσκο"
+#: js/ui/screenshot.js:2506
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "Αποτυχία Βίντεο Οθόνης: Δεν Υπάρχει Χώρος στο Δίσκο"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2096
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "Το Βίντεο Οθόνης Τερματίστηκε, Παρακαλούμε Ξαναπροσπαθήστε"
+#: js/ui/screenshot.js:2512
+msgid "Screencast Failed, Please Try Again"
+msgstr "Αποτυχία Βίντεο Οθόνης, Παρακαλούμε Ξαναπροσπαθήστε"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2099
-msgid "Screencast ended unexpectedly"
-msgstr "Η Εγγραφή Οθόνης Τερματίστηκε Απροσδόκητα"
+#: js/ui/screenshot.js:2515
+msgid "Screencast Failed"
+msgstr "Αποτυχία Βίντεο Οθόνης"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2112
+#: js/ui/screenshot.js:2528
 msgid "Click here to view the video"
 msgstr "Κάντε Κλικ Εδώ για Προβολή του Βίντεο"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2120 js/ui/screenshot.js:2363
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "Εμφάνιση στα Αρχεία"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2309
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Στιγμιότυπο Οθόνης από %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2353
-msgid "Screenshot captured"
+#: js/ui/screenshot.js:2749
+msgid "Screenshot Captured"
 msgstr "Καταγράφηκε Στιγμιότυπο Οθόνης"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2355
+#: js/ui/screenshot.js:2751
 msgid "You can paste the image from the clipboard"
 msgstr "Μπορείτε να Επικολλήσετε την Εικόνα από το Πρόχειρο"
 
-#: js/ui/screenshot.js:2413 js/ui/screenshot.js:2575
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "Ελήφθη Στιγμιότυπο Οθόνης"
 
-#: js/ui/search.js:846
+#: js/ui/search.js:869
 msgid "Searching"
 msgstr "Αναζήτηση"
 
-#: js/ui/search.js:849
+#: js/ui/search.js:872
 msgid "No results"
 msgstr "Δε Βρέθηκαν Αποτελέσματα"
 
-#: js/ui/search.js:984
+#: js/ui/search.js:1008
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d περισσότερο"
 msgstr[1] "%d περισσότερα"
 
-#: js/ui/searchController.js:86
-#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+#: js/ui/searchController.js:97
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: js/ui/shellEntry.js:22
+#: js/ui/shellEntry.js:21
 msgid "Copy"
 msgstr "Αντιγραφή"
 
-#: js/ui/shellEntry.js:27
+#: js/ui/shellEntry.js:26
 msgid "Paste"
 msgstr "Επικόλληση"
 
-#: js/ui/shellEntry.js:79
+#: js/ui/shellEntry.js:81
 msgid "Show Text"
 msgstr "Εμφάνιση Κειμένου"
 
-#: js/ui/shellEntry.js:81
+#: js/ui/shellEntry.js:83
 msgid "Hide Text"
 msgstr "Απόκρυψη Κειμένου"
 
-#: js/ui/shellEntry.js:170
+#: js/ui/shellEntry.js:172
 msgid "Caps lock is on"
 msgstr "Τα Κεφαλαία είναι Ενεργοποιημένα"
 
-#: js/ui/shellMountOperation.js:286
+#: js/ui/shellMountOperation.js:303
 msgid "Hidden Volume"
 msgstr "Κρυφός Τόμος"
 
-#: js/ui/shellMountOperation.js:289
+#: js/ui/shellMountOperation.js:306
 msgid "Windows System Volume"
 msgstr "Τομέας Συστήματος Windows"
 
-#: js/ui/shellMountOperation.js:292
+#: js/ui/shellMountOperation.js:309
 msgid "Uses Keyfiles"
 msgstr "Χρησιμοποιεί Αρχεία Κλειδιά"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:300
+#: js/ui/shellMountOperation.js:317
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
@@ -2283,7 +2360,7 @@ msgstr ""
 "Για να ξεκλειδώσετε έναν τόμο που χρησιμοποιεί αρχεία κλειδιά, "
 "χρησιμοποιήστε το βοηθητικό εργαλείο <i>%s</i> αντ' αυτού"
 
-#: js/ui/shellMountOperation.js:304
+#: js/ui/shellMountOperation.js:321
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2291,25 +2368,25 @@ msgstr ""
 "Χρειάζεστε ένα εξωτερικό βοηθητικό πρόγραμμα όπως το <i>Δίσκοι</i> για να "
 "ξεκλειδώσετε έναν τόμο που χρησιμοποιεί αρχεία κλειδιά"
 
-#: js/ui/shellMountOperation.js:312
+#: js/ui/shellMountOperation.js:329
 msgid "PIM Number"
 msgstr "Αριθμός PIM"
 
-#: js/ui/shellMountOperation.js:371
+#: js/ui/shellMountOperation.js:388
 msgid "Remember Password"
 msgstr "Απομνημόνευση Συνθηματικού"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:403
 msgid "Unlock"
 msgstr "Ξεκλείδωμα"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:400
+#: js/ui/shellMountOperation.js:417
 #, javascript-format
 msgid "Open %s"
 msgstr "Άνοιγμα %s"
 
-#: js/ui/shellMountOperation.js:436
+#: js/ui/shellMountOperation.js:453
 msgid "The PIM must be a number or empty"
 msgstr "Το PIM πρέπει να είναι Αριθμός ή Κενό"
 
@@ -2389,38 +2466,38 @@ msgstr[1] "%d Εφαρμογές στο Παρασκήνιο"
 msgid "Keyboard Brightness"
 msgstr "Φωτεινότητα Πληκτρολογίου"
 
-#: js/ui/status/backlight.js:87
+#: js/ui/status/backlight.js:83
 msgid "Off"
 msgstr "Απενεργό"
 
-#: js/ui/status/backlight.js:88
+#: js/ui/status/backlight.js:84
 msgid "Low"
 msgstr "Χαμηλό"
 
-#: js/ui/status/backlight.js:89
+#: js/ui/status/backlight.js:85
 msgid "High"
 msgstr "Υψηλό"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:870
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
-#: js/ui/status/backlight.js:164
+#: js/ui/status/backlight.js:158
 msgid "Open keyboard brightness menu"
 msgstr "Άνοιγμα μενού φωτεινότητας πληκτρολογίου"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "Αποσύνδεση"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Αποσύνδεση %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Σύνδεση %s"
@@ -2433,7 +2510,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Άνοιγμα μενού Bluetooth"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1939
 msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
@@ -2485,7 +2562,7 @@ msgstr "Δευτερεύον Κλικ"
 msgid "Dwell Click"
 msgstr "Κράτημα Κλικ"
 
-#: js/ui/status/keyboard.js:887
+#: js/ui/status/keyboard.js:894
 msgid "Show Keyboard Layout"
 msgstr "Εμφάνιση Διάταξης Πληκτρολογίου"
 
@@ -2513,117 +2590,117 @@ msgstr "Άρνηση Πρόσβασης"
 msgid "Grant Access"
 msgstr "Παραχώρηση Πρόσβασης"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<άγνωστο>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Ασφαλές"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Μη ασφαλές"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Ένταση σήματος %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Σημείο πρόσβασης %s"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1448
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "Συνδέθηκε %d"
 msgstr[1] "Συνδέθηκαν %d"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1546 js/ui/status/network.js:1563
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1547
 msgid "Open VPN menu"
 msgstr "Άνοιγμα μενού VPN"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1548
 msgid "VPN Settings"
 msgstr "Ρυθμίσεις VPN"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1808
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1809
 msgid "Open Wi–Fi menu"
 msgstr "Άνοιγμα μενού Wi-Fi"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1811
 msgid "All Networks"
 msgstr "Όλα τα δίκτυα"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1921
 msgid "Wired Connections"
 msgstr "Ενσύρματες συνδέσεις"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1922
 msgid "Open wired connections menu"
 msgstr "Άνοιγμα μενού ενσύρματων συνδέσεων"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1923
 msgid "Wired Settings"
 msgstr "Ρυθμίσεις ενσύρματης σύνδεσης"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1937
 msgid "Bluetooth Tethers"
 msgstr "Συνδέσεις Bluetooth"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1938
 msgid "Open Bluetooth tethers menu"
 msgstr "Άνοιγμα μενού συνδέσεων Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1945
 msgid "Tether"
 msgstr "Σύνδεση"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1958
 msgid "Mobile Connections"
 msgstr "Κινητές συνδέσεις"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1959
 msgid "Open mobile connections menu"
 msgstr "Άνοιγμα μενού κινητών συνδέσεων"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1961
 msgid "Mobile Broadband Settings"
 msgstr "Ρυθμίσεις Κινητής Ευρυζωνικής Σύνδεσης"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1970
 msgid "Mobile"
 msgstr "Κινητό"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2004
 msgid "Sign in to Network"
 msgstr "Σύνδεση στο δίκτυο"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2191
 msgid "Connection failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2192
 msgid "Activation of network connection failed"
 msgstr "Απέτυχε η ενεργοποίηση της σύνδεσης δικτύου"
 
@@ -2652,7 +2729,6 @@ msgid "Custom"
 msgstr "Προσαρμοσμένο"
 
 #: js/ui/status/powerProfiles.js:45
-#| msgid "Power Mode"
 msgctxt "Quick settings button title"
 msgid "Power Mode"
 msgstr "Λειτουργία ισχύος"
@@ -2662,7 +2738,6 @@ msgid "Open power profiles menu"
 msgstr "Άνοιγμα μενού προφίλ ισχύος"
 
 #: js/ui/status/powerProfiles.js:77
-#| msgid "Power Mode"
 msgctxt "Quick settings menu header"
 msgid "Power Mode"
 msgstr "Λειτουργία ισχύος"
@@ -2683,31 +2758,31 @@ msgstr "Διακοπή κοινής χρήσης οθόνης"
 msgid "Airplane Mode"
 msgstr "Λειτουργία πτήσης"
 
-#: js/ui/status/system.js:175
+#: js/ui/status/system.js:174
 msgid "Power Off Menu"
 msgstr "Μενού τερματισμού"
 
-#: js/ui/status/system.js:183
+#: js/ui/status/system.js:182
 msgid "Suspend"
 msgstr "Αναστολή"
 
-#: js/ui/status/system.js:188
+#: js/ui/status/system.js:187
 msgid "Restart…"
 msgstr "Επανεκκίνηση…"
 
-#: js/ui/status/system.js:193
+#: js/ui/status/system.js:192
 msgid "Power Off…"
 msgstr "Τερματισμός…"
 
-#: js/ui/status/system.js:200
+#: js/ui/status/system.js:199
 msgid "Log Out…"
 msgstr "Αποσύνδεση…"
 
-#: js/ui/status/system.js:205
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
 msgid "Switch User…"
 msgstr "Εναλλαγή χρήστη…"
 
-#: js/ui/status/system.js:249
+#: js/ui/status/system.js:248
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "Κλείδωμα οθόνης"
@@ -2742,35 +2817,35 @@ msgstr "Σφάλμα πιστοποίησης Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Αδυναμία πιστοποίησης της συσκευής Thunderbolt: %s"
 
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:218
 msgid "Volume changed"
 msgstr "Άλλαξε η ένταση"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Unmute"
 msgstr "Άρση σίγασης"
 
-#: js/ui/status/volume.js:230
+#: js/ui/status/volume.js:231
 msgid "Mute"
 msgstr "Σίγαση"
 
-#: js/ui/status/volume.js:297
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "Ένταση"
 
-#: js/ui/status/volume.js:313
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "Έξοδος ήχου"
 
-#: js/ui/status/volume.js:314
+#: js/ui/status/volume.js:315
 msgid "Open sound output menu"
 msgstr "Άνοιγμα μενού εξόδου ήχου"
 
-#: js/ui/status/volume.js:389
+#: js/ui/status/volume.js:391
 msgid "Sound Input"
 msgstr "Είσοδος ήχου"
 
-#: js/ui/status/volume.js:390
+#: js/ui/status/volume.js:392
 msgid "Open sound input menu"
 msgstr "Άνοιγμα μενού εισόδου ήχου"
 
@@ -2802,27 +2877,36 @@ msgstr "Μόνο εξωτερικό"
 msgid "Built-in Only"
 msgstr "Μόνο ενσωματωμένο"
 
+#: js/ui/unlockDialog.js:25
+msgid "Unlock Options"
+msgstr "Επιλογές Ξεκλειδώματος"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:415
+#: js/ui/unlockDialog.js:420
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:421
-msgid "Swipe up to unlock"
-msgstr "Σύρετε για ξεκλείδωμα"
+#: js/ui/unlockDialog.js:435
+msgid "Swipe up"
+msgstr "Σύρετε προς τα πάνω"
 
-#: js/ui/unlockDialog.js:422
-msgid "Click or press a key to unlock"
-msgstr "Κάντε κλικ ή πατήστε ένα πλήκτρο για ξεκλείδωμα"
+#: js/ui/unlockDialog.js:437
+msgid "Click or press a key"
+msgstr "Κάντε κλικ ή πατήστε ένα πλήκτρο"
 
-#: js/ui/unlockDialog.js:610
+#: js/ui/unlockDialog.js:653
 msgid "Unlock Window"
 msgstr "Ξεκλείδωμα παραθύρου"
 
-#: js/ui/unlockDialog.js:619
+#: js/ui/unlockDialog.js:667
 msgid "Log in as another user"
 msgstr "Σύνδεση ως άλλος χρήστης"
+
+#: js/ui/unlockDialog.js:695
+#, fuzzy
+msgid "Background Authentication Methods"
+msgstr "Μέθοδοι πιστοποίησης παρασκηνίου"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -2836,7 +2920,7 @@ msgstr "Καλώς ήλθατε στο %s"
 
 #: js/ui/welcomeDialog.js:52
 msgid "If you want to learn your way around, check out the tour"
-msgstr "Εάν θέλετε να μάθετε να μάθετε περισσότερα, δοκιμάστε την περιήγηση"
+msgstr "Εάν θέλετε να μάθετε περισσότερα, δοκιμάστε την περιήγηση"
 
 #: js/ui/welcomeDialog.js:66
 msgid "Take Tour"
@@ -2875,76 +2959,88 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:28
+#: js/ui/windowMenu.js:27
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "Λήψη στιγμιοτύπου οθόνης"
 
-#: js/ui/windowMenu.js:40
+#: js/ui/windowMenu.js:39
 msgid "Hide"
 msgstr "Απόκρυψη"
 
-#: js/ui/windowMenu.js:47
+#: js/ui/windowMenu.js:46
 msgid "Restore"
 msgstr "Επαναφορά"
 
-#: js/ui/windowMenu.js:51
+#: js/ui/windowMenu.js:50
 msgid "Maximize"
 msgstr "Μεγιστοποίηση"
 
-#: js/ui/windowMenu.js:58
+#: js/ui/windowMenu.js:57
 msgid "Move"
 msgstr "Μετακίνηση"
 
-#: js/ui/windowMenu.js:72
+#: js/ui/windowMenu.js:71
 msgid "Resize"
 msgstr "Αλλαγή μεγέθους"
 
-#: js/ui/windowMenu.js:86
+#: js/ui/windowMenu.js:85
 msgid "Always on Top"
 msgstr "Πάντα στην κορυφή"
 
-#: js/ui/windowMenu.js:105
+#: js/ui/windowMenu.js:104
 msgid "Always on Visible Workspace"
 msgstr "Πάντα σε ορατό χώρο εργασίας"
 
-#: js/ui/windowMenu.js:119
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Left"
 msgstr "Μετακίνηση στο χώρο εργασίας αριστερά"
 
-#: js/ui/windowMenu.js:125
+#: js/ui/windowMenu.js:124
 msgid "Move to Workspace Right"
 msgstr "Μετακίνηση στο χώρο εργασίας δεξιά"
 
-#: js/ui/windowMenu.js:131
+#: js/ui/windowMenu.js:130
 msgid "Move to Workspace Up"
 msgstr "Μετακίνηση στο χώρο εργασίας πάνω"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Down"
 msgstr "Μετακίνηση στο χώρο εργασίας κάτω"
 
-#: js/ui/windowMenu.js:155
+#: js/ui/windowMenu.js:154
 msgid "Move to Monitor Up"
 msgstr "Μετακίνηση στην πάνω οθόνη"
 
-#: js/ui/windowMenu.js:164
+#: js/ui/windowMenu.js:163
 msgid "Move to Monitor Down"
 msgstr "Μετακίνηση στην κάτω οθόνη"
 
-#: js/ui/windowMenu.js:173
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Left"
 msgstr "Μετακίνηση στην αριστερή οθόνη"
 
-#: js/ui/windowMenu.js:182
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Right"
 msgstr "Μετακίνηση στη δεξιά οθόνη"
 
-#: js/ui/windowMenu.js:190
+#: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: src/main.c:515 subprojects/extensions-tool/src/main.c:336
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Reminders"
+msgstr "Υπενθυμίσεις"
+
+#: src/calendar-server/reminder-watcher.c:135
+msgid "Snooze"
+msgstr "Αναβολή"
+
+#: src/calendar-server/reminder-watcher.c:136
+msgid "Dismiss"
+msgstr "Διακοπή"
+
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
 msgstr "Εμφάνιση έκδοσης"
 
@@ -2965,25 +3061,25 @@ msgstr "Λίστα πιθανών λειτουργιών"
 msgid "Force animations to be enabled"
 msgstr "Αναγκαστική ενεργοποίηση κίνησης"
 
-#: src/shell-app.c:267
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: src/shell-app.c:518
+#: src/shell-app.c:514
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Αποτυχία εκκίνησης του «%s»"
 
-#: src/shell-keyring-prompt.c:779
+#: src/shell-keyring-prompt.c:776
 msgid "Passwords do not match"
 msgstr "Τα συνθηματικά δεν ταιριάζουν"
 
-#: src/shell-keyring-prompt.c:787
+#: src/shell-keyring-prompt.c:784
 msgid "Password cannot be blank"
 msgstr "Το συνθηματικό δεν μπορεί να είναι κενός"
 
-#: src/shell-polkit-authentication-agent.c:342
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Το παράθυρο πιστοποίησης έκλεισε από τον χρήστη"
 
@@ -2992,260 +3088,17 @@ msgstr "Το παράθυρο πιστοποίησης έκλεισε από τ�
 msgid "Icon '%s' not present in theme %s"
 msgstr "Το εικονίδιο '%s' δεν υπάρχει στο θέμα %s"
 
-#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3753
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
 msgstr "Αδυναμία φόρτωσης εικονιδίου"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-msgid "Manage your GNOME Extensions"
-msgstr "Διαχείριση επεκτάσεων GNOME"
-
-#. developer_name tag deprecated with Appstream 1.0
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
-msgid "The GNOME Project"
-msgstr "Το έργο GNOME"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"Το πρόγραμμα Επεκτάσεις GNOME χειρίζεται την ενημέρωση επεκτάσεων, τη "
-"ρύθμιση προτιμήσεων και την αφαίρεση ή απενεργοποίηση ανεπιθύμητων "
-"επεκτάσεων."
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:65
-msgid "Main Window"
-msgstr "Κυρίως παράθυρο"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:69
-msgid "Available Updates"
-msgstr "Διαθέσιμες ενημερώσεις"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:73
-msgid "Search View"
-msgstr "Προβολή αναζήτησης"
-
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:6
-msgid "Configure GNOME Shell Extensions"
-msgstr "Ρύθμιση επεκτάσεων του GNOME Shell"
-
-#: subprojects/extensions-app/js/extensionManager.js:237
-#, javascript-format
-msgid ""
-"The installed version of this extension (%s) is incompatible with the "
-"current version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"Η εγκατεστημένη έκδοση αυτής της επέκτασης (%s) δεν είναι συμβατή με την "
-"τρέχουσα έκδοση GNOME (%s). Η επέκταση έχει απενεργοποιηθεί."
-
-#: subprojects/extensions-app/js/extensionManager.js:238
-#, javascript-format
-msgid ""
-"The installed version of this extension is incompatible with the current "
-"version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"Η εγκατεστημένη έκδοση αυτής της επέκτασης δεν είναι συμβατή με την τρέχουσα "
-"έκδοση GNOME (%s). Η επέκταση έχει απενεργοποιηθεί."
-
-#: subprojects/extensions-app/js/extensionManager.js:242
-msgid ""
-"An error has occurred in this extension. This could cause issues elsewhere "
-"in the system. It is recommended to turn the extension off until the error "
-"is resolved."
-msgstr ""
-"Ένα σφάλμα συνέβη με αυτή την επέκταση. Αυτό θα μπορούσε να δημιουργήσει "
-"προβλήματα αλλού στο σύστημα. Συνιστάται να απενεργοποιήσετε την επέκταση "
-"ωσότου το σφάλμα να επιλυθεί."
-
-#. translators: Details for an extension error
-#: subprojects/extensions-app/js/extensionManager.js:248
-msgid "Error details:"
-msgstr "Λεπτομέρειες σφάλματος:"
-
-#: subprojects/extensions-app/js/extensionRow.js:82
-#, javascript-format
-msgid "Version %s"
-msgstr "Έκδοση %s"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:108
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "Αφαίρεση «%s»;"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:109
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr ""
-"Εάν αφαιρέσετε την επέκταση και θέλετε να την ενεργοποιήσετε ξανά, "
-"χρειάζεται να πραγματοποιηθεί λήψη εκ νέου"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:112
-msgid "_Cancel"
-msgstr "_Ακύρωση"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:113
-msgid "_Remove"
-msgstr "_Αφαίρεση"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:153
-msgid "translator-credits"
-msgstr ""
-"Ελληνική μεταφραστική ομάδα GNOME\n"
-" Ευστάθιος Ιωσηφίδης <iosifidis@opensuse.org>\n"
-"\n"
-"\n"
-"Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα\n"
-"http://gnome.gr/"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:198
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "Η %d επέκταση θα ενημερωθεί στην επόμενη είσοδο."
-msgstr[1] "Οι %d επεκτάσεις θα ενημερωθούν στην επόμενη είσοδο."
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:51
-msgid "Updates Details"
-msgstr "Λεπτομέρειες ενημερώσεων"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:68
-msgid ""
-"A new version of this extension is ready and will be loaded on next login."
-msgstr ""
-"Μια νέα έκδοση αυτής της επέκτασης είναι έτοιμη και θα φορτωθεί στην επόμενη "
-"σύνδεση."
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-msgid "Extension Details"
-msgstr "Λεπτομέρειες επέκτασης"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:188
-msgid "_Website"
-msgstr "_Ιστότοπος"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:215
-msgid "_Settings"
-msgstr "_Ρυθμίσεις"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:242
-msgid "_Remove…"
-msgstr "_Αφαίρεση…"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:6
-msgid "Keyboard Shortcuts"
-msgstr "Συντομεύσεις πληκτρολογίου"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:10
-msgid "About Extensions"
-msgstr "Περί επεκτάσεων"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:64
-msgid "Main Menu"
-msgstr "Κυρίως μενού"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:106
-msgid "Search extensions"
-msgstr "Αναζήτηση επεκτάσεων"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:123
-msgid "_Log Out…"
-msgstr "_Αποσύνδεση…"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:131
-msgid "_Extensions"
-msgstr "_Επεκτάσεις"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:136
-msgid "More Information"
-msgstr "Περισσότερες πληροφορίες"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:148
-msgid ""
-"Extensions can cause performance and stability issues. It is recommended to "
-"disable all extensions if you experience problems with your system."
-msgstr ""
-"Οι επεκτάσεις ενδέχεται να προκαλέσουν θέματα απόδοσης και σταθερότητας. "
-"Συνιστάται να απενεργοποιήσετε όλες τις επεκτάσεις αν αντιμετωπίσετε "
-"προβλήματα με το σύστημά σας."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:175
-msgid "User Extensions"
-msgstr "Επεκτάσεις χρήστη"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:184
-msgid "System Extensions"
-msgstr "Επεκτάσεις συστήματος"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:203
-msgid "Search Results"
-msgstr "Αποτελέσματα αναζήτησης"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:217
-msgid "No Results Found"
-msgstr "Δεν βρέθηκαν αποτελέσματα"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:218
-msgid "Try a different search"
-msgstr "Επιχειρήστε μια διαφορετική αναζήτηση"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:229
-msgid "No Installed Extensions"
-msgstr "Καμία εγκατεστημένη επέκταση"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:230
-msgid ""
-"To find and add extensions, visit <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
-msgstr ""
-"Για να βρείτε και να εγκαταστήσετε επεκτάσεις, επισκεφθείτε την ιστοσελίδα "
-"<a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:240
-msgid "Something’s gone wrong"
-msgstr "Κάτι πήγε στραβά"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:241
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Λυπούμαστε πολύ, αλλά δεν ήταν δυνατή η λήψη της λίστας εγκατεστημένων "
-"επεκτάσεων. Βεβαιωθείτε ότι έχετε συνδεθεί στο GNOME και προσπαθήστε ξανά."
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:6
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Γενικά"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:9
-msgctxt "shortcut window"
-msgid "Open Menu"
-msgstr "Άνοιγμα μενού"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:15
-msgctxt "shortcut window"
-msgid "Toggle Search"
-msgstr "Εναλλαγή αναζήτησης"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:21
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "Εμφάνιση συντομεύσεων"
-
-#: subprojects/extensions-app/data/ui/shortcuts-dialog.ui:27
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "'Εξοδος"
-
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:284
+#: subprojects/extensions-tool/src/command-create.c:285
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Η νέα επέκταση δημιουργήθηκε επιτυχώς την %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:376
+#: subprojects/extensions-tool/src/command-create.c:377
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -3255,12 +3108,12 @@ msgstr ""
 "συμβολοσειρά.\n"
 "Παραδείγματα είναι: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:382
-#: subprojects/extensions-tool/src/main.c:243
+#: subprojects/extensions-tool/src/command-create.c:383
+#: subprojects/extensions-tool/src/main.c:245
 msgid "Name"
 msgstr "Όνομα"
 
-#: subprojects/extensions-tool/src/command-create.c:396
+#: subprojects/extensions-tool/src/command-create.c:397
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -3270,12 +3123,12 @@ msgstr ""
 "σας.\n"
 "Παραδείγματα είναι: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:402
-#: subprojects/extensions-tool/src/main.c:246
+#: subprojects/extensions-tool/src/command-create.c:403
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: subprojects/extensions-tool/src/command-create.c:416
+#: subprojects/extensions-tool/src/command-create.c:417
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
@@ -3286,128 +3139,128 @@ msgstr ""
 "Αυτό θα πρέπει να έχει τη μορφή μιας διεύθυνσης ηλεκτρονικού ταχυδρομείου "
 "(clicktofocus@janedoe.example.com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:444
 #, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "Επιλέξτε ένα από τα διαθέσιμα πρότυπα:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:457
+#: subprojects/extensions-tool/src/command-create.c:458
 msgid "Template"
 msgstr "Πρότυπο"
 
-#: subprojects/extensions-tool/src/command-create.c:515
+#: subprojects/extensions-tool/src/command-create.c:516
 msgid "The unique identifier of the new extension"
 msgstr "Το μοναδικό αναγνωριστικό της νέας επέκτασης"
 
-#: subprojects/extensions-tool/src/command-create.c:518
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "NAME"
 msgstr "ΟΝΟΜΑ"
 
-#: subprojects/extensions-tool/src/command-create.c:519
+#: subprojects/extensions-tool/src/command-create.c:520
 msgid "The user-visible name of the new extension"
 msgstr "Το ορατό από το χρήστη όνομα της νέας επέκτασης"
 
-#: subprojects/extensions-tool/src/command-create.c:521
+#: subprojects/extensions-tool/src/command-create.c:522
 msgid "DESCRIPTION"
 msgstr "ΠΕΡΙΓΡΑΦΗ"
 
-#: subprojects/extensions-tool/src/command-create.c:523
+#: subprojects/extensions-tool/src/command-create.c:524
 msgid "A short description of what the extension does"
 msgstr "Μια σύντομη περιγραφή του τι κάνει η επέκταση"
 
-#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-create.c:526
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
 msgstr "ΤΟΜΕΑΣ"
 
-#: subprojects/extensions-tool/src/command-create.c:527
+#: subprojects/extensions-tool/src/command-create.c:528
 msgid "The gettext domain used by the extension"
 msgstr "Ο τομέας gettext που χρησιμοποιείται από την επέκταση"
 
-#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-create.c:530
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
 msgstr "ΔΙΑΤΑΞΗ"
 
-#: subprojects/extensions-tool/src/command-create.c:531
+#: subprojects/extensions-tool/src/command-create.c:532
 msgid "The GSettings schema used by the extension"
 msgstr "Η διάταξη GSettings που χρησιμοποιείται από την επέκταση"
 
-#: subprojects/extensions-tool/src/command-create.c:534
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "TEMPLATE"
 msgstr "ΠΡΟΤΥΠΟ"
 
-#: subprojects/extensions-tool/src/command-create.c:535
+#: subprojects/extensions-tool/src/command-create.c:536
 msgid "The template to use for the new extension"
 msgstr "Το πρότυπο που θα χρησιμοποιηθεί για τη νέα επέκταση"
 
-#: subprojects/extensions-tool/src/command-create.c:538
+#: subprojects/extensions-tool/src/command-create.c:539
 msgid "Include prefs.js template"
 msgstr "Συμπερίληψη προτύπου prefs.js"
 
-#: subprojects/extensions-tool/src/command-create.c:544
+#: subprojects/extensions-tool/src/command-create.c:545
 msgid "Enter extension information interactively"
 msgstr "Εισαγάγετε τις πληροφορίες επέκτασης διαδραστικά"
 
-#: subprojects/extensions-tool/src/command-create.c:552
+#: subprojects/extensions-tool/src/command-create.c:553
 msgid "Create a new extension"
 msgstr "Δημιουργία νέας επέκτασης"
 
-#: subprojects/extensions-tool/src/command-create.c:570
-#: subprojects/extensions-tool/src/command-list.c:190
+#: subprojects/extensions-tool/src/command-create.c:571
+#: subprojects/extensions-tool/src/command-list.c:191
 msgid "Unknown arguments"
 msgstr "Άγνωστα ορίσματα"
 
-#: subprojects/extensions-tool/src/command-create.c:595
+#: subprojects/extensions-tool/src/command-create.c:596
 msgid "UUID, name and description are required"
 msgstr "Απαιτούνται UUID, όνομα και περιγραφή"
 
-#: subprojects/extensions-tool/src/command-disable.c:62
-#: subprojects/extensions-tool/src/command-enable.c:62
+#: subprojects/extensions-tool/src/command-disable.c:63
+#: subprojects/extensions-tool/src/command-enable.c:63
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "Η επέκταση «%s» δεν υπάρχει\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:98
+#: subprojects/extensions-tool/src/command-disable.c:99
 msgid "Disable an extension"
 msgstr "Απενεργοποίηση επέκτασης"
 
-#: subprojects/extensions-tool/src/command-disable.c:116
-#: subprojects/extensions-tool/src/command-enable.c:116
-#: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:105
-#: subprojects/extensions-tool/src/command-reset.c:76
-#: subprojects/extensions-tool/src/command-uninstall.c:104
+#: subprojects/extensions-tool/src/command-disable.c:117
+#: subprojects/extensions-tool/src/command-enable.c:117
+#: subprojects/extensions-tool/src/command-info.c:104
+#: subprojects/extensions-tool/src/command-prefs.c:106
+#: subprojects/extensions-tool/src/command-reset.c:77
+#: subprojects/extensions-tool/src/command-uninstall.c:105
 msgid "No UUID given"
 msgstr "Δεν δόθηκε UUID"
 
-#: subprojects/extensions-tool/src/command-disable.c:121
-#: subprojects/extensions-tool/src/command-enable.c:121
-#: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:110
-#: subprojects/extensions-tool/src/command-reset.c:81
-#: subprojects/extensions-tool/src/command-uninstall.c:109
+#: subprojects/extensions-tool/src/command-disable.c:122
+#: subprojects/extensions-tool/src/command-enable.c:122
+#: subprojects/extensions-tool/src/command-info.c:109
+#: subprojects/extensions-tool/src/command-prefs.c:111
+#: subprojects/extensions-tool/src/command-reset.c:82
+#: subprojects/extensions-tool/src/command-uninstall.c:110
 msgid "More than one UUID given"
 msgstr "Έχουν δοθεί περισσότερα από ένα UUID"
 
-#: subprojects/extensions-tool/src/command-enable.c:98
+#: subprojects/extensions-tool/src/command-enable.c:99
 msgid "Enable an extension"
 msgstr "Ενεργοποίηση επέκτασης"
 
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:66
-#: subprojects/extensions-tool/src/main.c:150
+#: subprojects/extensions-tool/src/command-info.c:51
+#: subprojects/extensions-tool/src/command-list.c:67
+#: subprojects/extensions-tool/src/main.c:152
 #, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Αποτυχία σύνδεσης στο κέλυφος GNOME\n"
 
-#: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:159
+#: subprojects/extensions-tool/src/command-info.c:60
+#: subprojects/extensions-tool/src/main.c:161
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "Η επέκταση «%s» δεν υπάρχει\n"
 
-#: subprojects/extensions-tool/src/command-info.c:85
+#: subprojects/extensions-tool/src/command-info.c:86
 msgid "Show extensions info"
 msgstr "Εμφάνιση πληροφοριών επεκτάσεων"
 
@@ -3416,7 +3269,6 @@ msgid "Overwrite an existing extension"
 msgstr "Αντικατάσταση μιας υπάρχουσας επέκτασης"
 
 #: subprojects/extensions-tool/src/command-install.c:198
-#| msgid "Print extension details"
 msgid "Print extension UUID on success"
 msgstr "Εμφάνιση UUID επέκτασης σε περίπτωση επιτυχίας"
 
@@ -3436,43 +3288,43 @@ msgstr "Δεν έχει οριστεί δέσμη επέκτασεων"
 msgid "More than one extension bundle specified"
 msgstr "Έχουν καθοριστεί περισσότερες από μία δέσμες επέκτασης"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:141
 msgid "Show user-installed extensions"
 msgstr "Εμφάνιση εγκατεστημένων επεκτάσεων χρήστη"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:144
 msgid "Show system-installed extensions"
 msgstr "Εμφάνιση εγκατεστημένων επεκτάσεων συστήματος"
 
-#: subprojects/extensions-tool/src/command-list.c:146
+#: subprojects/extensions-tool/src/command-list.c:147
 msgid "Show enabled extensions"
 msgstr "Εμφάνιση ενεργοποιημένων επεκτάσεων"
 
-#: subprojects/extensions-tool/src/command-list.c:149
+#: subprojects/extensions-tool/src/command-list.c:150
 msgid "Show disabled extensions"
 msgstr "Εμφάνιση απενεργοποιημένων επεκτάσεων"
 
-#: subprojects/extensions-tool/src/command-list.c:152
+#: subprojects/extensions-tool/src/command-list.c:153
 msgid "Show extensions in active state"
 msgstr "Εμφάνιση επεκτάσεων σε ενεργό κατάσταση"
 
-#: subprojects/extensions-tool/src/command-list.c:155
+#: subprojects/extensions-tool/src/command-list.c:156
 msgid "Show extensions in inactive state"
 msgstr "Εμφάνιση επεκτάσεων σε ανενεργό κατάσταση"
 
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:159
 msgid "Show extensions with preferences"
 msgstr "Εμφάνιση επεκτάσεων με προτιμήσεις"
 
-#: subprojects/extensions-tool/src/command-list.c:161
+#: subprojects/extensions-tool/src/command-list.c:162
 msgid "Show extensions with updates"
 msgstr "Εμφάνιση επεκτάσεων με ενημερώσεις"
 
-#: subprojects/extensions-tool/src/command-list.c:164
+#: subprojects/extensions-tool/src/command-list.c:165
 msgid "Print extension details"
 msgstr "Εμφάνιση λεπτομερειών επέκτασης"
 
-#: subprojects/extensions-tool/src/command-list.c:172
+#: subprojects/extensions-tool/src/command-list.c:173
 msgid "List installed extensions"
 msgstr "Λίστα εγκατεστημένων επεκτάσεων"
 
@@ -3522,35 +3374,35 @@ msgstr "Δημιουργία μια δέσμης επέκτασης"
 msgid "More than one source directory specified"
 msgstr "Έχουν καθοριστεί περισσότεροι από ένας κατάλογος πηγών"
 
-#: subprojects/extensions-tool/src/command-prefs.c:47
+#: subprojects/extensions-tool/src/command-prefs.c:48
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "Η επέκταση «%s» δεν έχει προτιμήσεις\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:62
+#: subprojects/extensions-tool/src/command-prefs.c:63
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
 msgstr "Αποτυχία ανοίγματος των προτιμήσεων της επέκτασης “%s”: %s\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:87
+#: subprojects/extensions-tool/src/command-prefs.c:88
 msgid "Opens extension preferences"
 msgstr "Άνοιγμα προτιμήσεων επέκτασης"
 
-#: subprojects/extensions-tool/src/command-reset.c:58
+#: subprojects/extensions-tool/src/command-reset.c:59
 msgid "Reset an extension"
 msgstr "Επαναφορά επέκτασης"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:49
+#: subprojects/extensions-tool/src/command-uninstall.c:50
 #, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "Αδυναμία απεγκατάστασης επεκτάσεων συστήματος\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:64
+#: subprojects/extensions-tool/src/command-uninstall.c:65
 #, c-format
 msgid "Failed to uninstall “%s”\n"
 msgstr "Αποτυχία απεγκατάστασης του «%s»\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:86
+#: subprojects/extensions-tool/src/command-uninstall.c:87
 msgid "Uninstall an extension"
 msgstr "Απεγκατάσταση επέκτασης"
 
@@ -3612,116 +3464,116 @@ msgstr "Πρέπει να αποδεχτείτε τους όρους χρήση�
 msgid "No files given"
 msgstr "Δεν δόθηκαν αρχεία"
 
-#: subprojects/extensions-tool/src/main.c:76
+#: subprojects/extensions-tool/src/main.c:78
 msgid "Do not print error messages"
 msgstr "Να μην εμφανίζονται μηνύματα σφαλμάτων"
 
-#: subprojects/extensions-tool/src/main.c:249
+#: subprojects/extensions-tool/src/main.c:251
 msgid "Path"
 msgstr "Διαδρομή"
 
-#: subprojects/extensions-tool/src/main.c:252
+#: subprojects/extensions-tool/src/main.c:254
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:257
 msgid "Original author"
 msgstr "Αρχικός δημιουργός"
 
-#: subprojects/extensions-tool/src/main.c:261
 #: subprojects/extensions-tool/src/main.c:263
 #: subprojects/extensions-tool/src/main.c:265
+#: subprojects/extensions-tool/src/main.c:267
 msgid "Version"
 msgstr "Έκδοση"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Yes"
 msgstr "Ναι"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "No"
 msgstr "Όχι"
 
-#: subprojects/extensions-tool/src/main.c:271
+#: subprojects/extensions-tool/src/main.c:273
 msgid "State"
 msgstr "Κατάσταση"
 
-#: subprojects/extensions-tool/src/main.c:309
+#: subprojects/extensions-tool/src/main.c:311
 msgid "“version” takes no arguments"
 msgstr "Η «έκδοση» δεν λαμβάνει παραμέτρους"
 
-#: subprojects/extensions-tool/src/main.c:311
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Usage:"
 msgstr "Χρήση:"
 
-#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Print version information and exit."
 msgstr "Προβολή πληροφοριών έκδοσης και έξοδος."
 
-#: subprojects/extensions-tool/src/main.c:329
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:334
 msgid "COMMAND"
 msgstr "ΕΝΤΟΛΗ"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:334
 msgid "[ARGS…]"
 msgstr "[ARGS…]"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Commands:"
 msgstr "Εντολές:"
 
-#: subprojects/extensions-tool/src/main.c:335
+#: subprojects/extensions-tool/src/main.c:337
 msgid "Print help"
 msgstr "Εμφάνιση βοήθειας"
 
-#: subprojects/extensions-tool/src/main.c:337
+#: subprojects/extensions-tool/src/main.c:339
 msgid "Enable extension"
 msgstr "Ενεργοποίηση επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:338
+#: subprojects/extensions-tool/src/main.c:340
 msgid "Disable extension"
 msgstr "Απενεργοποίηση επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:339
+#: subprojects/extensions-tool/src/main.c:341
 msgid "Reset extension"
 msgstr "Επαναφορά επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:340
+#: subprojects/extensions-tool/src/main.c:342
 msgid "Uninstall extension"
 msgstr "Απεγκατάσταση επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:341
+#: subprojects/extensions-tool/src/main.c:343
 msgid "List extensions"
 msgstr "Λίστα επεκτάσεων"
 
-#: subprojects/extensions-tool/src/main.c:342
-#: subprojects/extensions-tool/src/main.c:343
+#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:345
 msgid "Show extension info"
 msgstr "Εμφάνιση πληροφοριών επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:346
 msgid "Open extension preferences"
 msgstr "Άνοιγμα προτιμήσεων επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:345
+#: subprojects/extensions-tool/src/main.c:347
 msgid "Create extension"
 msgstr "Δημιουργία επέκτασης"
 
-#: subprojects/extensions-tool/src/main.c:346
+#: subprojects/extensions-tool/src/main.c:348
 msgid "Package extension"
 msgstr "Επέκταση πακέτου"
 
-#: subprojects/extensions-tool/src/main.c:347
+#: subprojects/extensions-tool/src/main.c:349
 msgid "Install extension bundle"
 msgstr "Εγκατάσταση δέσμης επεκτάσεων"
 
-#: subprojects/extensions-tool/src/main.c:349
+#: subprojects/extensions-tool/src/main.c:351
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Χρήση του «%s» για να λάβετε λεπτομερή βοήθεια.\n"
@@ -3777,6 +3629,212 @@ msgstr[1] "%u είσοδοι"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "Ήχοι συστήματος"
+
+#~ msgid "Choose Session"
+#~ msgstr "Επιλογή συνεδρίας"
+
+#, javascript-format
+#~ msgid "%s has been pinned to the dash."
+#~ msgstr "Το %s καρφιτσώθηκε στο ταμπλό."
+
+#~ msgid "Screencast ended unexpectedly"
+#~ msgstr "Η Εγγραφή Οθόνης Τερματίστηκε Απροσδόκητα"
+
+#~ msgid "Manage your GNOME Extensions"
+#~ msgstr "Διαχείριση επεκτάσεων GNOME"
+
+#~ msgid "The GNOME Project"
+#~ msgstr "Το έργο GNOME"
+
+#~ msgid ""
+#~ "GNOME Extensions handles updating extensions, configuring extension "
+#~ "preferences and removing or disabling unwanted extensions."
+#~ msgstr ""
+#~ "Το πρόγραμμα Επεκτάσεις GNOME χειρίζεται την ενημέρωση επεκτάσεων, τη "
+#~ "ρύθμιση προτιμήσεων και την αφαίρεση ή απενεργοποίηση ανεπιθύμητων "
+#~ "επεκτάσεων."
+
+#~ msgid "Main Window"
+#~ msgstr "Κυρίως παράθυρο"
+
+#~ msgid "Available Updates"
+#~ msgstr "Διαθέσιμες ενημερώσεις"
+
+#~ msgid "Search View"
+#~ msgstr "Προβολή αναζήτησης"
+
+#~ msgid "Configure GNOME Shell Extensions"
+#~ msgstr "Ρύθμιση επεκτάσεων του GNOME Shell"
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension (%s) is incompatible with the "
+#~ "current version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "Η εγκατεστημένη έκδοση αυτής της επέκτασης (%s) δεν είναι συμβατή με την "
+#~ "τρέχουσα έκδοση GNOME (%s). Η επέκταση έχει απενεργοποιηθεί."
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension is incompatible with the current "
+#~ "version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "Η εγκατεστημένη έκδοση αυτής της επέκτασης δεν είναι συμβατή με την "
+#~ "τρέχουσα έκδοση GNOME (%s). Η επέκταση έχει απενεργοποιηθεί."
+
+#~ msgid ""
+#~ "An error has occurred in this extension. This could cause issues "
+#~ "elsewhere in the system. It is recommended to turn the extension off "
+#~ "until the error is resolved."
+#~ msgstr ""
+#~ "Ένα σφάλμα συνέβη με αυτή την επέκταση. Αυτό θα μπορούσε να δημιουργήσει "
+#~ "προβλήματα αλλού στο σύστημα. Συνιστάται να απενεργοποιήσετε την επέκταση "
+#~ "ωσότου το σφάλμα να επιλυθεί."
+
+#~ msgid "Error details:"
+#~ msgstr "Λεπτομέρειες σφάλματος:"
+
+#, javascript-format
+#~ msgid "Version %s"
+#~ msgstr "Έκδοση %s"
+
+#, javascript-format
+#~ msgid "Remove “%s”?"
+#~ msgstr "Αφαίρεση «%s»;"
+
+#~ msgid ""
+#~ "If you remove the extension, you need to return to download it if you "
+#~ "want to enable it again"
+#~ msgstr ""
+#~ "Εάν αφαιρέσετε την επέκταση και θέλετε να την ενεργοποιήσετε ξανά, "
+#~ "χρειάζεται να πραγματοποιηθεί λήψη εκ νέου"
+
+#~ msgid "_Cancel"
+#~ msgstr "_Ακύρωση"
+
+#~ msgid "_Remove"
+#~ msgstr "_Αφαίρεση"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Ελληνική μεταφραστική ομάδα GNOME\n"
+#~ " Ευστάθιος Ιωσηφίδης <iosifidis@opensuse.org>\n"
+#~ "\n"
+#~ "\n"
+#~ "Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα\n"
+#~ "http://gnome.gr/"
+
+#, javascript-format
+#~ msgid "%d extension will be updated on next login."
+#~ msgid_plural "%d extensions will be updated on next login."
+#~ msgstr[0] "Η %d επέκταση θα ενημερωθεί στην επόμενη είσοδο."
+#~ msgstr[1] "Οι %d επεκτάσεις θα ενημερωθούν στην επόμενη είσοδο."
+
+#~ msgid "Updates Details"
+#~ msgstr "Λεπτομέρειες ενημερώσεων"
+
+#~ msgid ""
+#~ "A new version of this extension is ready and will be loaded on next login."
+#~ msgstr ""
+#~ "Μια νέα έκδοση αυτής της επέκτασης είναι έτοιμη και θα φορτωθεί στην "
+#~ "επόμενη σύνδεση."
+
+#~ msgid "Extension Details"
+#~ msgstr "Λεπτομέρειες επέκτασης"
+
+#~ msgid "_Website"
+#~ msgstr "_Ιστότοπος"
+
+#~ msgid "_Settings"
+#~ msgstr "_Ρυθμίσεις"
+
+#~ msgid "_Remove…"
+#~ msgstr "_Αφαίρεση…"
+
+#~ msgid "Keyboard Shortcuts"
+#~ msgstr "Συντομεύσεις πληκτρολογίου"
+
+#~ msgid "About Extensions"
+#~ msgstr "Περί επεκτάσεων"
+
+#~ msgid "Main Menu"
+#~ msgstr "Κυρίως μενού"
+
+#~ msgid "Search extensions"
+#~ msgstr "Αναζήτηση επεκτάσεων"
+
+#~ msgid "_Log Out…"
+#~ msgstr "_Αποσύνδεση…"
+
+#~ msgid "_Extensions"
+#~ msgstr "_Επεκτάσεις"
+
+#~ msgid "More Information"
+#~ msgstr "Περισσότερες πληροφορίες"
+
+#~ msgid ""
+#~ "Extensions can cause performance and stability issues. It is recommended "
+#~ "to disable all extensions if you experience problems with your system."
+#~ msgstr ""
+#~ "Οι επεκτάσεις ενδέχεται να προκαλέσουν θέματα απόδοσης και σταθερότητας. "
+#~ "Συνιστάται να απενεργοποιήσετε όλες τις επεκτάσεις αν αντιμετωπίσετε "
+#~ "προβλήματα με το σύστημά σας."
+
+#~ msgid "User Extensions"
+#~ msgstr "Επεκτάσεις χρήστη"
+
+#~ msgid "System Extensions"
+#~ msgstr "Επεκτάσεις συστήματος"
+
+#~ msgid "Search Results"
+#~ msgstr "Αποτελέσματα αναζήτησης"
+
+#~ msgid "No Results Found"
+#~ msgstr "Δεν βρέθηκαν αποτελέσματα"
+
+#~ msgid "Try a different search"
+#~ msgstr "Επιχειρήστε μια διαφορετική αναζήτηση"
+
+#~ msgid "No Installed Extensions"
+#~ msgstr "Καμία εγκατεστημένη επέκταση"
+
+#~ msgid ""
+#~ "To find and add extensions, visit <a href=\"https://"
+#~ "extensions.gnome.org\">extensions.gnome.org</a>."
+#~ msgstr ""
+#~ "Για να βρείτε και να εγκαταστήσετε επεκτάσεις, επισκεφθείτε την "
+#~ "ιστοσελίδα <a href=\"https://extensions.gnome.org\">extensions.gnome.org</"
+#~ "a>."
+
+#~ msgid "Something’s gone wrong"
+#~ msgstr "Κάτι πήγε στραβά"
+
+#~ msgid ""
+#~ "We’re very sorry, but it was not possible to get the list of installed "
+#~ "extensions. Make sure you are logged into GNOME and try again."
+#~ msgstr ""
+#~ "Λυπούμαστε πολύ, αλλά δεν ήταν δυνατή η λήψη της λίστας εγκατεστημένων "
+#~ "επεκτάσεων. Βεβαιωθείτε ότι έχετε συνδεθεί στο GNOME και προσπαθήστε ξανά."
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "Γενικά"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open Menu"
+#~ msgstr "Άνοιγμα μενού"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle Search"
+#~ msgstr "Εναλλαγή αναζήτησης"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show Shortcuts"
+#~ msgstr "Εμφάνιση συντομεύσεων"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Quit"
+#~ msgstr "'Εξοδος"
 
 #~ msgctxt "title"
 #~ msgid "Restart & Install Upgrade"
@@ -4318,9 +4376,6 @@ msgstr "Ήχοι συστήματος"
 #~ msgid "%l∶%M %p"
 #~ msgstr "%l∶%M %p"
 
-#~ msgid "Invitation"
-#~ msgstr "Πρόσκληση"
-
 #~ msgid "Call"
 #~ msgstr "Κλήση"
 
@@ -4719,9 +4774,6 @@ msgstr "Ήχοι συστήματος"
 #~ "Το όνομα αρχείου για τα καταγεγραμμένα βίντεο οθόνης θα είναι μοναδικό, "
 #~ "βασισμένο στην τρέχουσα ημερομηνία και θα χρησιμοποιεί αυτή την επέκταση. "
 #~ "Θα πρέπει να αλλάζει όταν γίνεται εγγραφή σε διαφορετικό πρότυπο περιέκτη."
-
-#~ msgid "Session…"
-#~ msgstr "Συνεδρία…"
 
 #~ msgid "Power"
 #~ msgstr "Ενέργεια"
