@@ -595,7 +595,10 @@ export const SearchResultsView = GObject.registerClass({
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
             y_expand: true,
+            reactive: true,
         });
+
+        global.focus_manager.add_group(this);
 
         this._parentalControlsManager = ParentalControlsManager.getDefault();
         this._parentalControlsManager.connect('app-filter-changed', this._reloadRemoteProviders.bind(this));
