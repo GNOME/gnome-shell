@@ -666,7 +666,9 @@ class GtkNotificationDaemon {
         }
 
         global.set_persistent_state(NOTIFICATION_SERIALIZED_NAME,
-            new GLib.Variant(NOTIFICATION_SERIALIZED_FORMAT, sources));
+            sources.length
+                ? new GLib.Variant(NOTIFICATION_SERIALIZED_FORMAT, sources)
+                : null);
     }
 
     AddNotificationAsync(params, invocation) {
