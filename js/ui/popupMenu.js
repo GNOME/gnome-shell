@@ -934,7 +934,11 @@ export class PopupMenuBase extends Signals.EventEmitter {
         if (menuItem instanceof PopupMenuSection) {
             menuItem.connectObject(
                 'active-changed', this._subMenuActiveChanged.bind(this),
-                'destroy', () => this.length--, this);
+                'destroy', () => {
+                    this.length--;
+                    this.disconnectObject(menuItem);
+                    menuItem.disconnectObject(this);
+                }, this);
 
             this.connectObject(
                 'open-state-changed', (self, open) => {
