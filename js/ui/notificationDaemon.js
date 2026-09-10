@@ -466,6 +466,9 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
             this.source.activateAction(actionId.slice('app.'.length), target);
         else
             this.source.emitActionInvoked(this.id, actionId, target);
+
+        Main.overview.hide();
+        Main.panel.closeCalendar();
     }
 
     _onButtonClicked(button) {
@@ -518,9 +521,6 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         this._app.activate_action(actionId, params, 0, -1, null).catch(error => {
             logError(error, `Failed to activate action for ${this._appId}`);
         });
-
-        Main.overview.hide();
-        Main.panel.closeCalendar();
     }
 
     emitActionInvoked(notificationId, actionId, target) {
