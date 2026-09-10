@@ -1430,6 +1430,8 @@ export const Keyboard = GObject.registerClass({
             purpose === Clutter.InputContentPurpose.ALPHA ||
             purpose === Clutter.InputContentPurpose.PASSWORD ||
             purpose === Clutter.InputContentPurpose.TERMINAL;
+        this._modifiers.clear();
+        this._modifierKeys.clear();
 
         keyboardModel.getLevels().forEach(currentLevel => {
             const levelLayout = new KeyContainer();
