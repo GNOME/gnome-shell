@@ -1308,6 +1308,8 @@ export const Keyboard = GObject.registerClass({
         }
 
         this._emojiVisible = this._shouldShowEmoji();
+        this._modifiers.clear();
+        this._modifierKeys.clear();
 
         keyboardModel.getLevels().forEach(currentLevel => {
             const levelLayout = new KeyContainer();
