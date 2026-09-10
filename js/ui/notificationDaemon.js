@@ -14,6 +14,9 @@ import {NotificationErrors, NotificationError} from '../misc/dbusErrors.js';
 
 const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
+const NOTIFICATION_SERIALIZED_NAME = 'notifications';
+const NOTIFICATION_SERIALIZED_FORMAT = 'a(sa(sv))';
+
 /** @enum {number} */
 const NotificationClosedReason = {
     EXPIRED: 1,
@@ -616,7 +619,10 @@ class GtkNotificationDaemon {
         this._isLoading = true;
 
         try {
-            let value = global.get_persistent_state('a(sa(sv))', 'notifications');
+            const value = global.get_persistent_state(
+                NOTIFICATION_SERIALIZED_FORMAT,
+                NOTIFICATION_SERIALIZED_NAME);
+
             if (value) {
                 let sources = value.deepUnpack();
                 sources.forEach(([appId, notifications]) => {
@@ -659,7 +665,8 @@ class GtkNotificationDaemon {
             sources.push(source.serialize());
         }
 
-        global.set_persistent_state('notifications', new GLib.Variant('a(sa(sv))', sources));
+        global.set_persistent_state(NOTIFICATION_SERIALIZED_NAME,
+            new GLib.Variant(NOTIFICATION_SERIALIZED_FORMAT, sources));
     }
 
     AddNotificationAsync(params, invocation) {
