@@ -165,6 +165,7 @@ export class AuthMenuButton extends St.Button {
         this._manager.addMenu(this._menu);
 
         this.connect('clicked', () => this._onClicked());
+        this.connect('destroy', () => this._onDestroy());
 
         this._items = new Map();
         this._sections = new Map();
@@ -173,6 +174,10 @@ export class AuthMenuButton extends St.Button {
 
     _onClicked() {
         this._menu.toggle();
+    }
+
+    _onDestroy() {
+        this._menu.destroy();
     }
 
     _getVisibleItemsCount() {
