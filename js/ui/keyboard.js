@@ -1560,9 +1560,9 @@ export const Keyboard = GObject.registerClass({
             }
 
             if (key.action === 'modifier') {
-                let modifierKeys = this._modifierKeys[key.keyval] || [];
+                const modifierKeys = this._modifierKeys.get(key.keyval) ?? [];
                 modifierKeys.push(button);
-                this._modifierKeys[key.keyval] = modifierKeys;
+                this._modifierKeys.set(key.keyval, modifierKeys);
             }
 
             if (key.action || key.keyval)
@@ -1583,7 +1583,7 @@ export const Keyboard = GObject.registerClass({
         else
             this._modifiers.delete(keyval);
 
-        for (const key of this._modifierKeys[keyval])
+        for (const key of this._modifierKeys.get(keyval))
             key.setLatched(enabled);
     }
 
