@@ -200,7 +200,7 @@ test:
   before_script:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
-    - mkdir -m 1777 /tmp/.X11-unix
+    - mkdir -p -m 1777 /tmp/.X11-unix
   script:
     # Start with a fresh build dir to ensure test dependencies are correct
     - meson setup "$BUILD_DIR" -Dman=false -Dgtk_doc=false
@@ -246,7 +246,7 @@ dist:
   before_script:
     - sudo meson install -C mutter/build
     - mkdir -m 700 $XDG_RUNTIME_DIR
-    - mkdir -m 1777 /tmp/.X11-unix
+    - mkdir -p -m 1777 /tmp/.X11-unix
   script:
     - dbus-run-session meson dist -C build --include-subprojects
   artifacts:
