@@ -244,6 +244,9 @@ async function _initializeUI() {
 
     screenshotUI = new Screenshot.ScreenshotUI();
 
+    brightnessManager = new BrightnessManager.BrightnessManager();
+    brightnessDBus = new ShellDBus.BrightnessDBus(brightnessManager);
+
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
     keyboard = new Keyboard.KeyboardManager();
@@ -259,9 +262,6 @@ async function _initializeUI() {
     screenTimeDBus = new ShellDBus.ScreenTimeDBus(breakManager);
     breakManagerDispatcher = new BreakManager.BreakDispatcher(breakManager);
     timeLimitsDispatcher = new TimeLimitsManager.TimeLimitsDispatcher(timeLimitsManager);
-
-    brightnessManager = new BrightnessManager.BrightnessManager();
-    brightnessDBus = new ShellDBus.BrightnessDBus(brightnessManager);
 
     global.connect('shutdown', () => {
         // Block shutdown until the session history file has been written
