@@ -1,6 +1,7 @@
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import GnomeAutoar from 'gi://GnomeAutoar';
 import GObject from 'gi://GObject';
 import Soup from 'gi://Soup';
 
@@ -125,12 +126,19 @@ async function extractExtensionArchive(bytes, dir) {
     const tmpDir = dir.get_parent().get_child(tmpName);
     tmpDir.make_directory_with_parents(null);
 
-    const unzip = Gio.Subprocess.new(
-        ['unzip', '-uod', tmpDir.get_path(), '--', file.get_path()],
-        Gio.SubprocessFlags.NONE);
+    const extractor = new GnomeAutoar.Extractor({
+        source_file: file,
+        output_file: tmpDir,
+        output_is_dest: true,
+    });
+
+    const {promise, resolve, reject} = Promise.withResolvers();
+    extractor.connect('error', (o, err) => reject(err));
+    extractor.connect('completed', () => resolve());
 
     try {
-        await unzip.wait_check_async(null);
+        extractor.start_async(null);
+        await promise;
     } catch (e) {
         FileUtils.recursivelyDeleteDir(tmpDir, true);
         throw e;
