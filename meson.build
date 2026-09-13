@@ -32,7 +32,7 @@ gnome_desktop_req = '>= 40'
 pipewire_req = '>= 0.3.49'
 pango_req = '>= 1.46.0'
 
-nm_req = '>= 1.10.4'
+nm_req = '>= 1.24'
 secret_req = '>= 0.18'
 
 fs = import('fs')
