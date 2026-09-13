@@ -1263,6 +1263,8 @@ const NMWirelessDeviceItem = GObject.registerClass({
     }
 
     _removeAccessPoint(ap) {
+        ap.disconnectObject(this);
+
         const network = this._networks.find(n => n.removeAccessPoint(ap));
 
         if (!network || network.hasAccessPoints())
