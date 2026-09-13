@@ -49,12 +49,6 @@ build_container() {
   # permissions of /etc/passwd to be only readable by root
   buildah run $build_cntr chmod 644 /etc/passwd
 
-  # disable gnome-keyring activation:
-  # it either asks for unlocking the login keyring on startup, or it detects
-  # the running host daemon and doesn't export the object on the bus, which
-  # blocks the activating service until it hits the timeout
-  buildah run $build_cntr rm /usr/share/dbus-1/services/org.freedesktop.secrets.service
-
   local srcdir=$(realpath $(dirname $0))
   buildah copy --chmod 755 $build_cntr $srcdir/install-meson-project.sh /usr/libexec
 
