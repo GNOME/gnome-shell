@@ -189,7 +189,6 @@ export class GrabHelper {
         if (this._modalCount > 0)
             return;
 
-        this._owner.disconnect(this._capturedEventId);
         this._owner.remove_action(this._clickGesture);
 
         Main.popModal(this._grab);
