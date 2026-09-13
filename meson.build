@@ -35,7 +35,7 @@ json_glib_req = '>= 1.6'
 rsvg_req = '>= 2.46'
 glycin_req = '>= 2.0'
 
-nm_req = '>= 1.10.4'
+nm_req = '>= 1.24'
 secret_req = '>= 0.18'
 
 fs = import('fs')
