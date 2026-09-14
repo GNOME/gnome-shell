@@ -902,8 +902,10 @@ export class PopupMenuBase extends Signals.EventEmitter {
                 this.box.insert_child_below(menuItem.menu.actor, beforeItem);
 
             this._connectItemSignals(menuItem);
-            menuItem.menu.connectObject('active-changed',
-                this._subMenuActiveChanged.bind(this), this);
+            menuItem.menu.connectObject(
+                'active-changed', this._subMenuActiveChanged.bind(this),
+                'destroy', () => menuItem.menu.disconnectObject(this),
+                this);
             this.connectObject('menu-closed', () => {
                 menuItem.menu.close(BoxPointer.PopupAnimation.NONE);
             }, menuItem);
