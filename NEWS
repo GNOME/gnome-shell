@@ -1,3 +1,26 @@
+51.0
+====
+* Don't duplicate locale keyboard layout [Yan; !4256]
+* Fix activating network items in quick settings [Carlos; !4391]
+* Improve lock/login screen styling [Marco; !4355]
+* Cancel mount password dialogs when locking screen [Florian; !4393]
+* Validate serilized image data before creating pixbuf [Florian; !4418]
+* Fixed crash [Sebastian; !4401]
+* Plugged leaks [Sebastian, Florian, Marco; !4385, !4383, !4381, !4203,
+  !4397, !4398, !4422, !4426]
+* Misc. bug fixes and cleanups [Florian, Marco, Sebastian, Carlos, Daniel;
+  !4382, !4384, !4360, !4379, !4387, !4361, !4392, !4395, !4396, !4375, !4270,
+  !4389, !4405, !4402, !4400, !4419, !4421, !4420, !4423]
+
+Contributors:
+  Marco "Capypara" Köpcke, Carlos Garnacho, Sebastian Keller, Florian Müllner,
+  Daniel Nylander, Yan Pas, Marco Trevisan (Treviño)
+
+Translators:
+  Марко Костић [sr], Daniel Mustieles [es], Artur S0 [ru],
+  Jor Teron [mjw], Balázs Úr [hu], Ask Hjorth Larsen [da], Hazel L [el],
+  Bruce Cowan [en_GB], Roy-Magne Mo [nn]
+
 51.rc
 =====
 * Fix glitch when switching workspaces with direct scanout [Sebastian; !4320]
