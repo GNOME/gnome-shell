@@ -1,3 +1,36 @@
+50.5
+====
+* Fix keynav on unlock dialog [Joan; !4311]
+* Fix glitch when switching workspaces with direct scanout [Sebastian; !4320]
+* Support building with libical4 [Xi; !4215]
+* Refuse to unlock screen after screen time limit was reached [Florian; !4321]
+* Fix blocking when toggling wireless toggle [PolyMeilex; !4323]
+* Don't show busy cursor when activating actions [Sebastian; !4325]
+* Fix glitch when cancelling lock screen prompt with Esc [Joaquín; !4326]
+* Track magnifier mouse position without polling [Kacper; !4344]
+* Limit parallel texture loading operations [Georges; !4349]
+* Open windows created via new-window action on correct workspace
+  [Sebastian; !4071]
+* Don't duplicate locale keyboard layout [Yan; !4256]
+* Cancel mount password dialogs when locking screen [Florian; !4393]
+* Validate serialized image data before creating pixbuf [Florian; !4418]
+* Fixed crash [Sebastian; !4401]
+* Plugged leaks [Sebastian, Florian, Marco; !4385, !4381, !4203, !4398,
+  !4422, !4426]
+* Misc. bug fixes and cleanups [rayjonesjay, Carlos, Florian, Marco,
+  Maximiliano, Milan, Daniel, Sebastian; !4313, !4330, !4340, !4335, !4345,
+  !4346, !4348, !4358, !4357, !4304, !4362, !4234, !4368, !4366, !4376, !4382,
+  !4360, !4387, !4355, !4361, !4396, !4375, !4270, !4405, !4402, !4400, !4421]
+
+Contributors:
+  Georges Basile Stavracas Neto, Milan Crha, Carlos Garnacho, Prasanta Hembram,
+  Kacper, Sebastian Keller, Florian Müllner, Daniel Nylander, Yan Pas,
+  PolyMeilex, rayjonesjay, Xi Ruoyao, Maximiliano Sandoval, Joan Torres Lopez,
+  Marco Trevisan (Treviño), Joaquín Vacas Verísimo
+
+Translators:
+  Prasanta Hembram [sat], Jiri Grönroos [fi]
+
 50.4
 ====
 * Fix some menu animations [Florian; !4237]
