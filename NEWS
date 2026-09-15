@@ -1,3 +1,28 @@
+49.10
+=====
+* Fix authorizing thunderbold devices [Cyrus; !4390]
+* Fix glitch when switching workspaces with direct scanout [Sebastian; !4320]
+* Support building with libical4 [Xi; !4215]
+* Fix glitch when cancelling lock screen prompt with Esc [Joaquín; !4326]
+* Track magnifier mouse position without polling [Kacper; !4344]
+* Cancel mount password dialogs when locking screen [Florian; !4393]
+* Validate serialized image data before creating pixbuf [Florian; !4418]
+* Fixed crash [Sebastian; !4401]
+* Plugged leaks [Sebastian, Florian, Marco; !4385, !4381, !4203, !4398,
+  !4422, !4426]
+* Misc. bug fixes and cleanups [rayjonesjay, Carlos, Florian, Marco,
+  Maximiliano, Daniel, Sebastian; !4313, !4330, !4340, !4345, !4346, !4348,
+  !4358, !4357, !4304, !4362, !4234, !4368, !4366, !4382, !4360, !4387,
+  !4361, !4396, !4375, !4270, !4405, !4402, !4400, !4421]
+
+Contributors:
+  Carlos Garnacho, Kacper, Sebastian Keller, Cyrus Lien, Florian Müllner,
+  Daniel Nylander, rayjonesjay, Xi Ruoyao, Maximiliano Sandoval,
+  Marco Trevisan (Treviño), Joaquín Vacas Verísimo
+
+Translators:
+  Omer I.S. [he]
+
 49.9
 ====
 * Fix glitch when switching to minimized window on another workspace
