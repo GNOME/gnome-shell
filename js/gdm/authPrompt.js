@@ -620,7 +620,6 @@ export const AuthPrompt = GObject.registerClass({
         this._mainBox.show();
 
         this.webLoginActive = false;
-        this.remove_style_class_name('web-login-active');
     }
 
     _openWebLoginDialog() {
@@ -632,7 +631,6 @@ export const AuthPrompt = GObject.registerClass({
         this.updateSensitivity({sensitive: true});
 
         this.webLoginActive = true;
-        this.add_style_class_name('web-login-active');
     }
 
     _onVerificationFailed({serviceName, canRetry}) {
