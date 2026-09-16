@@ -12,6 +12,43 @@ const QR_CODE_SIZE = 150;
 const WEB_LOGIN_SPINNER_SIZE = 35;
 const URL_LABEL_LONG_THRESHOLD = 45;
 
+class LabelOverlayLayout extends Clutter.LayoutManager {
+    static {
+        GObject.registerClass(this);
+    }
+
+    vfunc_get_preferred_width(_container, _forHeight) {
+        return [0, 0];
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        const child = container.get_first_child();
+        return child ? child.get_preferred_height(forWidth) : [0, 0];
+    }
+
+    vfunc_allocate(container, box) {
+        const child = container.get_first_child();
+        if (!child)
+            return;
+
+        const [, naturalWidth] = child.get_preferred_width(-1);
+
+        if (naturalWidth <= box.get_width()) {
+            child.allocate(box);
+            return;
+        }
+
+        const center = (box.x1 + box.x2) / 2;
+        const overflowBox = new Clutter.ActorBox({
+            x1: Math.floor(center - naturalWidth / 2),
+            x2: Math.floor(center + naturalWidth / 2),
+            y1: box.y1,
+            y2: box.y2,
+        });
+        child.allocate(overflowBox);
+    }
+}
+
 export class WebLoginPrompt extends St.BoxLayout {
     static {
         GObject.registerClass(this);
@@ -49,9 +86,14 @@ export class WebLoginPrompt extends St.BoxLayout {
 
         this._urlLabel = new St.Label({
             style_class: 'web-login-url-label',
+            xAlign: Clutter.ActorAlign.CENTER,
+        });
+        const urlLabelBin = new St.Widget({
+            layout_manager: new LabelOverlayLayout(),
             x_expand: true,
         });
-        this.add_child(this._urlLabel);
+        urlLabelBin.add_child(this._urlLabel);
+        this.add_child(urlLabelBin);
 
         this._codeBox = new St.BoxLayout({
             x_align: Clutter.ActorAlign.CENTER,

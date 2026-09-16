@@ -15,11 +15,6 @@ $_gdm_dialog_width: 25em;
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width * 1.2;
     margin-top: 80px;
-
-    &.web-login-active {
-      width: $_gdm_dialog_width * 1.5;
-      margin-top: 0;
-    }
   }
 
   .login-dialog-input-well {
