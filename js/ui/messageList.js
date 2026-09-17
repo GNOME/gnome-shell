@@ -591,7 +591,8 @@ export class Message extends St.Button {
     }
 
     set title(text) {
-        this._titleText = this._limitString(text, MAX_TITLE_LENGTH);
+        text = text ? this._limitString(text, MAX_TITLE_LENGTH) : null;
+        this._titleText = text;
         const title = text ? Util.fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
         this.notify('title');
@@ -602,7 +603,8 @@ export class Message extends St.Button {
     }
 
     set body(text) {
-        this._bodyText = this._limitString(text, MAX_BODY_LENGTH);
+        text = text ? this._limitString(text, MAX_BODY_LENGTH) : null;
+        this._bodyText = text;
         this._bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
             this._useBodyMarkup);
         this.notify('body');
