@@ -166,7 +166,7 @@ $_gdm_dialog_width: 25em;
 }
 
 .login-dialog-banner-view {
-  max-width: $_gdm_dialog_width;
+  max-width: $_gdm_dialog_width * 1.2;
 
   .login-dialog-banner {
     color: darken($_gdm_fg,10%);

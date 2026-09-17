@@ -740,7 +740,7 @@ export const LoginDialog = GObject.registerClass({
             else
                 bannerSpace = 0;
 
-            let leftOverYSpace = bannerSpace - bannerHeight;
+            const leftOverYSpace = bannerSpace - bannerHeight;
 
             if (leftOverYSpace > 0) {
                 // First figure out how much left over space is up top
@@ -792,14 +792,11 @@ export const LoginDialog = GObject.registerClass({
                     // If we aren't going to do a wide view, then we need to limit
                     // the height of the banner so it will present scrollbars
 
-                    // First figure out how much space there is without the banner
-                    leftOverYSpace += bannerHeight;
-
-                    // Then figure out how much of that space is up top
-                    const availableTopSpace = Math.floor(leftOverYSpace / 2);
-
-                    // Then give all of that space to the banner
-                    bannerAllocation.y2 = bannerAllocation.y1 + availableTopSpace;
+                    // Give 70% of the banner space to the banner itself, and
+                    // split the remaining 30% evenly above and below it
+                    const bannerSpacing = Math.floor(0.3 * bannerSpace);
+                    bannerAllocation.y1 += Math.floor(bannerSpacing / 2);
+                    bannerAllocation.y2 = bannerAllocation.y1 + (bannerSpace - bannerSpacing);
                 }
             }
         } else if (userSelectionAllocation) {
