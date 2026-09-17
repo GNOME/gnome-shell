@@ -84,6 +84,11 @@ shell_tests = [
   },
   {
     'name': 'closeWithActiveWindows',
+    'env': {
+      # The shader cache used by the clients can cause writes to the test home
+      # directory during its removal by gnome-shell-test-tool
+      'MESA_SHADER_CACHE_DISABLE': '1',
+    },
   },
   {
     'name': 'multiMonitor',
@@ -115,6 +120,11 @@ foreach shell_test : shell_tests
   test_name = shell_test['name']
   options = shell_test.get('options', [])
 
+  local_test_env = shell_testenv
+  foreach var, value : shell_test.get('env', {})
+    local_test_env.set(var, value)
+  endforeach
+
   test(test_name, dbus_runner,
     suite: 'shell',
     args: [
@@ -128,6 +138,6 @@ foreach shell_test : shell_tests
       gnome_shell_perf_helper,
       tests_dependencies,
     ],
-    env: shell_testenv,
+    env: local_test_env,
   )
 endforeach
