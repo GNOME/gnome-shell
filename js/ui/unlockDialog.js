@@ -37,7 +37,8 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
-const FIXED_PROMPT_HEIGHT = 550;
+const FIXED_WEBLOGIN_HEIGHT = 550;
+const FIXED_AUTHPROMPT_HEIGHT = 400;
 
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
@@ -495,8 +496,11 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox);
 
         // Authentication Box
+        const dialog = container.get_parent();
+        const fixedHeight = dialog._authPrompt?.webLoginActive
+            ? FIXED_WEBLOGIN_HEIGHT : FIXED_AUTHPROMPT_HEIGHT;
         const stackY = Math.min(
-            Math.floor(centerY - FIXED_PROMPT_HEIGHT / 2.0),
+            Math.floor(centerY - fixedHeight / 2.0),
             height - stackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
