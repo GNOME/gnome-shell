@@ -10,7 +10,6 @@ Provide at least the following information:
 * Your OS and version
 * Affected GNOME Shell version (see https://release.gnome.org/calendar/
   for currently supported versions)
-* Does this issue appear in XOrg and/or Wayland
 * Does this issue happen without extensions (please follow instructions below)
 
 To properly disable extensions you can use gnome-extensions-app and then restart
