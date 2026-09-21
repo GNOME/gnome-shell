@@ -330,6 +330,7 @@ rebuild-toolbox:
     - if: '$CI_COMMIT_BRANCH =~ "test-rebuild" && $CI_PROJECT_NAMESPACE == "GNOME"'
       changes:
         - ".gitlab-ci/build-toolbox-image.sh"
+    - if: '$CI_COMMIT_BRANCH =~ "test-rebuild" && $CI_PROJECT_NAMESPACE == "GNOME"'
       when: manual
 
 test-build-toolbox:
