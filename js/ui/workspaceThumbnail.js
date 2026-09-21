@@ -1334,7 +1334,7 @@ export const ThumbnailsBox = GObject.registerClass({
         const indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
         const indicatorRightFullBorder = indicatorThemeNode.get_padding(St.Side.RIGHT) + indicatorThemeNode.get_border_width(St.Side.RIGHT);
 
-        let x = box.x1;
+        let x = rtl ? 0 : box.x1;
 
         if (this._dropPlaceholderPos === -1) {
             this._dropPlaceholder.allocate_preferred_size(
