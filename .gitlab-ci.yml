@@ -317,8 +317,12 @@ rebuild-toolbox:
     FORCE_REBUILD: 1
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"'
+      changes:
+        - ".gitlab-ci/build-toolbox-image.sh"
       when: manual
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/ && $CI_PROJECT_NAMESPACE == "GNOME"'
+      changes:
+        - ".gitlab-ci/build-toolbox-image.sh"
       when: manual
 
 test-build-toolbox:
