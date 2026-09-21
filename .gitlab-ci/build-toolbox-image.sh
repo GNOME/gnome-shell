@@ -77,6 +77,8 @@ MUTTER_BRANCH=${2:-$CI_COMMIT_BRANCH}
 
 TOOLBOX_IMAGE=$CI_REGISTRY_IMAGE/toolbox:${MUTTER_BRANCH#gnome-}
 
+echo "test rebuild"
+
 [[ -n "$MUTTER_CI_IMAGE" && -n "$MUTTER_BRANCH" ]] ||
   die "Usage: $(basename $0) MUTTER_CI_IMAGE [MUTTER_BRANCH]"
 
