@@ -1124,8 +1124,10 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._availableConnectionsChanged();
         this._updateItemsVisibility();
 
-        this.connect('destroy',
-            () => this._networks.forEach(net => net.destroy()));
+        this.connect('destroy', () => {
+            // Iterate a copy because our 'destroy' handler modifies the array
+            [...this._networks].forEach(net => net.destroy());
+        });
     }
 
     get icon_name() {
