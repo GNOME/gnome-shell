@@ -168,6 +168,11 @@ $_gdm_dialog_width: 25em;
 .banner {
   max-width: $_gdm_dialog_width * 1.2;
 
+  .banner-title {
+    @extend %title_4;
+    text-align: center;
+  }
+
   .banner-body {
     color: darken($_gdm_fg, 10%);
   }
