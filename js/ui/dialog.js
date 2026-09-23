@@ -5,13 +5,6 @@ import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import St from 'gi://St';
 
-function _setLabel(label, value) {
-    label.set({
-        text: value || '',
-        visible: value !== null,
-    });
-}
-
 export const Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
     _init(parentActor, styleClass) {
@@ -192,11 +185,33 @@ export const MessageDialogContent = GObject.registerClass({
             ...params,
         });
 
+        this.connect('notify::title', () => {
+            this._title.remove_style_class_name('lightweight');
+            this._updateTitleStyle();
+        });
         this.connect('notify::size', this._updateTitleStyle.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
 
         this.add_child(this._title);
         this.add_child(this._description);
+
+        this.bind_property('title',
+            this._title, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('title',
+            this._title, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source != null],
+            null);
+
+        this.bind_property('description',
+            this._description, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('description',
+            this._description, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source != null],
+            null);
     }
 
     _onDestroy() {
@@ -205,14 +220,6 @@ export const MessageDialogContent = GObject.registerClass({
             laters.remove(this._updateTitleStyleLater);
             delete this._updateTitleStyleLater;
         }
-    }
-
-    get title() {
-        return this._title.text;
-    }
-
-    get description() {
-        return this._description.text;
     }
 
     _updateTitleStyle() {
@@ -233,26 +240,6 @@ export const MessageDialogContent = GObject.registerClass({
                 return GLib.SOURCE_REMOVE;
             });
         }
-    }
-
-    set title(title) {
-        if (this._title.text === title)
-            return;
-
-        _setLabel(this._title, title);
-
-        this._title.remove_style_class_name('lightweight');
-        this._updateTitleStyle();
-
-        this.notify('title');
-    }
-
-    set description(description) {
-        if (this._description.text === description)
-            return;
-
-        _setLabel(this._description, description);
-        this.notify('description');
     }
 });
 
@@ -290,15 +277,15 @@ export const ListSection = GObject.registerClass({
         this.label_actor = this._title;
         this.add_child(this._title);
         this.add_child(this._listScrollView);
-    }
 
-    get title() {
-        return this._title.text;
-    }
-
-    set title(title) {
-        _setLabel(this._title, title);
-        this.notify('title');
+        this.bind_property('title',
+            this._title, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('title',
+            this._title, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source != null],
+            null);
     }
 });
 
@@ -346,32 +333,27 @@ export const ListSectionItem = GObject.registerClass({
         this.label_actor = this._title;
         this.add_child(this._iconActorBin);
         this.add_child(textLayout);
-    }
 
-    get iconActor() {
-        return this._iconActorBin.get_child();
-    }
+        this.bind_property('icon-actor',
+            this._iconActorBin, 'child',
+            GObject.BindingFlags.SYNC_CREATE);
 
-    set iconActor(actor) {
-        this._iconActorBin.set_child(actor);
-        this.notify('icon-actor');
-    }
+        this.bind_property('title',
+            this._title, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('title',
+            this._title, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source != null],
+            null);
 
-    get title() {
-        return this._title.text;
-    }
-
-    set title(title) {
-        _setLabel(this._title, title);
-        this.notify('title');
-    }
-
-    get description() {
-        return this._description.text;
-    }
-
-    set description(description) {
-        _setLabel(this._description, description);
-        this.notify('description');
+        this.bind_property('description',
+            this._description, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property_full('description',
+            this._description, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source != null],
+            null);
     }
 });
