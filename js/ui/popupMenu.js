@@ -616,6 +616,8 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
 });
 
 export class PopupMenuBase extends Signals.EventEmitter {
+    #actor;
+
     constructor(sourceActor, styleClass) {
         super();
 
@@ -673,6 +675,16 @@ export class PopupMenuBase extends Signals.EventEmitter {
 
     set sensitive(sensitive) {
         this.setSensitive(sensitive);
+    }
+
+    get actor() {
+        return this.#actor;
+    }
+
+    set actor(actor) {
+        this.#actor?.disconnectObject(this);
+        this.#actor = actor;
+        this.#actor.connectObject('destroy', () => this.destroy(), this);
     }
 
     _sessionUpdated() {
@@ -1000,6 +1012,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
     destroy() {
         this.close();
         this.removeAll();
+        this.actor.disconnectObject(this);
         this.actor.destroy();
 
         this.emit('destroy');
