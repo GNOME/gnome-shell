@@ -33,6 +33,10 @@ export class Config extends GObject.Object {
             'enabled', null, null,
             GObject.ParamFlags.READABLE,
             false),
+        'title-text': GObject.ParamSpec.string(
+            'title-text', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
         'body-text': GObject.ParamSpec.string(
             'body-text', null, null,
             GObject.ParamFlags.READABLE,
@@ -47,6 +51,10 @@ export class Config extends GObject.Object {
         return this._enabled;
     }
 
+    get titleText() {
+        return this._titleText;
+    }
+
     get bodyText() {
         return this._bodyText;
     }
@@ -57,10 +65,12 @@ export class Config extends GObject.Object {
         this._settings = settings;
 
         this._enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
+        this._titleText = this._settings.get_string(Settings.BANNER_MESSAGE_TITLE_KEY);
         this._bodyText = '';
 
         this._settings.connectObject(
             `changed::${Settings.BANNER_MESSAGE_KEY}`, () => this._onEnabledChanged(),
+            `changed::${Settings.BANNER_MESSAGE_TITLE_KEY}`, () => this._onTitleTextChanged(),
             `changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`, () => this._updateBodyText().catch(logError),
             `changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`, () => this._onMessageFileChanged(),
             `changed::${Settings.BANNER_MESSAGE_PATH_KEY}`, () => this._onMessageFileChanged(),
@@ -78,6 +88,11 @@ export class Config extends GObject.Object {
     _onEnabledChanged() {
         this._enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
         this.notify('enabled');
+    }
+
+    _onTitleTextChanged() {
+        this._titleText = this._settings.get_string(Settings.BANNER_MESSAGE_TITLE_KEY);
+        this.notify('title-text');
     }
 
     _onMessageFileChanged() {
@@ -152,6 +167,14 @@ export class Banner extends St.BoxLayout {
         this._config = config;
         this._isOpen = false;
 
+        this._titleLabel = new St.Label({
+            style_class: 'banner-title',
+            text: '',
+        });
+        this._titleLabel.clutter_text.line_wrap = true;
+        this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this.add_child(this._titleLabel);
+
         this._bodyLabel = new St.Label({
             style_class: 'banner-body',
             text: '',
@@ -173,6 +196,12 @@ export class Banner extends St.BoxLayout {
                 this._syncVisibility();
             }, this);
         this.enabled = this._config.enabled;
+
+        this._config.bind_property('title-text', this._titleLabel, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._config.bind_property_full('title-text', this._titleLabel, 'visible',
+            GObject.BindingFlags.SYNC_CREATE,
+            (_bind, titleText) => [true, !!titleText], null);
 
         this._config.bind_property('body-text', this._bodyLabel, 'text',
             GObject.BindingFlags.SYNC_CREATE);

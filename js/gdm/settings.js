@@ -1,6 +1,7 @@
 export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 export const BANNER_MESSAGE_KEY = 'banner-message-enable';
 export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
+export const BANNER_MESSAGE_TITLE_KEY = 'banner-message-title';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
 export const BANNER_MESSAGE_PATH_KEY = 'banner-message-path';
 export const ALLOWED_FAILURES_KEY = 'allowed-failures';
