@@ -15,6 +15,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
@@ -186,5 +187,48 @@ export class InlineBanner extends Banner {
         super(settings, {style_class: 'inline-banner'});
 
         this._update().catch(logError);
+    }
+}
+
+export class AcknowledgementBanner extends Banner {
+    static [GObject.signals] = {
+        'acknowledged': {},
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(settings) {
+        super(settings, {
+            style_class: 'acknowledgement-banner',
+            accessible_role: Atk.Role.ALERT,
+        });
+
+        this._button = new St.Button({
+            style_class: 'banner-button',
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._button.connect('clicked', () => this.emit('acknowledged'));
+        this.add_child(this._button);
+
+        this._settings.connectObject(
+            `changed::${Settings.BANNER_MESSAGE_BUTTON_KEY}`,
+            () => this._update().catch(logError), this);
+
+        this._update().catch(logError);
+    }
+
+    vfunc_show() {
+        super.vfunc_show();
+        this._button.grab_key_focus();
+    }
+
+    async _update() {
+        this._button.label = this._settings.get_string(Settings.BANNER_MESSAGE_BUTTON_KEY) || _('OK');
+
+        await super._update();
     }
 }
