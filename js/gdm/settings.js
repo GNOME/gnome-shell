@@ -4,6 +4,7 @@ export const BANNER_MESSAGE_SOURCE_KEY = 'banner-message-source';
 export const BANNER_MESSAGE_TITLE_KEY = 'banner-message-title';
 export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
 export const BANNER_MESSAGE_PATH_KEY = 'banner-message-path';
+export const BANNER_MESSAGE_BUTTON_KEY = 'banner-message-button';
 export const ALLOWED_FAILURES_KEY = 'allowed-failures';
 
 export const LOGO_KEY = 'logo';

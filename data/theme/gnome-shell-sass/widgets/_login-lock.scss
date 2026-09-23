@@ -186,6 +186,27 @@ $_gdm_dialog_width: 25em;
   }
 }
 
+.acknowledgement-banner {
+  spacing: 12px;
+  width: $_gdm_dialog_width * 1.5;
+
+  .banner-title {
+    @extend %title_1;
+  }
+
+  .banner-button {
+    @include login_dialog_item_button();
+    @include fontsize($base_font_size + 2);
+    color: $_gdm_fg;
+    text-align: center;
+    font-weight: bold;
+    border-radius: $base_border_radius * 4;
+    padding: $base_padding * 2.5 $base_padding * 4;
+    margin-top: $base_margin * 4;
+    min-width: 6em;
+  }
+}
+
 .login-dialog-message {
   text-align: center;
 }

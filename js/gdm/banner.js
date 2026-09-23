@@ -42,6 +42,10 @@ export class Config extends GObject.Object {
             'body-text', null, null,
             GObject.ParamFlags.READABLE,
             ''),
+        'button-text': GObject.ParamSpec.string(
+            'button-text', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
     };
 
     static {
@@ -60,6 +64,10 @@ export class Config extends GObject.Object {
         return this._bodyText;
     }
 
+    get buttonText() {
+        return this._buttonText;
+    }
+
     constructor(settings) {
         super();
 
@@ -67,11 +75,13 @@ export class Config extends GObject.Object {
 
         this._enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
         this._titleText = this._settings.get_string(Settings.BANNER_MESSAGE_TITLE_KEY);
+        this._buttonText = this._settings.get_string(Settings.BANNER_MESSAGE_BUTTON_KEY) || _('OK');
         this._bodyText = '';
 
         this._settings.connectObject(
             `changed::${Settings.BANNER_MESSAGE_KEY}`, () => this._onEnabledChanged(),
             `changed::${Settings.BANNER_MESSAGE_TITLE_KEY}`, () => this._onTitleTextChanged(),
+            `changed::${Settings.BANNER_MESSAGE_BUTTON_KEY}`, () => this._onButtonTextChanged(),
             `changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`, () => this._updateBodyText().catch(logError),
             `changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`, () => this._onMessageFileChanged(),
             `changed::${Settings.BANNER_MESSAGE_PATH_KEY}`, () => this._onMessageFileChanged(),
@@ -94,6 +104,11 @@ export class Config extends GObject.Object {
     _onTitleTextChanged() {
         this._titleText = this._settings.get_string(Settings.BANNER_MESSAGE_TITLE_KEY);
         this.notify('title-text');
+    }
+
+    _onButtonTextChanged() {
+        this._buttonText = this._settings.get_string(Settings.BANNER_MESSAGE_BUTTON_KEY) || _('OK');
+        this.notify('button-text');
     }
 
     _onMessageFileChanged() {
@@ -254,5 +269,38 @@ export class InlineBanner extends Banner {
 
     constructor(config) {
         super(config, {style_class: 'inline-banner'});
+    }
+}
+
+export class AcknowledgementBanner extends Banner {
+    static [GObject.signals] = {
+        'acknowledged': {},
+    };
+
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(config) {
+        super(config, {
+            style_class: 'acknowledgement-banner',
+        });
+
+        this._button = new St.Button({
+            style_class: 'banner-button',
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._button.connect('clicked', () => this.emit('acknowledged'));
+        this.add_child(this._button);
+
+        this._config.bind_property('button-text', this._button, 'label',
+            GObject.BindingFlags.SYNC_CREATE);
+    }
+
+    vfunc_show() {
+        super.vfunc_show();
+        this._button.grab_key_focus();
     }
 }
