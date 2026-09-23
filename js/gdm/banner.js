@@ -157,13 +157,13 @@ export class Banner extends St.BoxLayout {
         GObject.registerClass(this);
     }
 
-    constructor(config) {
+    constructor(config, params = {}) {
         super({
-            style_class: 'banner',
             orientation: Clutter.Orientation.VERTICAL,
             opacity: 0,
             visible: false,
             accessible_role: Atk.Role.ALERT,
+            ...params,
         });
 
         this._config = config;
@@ -244,5 +244,15 @@ export class Banner extends St.BoxLayout {
         this.remove_all_transitions();
         this.opacity = 0;
         super.vfunc_hide();
+    }
+}
+
+export class InlineBanner extends Banner {
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(config) {
+        super(config, {style_class: 'inline-banner'});
     }
 }
