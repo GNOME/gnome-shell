@@ -23,12 +23,12 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
-import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as AuthMenuButton from './authMenuButton.js';
 import * as AuthPrompt from './authPrompt.js';
+import {Banner} from './banner.js';
 import * as Batch from './batch.js';
 import {ConflictingSessionDialog} from './conflictingSessionDialog.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
@@ -60,7 +60,6 @@ Gio._promisify(Gdm.Greeter.prototype, 'call_begin_auto_login');
 Gio._promisify(Gdm.Greeter.prototype, 'call_select_session');
 Gio._promisify(Gdm.Greeter.prototype, 'call_start_session_when_ready');
 Gio._promisify(Gdm.Greeter.prototype, 'call_stop_conflicting_session');
-Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
 export const UserListItem = GObject.registerClass({
     Signals: {'activate': {}},
@@ -401,20 +400,6 @@ export const LoginDialog = GObject.registerClass({
 
         this._settings = new Gio.Settings({schema_id: Settings.LOGIN_SCREEN_SCHEMA});
 
-        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_KEY}`,
-            () => this._updateBanner().catch(logError));
-        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`,
-            () => this._updateBanner().catch(logError));
-        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`,
-            () => {
-                if (this._updateBannerMessageFile())
-                    this._updateBanner().catch(logError);
-            });
-        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_PATH_KEY}`,
-            () => {
-                if (this._updateBannerMessageFile())
-                    this._updateBanner().catch(logError);
-            });
         this._settings.connect(`changed::${Settings.DISABLE_USER_LIST_KEY}`,
             this._updateDisableUserList.bind(this));
         this._settings.connect(`changed::${Settings.LOGO_KEY}`,
@@ -470,27 +455,8 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        const bannerBox = new St.BoxLayout({
-            orientation: Clutter.Orientation.VERTICAL,
-        });
-
-        this._bannerView = new St.ScrollView({
-            style_class: 'login-dialog-banner-view',
-            opacity: 0,
-            child: bannerBox,
-        });
-        this.add_child(this._bannerView);
-
-        this._bannerLabel = new St.Label({
-            style_class: 'login-dialog-banner',
-            text: '',
-        });
-        this._bannerLabel.clutter_text.line_wrap = true;
-        this._bannerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        bannerBox.add_child(this._bannerLabel);
-
-        this._updateBannerMessageFile();
-        this._updateBanner().catch(logError);
+        this._banner = new Banner(this._settings);
+        this.add_child(this._banner);
 
         this._bottomButtonGroup = new St.BoxLayout({
             style_class: 'login-dialog-bottom-button-group',
@@ -602,7 +568,7 @@ export const LoginDialog = GObject.registerClass({
     _getBannerAllocation(dialogBox) {
         const actorBox = new Clutter.ActorBox();
 
-        const [, , natWidth, natHeight] = this._bannerView.get_preferred_size();
+        const [, , natWidth, natHeight] = this._banner.get_preferred_size();
         const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -696,7 +662,7 @@ export const LoginDialog = GObject.registerClass({
         // First find out what space the children require
         let bannerAllocation = null;
         let bannerHeight = 0;
-        if (this._bannerView.visible) {
+        if (this._banner.visible) {
             bannerAllocation = this._getBannerAllocation(dialogBox);
             bannerHeight = bannerAllocation.y2 - bannerAllocation.y1;
         }
@@ -778,7 +744,7 @@ export const LoginDialog = GObject.registerClass({
 
                     // figure out how tall it would like to be and try to accommodate
                     // but don't let it get too close to the logo
-                    let [, wideBannerHeight] = this._bannerView.get_preferred_height(wideBannerWidth);
+                    let [, wideBannerHeight] = this._banner.get_preferred_height(wideBannerWidth);
 
                     const maxWideHeight = dialogHeight - 3 * logoHeight;
                     wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
@@ -814,7 +780,7 @@ export const LoginDialog = GObject.registerClass({
 
         // Finally hand out the allocations
         if (bannerAllocation)
-            this._bannerView.allocate(bannerAllocation);
+            this._banner.allocate(bannerAllocation);
 
         if (authPromptAllocation)
             this._authPrompt.allocate(authPromptAllocation);
@@ -874,78 +840,6 @@ export const LoginDialog = GObject.registerClass({
             cancelVisible = true;
 
         this._authPrompt.cancelButton.visible = cancelVisible;
-    }
-
-    _updateBannerMessageFile() {
-        const path = this._settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) === 'file'
-            ? this._settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY)
-            : null;
-        const file = path
-            ? Gio.File.new_for_path(path)
-            : null;
-
-        if (!file && !this._bannerMessageFile)
-            return false;
-
-        if (file && this._bannerMessageFile && this._bannerMessageFile.equal(file))
-            return false;
-
-        this._bannerMessageMonitor?.disconnectObject(this);
-        this._bannerMessageMonitor = null;
-
-        this._bannerMessageFile = file;
-
-        if (file) {
-            this._bannerMessageMonitor = file.monitor_file(Gio.FileMonitorFlags.NONE, null);
-            this._bannerMessageMonitor.connectObject(
-                'changed', () => this._updateBanner().catch(logError), this);
-        }
-
-        return true;
-    }
-
-    async _getBannerText() {
-        const enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
-        if (!enabled)
-            return null;
-
-        if (this._bannerMessageFile) {
-            try {
-                const [contents] = await this._bannerMessageFile.load_contents_async(null);
-                return new TextDecoder().decode(contents);
-            } catch (e) {
-                console.error(`Failed to read banner from ${this._bannerMessageFile.get_path()}: ${e.message}`);
-                return null;
-            }
-        }
-
-        return this._settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
-    }
-
-    async _updateBanner() {
-        const text = await this._getBannerText();
-
-        if (text) {
-            this._bannerLabel.set_text(text);
-            this._bannerLabel.show();
-        } else {
-            this._bannerLabel.hide();
-        }
-    }
-
-    _fadeInBannerView() {
-        this._bannerView.show();
-        this._bannerView.ease({
-            opacity: 255,
-            duration: _FADE_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-
-    _hideBannerView() {
-        this._bannerView.remove_all_transitions();
-        this._bannerView.opacity = 0;
-        this._bannerView.hide();
     }
 
     _updateLogoTexture(cache, file) {
@@ -1088,7 +982,7 @@ export const LoginDialog = GObject.registerClass({
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
-        this._fadeInBannerView();
+        this._banner.present();
     }
 
     _showRealmLoginHint(realmManager, hint) {
@@ -1453,7 +1347,7 @@ export const LoginDialog = GObject.registerClass({
     _showUserList() {
         this._ensureUserListLoaded();
         this._authPrompt.hide();
-        this._hideBannerView();
+        this._banner.unpresent();
         this._authMenuButton.updateVisibility({visible: false});
         this._setUserListExpanded(true);
         this._notListedButton.show();
