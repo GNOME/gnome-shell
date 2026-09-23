@@ -148,10 +148,8 @@ export class ShellMountOperation {
             this._dialog = null;
         }
 
-        if (this._notifier) {
-            this._notifier.done();
-            this._notifier = null;
-        }
+        this._notification?.destroy();
+        this._notification = null;
 
         if (this._drive) {
             this._drive.disconnectObject(this);
