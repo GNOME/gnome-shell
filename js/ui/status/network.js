@@ -1630,6 +1630,7 @@ class NMVpnToggle extends NMToggle {
 
     _removeConnection(connection) {
         this._removeItem(connection);
+        connection.disconnectObject(this);
     }
 
     activateConnection(connection) {
