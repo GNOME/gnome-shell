@@ -166,14 +166,19 @@ $_gdm_dialog_width: 25em;
 }
 
 .banner {
-  max-width: $_gdm_dialog_width * 1.2;
+  max-width: $_gdm_dialog_width * 1.6;
+  padding: $base_padding * 3 $base_padding * 4;
+  spacing: $base_padding;
+  border-radius: $base_border_radius * 1.5;
+  background-color: transparentize($_gdm_fg, 0.9);
 
   .banner-title {
-    @extend %title_4;
+    @extend %heading;
     text-align: center;
   }
 
   .banner-body {
+    text-align: center;
     color: darken($_gdm_fg, 10%);
   }
 }

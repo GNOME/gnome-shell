@@ -719,9 +719,10 @@ export const LoginDialog = GObject.registerClass({
                 // limit its height and let it present scrollbars instead.
 
                 // Give 70% of the banner space to the banner itself, and
-                // split the remaining 30% evenly above and below it
+                // split the remaining 30% unevenly above and below it, so
+                // the banner sits a bit higher rather than centered
                 const bannerSpacing = Math.floor(0.3 * bannerSpace);
-                bannerAllocation.y1 += Math.floor(bannerSpacing / 2);
+                bannerAllocation.y1 += Math.floor(bannerSpacing / 4);
                 bannerAllocation.y2 = bannerAllocation.y1 + (bannerSpace - bannerSpacing);
             }
         } else if (userSelectionAllocation) {
