@@ -656,7 +656,6 @@ export const LoginDialog = GObject.registerClass({
         const themeNode = this.get_theme_node();
         dialogBox = themeNode.get_content_box(dialogBox);
 
-        const dialogWidth = dialogBox.x2 - dialogBox.x1;
         const dialogHeight = dialogBox.y2 - dialogBox.y1;
 
         // First find out what space the children require
@@ -668,13 +667,11 @@ export const LoginDialog = GObject.registerClass({
         }
 
         let authPromptAllocation = null;
-        let authPromptWidth = 0;
         if (this._authPrompt.visible) {
             const fixedHeight = this._authPrompt.webLoginActive
                 ? _FIXED_WEBLOGIN_HEIGHT : _FIXED_AUTHPROMPT_HEIGHT;
             authPromptAllocation =
                 this._getFixedTopActorAllocation(dialogBox, this._authPrompt, fixedHeight);
-            authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 
         let userSelectionAllocation = null;
@@ -718,52 +715,14 @@ export const LoginDialog = GObject.registerClass({
                 bannerAllocation.y1 += yShift;
                 bannerAllocation.y2 += yShift;
             } else {
-                // Then figure out how much space there would be if we switched to a
-                // wide layout with banner on one side and authprompt on the other.
-                const leftOverXSpace = dialogWidth - authPromptWidth;
+                // We're too constrained to show the whole banner at once, so
+                // limit its height and let it present scrollbars instead.
 
-                // In a wide view, half of the available space goes to the banner,
-                // and the other half goes to the margins.
-                const wideBannerWidth = leftOverXSpace / 2;
-                const wideSpacing  = leftOverXSpace - wideBannerWidth;
-
-                // If we do go with a wide layout, we need there to be at least enough
-                // space for the banner and the auth prompt to be the same width,
-                // so it doesn't look unbalanced.
-                if (authPromptWidth > 0 && wideBannerWidth > authPromptWidth) {
-                    const centerX = dialogBox.x1 + dialogWidth / 2;
-                    const centerY = dialogBox.y1 + dialogHeight / 2;
-
-                    // A small portion of the spacing goes down the center of the
-                    // screen to help delimit the two columns of the wide view
-                    const centerGap = wideSpacing / 8;
-
-                    // place the banner along the left edge of the center margin
-                    bannerAllocation.x2 = Math.floor(centerX - centerGap / 2);
-                    bannerAllocation.x1 = Math.floor(bannerAllocation.x2 - wideBannerWidth);
-
-                    // figure out how tall it would like to be and try to accommodate
-                    // but don't let it get too close to the logo
-                    let [, wideBannerHeight] = this._banner.get_preferred_height(wideBannerWidth);
-
-                    const maxWideHeight = dialogHeight - 3 * logoHeight;
-                    wideBannerHeight = Math.min(maxWideHeight, wideBannerHeight);
-                    bannerAllocation.y1 = Math.floor(centerY - wideBannerHeight / 2);
-                    bannerAllocation.y2 = bannerAllocation.y1 + wideBannerHeight;
-
-                    // place the auth prompt along the right edge of the center margin
-                    authPromptAllocation.x1 = Math.floor(centerX + centerGap / 2);
-                    authPromptAllocation.x2 = authPromptAllocation.x1 + authPromptWidth;
-                } else {
-                    // If we aren't going to do a wide view, then we need to limit
-                    // the height of the banner so it will present scrollbars
-
-                    // Give 70% of the banner space to the banner itself, and
-                    // split the remaining 30% evenly above and below it
-                    const bannerSpacing = Math.floor(0.3 * bannerSpace);
-                    bannerAllocation.y1 += Math.floor(bannerSpacing / 2);
-                    bannerAllocation.y2 = bannerAllocation.y1 + (bannerSpace - bannerSpacing);
-                }
+                // Give 70% of the banner space to the banner itself, and
+                // split the remaining 30% evenly above and below it
+                const bannerSpacing = Math.floor(0.3 * bannerSpace);
+                bannerAllocation.y1 += Math.floor(bannerSpacing / 2);
+                bannerAllocation.y2 = bannerAllocation.y1 + (bannerSpace - bannerSpacing);
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
