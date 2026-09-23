@@ -32,12 +32,12 @@ export class Banner extends St.BoxLayout {
         GObject.registerClass(this);
     }
 
-    constructor(settings) {
+    constructor(settings, params = {}) {
         super({
-            style_class: 'banner',
             orientation: Clutter.Orientation.VERTICAL,
             opacity: 0,
             visible: false,
+            ...params,
         });
 
         this._settings = settings;
@@ -80,7 +80,6 @@ export class Banner extends St.BoxLayout {
             }, this);
 
         this._updateMessageFile();
-        this._update().catch(logError);
     }
 
     present() {
@@ -175,5 +174,17 @@ export class Banner extends St.BoxLayout {
         this._bodyLabel.visible = !!body;
 
         this._syncVisibility();
+    }
+}
+
+export class InlineBanner extends Banner {
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(settings) {
+        super(settings, {style_class: 'inline-banner'});
+
+        this._update().catch(logError);
     }
 }

@@ -165,7 +165,12 @@ $_gdm_dialog_width: 25em;
   margin: 3em 0;
 }
 
-.banner {
+.banner-title,
+.banner-body {
+  text-align: center;
+}
+
+.inline-banner {
   max-width: $_gdm_dialog_width * 1.6;
   padding: $base_padding * 3 $base_padding * 4;
   spacing: $base_padding;
@@ -174,11 +179,9 @@ $_gdm_dialog_width: 25em;
 
   .banner-title {
     @extend %heading;
-    text-align: center;
   }
 
   .banner-body {
-    text-align: center;
     color: darken($_gdm_fg, 10%);
   }
 }

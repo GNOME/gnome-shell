@@ -28,7 +28,7 @@ import St from 'gi://St';
 
 import * as AuthMenuButton from './authMenuButton.js';
 import * as AuthPrompt from './authPrompt.js';
-import {Banner} from './banner.js';
+import * as Banner from './banner.js';
 import * as Batch from './batch.js';
 import {ConflictingSessionDialog} from './conflictingSessionDialog.js';
 import * as CtrlAltTab from '../ui/ctrlAltTab.js';
@@ -455,8 +455,8 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        this._banner = new Banner(this._settings);
-        this.add_child(this._banner);
+        this._inlineBanner = new Banner.InlineBanner(this._settings);
+        this.add_child(this._inlineBanner);
 
         this._bottomButtonGroup = new St.BoxLayout({
             style_class: 'login-dialog-bottom-button-group',
@@ -565,10 +565,10 @@ export const LoginDialog = GObject.registerClass({
         this._selectedAuthMechanism = authMechanism;
     }
 
-    _getBannerAllocation(dialogBox) {
+    _getInlineBannerAllocation(dialogBox) {
         const actorBox = new Clutter.ActorBox();
 
-        const [, , natWidth, natHeight] = this._banner.get_preferred_size();
+        const [, , natWidth, natHeight] = this._inlineBanner.get_preferred_size();
         const centerX = dialogBox.x1 + (dialogBox.x2 - dialogBox.x1) / 2;
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
@@ -659,11 +659,11 @@ export const LoginDialog = GObject.registerClass({
         const dialogHeight = dialogBox.y2 - dialogBox.y1;
 
         // First find out what space the children require
-        let bannerAllocation = null;
-        let bannerHeight = 0;
-        if (this._banner.visible) {
-            bannerAllocation = this._getBannerAllocation(dialogBox);
-            bannerHeight = bannerAllocation.y2 - bannerAllocation.y1;
+        let inlineBannerAllocation = null;
+        let inlineBannerHeight = 0;
+        if (this._inlineBanner.visible) {
+            inlineBannerAllocation = this._getInlineBannerAllocation(dialogBox);
+            inlineBannerHeight = inlineBannerAllocation.y2 - inlineBannerAllocation.y1;
         }
 
         let authPromptAllocation = null;
@@ -695,15 +695,11 @@ export const LoginDialog = GObject.registerClass({
         // Then figure out if we're overly constrained and need to
         // try a different layout, or if we have what extra space we
         // can hand out
-        if (bannerAllocation) {
-            let bannerSpace;
+        if (inlineBannerAllocation) {
+            const inlineBannerSpace = authPromptAllocation
+                ? authPromptAllocation.y1 - inlineBannerAllocation.y1 : 0;
 
-            if (authPromptAllocation)
-                bannerSpace = authPromptAllocation.y1 - bannerAllocation.y1;
-            else
-                bannerSpace = 0;
-
-            const leftOverYSpace = bannerSpace - bannerHeight;
+            const leftOverYSpace = inlineBannerSpace - inlineBannerHeight;
 
             if (leftOverYSpace > 0) {
                 // First figure out how much left over space is up top
@@ -712,8 +708,8 @@ export const LoginDialog = GObject.registerClass({
                 // Then, shift the banner into the middle of that extra space
                 const yShift = Math.floor(leftOverTopSpace / 2);
 
-                bannerAllocation.y1 += yShift;
-                bannerAllocation.y2 += yShift;
+                inlineBannerAllocation.y1 += yShift;
+                inlineBannerAllocation.y2 += yShift;
             } else {
                 // We're too constrained to show the whole banner at once, so
                 // limit its height and let it present scrollbars instead.
@@ -721,9 +717,9 @@ export const LoginDialog = GObject.registerClass({
                 // Give 70% of the banner space to the banner itself, and
                 // split the remaining 30% unevenly above and below it, so
                 // the banner sits a bit higher rather than centered
-                const bannerSpacing = Math.floor(0.3 * bannerSpace);
-                bannerAllocation.y1 += Math.floor(bannerSpacing / 4);
-                bannerAllocation.y2 = bannerAllocation.y1 + (bannerSpace - bannerSpacing);
+                const inlineBannerSpacing = Math.floor(0.3 * inlineBannerSpace);
+                inlineBannerAllocation.y1 += Math.floor(inlineBannerSpacing / 4);
+                inlineBannerAllocation.y2 = inlineBannerAllocation.y1 + (inlineBannerSpace - inlineBannerSpacing);
             }
         } else if (userSelectionAllocation) {
             // Grow the user list to fill the space
@@ -739,8 +735,8 @@ export const LoginDialog = GObject.registerClass({
         }
 
         // Finally hand out the allocations
-        if (bannerAllocation)
-            this._banner.allocate(bannerAllocation);
+        if (inlineBannerAllocation)
+            this._inlineBanner.allocate(inlineBannerAllocation);
 
         if (authPromptAllocation)
             this._authPrompt.allocate(authPromptAllocation);
@@ -942,7 +938,7 @@ export const LoginDialog = GObject.registerClass({
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
-        this._banner.present();
+        this._inlineBanner.present();
     }
 
     _showRealmLoginHint(realmManager, hint) {
@@ -1307,7 +1303,7 @@ export const LoginDialog = GObject.registerClass({
     _showUserList() {
         this._ensureUserListLoaded();
         this._authPrompt.hide();
-        this._banner.unpresent();
+        this._inlineBanner.unpresent();
         this._authMenuButton.updateVisibility({visible: false});
         this._setUserListExpanded(true);
         this._notListedButton.show();
