@@ -58,10 +58,8 @@ class URLHighlighter extends St.Label {
         this.setMarkup(text, allowMarkup);
 
         this._clickGesture = new Clutter.ClickGesture();
-        this._clickGesture.connectObject(
-            'recognize', this._onClick.bind(this),
-            'may-recognize', this._checkInUrl.bind(this),
-            this);
+        this._clickGesture.connect('recognize', this._onClick.bind(this));
+        this._clickGesture.connect('may-recognize', this._checkInUrl.bind(this));
         this.add_action(this._clickGesture);
 
         const motionController = new Clutter.MotionController();
