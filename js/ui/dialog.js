@@ -169,6 +169,13 @@ export const MessageDialogContent = GObject.registerClass({
     },
 }, class MessageDialogContent extends St.BoxLayout {
     _init(params) {
+        super._init({
+            style_class: 'message-dialog-content',
+            x_expand: true,
+            orientation: Clutter.Orientation.VERTICAL,
+            ...params,
+        });
+
         this._title = new St.Label({style_class: 'message-dialog-title'});
         this._description = new St.Label({style_class: 'message-dialog-description'});
 
@@ -177,13 +184,6 @@ export const MessageDialogContent = GObject.registerClass({
 
         this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._description.clutter_text.line_wrap = true;
-
-        super._init({
-            style_class: 'message-dialog-content',
-            x_expand: true,
-            orientation: Clutter.Orientation.VERTICAL,
-            ...params,
-        });
 
         this.connect('notify::title', () => {
             this._title.remove_style_class_name('lightweight');
@@ -253,6 +253,13 @@ export const ListSection = GObject.registerClass({
     },
 }, class ListSection extends St.BoxLayout {
     _init(params) {
+        super._init({
+            style_class: 'dialog-list',
+            x_expand: true,
+            orientation: Clutter.Orientation.VERTICAL,
+            ...params,
+        });
+
         this._title = new St.Label({style_class: 'dialog-list-title'});
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._title.clutter_text.line_wrap = true;
@@ -265,13 +272,6 @@ export const ListSection = GObject.registerClass({
         this._listScrollView = new St.ScrollView({
             style_class: 'dialog-list-scrollview',
             child: this.list,
-        });
-
-        super._init({
-            style_class: 'dialog-list',
-            x_expand: true,
-            orientation: Clutter.Orientation.VERTICAL,
-            ...params,
         });
 
         this.label_actor = this._title;
@@ -308,6 +308,11 @@ export const ListSectionItem = GObject.registerClass({
     },
 }, class ListSectionItem extends St.BoxLayout {
     _init(params) {
+        super._init({
+            style_class: 'dialog-list-item',
+            ...params,
+        });
+
         this._iconActorBin = new St.Bin();
 
         const textLayout = new St.BoxLayout({
@@ -324,11 +329,6 @@ export const ListSectionItem = GObject.registerClass({
 
         textLayout.add_child(this._title);
         textLayout.add_child(this._description);
-
-        super._init({
-            style_class: 'dialog-list-item',
-            ...params,
-        });
 
         this.label_actor = this._title;
         this.add_child(this._iconActorBin);
