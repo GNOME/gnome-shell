@@ -98,6 +98,10 @@ export class Banner extends St.BoxLayout {
 
         this._settings = settings;
         this._presented = false;
+        this._destroyed = false;
+        this.connect('destroy', () => {
+            this._destroyed = true;
+        });
 
         this._titleLabel = new St.Label({
             style_class: 'banner-title',
@@ -206,11 +210,17 @@ export class Banner extends St.BoxLayout {
     }
 
     async _update() {
+        if (this._destroyed)
+            return;
+
         const title = this._getTitleText();
         this._titleLabel.text = title;
         this._titleLabel.visible = !!title;
 
         const body = await this._getBodyText();
+        if (this._destroyed)
+            return;
+
         this._bodyLabel.text = body;
         this._bodyLabel.visible = !!body;
 
