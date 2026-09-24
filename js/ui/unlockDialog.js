@@ -708,8 +708,8 @@ export const UnlockDialog = GObject.registerClass({
             this._updateUserSwitchVisibility.bind(this), this);
 
         this._lockdownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
-        this._lockdownSettings.connect('changed::disable-user-switching',
-            this._updateUserSwitchVisibility.bind(this));
+        this._lockdownSettings.connectObject('changed::disable-user-switching',
+            this._updateUserSwitchVisibility.bind(this), this);
 
         this._user.connectObject(
             'notify::is-loaded', () => this._updateUserSwitchVisibility(),
