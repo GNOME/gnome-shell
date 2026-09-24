@@ -536,7 +536,7 @@ export class ScreenShield extends Signals.EventEmitter {
         }
 
         if (this._dialog)
-            this._dialog.finish(() => this._continueDeactivate(animate));
+            this._dialog.finish().then(() => this._continueDeactivate(animate));
         else
             this._continueDeactivate(animate);
     }
