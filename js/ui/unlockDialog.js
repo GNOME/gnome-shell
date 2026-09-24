@@ -1121,13 +1121,8 @@ export const UnlockDialog = GObject.registerClass({
             this._authPrompt.cancel();
     }
 
-    finish(onComplete) {
-        if (!this._authPrompt) {
-            onComplete();
-            return;
-        }
-
-        this._authPrompt.finish(onComplete);
+    async finish() {
+        await this._authPrompt?.finish();
     }
 
     open() {
