@@ -888,6 +888,10 @@ export class WorkspacesDisplay extends St.Widget {
             'window-drag-begin', this._windowDragBegin.bind(this),
             'window-drag-end', this._windowDragEnd.bind(this), this);
 
+        Main.layoutManager.connectObject(
+            'monitors-changed', () => this._updateWorkspacesViews(),
+            this);
+
         this._primaryVisible = true;
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
