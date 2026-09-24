@@ -27,6 +27,14 @@ import * as Settings from './settings.js';
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
 const _FADE_ANIMATION_TIME = 250;
+const _AUTO_MODE_BODY_LENGTH_THRESHOLD = 300;
+const _AUTO_MODE_BODY_LINE_THRESHOLD = 3;
+
+export const Mode = {
+    AUTO: 'auto',
+    INLINE: 'inline',
+    ACKNOWLEDGEMENT: 'acknowledgement',
+};
 
 export class Config extends GObject.Object {
     static [GObject.properties] = {
@@ -44,6 +52,10 @@ export class Config extends GObject.Object {
             ''),
         'button-text': GObject.ParamSpec.string(
             'button-text', null, null,
+            GObject.ParamFlags.READABLE,
+            ''),
+        'mode': GObject.ParamSpec.string(
+            'mode', null, null,
             GObject.ParamFlags.READABLE,
             ''),
     };
@@ -68,6 +80,10 @@ export class Config extends GObject.Object {
         return this._buttonText;
     }
 
+    get mode() {
+        return this._mode;
+    }
+
     constructor(settings) {
         super();
 
@@ -80,6 +96,7 @@ export class Config extends GObject.Object {
 
         this._settings.connectObject(
             `changed::${Settings.BANNER_MESSAGE_KEY}`, () => this._onEnabledChanged(),
+            `changed::${Settings.BANNER_MESSAGE_MODE_KEY}`, () => this._onModeChanged().catch(logError),
             `changed::${Settings.BANNER_MESSAGE_TITLE_KEY}`, () => this._onTitleTextChanged(),
             `changed::${Settings.BANNER_MESSAGE_BUTTON_KEY}`, () => this._onButtonTextChanged(),
             `changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`, () => this._updateBodyText().catch(logError),
@@ -89,6 +106,7 @@ export class Config extends GObject.Object {
 
         this._updateMessageFile();
         this._updateBodyText().catch(logError);
+        this._onModeChanged().catch(logError);
     }
 
     destroy() {
@@ -99,6 +117,27 @@ export class Config extends GObject.Object {
     _onEnabledChanged() {
         this._enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
         this.notify('enabled');
+    }
+
+    async _onModeChanged() {
+        this._mode = await this._resolveMode();
+        this.notify('mode');
+    }
+
+    async _resolveMode() {
+        const mode = this._settings.get_string(Settings.BANNER_MESSAGE_MODE_KEY);
+
+        if (mode !== Mode.AUTO)
+            return mode;
+
+        await this._bodyTextUpdated;
+
+        const isTooLong = this.bodyText.length > _AUTO_MODE_BODY_LENGTH_THRESHOLD;
+        const hasTooManyLines = this.bodyText.split('\n').length > _AUTO_MODE_BODY_LINE_THRESHOLD;
+
+        return isTooLong || hasTooManyLines
+            ? Mode.ACKNOWLEDGEMENT
+            : Mode.INLINE;
     }
 
     _onTitleTextChanged() {
@@ -148,8 +187,13 @@ export class Config extends GObject.Object {
     }
 
     async _updateBodyText() {
-        this._bodyText = await this._readBannerBody();
+        this._bodyTextUpdated = this._readBannerBody();
+
+        this._bodyText = await this._bodyTextUpdated;
         this.notify('body-text');
+
+        this._mode = await this._resolveMode();
+        this.notify('mode');
     }
 
     async _readBannerBody() {
