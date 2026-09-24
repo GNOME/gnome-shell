@@ -404,6 +404,8 @@ export const LoginDialog = GObject.registerClass({
             this._updateDisableUserList.bind(this));
         this._settings.connect(`changed::${Settings.LOGO_KEY}`,
             this._updateLogo.bind(this));
+        this._settings.connect(`changed::${Settings.BANNER_MESSAGE_MODE_KEY}`,
+            () => this._updateBanner().catch(logError));
 
         this._textureCache = St.TextureCache.get_default();
         this._textureCache.connectObject('texture-file-changed',
@@ -455,8 +457,7 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        this._inlineBanner = new Banner.InlineBanner(this._settings);
-        this.add_child(this._inlineBanner);
+        this._updateBanner().catch(logError);
 
         this._bottomButtonGroup = new St.BoxLayout({
             style_class: 'login-dialog-bottom-button-group',
@@ -661,9 +662,15 @@ export const LoginDialog = GObject.registerClass({
         // First find out what space the children require
         let inlineBannerAllocation = null;
         let inlineBannerHeight = 0;
-        if (this._inlineBanner.visible) {
+        if (this._inlineBanner?.visible) {
             inlineBannerAllocation = this._getInlineBannerAllocation(dialogBox);
             inlineBannerHeight = inlineBannerAllocation.y2 - inlineBannerAllocation.y1;
+        }
+
+        let acknowledgementBannerAllocation = null;
+        if (this._acknowledgementBanner?.visible) {
+            acknowledgementBannerAllocation =
+                this._getCenterActorAllocation(dialogBox, this._acknowledgementBanner);
         }
 
         let authPromptAllocation = null;
@@ -737,6 +744,9 @@ export const LoginDialog = GObject.registerClass({
         // Finally hand out the allocations
         if (inlineBannerAllocation)
             this._inlineBanner.allocate(inlineBannerAllocation);
+
+        if (acknowledgementBannerAllocation)
+            this._acknowledgementBanner.allocate(acknowledgementBannerAllocation);
 
         if (authPromptAllocation)
             this._authPrompt.allocate(authPromptAllocation);
@@ -819,6 +829,28 @@ export const LoginDialog = GObject.registerClass({
 
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
+    }
+
+    async _updateBanner() {
+        const mode = await Banner.resolveMode(this._settings);
+
+        if (mode === Banner.BannerMessageMode.INLINE) {
+            this._acknowledgementBanner?.destroy();
+            this._acknowledgementBanner = null;
+
+            if (!this._inlineBanner) {
+                this._inlineBanner = new Banner.InlineBanner(this._settings);
+                this.add_child(this._inlineBanner);
+            }
+        } else {
+            this._inlineBanner?.destroy();
+            this._inlineBanner = null;
+
+            if (!this._acknowledgementBanner) {
+                this._acknowledgementBanner = new Banner.AcknowledgementBanner(this._settings);
+                this.add_child(this._acknowledgementBanner);
+            }
+        }
     }
 
     _onPrompted() {
@@ -938,7 +970,7 @@ export const LoginDialog = GObject.registerClass({
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
-        this._inlineBanner.present();
+        this._inlineBanner?.present();
     }
 
     _showRealmLoginHint(realmManager, hint) {
@@ -1052,7 +1084,7 @@ export const LoginDialog = GObject.registerClass({
             'session-removed', (lm, sessionId) => {
                 if (sessionId === conflictingSession.Id) {
                     conflictingSessionDialog.close();
-                    this._authPrompt.finish().then(() => this._startSession(serviceName));
+                    this._finishAndStartSession(serviceName);
                 }
             }, this);
 
@@ -1071,6 +1103,50 @@ export const LoginDialog = GObject.registerClass({
             }, this);
 
         conflictingSessionDialog.open();
+    }
+
+    _finishAndStartSession(serviceName) {
+        this._authMenuButton.updateVisibility({visible: false});
+        this._authPrompt.finish()
+            .then(() => this._fadeOutAuthPrompt())
+            .then(() => this._waitForAcknowledgement())
+            .then(() => this._startSession(serviceName))
+            .catch(logError);
+    }
+
+    _fadeOutAuthPrompt() {
+        return new Promise(resolve => {
+            this._authPrompt.ease({
+                opacity: 0,
+                duration: _FADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._authPrompt.hide();
+                    resolve();
+                },
+            });
+        });
+    }
+
+    _waitForAcknowledgement() {
+        const banner = this._acknowledgementBanner;
+
+        if (!banner?.enabled)
+            return Promise.resolve();
+
+        banner.present();
+
+        return new Promise(resolve => {
+            banner.connectObject(
+                'acknowledged', () => {
+                    banner.disconnectObject(this);
+                    resolve();
+                },
+                'destroy', () => {
+                    banner.disconnectObject(this);
+                    resolve();
+                }, this);
+        });
     }
 
     _startSession(serviceName) {
@@ -1121,7 +1197,7 @@ export const LoginDialog = GObject.registerClass({
                 }
             }
 
-            this._authPrompt.finish().then(() => this._startSession(serviceName));
+            this._finishAndStartSession(serviceName);
         } catch (error) {
             logError(error, `Failed to start session '${sessionId}'`);
             this._authPrompt.reset();
@@ -1303,7 +1379,7 @@ export const LoginDialog = GObject.registerClass({
     _showUserList() {
         this._ensureUserListLoaded();
         this._authPrompt.hide();
-        this._inlineBanner.unpresent();
+        this._inlineBanner?.unpresent();
         this._authMenuButton.updateVisibility({visible: false});
         this._setUserListExpanded(true);
         this._notListedButton.show();
