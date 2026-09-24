@@ -1414,10 +1414,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onDestroy() {
-        if (this._settings) {
-            this._settings.run_dispose();
-            this._settings = null;
-        }
+        this._settings = null;
         this._greeter = null;
         this._greeterSessionProxy = null;
         this._realmManager?.release();
