@@ -158,13 +158,11 @@ export const MessageDialogContent = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', null, null,
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             null),
         'description': GObject.ParamSpec.string(
             'description', null, null,
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             null),
     },
 }, class MessageDialogContent extends St.BoxLayout {
@@ -247,8 +245,7 @@ export const ListSection = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', null, null,
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             null),
     },
 }, class ListSection extends St.BoxLayout {
@@ -297,13 +294,11 @@ export const ListSectionItem = GObject.registerClass({
             Clutter.Actor.$gtype),
         'title': GObject.ParamSpec.string(
             'title', null, null,
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             null),
         'description': GObject.ParamSpec.string(
             'description', null, null,
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT,
+            GObject.ParamFlags.READWRITE,
             null),
     },
 }, class ListSectionItem extends St.BoxLayout {
