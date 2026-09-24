@@ -27,6 +27,61 @@ import * as Settings from './settings.js';
 Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
 const _FADE_ANIMATION_TIME = 250;
+const _AUTO_MODE_BODY_LENGTH_THRESHOLD = 300;
+const _AUTO_MODE_BODY_LINE_THRESHOLD = 3;
+
+export const BannerMessageMode = {
+    AUTO: 'auto',
+    INLINE: 'inline',
+    ACKNOWLEDGEMENT: 'acknowledgement',
+};
+
+function _resolveMessageFile(settings) {
+    if (settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) !== 'file')
+        return null;
+
+    const path = settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY);
+    return path ? Gio.File.new_for_path(path) : null;
+}
+
+async function _readBannerBody(settings, file) {
+    if (file) {
+        try {
+            const [contents] = await file.load_contents_async(null);
+            return new TextDecoder().decode(contents);
+        } catch (e) {
+            console.error(`Failed to read banner from ${file.get_path()}: ${e.message}`);
+            return '';
+        }
+    }
+
+    return settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
+}
+
+/**
+ * Resolves 'auto' down to either 'inline' or 'acknowledgement' based on the
+ * length of the banner body (either in characters or in line breaks), so
+ * callers never have to special-case 'auto'. Explicit 'inline'/
+ * 'acknowledgement' modes are returned as-is.
+ *
+ * @param {Gio.Settings} settings the login-screen settings
+ * @returns {Promise<string>} the resolved BannerMessageMode
+ */
+export async function resolveMode(settings) {
+    const mode = settings.get_string(Settings.BANNER_MESSAGE_MODE_KEY);
+
+    if (mode !== BannerMessageMode.AUTO)
+        return mode;
+
+    const body = await _readBannerBody(settings, _resolveMessageFile(settings));
+
+    const isTooLong = body.length > _AUTO_MODE_BODY_LENGTH_THRESHOLD;
+    const hasTooManyLines = body.split('\n').length > _AUTO_MODE_BODY_LINE_THRESHOLD;
+
+    return isTooLong || hasTooManyLines
+        ? BannerMessageMode.ACKNOWLEDGEMENT
+        : BannerMessageMode.INLINE;
+}
 
 export class Banner extends St.BoxLayout {
     static {
@@ -116,12 +171,7 @@ export class Banner extends St.BoxLayout {
     }
 
     _updateMessageFile() {
-        const path = this._settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) === 'file'
-            ? this._settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY)
-            : null;
-        const file = path
-            ? Gio.File.new_for_path(path)
-            : null;
+        const file = _resolveMessageFile(this._settings);
 
         if (!file && !this._messageFile)
             return false;
@@ -151,18 +201,8 @@ export class Banner extends St.BoxLayout {
         return this._settings.get_string(Settings.BANNER_MESSAGE_TITLE_KEY);
     }
 
-    async _getBodyText() {
-        if (this._messageFile) {
-            try {
-                const [contents] = await this._messageFile.load_contents_async(null);
-                return new TextDecoder().decode(contents);
-            } catch (e) {
-                console.error(`Failed to read banner from ${this._messageFile.get_path()}: ${e.message}`);
-                return '';
-            }
-        }
-
-        return this._settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
+    _getBodyText() {
+        return _readBannerBody(this._settings, this._messageFile);
     }
 
     async _update() {
