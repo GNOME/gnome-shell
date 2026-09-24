@@ -1044,17 +1044,18 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     }
 
-    finish(onComplete) {
+    finish() {
         if (!this._userVerifier.hasPendingMessages) {
             this._userVerifier.clear();
-            onComplete();
-            return;
+            return Promise.resolve();
         }
 
-        const signalId = this._userVerifier.connect('no-more-messages', () => {
-            this._userVerifier.disconnect(signalId);
-            this._userVerifier.clear();
-            onComplete();
+        return new Promise(resolve => {
+            const signalId = this._userVerifier.connect('no-more-messages', () => {
+                this._userVerifier.disconnect(signalId);
+                this._userVerifier.clear();
+                resolve();
+            });
         });
     }
 

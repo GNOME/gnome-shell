@@ -1052,7 +1052,7 @@ export const LoginDialog = GObject.registerClass({
             'session-removed', (lm, sessionId) => {
                 if (sessionId === conflictingSession.Id) {
                     conflictingSessionDialog.close();
-                    this._authPrompt.finish(() => this._startSession(serviceName));
+                    this._authPrompt.finish().then(() => this._startSession(serviceName));
                 }
             }, this);
 
@@ -1121,7 +1121,7 @@ export const LoginDialog = GObject.registerClass({
                 }
             }
 
-            this._authPrompt.finish(() => this._startSession(serviceName));
+            this._authPrompt.finish().then(() => this._startSession(serviceName));
         } catch (error) {
             logError(error, `Failed to start session '${sessionId}'`);
             this._authPrompt.reset();
@@ -1414,7 +1414,7 @@ export const LoginDialog = GObject.registerClass({
         this._authPrompt.cancel();
     }
 
-    finish(onComplete) {
-        this._authPrompt.finish(onComplete);
+    finish() {
+        return this._authPrompt.finish();
     }
 });
