@@ -331,11 +331,6 @@ export class Overview extends Signals.EventEmitter {
     }
 
     _relayout() {
-        // To avoid updating the position and size of the workspaces
-        // we just hide the overview. The positions will be updated
-        // when it is next shown.
-        this.hide();
-
         this._coverPane.set_position(0, 0);
         this._coverPane.set_size(global.screen_width, global.screen_height);
     }
