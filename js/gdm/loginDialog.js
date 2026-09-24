@@ -399,11 +399,10 @@ export const LoginDialog = GObject.registerClass({
         }
 
         this._settings = new Gio.Settings({schema_id: Settings.LOGIN_SCREEN_SCHEMA});
-
-        this._settings.connect(`changed::${Settings.DISABLE_USER_LIST_KEY}`,
-            this._updateDisableUserList.bind(this));
-        this._settings.connect(`changed::${Settings.LOGO_KEY}`,
-            this._updateLogo.bind(this));
+        this._settings.connectObject(
+            `changed::${Settings.DISABLE_USER_LIST_KEY}`, () => this._updateDisableUserList(),
+            `changed::${Settings.LOGO_KEY}`, () => this._updateLogo(),
+            this);
 
         this._bannerConfig = new Banner.Config(this._settings);
         this._bannerConfig.connectObject(
@@ -1420,10 +1419,7 @@ export const LoginDialog = GObject.registerClass({
     _onDestroy() {
         this._bannerConfig.destroy();
         this._bannerConfig = null;
-        if (this._settings) {
-            this._settings.run_dispose();
-            this._settings = null;
-        }
+        this._settings = null;
         this._greeter = null;
         this._greeterSessionProxy = null;
         this._realmManager?.release();
