@@ -1056,6 +1056,8 @@ export const UnlockDialog = GObject.registerClass({
             this._gdmClient = null;
             delete this._gdmClient;
         }
+
+        this._swipeTracker.destroy();
     }
 
     _updateUserSwitchVisibility() {
