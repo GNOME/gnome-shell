@@ -247,6 +247,8 @@ export const AuthPrompt = GObject.registerClass({
         this._userVerifier.destroy();
         this._userVerifier = null;
         this._entry = null;
+        this._parentalControlsShield?.destroy();
+        this._inputWell.destroy();
     }
 
     on_key_press_event(event) {
