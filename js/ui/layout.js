@@ -161,6 +161,14 @@ class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
+    constructor(params) {
+        super(params);
+
+        global.stage.connectObject(
+            'notify::size', () => this.queue_relayout(),
+            this);
+    }
+
     vfunc_get_preferred_width(_forHeight) {
         const width = global.stage.width;
         return [width, width];
