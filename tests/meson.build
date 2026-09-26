@@ -90,6 +90,9 @@ shell_tests = [
     'name': 'multiMonitor',
   },
   {
+    'name': 'uiGroupSize',
+  },
+  {
     'name': 'headlessStart',
     'options': ['--hotplug'],
   },
