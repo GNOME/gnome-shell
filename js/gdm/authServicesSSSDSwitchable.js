@@ -299,7 +299,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnInfo(serviceName, info) {
-        if (!this._eventExpected())
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME ||
+            !this._eventExpected())
             return;
 
         // sssd can't inform about expired password from JSON so it's needed
@@ -319,7 +320,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _handleOnProblem(serviceName, problem) {
-        if (!this._eventExpected())
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME ||
+            !this._eventExpected())
             return;
 
         if (serviceName === this._selectedMechanism?.serviceName) {
@@ -331,14 +333,16 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         }
     }
 
-    _handleOnInfoQuery() {
-        if (!this._eventExpected())
+    _handleOnInfoQuery(serviceName) {
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME ||
+            !this._eventExpected())
             // eslint-disable-next-line no-useless-return
             return;
     }
 
     _handleOnSecretInfoQuery(serviceName, secretQuestion) {
-        if (!this._eventExpected())
+        if (serviceName !== SWITCHABLE_AUTH_SERVICE_NAME ||
+            !this._eventExpected())
             return;
 
         if (serviceName === this._selectedMechanism?.serviceName &&
