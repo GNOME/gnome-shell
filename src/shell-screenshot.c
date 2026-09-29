@@ -1248,10 +1248,7 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
   cairo_surface_destroy (surface);
 
   date_time = g_date_time_new_now_local ();
-  creation_time = g_date_time_format (date_time, "%c");
-
-  if (!creation_time)
-    creation_time = g_date_time_format (date_time, "%FT%T%z");
+  creation_time = g_date_time_format (date_time, "%FT%T%z");
 
   gdk_pixbuf_save_to_stream_async (pixbuf, stream, "png", NULL,
                                    composite_to_stream_on_png_saved,
