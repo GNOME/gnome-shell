@@ -165,11 +165,11 @@ $_gdm_dialog_width: 25em;
   margin: 3em 0;
 }
 
-.login-dialog-banner-view {
+.banner {
   max-width: $_gdm_dialog_width * 1.2;
 
-  .login-dialog-banner {
-    color: darken($_gdm_fg,10%);
+  .banner-body {
+    color: darken($_gdm_fg, 10%);
   }
 }
 
