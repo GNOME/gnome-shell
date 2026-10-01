@@ -405,6 +405,8 @@ export const LoginDialog = GObject.registerClass({
         this._settings.connect(`changed::${Settings.LOGO_KEY}`,
             this._updateLogo.bind(this));
 
+        this._bannerContent = new Banner.Content(this._settings);
+
         this._textureCache = St.TextureCache.get_default();
         this._textureCache.connectObject('texture-file-changed',
             this._updateLogoTexture.bind(this), this);
@@ -455,7 +457,7 @@ export const LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        this._banner = new Banner(this._settings);
+        this._banner = new Banner(this._bannerContent);
         this.add_child(this._banner);
 
         this._bottomButtonGroup = new St.BoxLayout({
@@ -1382,6 +1384,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onDestroy() {
+        this._bannerContent = null;
         if (this._settings) {
             this._settings.run_dispose();
             this._settings = null;

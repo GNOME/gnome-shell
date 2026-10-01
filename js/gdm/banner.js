@@ -27,12 +27,108 @@ Gio._promisify(Gio.File.prototype, 'load_contents_async');
 
 const _FADE_ANIMATION_TIME = 250;
 
-export class Banner extends St.BoxLayout {
+export class Content extends GObject.Object {
+    static [GObject.properties] = {
+        'enabled': GObject.ParamSpec.boolean(
+            'enabled', null, null,
+            GObject.ParamFlags.READWRITE,
+            false),
+        'body-text': GObject.ParamSpec.string(
+            'body-text', null, null,
+            GObject.ParamFlags.READWRITE,
+            ''),
+    };
+
     static {
         GObject.registerClass(this);
     }
 
     constructor(settings) {
+        super();
+
+        this._settings = settings;
+
+        this.enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
+        this.bodyText = '';
+
+        this._settings.connectObject(
+            `changed::${Settings.BANNER_MESSAGE_KEY}`, () => this._onEnabledChanged(),
+            `changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`, () => this._updateBodyText().catch(logError),
+            `changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`, () => this._onMessageFileChanged(),
+            `changed::${Settings.BANNER_MESSAGE_PATH_KEY}`, () => this._onMessageFileChanged(),
+            this);
+
+        this._updateMessageFile();
+        this._updateBodyText().catch(logError);
+    }
+
+    _onEnabledChanged() {
+        this.enabled = this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
+    }
+
+    _onMessageFileChanged() {
+        if (this._updateMessageFile())
+            this._updateBodyText().catch(logError);
+    }
+
+    _updateMessageFile() {
+        const file = this._resolveMessageFile();
+
+        if (!file && !this._messageFile)
+            return false;
+
+        if (file && this._messageFile && this._messageFile.equal(file))
+            return false;
+
+        this._messageMonitor?.disconnectObject(this);
+        this._messageMonitor = null;
+
+        this._messageFile = file;
+
+        if (file) {
+            this._messageMonitor = file.monitor_file(Gio.FileMonitorFlags.NONE, null);
+            this._messageMonitor.connectObject(
+                'changed', () => this._updateBodyText().catch(logError), this);
+        }
+
+        return true;
+    }
+
+    _resolveMessageFile() {
+        if (this._settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) !== 'file')
+            return null;
+
+        const path = this._settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY);
+        return path ? Gio.File.new_for_path(path) : null;
+    }
+
+    async _updateBodyText() {
+        this._bodyTextUpdated = this._readBannerBody();
+
+        this.bodyText = await this._bodyTextUpdated;
+    }
+
+    async _readBannerBody() {
+        if (this._messageFile) {
+            try {
+                const [contents] = await this._messageFile.load_contents_async(null);
+                return new TextDecoder().decode(contents);
+            } catch (e) {
+                console.error(`Failed to read banner from ${this._messageFile.get_path()}: ${e.message}`);
+                return '';
+            }
+        }
+
+        return this._settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
+    }
+}
+
+export class Banner extends St.BoxLayout {
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(content) {
         super({
             style_class: 'banner',
             orientation: Clutter.Orientation.VERTICAL,
@@ -40,7 +136,7 @@ export class Banner extends St.BoxLayout {
             visible: false,
         });
 
-        this._settings = settings;
+        this._content = content;
         this._opened = false;
 
         this._bodyLabel = new St.Label({
@@ -58,20 +154,21 @@ export class Banner extends St.BoxLayout {
         this._scrollView = new St.ScrollView({child: bodyBox});
         this.add_child(this._scrollView);
 
-        this._settings.connectObject(
-            `changed::${Settings.BANNER_MESSAGE_KEY}`, () => this._syncVisibility(),
-            `changed::${Settings.BANNER_MESSAGE_TEXT_KEY}`, () => this._updateBodyText().catch(logError),
-            `changed::${Settings.BANNER_MESSAGE_SOURCE_KEY}`, () => {
-                if (this._updateMessageFile())
-                    this._updateBodyText().catch(logError);
-            },
-            `changed::${Settings.BANNER_MESSAGE_PATH_KEY}`, () => {
-                if (this._updateMessageFile())
-                    this._updateBodyText().catch(logError);
+        this._content.connectObject(
+            'notify::enabled', () => {
+                this.enabled = this._content.enabled;
+                this._syncVisibility();
             }, this);
+        this.enabled = this._content.enabled;
 
-        this._updateMessageFile();
-        this._updateBodyText().then(() => this._syncVisibility()).catch(logError);
+        this._content.bind_property_full('body-text', this._bodyLabel, 'text',
+            GObject.BindingFlags.SYNC_CREATE,
+            (_bind, bodyText) => {
+                this._bodyLabel.visible = !!bodyText;
+                return [true, bodyText];
+            }, null);
+
+        this._syncVisibility();
     }
 
     open() {
@@ -104,57 +201,5 @@ export class Banner extends St.BoxLayout {
         this.remove_all_transitions();
         this.opacity = 0;
         super.vfunc_hide();
-    }
-
-    _updateMessageFile() {
-        const path = this._settings.get_string(Settings.BANNER_MESSAGE_SOURCE_KEY) === 'file'
-            ? this._settings.get_string(Settings.BANNER_MESSAGE_PATH_KEY)
-            : null;
-        const file = path
-            ? Gio.File.new_for_path(path)
-            : null;
-
-        if (!file && !this._messageFile)
-            return false;
-
-        if (file && this._messageFile && this._messageFile.equal(file))
-            return false;
-
-        this._messageMonitor?.disconnectObject(this);
-        this._messageMonitor = null;
-
-        this._messageFile = file;
-
-        if (file) {
-            this._messageMonitor = file.monitor_file(Gio.FileMonitorFlags.NONE, null);
-            this._messageMonitor.connectObject(
-                'changed', () => this._updateBodyText().catch(logError), this);
-        }
-
-        return true;
-    }
-
-    get enabled() {
-        return this._settings.get_boolean(Settings.BANNER_MESSAGE_KEY);
-    }
-
-    async _getBodyText() {
-        if (this._messageFile) {
-            try {
-                const [contents] = await this._messageFile.load_contents_async(null);
-                return new TextDecoder().decode(contents);
-            } catch (e) {
-                console.error(`Failed to read banner from ${this._messageFile.get_path()}: ${e.message}`);
-                return '';
-            }
-        }
-
-        return this._settings.get_string(Settings.BANNER_MESSAGE_TEXT_KEY);
-    }
-
-    async _updateBodyText() {
-        const body = await this._getBodyText();
-        this._bodyLabel.text = body;
-        this._bodyLabel.visible = !!body;
     }
 }
