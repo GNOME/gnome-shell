@@ -15,6 +15,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
@@ -162,6 +163,7 @@ export class Banner extends St.BoxLayout {
             orientation: Clutter.Orientation.VERTICAL,
             opacity: 0,
             visible: false,
+            accessible_role: Atk.Role.ALERT,
         });
 
         this._config = config;
