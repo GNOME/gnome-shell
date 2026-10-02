@@ -598,7 +598,10 @@ export const ThumbnailsBox = GObject.registerClass({
 
         this._delegate = this;
 
-        const indicator = new St.Bin({style_class: 'workspace-thumbnail-indicator'});
+        const indicator = new St.Bin({
+            style_class: 'workspace-thumbnail-indicator',
+            visible: false,
+        });
 
         // We don't want the indicator to affect drag-and-drop
         Shell.util_set_hidden_from_pick(indicator, true);
@@ -966,6 +969,7 @@ export const ThumbnailsBox = GObject.registerClass({
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this.addThumbnails(0, workspaceManager.n_workspaces);
+        this._indicator.show();
 
         this._updateShouldShow();
     }
@@ -980,6 +984,7 @@ export const ThumbnailsBox = GObject.registerClass({
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
         this._thumbnails = [];
+        this._indicator.hide();
     }
 
     _workspacesChanged() {
