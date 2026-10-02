@@ -37,8 +37,9 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
-const FIXED_WEBLOGIN_HEIGHT = 550;
-const FIXED_AUTHPROMPT_HEIGHT = 400;
+const WEBLOGIN_HEIGHT = 550;
+const AUTHPROMPT_HEIGHT = 400;
+const CLOCK_HEIGHT = 260;
 
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
@@ -497,10 +498,14 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
 
         // Authentication Box
         const dialog = container.get_parent();
-        const fixedHeight = dialog._authPrompt?.webLoginActive
-            ? FIXED_WEBLOGIN_HEIGHT : FIXED_AUTHPROMPT_HEIGHT;
+        const progress = dialog._adjustment.value;
+        const promptHeight = dialog._authPrompt?.webLoginActive
+            ? WEBLOGIN_HEIGHT
+            : AUTHPROMPT_HEIGHT;
+        const interpolatedHeight =
+            CLOCK_HEIGHT + (promptHeight - CLOCK_HEIGHT) * progress;
         const stackY = Math.min(
-            Math.floor(centerY - fixedHeight / 2.0),
+            Math.floor(centerY - interpolatedHeight / 2.0),
             height - stackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
@@ -583,6 +588,7 @@ export const UnlockDialog = GObject.registerClass({
         });
         this._adjustment.connect('notify::value', () => {
             this._setTransitionProgress(this._adjustment.value);
+            this._layoutManager.layout_changed();
         });
 
         this._swipeTracker = new SwipeTracker.SwipeTracker(this,
@@ -738,6 +744,7 @@ export const UnlockDialog = GObject.registerClass({
             this._notificationsBox,
             this._authIndicatorButton,
             this._bottomButtonGroup);
+        this._layoutManager = mainBox.layout_manager;
         this.add_child(mainBox);
 
         this._idleMonitor = global.backend.get_core_idle_monitor();
