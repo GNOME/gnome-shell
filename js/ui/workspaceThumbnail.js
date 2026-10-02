@@ -610,7 +610,10 @@ export const ThumbnailsBox = GObject.registerClass({
 
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
-        this._dropPlaceholder = new St.Bin({style_class: 'placeholder'});
+        this._dropPlaceholder = new St.Bin({
+            style_class: 'placeholder',
+            visible: false,
+        });
         this.add_child(this._dropPlaceholder);
         this._spliceIndex = -1;
 
