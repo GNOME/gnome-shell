@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-09-07 17:17+0000\n"
-"PO-Revision-Date: 2026-09-08 17:38+0300\n"
-"Last-Translator: Φουντουκιά (Hazel) Λεβέντη <hazeltwink@gmail.com>\n"
+"POT-Creation-Date: 2026-09-24 20:36+0000\n"
+"PO-Revision-Date: 2026-10-03 13:46+0300\n"
+"Last-Translator: Efstathios Iosifidis <eiosifidis@gmail.com>\n"
 "Language-Team: Greek\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Poedit 3.9\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Project-Style: gnome\n"
@@ -628,7 +628,7 @@ msgstr "Φτάσατε το Όριο Χρόνου Οθόνης"
 msgid ""
 "Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr ""
-"ο ημερήσιο όριο χρήσης της οθόνης σε αυτή τη συσκευή έχει εξαντληθεί. "
+"Ημερήσιο όριο χρήσης της οθόνης σε αυτή τη συσκευή έχει εξαντληθεί. "
 "Συνεχίστε αύριο."
 
 #. Translators: this is for ignoring a screen time limit for parental controls
@@ -636,15 +636,15 @@ msgstr ""
 msgid "Ignore"
 msgstr "Αγνόηση"
 
-#: js/gdm/authPrompt.js:269
+#: js/gdm/authPrompt.js:271
 msgid "Back"
 msgstr "Πίσω"
 
-#: js/gdm/authPrompt.js:366
+#: js/gdm/authPrompt.js:368
 msgid "Submit"
 msgstr "Υποβολή"
 
-#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/gdm/authPrompt.js:535 js/gdm/authServicesLegacy.js:25
 #: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
 #: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
@@ -654,12 +654,10 @@ msgid "Password"
 msgstr "Συνθηματικό"
 
 #: js/gdm/authServices.js:33
-#, fuzzy
 msgid "Insert smartcard"
 msgstr "Εισάγετε την έξυπνη κάρτα"
 
 #: js/gdm/authServices.js:37
-#, fuzzy
 msgid "Insert security key"
 msgstr "Εισάγετε το κλειδί ασφαλείας"
 
@@ -688,7 +686,6 @@ msgid "(or place finger on reader)"
 msgstr "(ή τοποθετήστε το δάκτυλο στον αναγνώστη)"
 
 #: js/gdm/authServicesSSSDSwitchable.js:467
-#, fuzzy
 msgid "Insert Smartcard"
 msgstr "Εισάγετε την έξυπνη κάρτα"
 
@@ -706,8 +703,8 @@ msgid ""
 "You have %d attempts left. If the passkey gets locked, you may not able to "
 "access your account."
 msgstr ""
-"Σας απομένουν %d απόπειρες. Εάν το κλειδί πρόσβασης κλειδώσει, ίσως "
-"να χάσετε πρόσβαση στον λογαριασμό σας."
+"Σας απομένουν %d απόπειρες. Εάν το κλειδί πρόσβασης κλειδώσει, ίσως να "
+"χάσετε πρόσβαση στον λογαριασμό σας."
 
 #: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
 msgid "Done"
@@ -771,8 +768,8 @@ msgstr ""
 "Η εξαναγκαστική διακοπή θα τερματίσει όλες τις εφαρμογές και διεργασίες που "
 "εκτελούνται και θα μπορούσε να οδηγήσει σε απώλεια δεδομένων"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:192
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:234
+#: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
 #: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
 #: js/ui/shellMountOperation.js:409
@@ -783,45 +780,44 @@ msgstr "Ακύρωση"
 msgid "Force Stop"
 msgstr "Εξαναγκαστική διακοπή"
 
-#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:679
+#: js/gdm/loginDialog.js:54 js/gdm/loginDialog.js:538 js/ui/unlockDialog.js:683
 msgid "Login Options"
 msgstr "Επιλογές Σύνδεσης"
 
-#: js/gdm/loginDialog.js:54
-
+#: js/gdm/loginDialog.js:55
 msgid "Session Type"
 msgstr "Τύπος Συνεδρίας"
 
-#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:333 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Προσιτότητα"
 
-#: js/gdm/loginDialog.js:453
+#: js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1103
+#: js/gdm/loginDialog.js:1104
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(π.χ., χρήστης ή %s)"
 
-#: js/gdm/loginDialog.js:1110 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1111 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: js/gdm/loginDialog.js:1174
+#: js/gdm/loginDialog.js:1175
 msgid "Login Attempt Timed Out"
 msgstr "Λήξη χρονικού ορίου προσπάθειας σύνδεσης"
 
-#: js/gdm/loginDialog.js:1175
+#: js/gdm/loginDialog.js:1176
 msgid "Login took too long, please try again"
 msgstr "Η σύνδεση διήρκησε πολύ, παρακαλώ δοκιμάστε ξανά"
 
-#: js/gdm/loginDialog.js:1538
+#: js/gdm/loginDialog.js:1539
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
@@ -829,7 +825,7 @@ msgstr "Παράθυρο σύνδεσης"
 msgid "Authentication error"
 msgstr "Σφάλμα πιστοποίησης"
 
-#: js/gdm/webLogin.js:63
+#: js/gdm/webLogin.js:105
 msgid "Login code: "
 msgstr "Κωδικός σύνδεσης: "
 
@@ -1118,7 +1114,7 @@ msgstr "Ο χρόνος χρήσης της οθόνης έχει σχεδόν �
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
-msgstr[0] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτο"
+msgstr[0] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτο."
 msgstr[1] "Ο υπολογιστής θα κλειδώσει σε %d δευτερόλεπτα."
 
 #: js/misc/timeLimitsManager.js:1418
@@ -1318,7 +1314,7 @@ msgstr "Το %s καρφιτσώθηκε στο Ταμπλό"
 #: js/ui/appFavorites.js:135
 #, javascript-format
 msgid "%s Unpinned From Dash"
-msgstr "Το %s ξεκαρφιτσώθηκε από το Ταμπλό."
+msgstr "Το %s ξεκαρφιτσώθηκε από το Ταμπλό"
 
 #: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
@@ -1357,23 +1353,23 @@ msgstr "Εκκίνηση με Χρήση Ενσωματωμένης Κάρτας
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Εκκίνηση με Χρήση Διακριτής Κάρτας Γραφικών"
 
-#: js/ui/audioDeviceSelection.js:46
+#: js/ui/audioDeviceSelection.js:47
 msgid "Select Audio Device"
 msgstr "Επιλογή Συσκευής Ήχου"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Ρυθμίσεις Ήχου"
 
-#: js/ui/audioDeviceSelection.js:75
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headphones"
 msgstr "Ακουστικά"
 
-#: js/ui/audioDeviceSelection.js:77
+#: js/ui/audioDeviceSelection.js:78
 msgid "Headset"
 msgstr "Ακουστικό"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
+#: js/ui/audioDeviceSelection.js:80 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Μικρόφωνο"
 
@@ -1517,19 +1513,19 @@ msgstr "Εξαναγκασμός εξόδου"
 msgid "Wait"
 msgstr "Αναμονή"
 
-#: js/ui/components/automountManager.js:82
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "Συνδέθηκε εξωτερικός δίσκος"
 
-#: js/ui/components/automountManager.js:95
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "Αποσυνδέθηκε εξωτερικός δίσκος"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:214
 msgid "Unable to unlock volume"
 msgstr "Αδυναμία ξεκλειδώματος τόμου"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:215
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Η εγκατεστημένη έκδοση udisks δεν υποστηρίζει τη ρύθμιση PIM"
 
@@ -2075,7 +2071,7 @@ msgstr "Το Κλείδωμα Οθόνης απαιτεί τον Διαχειρ�
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:409
+#: js/ui/messageList.js:407
 msgid "Unknown App"
 msgstr "Άγνωστη Εφαρμογή"
 
@@ -2300,15 +2296,15 @@ msgstr "Μπορείτε να Επικολλήσετε την Εικόνα απ�
 msgid "Screenshot taken"
 msgstr "Ελήφθη Στιγμιότυπο Οθόνης"
 
-#: js/ui/search.js:869
+#: js/ui/search.js:872
 msgid "Searching"
 msgstr "Αναζήτηση"
 
-#: js/ui/search.js:872
+#: js/ui/search.js:875
 msgid "No results"
 msgstr "Δε Βρέθηκαν Αποτελέσματα"
 
-#: js/ui/search.js:1008
+#: js/ui/search.js:1011
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2510,7 +2506,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Άνοιγμα μενού Bluetooth"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1939
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1942
 msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
@@ -2619,88 +2615,88 @@ msgstr "%s, %s, %s"
 msgid "%s Hotspot"
 msgstr "Σημείο πρόσβασης %s"
 
-#: js/ui/status/network.js:1448
+#: js/ui/status/network.js:1450
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "Συνδέθηκε %d"
 msgstr[1] "Συνδέθηκαν %d"
 
-#: js/ui/status/network.js:1546 js/ui/status/network.js:1563
+#: js/ui/status/network.js:1548 js/ui/status/network.js:1565
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1549
 msgid "Open VPN menu"
 msgstr "Άνοιγμα μενού VPN"
 
-#: js/ui/status/network.js:1548
+#: js/ui/status/network.js:1550
 msgid "VPN Settings"
 msgstr "Ρυθμίσεις VPN"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1811
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1809
+#: js/ui/status/network.js:1812
 msgid "Open Wi–Fi menu"
 msgstr "Άνοιγμα μενού Wi-Fi"
 
-#: js/ui/status/network.js:1811
+#: js/ui/status/network.js:1814
 msgid "All Networks"
 msgstr "Όλα τα δίκτυα"
 
-#: js/ui/status/network.js:1921
+#: js/ui/status/network.js:1924
 msgid "Wired Connections"
 msgstr "Ενσύρματες συνδέσεις"
 
-#: js/ui/status/network.js:1922
+#: js/ui/status/network.js:1925
 msgid "Open wired connections menu"
 msgstr "Άνοιγμα μενού ενσύρματων συνδέσεων"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1926
 msgid "Wired Settings"
 msgstr "Ρυθμίσεις ενσύρματης σύνδεσης"
 
-#: js/ui/status/network.js:1937
+#: js/ui/status/network.js:1940
 msgid "Bluetooth Tethers"
 msgstr "Συνδέσεις Bluetooth"
 
-#: js/ui/status/network.js:1938
+#: js/ui/status/network.js:1941
 msgid "Open Bluetooth tethers menu"
 msgstr "Άνοιγμα μενού συνδέσεων Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1948
 msgid "Tether"
 msgstr "Σύνδεση"
 
-#: js/ui/status/network.js:1958
+#: js/ui/status/network.js:1961
 msgid "Mobile Connections"
 msgstr "Κινητές συνδέσεις"
 
-#: js/ui/status/network.js:1959
+#: js/ui/status/network.js:1962
 msgid "Open mobile connections menu"
 msgstr "Άνοιγμα μενού κινητών συνδέσεων"
 
-#: js/ui/status/network.js:1961
+#: js/ui/status/network.js:1964
 msgid "Mobile Broadband Settings"
 msgstr "Ρυθμίσεις Κινητής Ευρυζωνικής Σύνδεσης"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1970
+#: js/ui/status/network.js:1973
 msgid "Mobile"
 msgstr "Κινητό"
 
-#: js/ui/status/network.js:2004
+#: js/ui/status/network.js:2007
 msgid "Sign in to Network"
 msgstr "Σύνδεση στο δίκτυο"
 
-#: js/ui/status/network.js:2191
+#: js/ui/status/network.js:2194
 msgid "Connection failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: js/ui/status/network.js:2192
+#: js/ui/status/network.js:2195
 msgid "Activation of network connection failed"
 msgstr "Απέτυχε η ενεργοποίηση της σύνδεσης δικτύου"
 
@@ -2778,7 +2774,7 @@ msgstr "Τερματισμός…"
 msgid "Log Out…"
 msgstr "Αποσύνδεση…"
 
-#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:676
 msgid "Switch User…"
 msgstr "Εναλλαγή χρήστη…"
 
@@ -2883,30 +2879,29 @@ msgstr "Επιλογές Ξεκλειδώματος"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:421
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:435
+#: js/ui/unlockDialog.js:436
 msgid "Swipe up"
 msgstr "Σύρετε προς τα πάνω"
 
-#: js/ui/unlockDialog.js:437
+#: js/ui/unlockDialog.js:438
 msgid "Click or press a key"
 msgstr "Κάντε κλικ ή πατήστε ένα πλήκτρο"
 
-#: js/ui/unlockDialog.js:653
+#: js/ui/unlockDialog.js:657
 msgid "Unlock Window"
 msgstr "Ξεκλείδωμα παραθύρου"
 
-#: js/ui/unlockDialog.js:667
+#: js/ui/unlockDialog.js:671
 msgid "Log in as another user"
 msgstr "Σύνδεση ως άλλος χρήστης"
 
-#: js/ui/unlockDialog.js:695
-#, fuzzy
+#: js/ui/unlockDialog.js:699
 msgid "Background Authentication Methods"
-msgstr "Μέθοδοι πιστοποίησης παρασκηνίου"
+msgstr "Μέθοδοι πιστοποίησης στο παρασκήνιο"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
