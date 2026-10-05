@@ -998,7 +998,21 @@ export const LoginDialog = GObject.registerClass({
                 (_, ...args) => this._onSessionOpened(...args),
                 'timed-login-requested',
                 (_, ...args) => this._onTimedLoginRequested(...args),
+                'selected-user-changed',
+                (_, ...args) => this._onSelectedUserChanged(...args),
                 this);
+        }
+    }
+
+    _onSelectedUserChanged(userName) {
+        if (this._user || !userName)
+            return;
+
+        const user = this._userManager.get_user(userName);
+        if (user) {
+            this._user = user;
+            this._authPrompt.setUser(user);
+            this._updateSessions();
         }
     }
 
@@ -1125,6 +1139,7 @@ export const LoginDialog = GObject.registerClass({
                 this._authPrompt.updateSensitivity({sensitive: false});
                 const answer = this._authPrompt.getAnswer();
                 this._user = this._userManager.get_user(answer);
+                this._authPrompt.setUser(this._user);
                 this._updateSessions();
                 this._authPrompt.clear();
                 this._authPrompt.begin({userName: answer});
