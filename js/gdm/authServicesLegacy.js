@@ -442,9 +442,25 @@ export class AuthServicesLegacy extends AuthServices {
     _connectSmartcardManager() {
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connectObject(
-            'smartcard-inserted', () => this._onSmartcardChanged(),
+            'smartcard-inserted', () => this._tryUsernamelessSmartcardLogin(),
             'smartcard-removed', () => this._onSmartcardChanged(),
             this);
+    }
+
+    _tryUsernamelessSmartcardLogin() {
+        if (this._canAttemptUsernamelessSmartcardLogin()) {
+            this._selectedMechanism = this._enabledMechanisms
+                .find(m => m.role === Role.SMARTCARD);
+            this.emit('reset', {noUsername: true});
+        } else {
+            this._onSmartcardChanged();
+        }
+    }
+
+    _canAttemptUsernamelessSmartcardLogin() {
+        return this._enabledMechanisms.some(m => m.role === Role.SMARTCARD) &&
+            this._promptStatus === PromptStatus.NONE &&
+            !this._reauthOnly;
     }
 
     _connectFingerprintManager() {
