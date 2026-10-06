@@ -442,7 +442,7 @@ export class AuthServicesLegacy extends AuthServices {
     _connectSmartcardManager() {
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connectObject(
-            'smartcard-inserted', () => this._onSmartcardChanged(),
+            'smartcard-inserted', () => this._tryUsernamelessLogin(Role.SMARTCARD),
             'smartcard-removed', () => this._onSmartcardChanged(),
             this);
     }
@@ -455,6 +455,24 @@ export class AuthServicesLegacy extends AuthServices {
         this._fingerprintManager.connectObject(
             'reader-type-changed', () => this._onFingerprintChanged(),
             this);
+    }
+
+    _tryUsernamelessLogin(role) {
+        if (this._canAttemptUsernamelessLogin(role)) {
+            this._selectedMechanism = this._enabledMechanisms
+                .find(m => m.role === role);
+            this.emit('reset', {noUsername: true});
+            return;
+        }
+
+        if (role === Role.SMARTCARD)
+            this._onSmartcardChanged();
+    }
+
+    _canAttemptUsernamelessLogin(role) {
+        return this._enabledMechanisms.some(m => m.role === role) &&
+            this._promptStatus === PromptStatus.NONE &&
+            !this._reauthOnly;
     }
 
     _onSmartcardChanged() {
