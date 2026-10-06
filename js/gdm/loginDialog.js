@@ -519,6 +519,7 @@ export const LoginDialog = GObject.registerClass({
 
         this._disableUserList = undefined;
         this._userListLoaded = false;
+        this._defaultSessionId = null;
 
         this._realmManager = new Realmd.Manager();
         this._realmManager.connectObject('login-format-changed',
@@ -581,6 +582,13 @@ export const LoginDialog = GObject.registerClass({
                 sectionName: _SESSION_TYPE_SECTION_NAME,
                 name: sessionName,
                 id,
+            });
+        }
+
+        if (this._defaultSessionId) {
+            this._authMenuButton.setActiveItem({
+                sectionName: _SESSION_TYPE_SECTION_NAME,
+                id: this._defaultSessionId,
             });
         }
     }
@@ -1018,6 +1026,9 @@ export const LoginDialog = GObject.registerClass({
         const previousUser = this._user;
         this._user = null;
 
+        const previousDefaultSessionId = this._defaultSessionId;
+        this._defaultSessionId = null;
+
         if (this._nextSignalId) {
             this._authPrompt.disconnect(this._nextSignalId);
             this._nextSignalId = 0;
@@ -1026,6 +1037,7 @@ export const LoginDialog = GObject.registerClass({
         if (previousUser && resetType === AuthPrompt.ResetType.REUSE_USERNAME) {
             this._user = previousUser;
             this._authPrompt.setUser(this._user);
+            this._defaultSessionId = previousDefaultSessionId;
             this._authPrompt.begin({userName: previousUser.get_user_name()});
         } else if (resetType === AuthPrompt.ResetType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
@@ -1085,6 +1097,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onDefaultSessionChanged(client, sessionId) {
+        this._defaultSessionId = sessionId;
         this._authMenuButton.setActiveItem({
             sectionName: _SESSION_TYPE_SECTION_NAME,
             id: sessionId,
