@@ -18,6 +18,16 @@ const PASSWORD_SERVICE_NAME = 'gdm-password';
 const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 
+const PromptStatus = {
+    NONE: 0,
+    STARTING: 1,
+    PASSWORD_PROMPT: 2,
+    PASSWORD_WAITING: 3,
+    CERT_LIST_PROMPT: 4,
+    PIN_PROMPT: 5,
+    PIN_WAITING: 6,
+};
+
 const Mechanisms = [
     {
         serviceName: PASSWORD_SERVICE_NAME,
@@ -75,14 +85,26 @@ export class AuthServicesLegacy extends AuthServices {
         this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
 
         this._fingerprintReadyTimeoutId = 0;
+
+        this._promptStatus = PromptStatus.NONE;
+    }
+
+    async beginVerification(userName, userVerifierProxies) {
+        this._promptStatus = PromptStatus.STARTING;
+
+        await super.beginVerification(userName, userVerifierProxies);
     }
 
     _handleAnswerQuery(serviceName, answer) {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
-        if (this._selectedMechanism.role === Role.SMARTCARD)
+        if (this._selectedMechanism.role === Role.SMARTCARD) {
             this._smartcardInProgress = true;
+            this._promptStatus = PromptStatus.PIN_WAITING;
+        } else if (this._selectedMechanism.role === Role.PASSWORD) {
+            this._promptStatus = PromptStatus.PASSWORD_WAITING;
+        }
 
         this._userVerifier.call_answer_query(
             serviceName, answer, this._cancellable).catch(logErrorUnlessCancelled);
@@ -113,6 +135,7 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleClear() {
         this._smartcardInProgress = false;
+        this._promptStatus = PromptStatus.NONE;
         this._clearFingerprintSignalHandlers();
     }
 
@@ -245,6 +268,11 @@ export class AuthServicesLegacy extends AuthServices {
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
 
+        if (this._selectedMechanism.role === Role.SMARTCARD)
+            this._promptStatus = PromptStatus.PIN_PROMPT;
+        else if (this._selectedMechanism.role === Role.PASSWORD)
+            this._promptStatus = PromptStatus.PASSWORD_PROMPT;
+
         this.emit('ask-question', {
             serviceName,
             question,
@@ -259,6 +287,11 @@ export class AuthServicesLegacy extends AuthServices {
 
         if (serviceName !== this._selectedMechanism?.serviceName)
             return;
+
+        if (this._selectedMechanism.role === Role.SMARTCARD)
+            this._promptStatus = PromptStatus.PIN_PROMPT;
+        else if (this._selectedMechanism.role === Role.PASSWORD)
+            this._promptStatus = PromptStatus.PASSWORD_PROMPT;
 
         this.emit('ask-question', {
             serviceName,
@@ -349,6 +382,7 @@ export class AuthServicesLegacy extends AuthServices {
         for (const [key, value] of Object.entries(list.deepUnpack()))
             choiceList[key] = {title: value};
 
+        this._promptStatus = PromptStatus.CERT_LIST_PROMPT;
         this.emit('show-choice-list', {
             serviceName,
             promptMessage,
