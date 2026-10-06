@@ -616,7 +616,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _connectSmartcardManager() {
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connectObject(
-            'smartcard-inserted', () => this._onSmartcardChanged(),
+            'smartcard-inserted', () => this._tryUsernamelessLogin(Role.SMARTCARD),
             'smartcard-removed', () => this._onSmartcardChanged(),
             this);
     }
@@ -627,6 +627,27 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             'fido2-token-inserted', () => this._onFido2TokenChanged(),
             'fido2-token-removed', () => this._onFido2TokenChanged(),
             this);
+    }
+
+    _tryUsernamelessLogin(role) {
+        if (this._canAttemptUsernamelessLogin(role)) {
+            this._selectedMechanism = {
+                serviceName: SWITCHABLE_AUTH_SERVICE_NAME,
+                role,
+            };
+            this.emit('reset', {noUsername: true});
+            return;
+        }
+
+        if (role === Role.SMARTCARD)
+            this._onSmartcardChanged();
+    }
+
+    _canAttemptUsernamelessLogin(role) {
+        return this._enabledRoles.includes(role) &&
+            this._promptStatus === PromptStatus.NONE &&
+            this._mechanismsStatus === MechanismsStatus.WAITING &&
+            !this._reauthOnly;
     }
 
     _onSmartcardChanged() {

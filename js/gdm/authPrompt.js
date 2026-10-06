@@ -945,9 +945,10 @@ export const AuthPrompt = GObject.registerClass({
     }
 
     reset(params) {
-        let {reuseEntryText, softReset} = Params.parse(params, {
+        let {reuseEntryText, softReset, noUsername} = Params.parse(params, {
             reuseEntryText: false,
             softReset: false,
+            noUsername: false,
         });
 
         const oldStatus = this.verificationStatus;
@@ -956,7 +957,7 @@ export const AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
         this.promptStep = 0;
 
-        if (softReset)
+        if (softReset || noUsername)
             this._userVerifier?.cancel();
         else
             this._userVerifier?.reset();
@@ -981,7 +982,7 @@ export const AuthPrompt = GObject.registerClass({
             if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
                 return;
             resetType = ResetType.PROVIDE_USERNAME;
-        } else if (!this._userVerifier.needsUsername()) {
+        } else if (!this._userVerifier.needsUsername() || noUsername) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             resetType = ResetType.DONT_PROVIDE_USERNAME;
