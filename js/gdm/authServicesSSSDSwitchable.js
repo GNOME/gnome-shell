@@ -18,16 +18,17 @@ const MechanismsStatus = {
 
 const PromptStatus = {
     NONE: 0,
-    PASSWORD_PROMPT: 1,
-    PASSWORD_WAITING: 2,
-    CERT_LIST_PROMPT: 3,
-    PIN_PROMPT: 4,
-    PIN_WAITING: 5,
-    INSERT_KEY_PROMPT: 6,
-    TOUCH_PROMPT: 7,
-    WEB_LOGIN_INTRO_PROMPT: 8,
-    WEB_LOGIN_DIALOG_PROMPT: 9,
-    WEB_LOGIN_DIALOG_WAITING: 10,
+    STARTING: 1,
+    PASSWORD_PROMPT: 2,
+    PASSWORD_WAITING: 3,
+    CERT_LIST_PROMPT: 4,
+    PIN_PROMPT: 5,
+    PIN_WAITING: 6,
+    INSERT_KEY_PROMPT: 7,
+    TOUCH_PROMPT: 8,
+    WEB_LOGIN_INTRO_PROMPT: 9,
+    WEB_LOGIN_DIALOG_PROMPT: 10,
+    WEB_LOGIN_DIALOG_WAITING: 11,
 };
 
 export class AuthServicesSSSDSwitchable extends AuthServices {
@@ -60,9 +61,12 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         this._connectFido2TokenManager();
 
         this._mechanismsStatus = MechanismsStatus.WAITING;
+        this._promptStatus = PromptStatus.NONE;
     }
 
     async beginVerification(userName, userVerifierProxies) {
+        this._promptStatus = PromptStatus.STARTING;
+
         try {
             await super.beginVerification(userName, userVerifierProxies);
         } catch (e) {
