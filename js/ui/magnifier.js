@@ -691,9 +691,8 @@ export class Magnifier extends Signals.EventEmitter {
             if (aPref)
                 zoomRegion.setInvertLightness(aPref);
 
-            aPref = this._settings.get_double(COLOR_SATURATION_KEY);
-            if (aPref)
-                zoomRegion.setColorSaturation(aPref);
+            zoomRegion.setColorSaturation(
+                this._settings.get_double(COLOR_SATURATION_KEY));
 
             const bc = {};
             bc.r = this._settings.get_double(BRIGHT_RED_KEY);
