@@ -51,9 +51,13 @@ struct _StCursor
   double scale;
   gboolean invalidated;
   gboolean texture_invalidated;
+  gboolean found_theme;
 };
 
+static void st_cursor_initable_iface_init (GInitableIface *iface);
+
 G_DEFINE_FINAL_TYPE_WITH_CODE (StCursor, st_cursor, META_TYPE_CURSOR,
+                               G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, st_cursor_initable_iface_init)
                                g_io_extension_point_implement (META_CURSOR_EXTENSION_POINT_NAME,
                                                                g_define_type_id, "svg-cursor", 99))
 
@@ -220,6 +224,7 @@ ensure_cursor (StCursor *cursor)
     return;
 
   file = find_cursor_metadata (cursor);
+  cursor->found_theme = (file != NULL);
 
   if (!file || !load_cursor (cursor, file, &error))
     {
@@ -474,6 +479,29 @@ st_cursor_prepare_at (ClutterCursor *clutter_cursor,
   clutter_cursor_set_viewport_dst_size (clutter_cursor,
                                         frame->width * scale,
                                         frame->height * scale);
+}
+
+static gboolean
+st_cursor_initable_init (GInitable     *initable,
+                         GCancellable  *cancellable,
+                         GError       **error)
+{
+  StCursor *self = ST_CURSOR (initable);
+
+  if (!self->found_theme)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                           "The requested theme was not found");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+st_cursor_initable_iface_init (GInitableIface *iface)
+{
+  iface->init = st_cursor_initable_init;
 }
 
 static void
