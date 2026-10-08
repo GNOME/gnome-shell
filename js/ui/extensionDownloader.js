@@ -17,6 +17,7 @@ Gio._promisify(Soup.Session.prototype, 'send_and_read_async');
 Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
 Gio._promisify(Gio.IOStream.prototype, 'close_async');
 Gio._promisify(Gio.Subprocess.prototype, 'wait_check_async');
+Gio._promisify(Gio.File.prototype, 'move_async');
 
 const REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
 const REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';
@@ -115,18 +116,35 @@ function checkResponse(message) {
  * @returns {void}
  */
 async function extractExtensionArchive(bytes, dir) {
-    if (!dir.query_exists(null))
-        dir.make_directory_with_parents(null);
-
     const [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
     await stream.output_stream.write_bytes_async(bytes,
         GLib.PRIORITY_DEFAULT, null);
     stream.close_async(GLib.PRIORITY_DEFAULT, null);
 
+    const tmpName = file.get_basename().slice(0, -4);
+    const tmpDir = dir.get_parent().get_child(tmpName);
+    tmpDir.make_directory_with_parents(null);
+
     const unzip = Gio.Subprocess.new(
-        ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
+        ['unzip', '-uod', tmpDir.get_path(), '--', file.get_path()],
         Gio.SubprocessFlags.NONE);
     await unzip.wait_check_async(null);
+
+    if (dir.query_exists(null))
+        FileUtils.recursivelyDeleteDir(dir, true);
+
+    try {
+        await tmpDir.move_async(dir,
+            Gio.FileCopyFlags.NO_FALLBACK_FOR_MOVE,
+            Gio.PRIORITY_DEFAULT,
+            null, null);
+    } catch (e) {
+        if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+            throw e;
+
+        FileUtils.recursivelyMoveDir(tmpDir, dir);
+        FileUtils.recursivelyDeleteDir(tmpDir, true);
+    }
 
     const schemasPath = dir.get_child('schemas');
 
