@@ -55,6 +55,13 @@ export const BoxPointer = GObject.registerClass({
                 global.compositor.enable_unredirect();
         });
 
+        this.connect('destroy', () => {
+            // ClutterActor stops doing property notifications
+            // in destroy, so explicitly restore unredirect
+            if (this.mapped)
+                global.compositor.enable_unredirect();
+        });
+
         this._muteKeys = new Clutter.KeyController();
         this._muteKeys.connect('key-press', () => Clutter.EVENT_STOP);
         this.add_action_full(
