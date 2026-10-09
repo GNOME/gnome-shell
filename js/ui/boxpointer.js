@@ -50,8 +50,8 @@ export const BoxPointer = GObject.registerClass({
         this._muteKeys = true;
         this._muteInput = true;
 
-        this.connect('notify::visible', () => {
-            if (this.visible)
+        this.connect('notify::mapped', () => {
+            if (this.mapped)
                 global.compositor.disable_unredirect();
             else
                 global.compositor.enable_unredirect();
