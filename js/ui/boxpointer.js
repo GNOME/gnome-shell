@@ -48,8 +48,8 @@ export const BoxPointer = GObject.registerClass({
         this.set_child_above_sibling(this.bin, this._border);
         this._sourceAlignment = 0.5;
 
-        this.connect('notify::visible', () => {
-            if (this.visible)
+        this.connect('notify::mapped', () => {
+            if (this.mapped)
                 global.compositor.disable_unredirect();
             else
                 global.compositor.enable_unredirect();
