@@ -56,6 +56,13 @@ export const BoxPointer = GObject.registerClass({
             else
                 global.compositor.enable_unredirect();
         });
+
+        this.connect('destroy', () => {
+            // ClutterActor stops doing property notifications
+            // in destroy, so explicitly restore unredirect
+            if (this.mapped)
+                global.compositor.enable_unredirect();
+        });
     }
 
     vfunc_captured_event(event) {
