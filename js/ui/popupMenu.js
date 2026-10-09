@@ -1010,7 +1010,7 @@ export class PopupMenuBase extends Signals.EventEmitter {
     }
 
     destroy() {
-        this.close();
+        this.close({animate: false});
         this.removeAll();
         this.actor.disconnectObject(this);
         this.actor.destroy();
