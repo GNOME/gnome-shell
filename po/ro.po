@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-08-02 12:05+0000\n"
-"PO-Revision-Date: 2026-08-03 12:07+0200\n"
+"POT-Creation-Date: 2026-10-09 13:28+0000\n"
+"PO-Revision-Date: 2026-10-09 22:39+0300\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/gnome-shell/\n"
@@ -111,7 +111,7 @@ msgstr "Deschide o fereastră nouă a aplicației fixate 9"
 
 # Instantaneu=Imagine sau fotografie obținută printr-o expunere foarte scurtă. Captură=Totalitatea bunurilor materiale capturate de la inamic.
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2694
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "Instantanee de ecran"
 
@@ -620,7 +620,7 @@ msgstr "Detalii eroare"
 msgid "Copy Error"
 msgstr "Copiază eroarea"
 
-#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "Limita de utilizare a ecranului a fost atinsă"
 
@@ -636,20 +636,20 @@ msgstr ""
 msgid "Ignore"
 msgstr "Ignoră"
 
-#: js/gdm/authPrompt.js:269
+#: js/gdm/authPrompt.js:271
 msgid "Back"
 msgstr "Înapoi"
 
 # Butonul „Submit” are iconița de „mergi mai departe” (icon_name: 'go-next-symbolic'), ceea ce înseamnă că el trece la pasul următor după ce datele au fost introduse.
-#: js/gdm/authPrompt.js:366
+#: js/gdm/authPrompt.js:368
 msgid "Submit"
 msgstr "Continuă"
 
-#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/gdm/authPrompt.js:535 js/gdm/authServicesLegacy.js:25
 #: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
 #: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
-#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:347
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Parola"
@@ -686,19 +686,19 @@ msgstr "(sau treci degetul peste cititor)"
 msgid "(or place finger on reader)"
 msgstr "(sau așează degetul pe cititor)"
 
-#: js/gdm/authServicesSSSDSwitchable.js:467
+#: js/gdm/authServicesSSSDSwitchable.js:471
 msgid "Insert Smartcard"
 msgstr "Introdu smartcard-ul"
 
-#: js/gdm/authServicesSSSDSwitchable.js:468
+#: js/gdm/authServicesSSSDSwitchable.js:472
 msgid "Select Identity"
 msgstr "Alege identitatea"
 
-#: js/gdm/authServicesSSSDSwitchable.js:507
+#: js/gdm/authServicesSSSDSwitchable.js:511
 msgid "Organization"
 msgstr "Organizația"
 
-#: js/gdm/authServicesSSSDSwitchable.js:534
+#: js/gdm/authServicesSSSDSwitchable.js:538
 #, javascript-format
 msgid ""
 "You have %d attempts left. If the passkey gets locked, you may not able to "
@@ -707,7 +707,7 @@ msgstr ""
 "Au rămas %d încercări. Blocarea cheii de acces îți poate împiedica accesul "
 "la cont."
 
-#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+#: js/gdm/authServicesSSSDSwitchable.js:565 js/ui/padOsd.js:223
 msgid "Done"
 msgstr "Gata"
 
@@ -769,11 +769,11 @@ msgstr ""
 "Oprirea forțată va închide toate aplicațiile active și poate duce la "
 "pierderi de date"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
-#: js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:234
+#: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
+#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:407
 msgid "Cancel"
 msgstr "Anulează"
 
@@ -781,52 +781,52 @@ msgstr "Anulează"
 msgid "Force Stop"
 msgstr "Forțează oprirea"
 
-#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+#: js/gdm/loginDialog.js:54 js/gdm/loginDialog.js:538 js/ui/unlockDialog.js:683
 msgid "Login Options"
 msgstr "Opțiuni de autentificare"
 
-#: js/gdm/loginDialog.js:54
+#: js/gdm/loginDialog.js:55
 msgid "Session Type"
 msgstr "Tipul sesiunii"
 
-#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:333 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Accesibilitate"
 
-#: js/gdm/loginDialog.js:450
+#: js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Nu este în listă?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1100
+#: js/gdm/loginDialog.js:1104
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(utilizator sau %s)"
 
-#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1111 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Nume de utilizator"
 
-#: js/gdm/loginDialog.js:1171
+#: js/gdm/loginDialog.js:1175
 msgid "Login Attempt Timed Out"
 msgstr "Încercarea de autentificare a expirat"
 
-#: js/gdm/loginDialog.js:1172
+#: js/gdm/loginDialog.js:1176
 msgid "Login took too long, please try again"
 msgstr "Autentificarea a durat prea mult, încearcă din nou"
 
-#: js/gdm/loginDialog.js:1534
+#: js/gdm/loginDialog.js:1539
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
-#: js/gdm/userVerifier.js:306
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "Eroare de autentificare"
 
-#: js/gdm/webLogin.js:63
+#: js/gdm/webLogin.js:105
 msgid "Login code: "
 msgstr "Codul de autentificare: "
 
@@ -1023,7 +1023,7 @@ msgstr[0] "Pauză peste %d secundă"
 msgstr[1] "Pauză peste %d secunde"
 msgstr[2] "Pauză peste %d de secunde"
 
-#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:294 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Luminozitate"
 
@@ -1123,16 +1123,16 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Blochează rotația ecranului"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr ""
 "GNOME trebuie să înregistreze datele privind timpul de utilizare a ecranului"
 
-#: js/misc/timeLimitsManager.js:1392
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "Limita de utilizare a ecranului este aproape"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
@@ -1140,7 +1140,7 @@ msgstr[0] "Calculatorul se va bloca peste %d secundă"
 msgstr[1] "Calculatorul se va bloca peste %d secunde"
 msgstr[2] "Calculatorul se va bloca peste %d de secunde"
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1148,11 +1148,11 @@ msgstr[0] "Limită de utilizare a ecranului peste %d minut"
 msgstr[1] "Limită de utilizare a ecranului peste %d minute"
 msgstr[2] "Limită de utilizare a ecranului peste %d de minute"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "Limita de utilizare a ecranului se apropie"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "Este timpul să nu mai folosești aparatul"
 
@@ -1323,15 +1323,15 @@ msgstr "Permite"
 msgid "App grid"
 msgstr "Grila de aplicații"
 
-#: js/ui/appDisplay.js:1737
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "Dosar fără nume"
 
-#: js/ui/appDisplay.js:2564
+#: js/ui/appDisplay.js:2563
 msgid "Folder name"
 msgstr "Numele dosarului"
 
-#: js/ui/appDisplay.js:2587
+#: js/ui/appDisplay.js:2586
 msgid "Edit folder name"
 msgstr "Modifică numele dosarului"
 
@@ -1345,7 +1345,7 @@ msgstr "%s a fost pusă în Preferate"
 msgid "%s Unpinned From Dash"
 msgstr "%s a fost scoasă din Preferate"
 
-#: js/ui/appFavorites.js:149 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "Anulează"
 
@@ -1382,23 +1382,23 @@ msgstr "Lansează folosind placa grafică integrată"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/audioDeviceSelection.js:46
+#: js/ui/audioDeviceSelection.js:47
 msgid "Select Audio Device"
 msgstr "Alege dispozitivul audio"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Opțiuni sunet"
 
-#: js/ui/audioDeviceSelection.js:75
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headphones"
 msgstr "Căști auriculare"
 
-#: js/ui/audioDeviceSelection.js:77
+#: js/ui/audioDeviceSelection.js:78
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
+#: js/ui/audioDeviceSelection.js:80 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -1540,19 +1540,19 @@ msgstr "Forțează închiderea"
 msgid "Wait"
 msgstr "Așteaptă"
 
-#: js/ui/components/automountManager.js:82
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "A fost conectat un disc extern"
 
-#: js/ui/components/automountManager.js:95
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "A fost deconectat un disc extern"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:214
 msgid "Unable to unlock volume"
 msgstr "Nu s-a putut debloca volumul"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:215
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Versiunea instalată udisks nu poate să controleze PIM"
 
@@ -1577,7 +1577,7 @@ msgid ""
 msgstr "Alternativ, te poți conecta apăsând butonul „WPS” de pe router"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "Conectează"
 
@@ -1661,11 +1661,11 @@ msgstr "Autentificare"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:432
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:430
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Nu a funcționat. Încearcă din nou."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:408
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "Ferestre"
 
@@ -1675,7 +1675,7 @@ msgstr "Arată aplicațiile"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:400
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "Preferate"
 
@@ -1763,18 +1763,18 @@ msgstr "Vremea"
 msgid "Select Weather Location…"
 msgstr "Alege o localitate…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Termină sesiunea pentru %s"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Termină sesiunea"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
@@ -1782,7 +1782,7 @@ msgstr[0] "%s va fi deconectat automat după %d secundă"
 msgstr[1] "%s va fi deconectat automat după %d secunde"
 msgstr[2] "%s va fi deconectat automat după %d de secunde"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:57
 #, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
@@ -1790,22 +1790,22 @@ msgstr[0] "Vei fi deconectat automat după %d secundă"
 msgstr[1] "Vei fi deconectat automat după %d secunde"
 msgstr[2] "Vei fi deconectat automat după %d de secunde"
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Termină sesiunea"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "Oprește"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instalează actualizările și oprește"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
@@ -1813,27 +1813,27 @@ msgstr[0] "Sistemul se va opri automat după %d secundă"
 msgstr[1] "Sistemul se va opri automat după %d secunde"
 msgstr[2] "Sistemul se va opri automat după %d de secunde"
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instalează actualizările în așteptare"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Oprește"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Repornește"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instalează actualizările și repornește"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
@@ -1841,17 +1841,17 @@ msgstr[0] "Sistemul se va reporni automat după %d secundă"
 msgstr[1] "Sistemul se va reporni automat după %d secunde"
 msgstr[2] "Sistemul se va reporni automat după %d de secunde"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Repornește"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Repornește și instalează actualizările"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:112
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
@@ -1863,48 +1863,48 @@ msgstr[1] ""
 msgstr[2] ""
 "Sistemul va reporni automat și va instala actualizările după %d de secunde"
 
-#: js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Repornește și instalează"
 
-#: js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Instalează și oprește"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Oprește după ce actualizările au fost instalate"
 
-#: js/ui/endSessionDialog.js:262
+#: js/ui/endSessionDialog.js:263
 msgid "Low battery power: please plug in before installing updates"
 msgstr ""
 "Bateria este descărcată: aparatul trebuie conectat la rețeaua electrică "
 "înainte de a instala actualizările"
 
-#: js/ui/endSessionDialog.js:271
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr "Unele aplicații sunt ocupate sau au lucrări nesalvate"
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "Alți utilizatori sunt autentificați"
 
-#: js/ui/endSessionDialog.js:432
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Opțiuni de pornire"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:637
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (la distanță)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:640
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consolă)"
@@ -1922,11 +1922,11 @@ msgstr "Instalează extensia"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Se descarcă și se instalează „%s” de la extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "Actualizări disponibile pentru extensii"
 
-#: js/ui/extensionSystem.js:355
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "Actualizările pentru extensii sunt gata de instalat"
 
@@ -2002,7 +2002,7 @@ msgstr "Lasă pornit"
 msgid "Turn On"
 msgstr "Pornește"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "Oprește"
 
@@ -2068,19 +2068,19 @@ msgstr "Arată sursa"
 msgid "Web Page"
 msgstr "Pagina Web"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "Sistemul a fost pus în modul nesigur"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "Aplicațiile au acum acces nerestricționat"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "Autentificat ca utilizator privilegiat"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -2089,17 +2089,17 @@ msgstr ""
 "motive de securitate. Dacă este posibil, autentificarea ar trebui făcută ca "
 "utilizator normal."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "Blocarea ecranului este dezactivată"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Blocarea ecranului are nevoie de administratorul de afișaj GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:405
+#: js/ui/messageList.js:407
 msgid "Unknown App"
 msgstr "Aplicație necunoscută"
 
@@ -2119,11 +2119,11 @@ msgstr "Titlu necunoscut"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:331
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "Scrie pentru a căuta"
 
-#: js/ui/overviewControls.js:396
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "Aplicații"
 
@@ -2209,130 +2209,130 @@ msgstr "GNOME trebuie să blocheze ecranul"
 msgid "Screen Capture"
 msgstr "Înregistrare ecran"
 
-#: js/ui/screenshot.js:1690
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "Zonă"
 
-#: js/ui/screenshot.js:1700
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "Alege zona"
 
-#: js/ui/screenshot.js:1705
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "Ecran"
 
-#: js/ui/screenshot.js:1715
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "Alege ecranul"
 
-#: js/ui/screenshot.js:1720
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "Fereastră"
 
-#: js/ui/screenshot.js:1730
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "Alege fereastra"
 
-#: js/ui/screenshot.js:1755 js/ui/status/system.js:117
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "Instantaneu de ecran"
 
-#: js/ui/screenshot.js:1771
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "Înregistrează ecranul"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1788
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "Apasă"
 
-#: js/ui/screenshot.js:1810
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "Arată indicatorul"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2443
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "Înregistrări de ecran"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2448
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Video %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2494
+#: js/ui/screenshot.js:2487
 msgid "Screencast Recorded"
 msgstr "Înregistrare de ecran efectuată"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2507
+#: js/ui/screenshot.js:2500
 msgid "Screencast Failed to Start"
 msgstr "Înregistrarea ecranului nu a putut începe"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2513
+#: js/ui/screenshot.js:2506
 msgid "Screencast Failed: Out of Disk Space"
 msgstr "Înregistrarea ecranului a eșuat: nu mai există spațiu pe disc"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2519
+#: js/ui/screenshot.js:2512
 msgid "Screencast Failed, Please Try Again"
 msgstr "Înregistrarea ecranului a eșuat: încearcă din nou"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2522
+#: js/ui/screenshot.js:2515
 msgid "Screencast Failed"
 msgstr "Înregistrarea ecranului a eșuat"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2535
+#: js/ui/screenshot.js:2528
 msgid "Click here to view the video"
 msgstr "Clic aici pentru a vedea înregistrarea"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2543 js/ui/screenshot.js:2761
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "Arată în Fișiere"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2707
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Imagine %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2751
+#: js/ui/screenshot.js:2749
 msgid "Screenshot Captured"
 msgstr "Instantaneu de ecran efectuat"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2753
+#: js/ui/screenshot.js:2751
 msgid "You can paste the image from the clipboard"
 msgstr "Imaginea copiată poate fi lipită"
 
-#: js/ui/screenshot.js:2812 js/ui/screenshot.js:2975
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "Instantaneu de ecran efectuat"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:872
 msgid "Searching"
 msgstr "Se caută"
 
-#: js/ui/search.js:890
+#: js/ui/search.js:875
 msgid "No results"
 msgstr "Niciun rezultat"
 
-#: js/ui/search.js:1026
+#: js/ui/search.js:1011
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2364,20 +2364,20 @@ msgstr "Ascunde textul"
 msgid "Caps lock is on"
 msgstr "Blocarea majusculelor este activată"
 
-#: js/ui/shellMountOperation.js:303
+#: js/ui/shellMountOperation.js:301
 msgid "Hidden Volume"
 msgstr "Volum ascuns"
 
-#: js/ui/shellMountOperation.js:306
+#: js/ui/shellMountOperation.js:304
 msgid "Windows System Volume"
 msgstr "Volum de sistem Windows"
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:307
 msgid "Uses Keyfiles"
 msgstr "Utilizează fișiere cheie"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:315
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
@@ -2385,7 +2385,7 @@ msgstr ""
 "Pentru a debloca un volum care utilizează fișiere cheie, folosește în schimb "
 "utilitatea <i>%s</i>"
 
-#: js/ui/shellMountOperation.js:321
+#: js/ui/shellMountOperation.js:319
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2393,31 +2393,31 @@ msgstr ""
 "Este nevoie de o utilitate externă precum <i>Discuri</i> pentru a debloca un "
 "volum care utilizează fișiere cheie"
 
-#: js/ui/shellMountOperation.js:329
+#: js/ui/shellMountOperation.js:327
 msgid "PIM Number"
 msgstr "Număr PIM"
 
-#: js/ui/shellMountOperation.js:388
+#: js/ui/shellMountOperation.js:386
 msgid "Remember Password"
 msgstr "Memorează parola"
 
-#: js/ui/shellMountOperation.js:403
+#: js/ui/shellMountOperation.js:401
 msgid "Unlock"
 msgstr "Deblochează"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:417
+#: js/ui/shellMountOperation.js:415
 #, javascript-format
 msgid "Open %s"
 msgstr "Deschide %s"
 
-#: js/ui/shellMountOperation.js:453
+#: js/ui/shellMountOperation.js:451
 msgid "The PIM must be a number or empty"
 msgstr "PIM-ul trebuie să fie un număr sau gol"
 
 #: js/ui/status/accessibility.js:45 js/ui/status/accessibility.js:153
 msgid "High Contrast"
-msgstr "Contrast ridicat"
+msgstr "Contrast mare"
 
 #: js/ui/status/accessibility.js:48 js/ui/status/accessibility.js:169
 msgid "Zoom"
@@ -2433,7 +2433,7 @@ msgstr "Tastatură virtuală"
 
 #: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:253
 msgid "Visual Alerts"
-msgstr "Alerte vizuale"
+msgstr "Atenționări vizuale"
 
 #: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:269
 msgid "Sticky Keys"
@@ -2453,7 +2453,7 @@ msgstr "Butoanele mausului"
 
 #: js/ui/status/accessibility.js:84
 msgid "Accessibility Settings"
-msgstr "Opțiuni accesibilitate"
+msgstr "Opțiuni Accesibilitate"
 
 #: js/ui/status/accessibility.js:122 js/ui/status/accessibility.js:185
 msgid "Large Text"
@@ -2504,26 +2504,26 @@ msgstr "Scăzută"
 msgid "High"
 msgstr "Ridicată"
 
-#: js/ui/status/backlight.js:158 js/ui/status/keyboard.js:877
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Tastatură"
 
-#: js/ui/status/backlight.js:160
+#: js/ui/status/backlight.js:158
 msgid "Open keyboard brightness menu"
 msgstr "Opțiuni Luminozitate tastatură"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "Deconectează"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Deconectează %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Conectează la %s"
@@ -2536,7 +2536,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Opțiuni pentru Bluetooth"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1942
 msgid "Bluetooth Settings"
 msgstr "Opțiuni Bluetooth"
 
@@ -2616,36 +2616,36 @@ msgstr "Refuză accesul"
 msgid "Grant Access"
 msgstr "Permite accesul"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<necunoscut>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Sigur"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Nu este sigur"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Putere semnal %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punct de acces %s"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1450
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2653,81 +2653,81 @@ msgstr[0] "%d conectat"
 msgstr[1] "%d conectate"
 msgstr[2] "%d conectate"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1548 js/ui/status/network.js:1565
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1549
 msgid "Open VPN menu"
 msgstr "Opțiuni pentru VPN"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1550
 msgid "VPN Settings"
 msgstr "Opțiuni VPN"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1811
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1812
 msgid "Open Wi–Fi menu"
 msgstr "Opțiuni pentru Wi–Fi"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1814
 msgid "All Networks"
 msgstr "Toate rețelele"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1924
 msgid "Wired Connections"
 msgstr "Conexiuni prin cablu"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1925
 msgid "Open wired connections menu"
 msgstr "Opțiuni pentru Conexiuni prin cablu"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1926
 msgid "Wired Settings"
 msgstr "Opțiuni Conexiuni prin cablu"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1940
 msgid "Bluetooth Tethers"
 msgstr "Conexiuni Bluetooth"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1941
 msgid "Open Bluetooth tethers menu"
 msgstr "Opțiuni pentru Conexiuni Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1948
 msgid "Tether"
 msgstr "Conexiune"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1961
 msgid "Mobile Connections"
 msgstr "Conexiune mobilă"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1962
 msgid "Open mobile connections menu"
 msgstr "Opțiuni pentru Conexiune mobilă"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1964
 msgid "Mobile Broadband Settings"
 msgstr "Opțiuni Conexiune mobilă"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1973
 msgid "Mobile"
 msgstr "Mobil"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2007
 msgid "Sign in to Network"
 msgstr "Conectează la rețea"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2194
 msgid "Connection failed"
 msgstr "Conectare nereușită"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2195
 msgid "Activation of network connection failed"
 msgstr "Nu s-a reușit conectarea la rețea"
 
@@ -2805,7 +2805,7 @@ msgstr "Oprește…"
 msgid "Log Out…"
 msgstr "Termină sesiunea…"
 
-#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:676
 msgid "Switch User…"
 msgstr "Schimbă utilizatorul…"
 
@@ -2911,27 +2911,27 @@ msgstr "Opțiuni de deblocare"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:421
 msgid "%A %B %-d"
 msgstr "%A %-e %B"
 
-#: js/ui/unlockDialog.js:435
+#: js/ui/unlockDialog.js:436
 msgid "Swipe up"
 msgstr "Trage în sus"
 
-#: js/ui/unlockDialog.js:437
+#: js/ui/unlockDialog.js:438
 msgid "Click or press a key"
 msgstr "Clic sau apasă o tastă"
 
-#: js/ui/unlockDialog.js:653
+#: js/ui/unlockDialog.js:657
 msgid "Unlock Window"
 msgstr "Fereastra de deblocare"
 
-#: js/ui/unlockDialog.js:667
+#: js/ui/unlockDialog.js:671
 msgid "Log in as another user"
 msgstr "Intră în sesiune ca utilizator diferit"
 
-#: js/ui/unlockDialog.js:695
+#: js/ui/unlockDialog.js:699
 msgid "Background Authentication Methods"
 msgstr "Alte metode de autentificare"
 
@@ -3056,15 +3056,15 @@ msgstr "Mută pe ecranul din dreapta"
 msgid "Close"
 msgstr "Închide"
 
-#: src/calendar-server/reminder-watcher.c:124
+#: src/calendar-server/reminder-watcher.c:130
 msgid "Reminders"
 msgstr "Reamintiri"
 
-#: src/calendar-server/reminder-watcher.c:129
+#: src/calendar-server/reminder-watcher.c:135
 msgid "Snooze"
 msgstr "Amână"
 
-#: src/calendar-server/reminder-watcher.c:130
+#: src/calendar-server/reminder-watcher.c:136
 msgid "Dismiss"
 msgstr "Ignoră"
 
@@ -3107,7 +3107,7 @@ msgstr "Parolele nu se potrivesc"
 msgid "Password cannot be blank"
 msgstr "Trebuie introdusă o parolă"
 
-#: src/shell-polkit-authentication-agent.c:342
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Fereastra de autentificare a fost închisă de către utilizator"
 
