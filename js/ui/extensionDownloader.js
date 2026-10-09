@@ -157,7 +157,6 @@ async function extractExtensionArchive(bytes, dir) {
             throw e;
 
         FileUtils.recursivelyMoveDir(tmpDir, dir);
-        FileUtils.recursivelyDeleteDir(tmpDir, true);
     }
 
     const schemasPath = dir.get_child('schemas');

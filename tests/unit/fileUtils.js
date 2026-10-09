@@ -102,13 +102,13 @@ describe('recursivelyMoveDir()', () => {
 
     afterEach(() => {
         recursivelyDeleteDir(dstDir, true);
-        recursivelyDeleteDir(srcDir, true);
     });
 
     it('moves the contents of a dir', () => {
         touchFile(srcDir, 'file');
 
         expect(() => recursivelyMoveDir(srcDir, dstDir)).not.toThrow();
+        expect(srcDir.query_exists(null)).toBeFalse();
         expect(dstDir.query_exists(null)).toBeTrue();
         expect(dstDir.get_child('file').query_exists(null)).toBeTrue();
     });

@@ -78,4 +78,6 @@ export function recursivelyMoveDir(srcDir, destDir) {
         else if (type === Gio.FileType.DIRECTORY)
             recursivelyMoveDir(srcChild, destChild);
     }
+
+    srcDir.delete(null);
 }
