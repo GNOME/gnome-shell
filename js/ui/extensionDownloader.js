@@ -144,8 +144,7 @@ async function extractExtensionArchive(bytes, dir) {
         throw e;
     }
 
-    if (dir.query_exists(null))
-        FileUtils.recursivelyDeleteDir(dir, true);
+    FileUtils.recursivelyDeleteDir(dir, true);
 
     try {
         await tmpDir.move_async(dir,

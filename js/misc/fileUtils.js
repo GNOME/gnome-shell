@@ -42,8 +42,17 @@ export function* collectFromDatadirs(subdir, includeUserDir) {
  * @param {boolean} deleteParent
  */
 export function recursivelyDeleteDir(dir, deleteParent) {
-    const iter = dir.enumerate_children('standard::name,standard::type',
-        Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+    let iter;
+
+    try {
+        iter = dir.enumerate_children('standard::name,standard::type',
+            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+    } catch (e) {
+        if (deleteParent &&
+            e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+            return;
+        throw e;
+    }
 
     for (const info of iter) {
         const type = info.get_file_type();

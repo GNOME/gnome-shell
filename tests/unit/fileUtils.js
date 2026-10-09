@@ -69,6 +69,20 @@ describe('recursivelyDeleteDir()', () => {
         expect(dir.query_exists(null)).toBeFalse();
     });
 
+    it('requires dir to exist if it is not deleted', () => {
+        dir.delete(null);
+
+        expect(dir.query_exists(null)).toBeFalse();
+        expect(() => recursivelyDeleteDir(dir, false)).toThrow();
+    });
+
+    it('does not require dir to exist if it is deleted', () => {
+        dir.delete(null);
+
+        expect(dir.query_exists(null)).toBeFalse();
+        expect(() => recursivelyDeleteDir(dir, true)).not.toThrow();
+    });
+
     it('recursively deletes subdirs', () => {
         const subdir = dir.get_child('subdir');
         subdir.make_directory(null);
