@@ -30,13 +30,10 @@ export function* collectFromDatadirs(subdir, includeUserDir) {
             fileEnum = dir.enumerate_children('standard::name,standard::type',
                 Gio.FileQueryInfoFlags.NONE, null);
         } catch {
-            fileEnum = null;
+            continue;
         }
-        if (fileEnum != null) {
-            let info;
-            while ((info = fileEnum.next_file(null)))
-                yield {file: fileEnum.get_child(info), info};
-        }
+        for (const info of fileEnum)
+            yield {file: fileEnum.get_child(info), info};
     }
 }
 
@@ -45,11 +42,10 @@ export function* collectFromDatadirs(subdir, includeUserDir) {
  * @param {boolean} deleteParent
  */
 export function recursivelyDeleteDir(dir, deleteParent) {
-    const children = dir.enumerate_children('standard::name,standard::type',
+    const iter = dir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
-    let info;
-    while ((info = children.next_file(null)) != null) {
+    for (const info of iter) {
         const type = info.get_file_type();
         const child = dir.get_child(info.get_name());
         if (type === Gio.FileType.REGULAR || type === Gio.FileType.SYMBOLIC_LINK)
@@ -67,14 +63,13 @@ export function recursivelyDeleteDir(dir, deleteParent) {
  * @param {Gio.File} destDir
  */
 export function recursivelyMoveDir(srcDir, destDir) {
-    const children = srcDir.enumerate_children('standard::name,standard::type',
+    const iter = srcDir.enumerate_children('standard::name,standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
 
     if (!destDir.query_exists(null))
         destDir.make_directory_with_parents(null);
 
-    let info;
-    while ((info = children.next_file(null)) != null) {
+    for (const info of iter) {
         const type = info.get_file_type();
         const srcChild = srcDir.get_child(info.get_name());
         const destChild = destDir.get_child(info.get_name());
