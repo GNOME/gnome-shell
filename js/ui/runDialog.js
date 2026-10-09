@@ -172,8 +172,7 @@ export class RunDialog extends ModalDialog.ModalDialog {
             try {
                 const file = Gio.File.new_for_path(path);
                 const fileEnum = file.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
-                let info;
-                while ((info = fileEnum.next_file(null))) {
+                for (const info of fileEnum) {
                     const name = info.get_name();
                     if (name.slice(0, text.length) === text)
                         results.push(name);
