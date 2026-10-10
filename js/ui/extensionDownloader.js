@@ -128,7 +128,13 @@ async function extractExtensionArchive(bytes, dir) {
     const unzip = Gio.Subprocess.new(
         ['unzip', '-uod', tmpDir.get_path(), '--', file.get_path()],
         Gio.SubprocessFlags.NONE);
-    await unzip.wait_check_async(null);
+
+    try {
+        await unzip.wait_check_async(null);
+    } catch (e) {
+        FileUtils.recursivelyDeleteDir(tmpDir, true);
+        throw e;
+    }
 
     if (dir.query_exists(null))
         FileUtils.recursivelyDeleteDir(dir, true);
