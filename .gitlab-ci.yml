@@ -245,6 +245,7 @@ flatpak:
     FLATPAK_MODULE: "gnome-extensions-app"
     APP_ID: "org.gnome.Extensions.Devel"
     BUNDLE: "extensions-git.flatpak"
+    MESON_DIST: "0"
   extends: .flatpak
 
 nightly:
