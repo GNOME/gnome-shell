@@ -1,3 +1,27 @@
+51.1
+====
+* Improve web login and banner layout [Joan; !4434]
+* Fix workspace thumbnail centering in RTL [Khalid; !4439]
+* Fix legacy auth services messages interfering with SSSD [divinehawk; !4452]
+* Fix applying color filter when using full grayscale [Roozbeh; !4462]
+* Fix closing mount notification on drive disconnect [Florian; !4443]
+* Use gnome-autoar for extracting extensions [Florian; !4403]
+* Allow mutter to fall back to XCursor [Alessandro; !4437]
+* Fix clock position on lock screen [Joan; !4454]
+* Fix quick settings preventing direct scanout [Florian; !4470]
+* Plugged leaks [Sebastian; !4441, !4445, !4448, !4444]
+* Misc. bug fixes and cleanups [Florian, Sebastian, Ray; !4433, !4435, !4436,
+  !4447, !4446, !4451, !4432, !4449, !4456, !4471, !4477]
+
+Contributors:
+  Khalid Abu Shawarib, Malika Asman, Alessandro Astone, divinehawk,
+  Sebastian Keller, Florian Müllner, Roozbeh, Ray Strode, Joan Torres Lopez
+
+Translators:
+  Christian Kirbach [de], Malika Asman [sw], Alexander Alexandrov Shopov [bg],
+  Efstathios Iosifidis [el], Antonio Marin [ro], Hugo Carvalho [pt],
+  Aman Alam [pa], Andika Triwidada [id], Daniel Rusek [cs]
+
 51.0
 ====
 * Don't duplicate locale keyboard layout [Yan; !4256]
