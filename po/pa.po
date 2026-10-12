@@ -1,21 +1,21 @@
 # Punjabi translation for gnome-shell.
 # Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# SPDX-FileCopyrightText: 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 A S Alam <aalam@users.sf.net>
+# SPDX-FileCopyrightText: 2009-2026 A S Alam <aalam@users.sf.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2025-03-10 20:47+0000\n"
-"PO-Revision-Date: 2025-03-14 16:52-0500\n"
-"Last-Translator: A S Alam <aalam@punlinux.org>\n"
-"Language-Team: Punjabi <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2026-10-10 23:08+0000\n"
+"PO-Revision-Date: 2026-10-12 17:12-0500\n"
+"Last-Translator: A S Alam <aman@punlinux.org>\n"
+"Language-Team: pa\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -94,7 +94,7 @@ msgid "Open new window of pinned app 9"
 msgstr "ਟੰਗੀ ਐਪ 9 ਦੀ ਨਵੀਂ ਵਿੰਡੋ ਖੋਲ੍ਹੋ"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2272
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ"
 
@@ -119,7 +119,7 @@ msgid "Record a screencast interactively"
 msgstr "ਤਾਲਮੇਲ ਰਾਹੀਂ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕਰੋ"
 
 #: data/50-gnome-shell-system.xml:6
-#: data/X-GNOME-Shell-System.directory.desktop.in:3 js/ui/messageTray.js:1307
+#: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1328
 msgid "System"
 msgstr "ਸਿਸਟਮ"
 
@@ -142,14 +142,6 @@ msgstr "ਸੰਖੇਪ ਵੇਖਾਓ"
 #: data/50-gnome-shell-system.xml:21
 msgid "Show all apps"
 msgstr "ਸਭ ਐਪਾਂ ਵੇਖੋ"
-
-#: data/org.gnome.Shell.desktop.in.in:4
-msgid "GNOME Shell"
-msgstr "ਗਨੋਮ ਸ਼ੈਲ"
-
-#: data/org.gnome.Shell.desktop.in.in:5
-msgid "Window management and application launching"
-msgstr "ਵਿੰਡੋ ਇੰਤਜ਼ਾਮ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣਾ"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
@@ -480,12 +472,37 @@ msgstr "ਐਪਲੀਕੇਸ਼ਨ 8 ਦਾ ਨਵਾਂ ਮੌਕਾ ਖੋਲ
 msgid "Open a new instance of application 9"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ 9 ਦਾ ਨਵਾਂ ਮੌਕਾ ਖੋਲ੍ਹੋ"
 
-#: data/org.gnome.shell.gschema.xml.in:288
-#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:283
+#| msgid "Brightness"
+msgid "Screen brightness up"
+msgstr "ਸਕਰੀਨ ਚਮਕ ਵਧਾਓ"
+
+#: data/org.gnome.shell.gschema.xml.in:287
+msgid "Screen brightness up on current monitor"
+msgstr "ਮੌਜੂਦਾ ਮਾਨੀਟਰ ਉੱਤੇ ਸਕਰੀਨ ਦੀ ਚਮਕ ਨੂੰ ਵਧਾਓ"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Screen brightness down"
+msgstr "ਸਕਰੀਨ ਚਮਕ ਘਟਾਓ"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+msgid "Screen brightness down on current monitor"
+msgstr "ਮੌਜੂਦਾ ਮਾਨੀਟਰ ਉੱਤੇ ਸਕਰੀਨ ਦੀ ਚਮਕ ਨੂੰ ਘਟਾਓ"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Screen brightness cycle"
+msgstr "ਸਕਰੀਨ ਚਮਕ ਚੱਕਰ"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+msgid "Screen brightness cycle on current monitor"
+msgstr "ਮੌਜੂਦਾ ਮਾਨੀਟਰ ਉੱਤੇ ਸਕਰੀਨ ਚਮਕ ਚੱਕਰ"
+
+#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Limit switcher to current workspace."
 msgstr "ਸਵਿੱਚਰ ਨੂੰ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਤੱਕ ਸੀਮਿਤ ਕਰੋ।"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -494,11 +511,11 @@ msgstr ""
 "ਚਰ ਵਿੱਚ ਵਿਖਾਇਆ "
 "ਜਾਂਦਾ ਹੈ, ਨਹੀਂ ਤਾਂ ਸਭ ਐਪਲੀਕੇਸ਼ਨਾਂ ਸ਼ਾਮਿਲ ਹੁੰਦੀਆਂ ਹਨ।"
 
-#: data/org.gnome.shell.gschema.xml.in:306
+#: data/org.gnome.shell.gschema.xml.in:330
 msgid "The application icon mode."
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਆਈਕਾਨ ਮੋਡ।"
 
-#: data/org.gnome.shell.gschema.xml.in:307
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
@@ -510,7 +527,7 @@ msgstr ""
 " "
 "ਐਪਲੀਕੇਸ਼ਨ ਆਈਕਾਨ ਵੇਖਾਇਆ ਜਾਵੇਗਾ) ਜਾਂ ਦੋਵੇਂ (“both“)"
 
-#: data/org.gnome.shell.gschema.xml.in:316
+#: data/org.gnome.shell.gschema.xml.in:340
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -519,95 +536,172 @@ msgstr ""
 ", ਨਹੀਂ ਤਾਂ ਸਭ ਵਿੰਡੋ "
 "ਸ਼ਾਮਿਲ ਹੁੰਦੀਆਂ ਹਨ।"
 
-#: data/org.gnome.shell.gschema.xml.in:326
+#: data/org.gnome.shell.gschema.xml.in:350
 msgid "Locations"
 msgstr "ਟਿਕਾਣੇ"
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:351
 msgid "The locations to show in world clocks"
 msgstr "ਸੰਸਾਰ ਘੜੀ ਵਿੱਚ ਵੇਖਾਉਣ ਲਈ ਟਿਕਾਣੇ"
 
-#: data/org.gnome.shell.gschema.xml.in:337
+#: data/org.gnome.shell.gschema.xml.in:361
 msgid "Automatic location"
 msgstr "ਆਪਣੇ-ਆਪ ਟਿਕਾਣਾ ਲਵੋ"
 
-#: data/org.gnome.shell.gschema.xml.in:338
+#: data/org.gnome.shell.gschema.xml.in:362
 msgid "Whether to fetch the current location or not"
 msgstr "ਕੀ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਪ੍ਰਾਪਤ ਕਰਨਾ ਹੈ ਜਾਂ ਨਹੀਂ"
 
-#: data/org.gnome.shell.gschema.xml.in:345
+#: data/org.gnome.shell.gschema.xml.in:369
 msgid "Location"
 msgstr "ਟਿਕਾਣਾ"
 
-#: data/org.gnome.shell.gschema.xml.in:346
+#: data/org.gnome.shell.gschema.xml.in:370
 msgid "The location for which to show a forecast"
 msgstr "ਭਵਿੱਖਬਾਣੀ ਵੇਖਾਏ ਜਾਣ ਵਾਲਾ ਟਿਕਾਣਾ"
 
-#. Keep in sync with subprojects/extensions-app
-#: data/org.gnome.Shell.Extensions.desktop.in.in:5
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/data/ui/extensions-window.ui:57
+#. Keep in sync with GNOME/gnome-extensions-app
+#: data/org.gnome.Shell.Extensions.desktop.in:4
 msgid "Extensions"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ"
 
-#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#: data/org.gnome.Shell.CalendarServer.desktop.in.in:3
+#| msgid "No Notifications"
+msgid "Reminder Notifications"
+msgstr "ਰਿਮਾਈਂਡਰ ਨੋਟੀਫਿਕੇਸ਼ਨ"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in:2
 msgid "Network Login"
 msgstr "ਨੈੱਟਵਰਕ ਲਾਗਇਨ"
 
-#: data/X-GNOME-Shell-Utilities.directory.desktop.in:3
+#: data/X-GNOME-Shell-Utilities.directory.desktop.in:2
 msgid "Utilities"
 msgstr "ਸਹੂਲਤਾਂ"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:15
-#: subprojects/extensions-app/data/ui/extensions-window.ui:275
-msgid "Something’s gone wrong"
-msgstr "ਕੁਝ ਗਲਤ ਵਾਪਰਿਆ"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:70
+#| msgid "Extensions"
+msgid "Extension Error"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਗਲਤੀ"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:23
+#. Translators: %s is an extension name
+#: js/dbusServices/extensions/extensionPrefsDialog.js:103
+#, javascript-format
+msgid "Unable to display the settings for “%s”."
+msgstr "“%s” ਲਈ ਸੈਟਿੰਗਾਂ ਵੇਖਾਉਣ ਵਾਸਤੇ ਅਸਮਰੱਥ ਹੈ।"
+
+#. Translators: Link label in the phrase "Information about this
+#. problem may be available on the extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:109
+#| msgid "Extensions"
+msgid "extension website"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵੈੱਬਸਾਈਟ"
+
+#. Translators: %s is "extension website"
+#: js/dbusServices/extensions/extensionPrefsDialog.js:113
+#, javascript-format
+msgid "Information about this problem may be available on the %s."
+msgstr "ਇਸ ਸਮੱਸਿਆ ਬਾਰੇ ਜਾਣਕਾਰੀ %s ਉੱਤੇ ਮੌਜੂਦ ਹੋ ਸਕਦੀ ਹੈ।"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:19
+msgid "Error Details"
+msgstr "ਗਲਤੀ ਦੇ ਵੇਰਵੇ"
+
+#: js/dbusServices/extensions/ui/extension-error-page.ui:26
+msgid "Copy Error"
+msgstr "ਗਲਤੀ ਕਾਪੀ ਕਰੋ"
+
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
+msgid "Screen Time Limit Reached"
+msgstr "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ ਪੂਰੀ ਹੋਈ"
+
+#: js/gdm/authPrompt.js:67
 msgid ""
-"We’re very sorry, but there’s been a problem: the settings for this "
-"extension can’t be displayed. We recommend that you report the issue to the "
-"extension authors."
+"Daily limit for screen time on this device has been reached. Resume tomorrow."
 msgstr ""
-"ਸਾਨੂੰ ਬਹੁਤ ਅਫ਼ਸੋਸ ਹੈ ਪਰ ਸਮੱਸਿਆ ਆਈ ਹੈ: ਇਸ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਸੈਟਿੰਗਾਂ ਨੂੰ ਦਿਖਾਇਆ ਨਹੀਂ "
-"ਜਾ ਸਕਦਾ ਹੈ। "
-"ਅਸੀਂ ਤੁਹਾਨੂੰ ਇਕਸਟੈਨਸ਼ਨ ਲੇਖਕਾਂ ਨਾਲ ਇਸ ਮਸਲੇ ਬਾਰੇ ਰਿਪੋਰਟ ਦੇਣ ਦੀ ਸਿਫਾਰਸ਼ ਕਰਦੇ ਹਾਂ।"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:48
-msgid "Technical Details"
-msgstr "ਤਕਨੀਕੀ ਵੇਰਵੇ"
+#. Translators: this is for ignoring a screen time limit for parental controls
+#: js/gdm/authPrompt.js:75
+msgid "Ignore"
+msgstr "ਅਣਡਿੱਠਾ"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:90
-msgid "Homepage"
-msgstr "ਮੁੱਖ ਸਫ਼ਾ"
+#: js/gdm/authPrompt.js:271
+msgid "Back"
+msgstr "ਪਿੱਛੇ"
 
-#: js/dbusServices/extensions/ui/extension-error-page.ui:91
-msgid "Visit extension homepage"
-msgstr "ਇਕਟੈਨਸ਼ਨ ਦੇ ਮੁੱਖ ਸਫ਼ੇ ਨੂੰ ਵੇਖੋ"
+#: js/gdm/authPrompt.js:368
+msgid "Submit"
+msgstr "ਭੇਜੋ"
 
-#: js/gdm/authPrompt.js:155 js/gdm/loginDialog.js:468
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:437
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:382
-#: js/ui/shellMountOperation.js:392
-msgid "Cancel"
-msgstr "ਰੱਦ ਕਰੋ"
-
-#: js/gdm/authPrompt.js:323 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:266
-#: js/ui/components/networkAgent.js:299 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:351 js/ui/components/polkitAgent.js:286
-#: js/ui/shellMountOperation.js:332
+#: js/gdm/authPrompt.js:535 js/gdm/authServicesLegacy.js:25
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:347
+#: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "ਪਾਸਵਰਡ"
 
-#: js/gdm/loginDialog.js:328
-msgid "Choose Session"
-msgstr "ਸ਼ੈਸ਼ਨ ਚੁਣੋ"
+#: js/gdm/authServices.js:33
+msgid "Insert smartcard"
+msgstr "ਸਮਾਰਟ-ਕਾਰਡ ਪਾਓ"
+
+#: js/gdm/authServices.js:37
+msgid "Insert security key"
+msgstr "ਸੁਰੱਖਿਆ ਕੁੰਜੀ ਪਾਓ"
+
+#: js/gdm/authServices.js:44
+msgid "Unlock with fingerprint"
+msgstr "ਫਿੰਗਰਪਰਿੰਟ ਨਾਲ ਅਣ-ਲਾਕ ਕਰੋ"
+
+#: js/gdm/authServicesLegacy.js:31
+msgid "Smartcard"
+msgstr "ਸਮਾਰਟ-ਕਾਰਡ"
+
+#: js/gdm/authServicesLegacy.js:37
+msgid "Fingerprint"
+msgstr "ਫਿੰਗਰ-ਪਰਿੰਟ"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/authServicesLegacy.js:194
+msgid "(or swipe finger across reader)"
+msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਘਸਾਓ)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/authServicesLegacy.js:197
+msgid "(or place finger on reader)"
+msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਰੱਖੋ)"
+
+#: js/gdm/authServicesSSSDSwitchable.js:471
+msgid "Insert Smartcard"
+msgstr "ਸਮਾਰਟ-ਕਾਰਡ ਪਾਓ"
+
+#: js/gdm/authServicesSSSDSwitchable.js:472
+#| msgid "Identity"
+msgid "Select Identity"
+msgstr "ਪਛਾਣ ਨੂੰ ਚੁਣੋ"
+
+#: js/gdm/authServicesSSSDSwitchable.js:511
+#| msgid "Invitation"
+msgid "Organization"
+msgstr "ਸੰਗਠਨ"
+
+#: js/gdm/authServicesSSSDSwitchable.js:538
+#, javascript-format
+msgid ""
+"You have %d attempts left. If the passkey gets locked, you may not able to "
+"access your account."
+msgstr ""
+"ਤੁਹਾਡੇ ਕੋਲ %d ਕੋਸ਼ਿਸਾਂ ਬਾਕੀ ਹਨ। ਜੇ ਪਾਸ-ਕੀ ਲਾਕ ਹੋ ਗਈ ਤਾਂ ਤੁਸੀਂ ਆਪਣੇ ਖਾਤੇ ਨੂੰ ਵਰਤ"
+" ਨਹੀਂ ਸਕੋਗੇ।"
+
+#: js/gdm/authServicesSSSDSwitchable.js:565 js/ui/padOsd.js:223
+msgid "Done"
+msgstr "ਮੁਕੰਮਲ"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:426
+#: js/gdm/conflictingSessionDialog.js:50
 #, javascript-format
 msgid ""
 "Remote login is not possible because a remote session is already running for "
@@ -619,7 +713,7 @@ msgstr ""
 "ਤੁਹਾਨੂੰ ਪਹਿਲਾਂ ਰਿਮੋਟ ਸ਼ੈਸ਼ਨ ਤੋਂ ਲਾਗ ਆਉਟ ਕਰਨਾ ਹੋਵੇਗਾ ਜਾਂ ਇਸ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ।"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:429
+#: js/gdm/conflictingSessionDialog.js:53
 #, javascript-format
 msgid ""
 "Login is not possible because a remote session is already running for %s. To "
@@ -630,7 +724,7 @@ msgstr ""
 "ਰਿਮੋਟ ਸ਼ੈਸ਼ਨ ਤੋਂ ਲਾਗ ਆਉਟ ਕਰਨਾ ਹੋਵੇਗਾ ਜਾਂ ਇਸ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ।"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:432
+#: js/gdm/conflictingSessionDialog.js:56
 #, javascript-format
 msgid ""
 "Remote login is not possible because a local session is already running for "
@@ -642,7 +736,7 @@ msgstr ""
 "ਪਹਿਲਾਂ ਲੋਕਲ ਸ਼ੈਸ਼ਨ ਤੋਂ ਲਾਗ ਆਉਟ ਕਰਨਾ ਹੋਵੇਗਾ ਜਾਂ ਇਸ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ।"
 
 #. Translators: is running for <username>
-#: js/gdm/loginDialog.js:435
+#: js/gdm/conflictingSessionDialog.js:59
 #, javascript-format
 msgid ""
 "Login is not possible because a session is already running for %s. To login, "
@@ -652,11 +746,11 @@ msgstr ""
 "ਾਂ ਸ਼ੈਸ਼ਨ ਤੋਂ "
 "ਲਾਗ ਆਉਟ ਕਰਨਾ ਹੋਵੇਗਾ ਜਾਂ ਇਸ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ।"
 
-#: js/gdm/loginDialog.js:444
+#: js/gdm/conflictingSessionDialog.js:68
 msgid "Session Already Running"
 msgstr "ਸ਼ੈਸ਼ਨ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਿਹਾ ਹੈ"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/conflictingSessionDialog.js:80
 msgid ""
 "Force stopping will quit any running apps and processes, and could result in "
 "data loss"
@@ -664,80 +758,95 @@ msgstr ""
 "ਧੱਕੇ ਨਾਲ ਰੋਕਣ ਨਾਲ ਕੋਈ ਵੀ ਚੱਲ ਰਹੀਆਂ ਐਪਾਂ ਅਤੇ ਪਰੋਸੈਸ ਖਤਮ ਹੋਣ ਜਾਣਗੇ ਅਤੇ ਡਾਟਾ ਗੁੰਮ"
 " ਹੋ ਸਕਦਾ ਹੈ"
 
-#: js/gdm/loginDialog.js:476
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:234
+#: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
+#: js/ui/extensionDownloader.js:308 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:407
+msgid "Cancel"
+msgstr "ਰੱਦ ਕਰੋ"
+
+#: js/gdm/conflictingSessionDialog.js:101
 msgid "Force Stop"
 msgstr "ਧੱਕੇ ਨਾਲ ਰੋਕੋ"
 
-#: js/gdm/loginDialog.js:554
+#: js/gdm/loginDialog.js:54 js/gdm/loginDialog.js:538 js/ui/unlockDialog.js:683
+#| msgctxt "button"
+#| msgid "Boot Options"
+msgid "Login Options"
+msgstr "ਲਾਗਇਨ ਚੋਣਾਂ"
+
+#: js/gdm/loginDialog.js:55
+msgid "Session Type"
+msgstr "ਸ਼ੈਸ਼ਨ ਦੀ ਕਿਸਮ"
+
+#: js/gdm/loginDialog.js:333 js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "ਅਸੈੱਸਬਿਲਟੀ"
+
+#: js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1071
+#: js/gdm/loginDialog.js:1104
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ਜਿਵੇਂ ਕਿ ਵਰਤੋਂਕਾਰ ਜਾਂ %s)"
 
-#: js/gdm/loginDialog.js:1076 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1111 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
+#: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "ਵਰਤੋਂਂਕਾਰ ਨਾਂ"
 
-#: js/gdm/loginDialog.js:1142
+#: js/gdm/loginDialog.js:1175
 msgid "Login Attempt Timed Out"
 msgstr "ਲਾਗਇਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਲਈ ਸਮਾਂ ਸਮਾਪਤ"
 
-#: js/gdm/loginDialog.js:1143
+#: js/gdm/loginDialog.js:1176
 msgid "Login took too long, please try again"
 msgstr "ਲਾਗਇਨ ਲਈ ਬਹੁਤ ਸਮਾਂ ਲੱਗਾ, ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ"
 
-#: js/gdm/loginDialog.js:1492
+#: js/gdm/loginDialog.js:1539
 msgid "Login Window"
 msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
 
-#: js/gdm/util.js:498
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਗਲਤੀ"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:729
-msgid "(or swipe finger across reader)"
-msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਘਸਾਓ)"
+#: js/gdm/webLogin.js:105
+msgid "Login code: "
+msgstr "ਲਾਗਇਨ ਕੋਡ: "
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:734
-msgid "(or place finger on reader)"
-msgstr "(ਜਾਂ ਰੀਡਰ ਉੱਤੇ ਉਂਗਲ ਰੱਖੋ)"
-
-#: js/misc/breakManager.js:765
+#: js/misc/breakManager.js:776
 msgid "Break complete sound"
 msgstr "ਬਰੇਕ ਪੂਰੀ ਹੋਣ ਲਈ ਆਵਾਜ਼"
 
-#: js/misc/breakManager.js:982
+#: js/misc/breakManager.js:985
 #, javascript-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d ਸਕਿੰਟ"
 msgstr[1] "%d ਸਕਿੰਟ"
 
-#: js/misc/breakManager.js:988
+#: js/misc/breakManager.js:991
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d ਮਿੰਟ"
 msgstr[1] "%d ਮਿੰਟ"
 
-#: js/misc/breakManager.js:994
+#: js/misc/breakManager.js:997
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d ਘੰਟਾ"
 msgstr[1] "%d ਘੰਟੇ"
 
-#: js/misc/breakManager.js:1000
+#: js/misc/breakManager.js:1003
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -745,79 +854,79 @@ msgstr[0] "%d ਦਿਨ"
 msgstr[1] "%d ਦਿਨ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1083
+#: js/misc/breakManager.js:1085
 #, javascript-format
 msgid "It will be time for a break in %s"
 msgid_plural "It will be time for a break in %s"
 msgstr[0] "%s ਵਿੱਚ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੋਵੇਗਾ"
 msgstr[1] "%s ਵਿੱਚ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੋਵੇਗਾ"
 
-#: js/misc/breakManager.js:1091
+#: js/misc/breakManager.js:1093
 msgid "Movement Break Soon"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਲਈ ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1094
+#: js/misc/breakManager.js:1096
 msgid "Eyesight Break Soon"
 msgstr "ਅੱਖ ਲਈ ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1097
+#: js/misc/breakManager.js:1099
 msgid "Break Soon"
 msgstr "ਬਰੇਕ ਛੇਤੀ ਹੀ"
 
-#: js/misc/breakManager.js:1141
+#: js/misc/breakManager.js:1144
 msgid "Movement Break in Progress"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਬਰੇਕ ਜਾਰੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1144
+#: js/misc/breakManager.js:1147
 #, javascript-format
 msgid "Continue moving around for %s"
 msgid_plural "Continue moving around for %s"
 msgstr[0] "%s ਲਈ ਆਸੇ ਪਾਸੇ ਘੁੰਮਣਾ ਜਾਰੀ ਰੱਖੋ"
 msgstr[1] "%s ਲਈ ਆਸੇ ਪਾਸੇ ਘੁੰਮਣਾ ਜਾਰੀ ਰੱਖੋ"
 
-#: js/misc/breakManager.js:1150
+#: js/misc/breakManager.js:1153
 msgid "Eyesight Break in Progress"
 msgstr "ਅੱਖਾਂ ਲਈ ਬਰੇਕ ਜਾਰੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1153
+#: js/misc/breakManager.js:1156
 #, javascript-format
 msgid "Continue looking away for %s"
 msgid_plural "Continue looking away for %s"
 msgstr[0] "%s ਲਈ ਲਗਾਤਾਰ ਦੂਰ ਵੇਖਣਾ ਜਾਰੀ ਰੱਖੋ"
 msgstr[1] "%s ਲਈ ਲਗਾਤਾਰ ਦੂਰ ਵੇਖਣਾ ਜਾਰੀ ਰੱਖੋ"
 
-#: js/misc/breakManager.js:1159
+#: js/misc/breakManager.js:1162
 msgid "Break in Progress"
 msgstr "ਬਰੇਕ ਚੱਲ ਰਹੀ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1162
+#: js/misc/breakManager.js:1165
 #, javascript-format
 msgid "%s left in your break"
 msgid_plural "%s left in your break"
 msgstr[0] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਹੈ"
 msgstr[1] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਹਨ"
 
-#: js/misc/breakManager.js:1201
+#: js/misc/breakManager.js:1204
 msgid "Time for a Movement Break"
 msgstr "ਸਰੀਰਿਕ ਹਿਲਜੁਲ ਬਰੇਕ ਦਾ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1204
+#: js/misc/breakManager.js:1207
 #, javascript-format
 msgid "Take a break from the device and move around for %s"
 msgid_plural "Take a break from the device and move around for %s"
 msgstr[0] "ਡਿਵਾਈਸ ਤੋਂ ਬਰੇਕ ਲਵੋ ਅਤੇ %s ਲਈ ਆਸੇ ਪਾਸੇ ਜਾਓ"
 msgstr[1] "ਡਿਵਾਈਸ ਤੋਂ ਬਰੇਕ ਲਵੋ ਅਤੇ %s ਲਈ ਆਸੇ ਪਾਸੇ ਜਾਓ"
 
-#: js/misc/breakManager.js:1210
+#: js/misc/breakManager.js:1213
 msgid "Time for an Eyesight Break"
 msgstr "ਅੱਖਾਂ ਦੀ ਬਰੇਕ ਲਈ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1213
+#: js/misc/breakManager.js:1216
 #, javascript-format
 msgid ""
 "Take a break from the screen. Look at least 6 meters away for at least %s"
@@ -826,12 +935,12 @@ msgid_plural ""
 msgstr[0] "ਸਕਰੀਨ ਤੋਂ ਬਰੇਕ ਲਵੋ। ਘੱਟੋ-ਘੱਟ %s ਲਈ 6 ਮੀਟਰ ਦੂਰ ਵੇਖੋ"
 msgstr[1] "ਸਕਰੀਨ ਤੋਂ ਬਰੇਕ ਲਵੋ। ਘੱਟੋ-ਘੱਟ %s ਲਈ 6 ਮੀਟਰ ਦੂਰ ਵੇਖੋ"
 
-#: js/misc/breakManager.js:1219
+#: js/misc/breakManager.js:1222
 msgid "Time for a Break"
 msgstr "ਬਰੇਕ ਲਈ ਸਮਾਂ ਹੈ"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1222
+#: js/misc/breakManager.js:1225
 #, javascript-format
 msgid "It’s time to take a break. Get away from the device for %s!"
 msgid_plural "It’s time to take a break. Get away from the device for %s!"
@@ -839,171 +948,187 @@ msgstr[0] "ਇਹ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੈ। %s ਲਈ
 msgstr[1] "ਇਹ ਬਰੇਕ ਲੈਣ ਦਾ ਸਮਾਂ ਹੈ। %s ਲਈ ਡਿਵਾਈਸ ਨੂੰ ਛੱਡੋ!"
 
 #. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1244
+#: js/misc/breakManager.js:1249
 #, javascript-format
 msgid "You were due to take a break %s ago"
 msgid_plural "You were due to take a break %s ago"
 msgstr[0] "ਤੁਸੀਂ %s ਪਹਿਲਾਂ ਬਰੇਕ ਲੈਣੀ ਸੀ"
 msgstr[1] "ਤੁਸੀਂ %s ਪਹਿਲਾਂ ਬਰੇਕ ਲੈਣੀ ਸੀ"
 
-#: js/misc/breakManager.js:1250
+#: js/misc/breakManager.js:1255
 msgid "Break Overdue"
 msgstr "ਬਰੇਕ ਲੈਣ ਵਾਲੀ ਰਹਿੰਦੀ ਹੈ"
 
-#. %s will be replaced with a string that describes a time interval, such as “2 minutes”, “40 seconds” or “1 hour”
-#: js/misc/breakManager.js:1264
+#: js/misc/breakManager.js:1271
 #, javascript-format
 msgid "There is %s remaining in your break"
 msgid_plural "There are %s remaining in your break"
 msgstr[0] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਰਹਿੰਦਾ ਹੈ"
 msgstr[1] "ਤੁਹਾਡੀ ਬਰੇਕ ਲਈ %s ਬਾਕੀ ਰਹਿੰਦੇ ਹਨ"
 
-#: js/misc/breakManager.js:1270
+#: js/misc/breakManager.js:1277
 msgid "Break Interrupted"
 msgstr "ਬਰੇਕ 'ਚ ਰੁਕਾਵਟ ਪਾਈ"
 
-#: js/misc/breakManager.js:1341
+#. Translators: As in "Delay the break"
+#: js/misc/breakManager.js:1355
 msgid "Delay"
 msgstr "ਦੇਰੀ"
 
-#: js/misc/breakManager.js:1362 js/ui/welcomeDialog.js:61
+#. Translators: As in "Skip the break"
+#: js/misc/breakManager.js:1377 js/ui/welcomeDialog.js:61
 msgid "Skip"
 msgstr "ਛੱਡੋ"
 
-#: js/misc/breakManager.js:1383
+#. Translators: As in "Take the break"
+#: js/misc/breakManager.js:1399
 msgid "Take"
 msgstr "ਲਵੋ"
 
 #. Translators: This is a notification to warn the user that a
 #. screen time break will start shortly.
-#: js/misc/breakManager.js:1446
+#: js/misc/breakManager.js:1462
 #, javascript-format
 msgid "Break in %d second"
 msgid_plural "Break in %d seconds"
 msgstr[0] "%d ਸਕਿੰਟ ਵਿੱਚ ਬਰੇਕ"
 msgstr[1] "%d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬਰੇਕ"
 
+#: js/misc/brightnessManager.js:294 js/ui/status/brightness.js:10
+msgid "Brightness"
+msgstr "ਚਮਕ"
+
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "ਬੰਦ ਕਰੋ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:101
 msgid "power off;poweroff;shutdown;halt;stop"
 msgstr "ਬੰਦ ਕਰੋ;ਪਾਵਰ ਆਫ਼;ਮੁੜ-ਚਾਲੂ ਕਰੋ;ਰੋਕੋ;ਅਟਕਾਓ"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Restart"
 msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:109
 msgid "reboot;restart;"
 msgstr "ਮੁੜ-ਚਾਲੂ;ਮੁੜ-ਸ਼ੁਰੂ ਕਰੋ;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:117
 msgid "lock screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "ਲਾਗ ਆਉਟ"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:125
 msgid "logout;log out;sign off"
 msgstr "ਲਾਗਆਉਟ;ਸਾਈਨ ਆਫ਼;ਲਾਗ-ਆਉਟ"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:130
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ ਕਰੋ"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:133
 msgid "suspend;sleep"
 msgstr "ਸਸਪੈਂਡ;ਸਲੀਪ"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:138
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ਵਰਤੋਂਂਕਾਰ ਬਦਲੋ"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:141
 msgid "switch user"
 msgstr "ਵਰਤੋਂਕਾਰ ਬਦਲੋ"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:148
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "ਸਥਿਤੀ ਲਾਕ ਕਰੋ;ਸਥਿਤੀ ਅਣ-ਲਾਕ ਕਰੋ;ਸਕਰੀਨ;ਘੁੰਮਾਉਣਾ;ਘੁੰਮਾਓ"
 
 #. Translators: The name of the screenshot UI action in search
-#: js/misc/systemActions.js:146
+#: js/misc/systemActions.js:153
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
-#: js/misc/systemActions.js:149
+#: js/misc/systemActions.js:156
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ;ਸਕਰੀਨਕਾਸਟ;ਸਨਿਪ;ਕੈਪਚਰ;ਲਵੋ;ਰਿਕਾਰਡ;ਖਿੱਚੋ"
 
-#: js/misc/systemActions.js:249
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "ਸਕਰੀਨ ਘੁੰਮਾਉਣਾ ਅਣ-ਲਾਕ ਕਰੋ"
 
-#: js/misc/systemActions.js:250
+#: js/misc/systemActions.js:268
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "ਸਕਰੀਨ ਘੁੰਮਾਉਣਾ ਲਾਕ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:338
-#| msgid "GNOME needs to lock the screen"
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "ਗਨੋਮ ਨੂੰ ਸਕਰੀਨ ਸਮਾਂ ਡਾਟੇ ਨੂੰ ਸੰਭਾਲਣ ਦੀ ਲੋੜ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1102
+#: js/misc/timeLimitsManager.js:1408
+#| msgid "Screen Time Limit in %d Minute"
+#| msgid_plural "Screen Time Limit in %d Minutes"
+msgid "Screen Time Limit is almost up"
+msgstr "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ ਲਗਭਗ ਪੂਰੀ ਹੋਈ"
+
+#: js/misc/timeLimitsManager.js:1410
+#, javascript-format
+#| msgid "The system will restart automatically in %d second"
+#| msgid_plural "The system will restart automatically in %d seconds"
+msgid "The computer will lock in %d second."
+msgid_plural "The computer will lock in %d seconds."
+msgstr[0] "ਕੰਪਿਊਟਰ ਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਲਾਕ ਕੀਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "ਕੰਪਿਊਟਰ ਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਲਾਕ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ %d ਮਿੰਟ ਵਿੱਚ ਹੈ"
 msgstr[1] "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ %d ਮਿੰਟਾਂ ਵਿੱਚ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1109
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "ਤੁਹਾਡੇ ਸਕਰੀਨ ਸਮੇਂ ਦੀ ਲਿਮਟ ਅੱਪੜੀ ਹੈ"
 
-#: js/misc/timeLimitsManager.js:1123
-msgid "Screen Time Limit Reached"
-msgstr "ਸਕਰੀਨ ਸਮਾਂ ਲਿਮਟ ਪੂਰੀ ਹੋਈ"
-
-#: js/misc/timeLimitsManager.js:1124
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "ਹੁਣ ਡਿਵਾਈਸ ਨੂੰ ਵਰਤਣਾ ਰੋਕਣ ਦਾ ਸਮਾਂ ਹੈ"
 
-#: js/misc/util.js:130
+#: js/misc/util.js:131
 msgid "Command not found"
 msgstr "ਕਮਾਂਡ ਨਹੀਂ ਲੱਭੀ"
 
-#: js/misc/util.js:168
+#: js/misc/util.js:169
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "“%s” ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
@@ -1026,7 +1151,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
 
-#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:183
+#: js/misc/dateUtils.js:85 js/ui/dateMenu.js:184
 msgid "Yesterday"
 msgstr "ਕੱਲ੍ਹ"
 
@@ -1060,29 +1185,34 @@ msgstr[1] "%d ਸਾਲ ਪਹਿਲਾਂ"
 
 #. Translators: Time in 24h format
 #: js/misc/dateUtils.js:155
-msgid "%H∶%M"
-msgstr "%H∶%M"
+#| msgctxt "event list time"
+#| msgid "%H:%M"
+msgid "%H:%M"
+msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
 #: js/misc/dateUtils.js:161
 #, no-c-format
-msgid "Yesterday, %H∶%M"
-msgstr "ਕੱਲ੍ਹ, %H∶%M"
+#| msgid "Yesterday, %H∶%M"
+msgid "Yesterday, %H:%M"
+msgstr "ਕੱਲ੍ਹ, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/dateUtils.js:167
 #, no-c-format
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
+#| msgid "%A, %H∶%M"
+msgid "%A, %H:%M"
+msgstr "%A, %H:%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/dateUtils.js:173
 #, no-c-format
-msgid "%B %-d, %H∶%M"
+#| msgid "%B %-d, %H∶%M"
+msgid "%B %-d, %H:%M"
 msgstr "%-d %B %H∶%M"
 
 #. Translators: this is the month name, day number, year
@@ -1090,36 +1220,42 @@ msgstr "%-d %B %H∶%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/dateUtils.js:179
 #, no-c-format
-msgid "%B %-d %Y, %H∶%M"
+#| msgid "%B %-d %Y, %H∶%M"
+msgid "%B %-d %Y, %H:%M"
 msgstr "%-d %B %Y, %H∶%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/dateUtils.js:184
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#| msgctxt "event list time"
+#| msgid "%l:%M %p"
+msgid "%l:%M %p"
+msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/dateUtils.js:190
 #, no-c-format
-msgid "Yesterday, %l∶%M %p"
-msgstr "ਕੱਲ੍ਹ, %l∶%M %p"
+#| msgid "Yesterday, %l∶%M %p"
+msgid "Yesterday, %l:%M %p"
+msgstr "ਕੱਲ੍ਹ, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/dateUtils.js:196
 #, no-c-format
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
+#| msgid "%A, %l∶%M %p"
+msgid "%A, %l:%M %p"
+msgstr "%A, %l:%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/dateUtils.js:202
 #, no-c-format
-msgid "%B %-d, %l∶%M %p"
+#| msgid "%B %-d, %l∶%M %p"
+msgid "%B %-d, %l:%M %p"
 msgstr "%-d %B %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
@@ -1127,14 +1263,15 @@ msgstr "%-d %B %l∶%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/dateUtils.js:208
 #, no-c-format
-msgid "%B %-d %Y, %l∶%M %p"
+#| msgid "%B %-d %Y, %l∶%M %p"
+msgid "%B %-d %Y, %l:%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
 
-#: js/portalHelper/main.js:98
+#: js/portalHelper/main.js:104
 msgid "Your connection seems to be secure"
 msgstr "ਤੁਹਾਡਾ ਕਨੈਕਸ਼ਨ ਸੁਰੱਖਿਅਤ ਜਾਪਦਾ ਹੈ"
 
-#: js/portalHelper/main.js:104
+#: js/portalHelper/main.js:110
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1143,7 +1280,7 @@ msgstr ""
 "ਪਾਸਵਰਡ ਜਾਂ "
 "ਦਿੱਤੀ ਹੋਰ ਜਾਣਾਕਰੀ ਨੂੰ ਨੇੜਲੇ ਲੋਕਾਂ ਵਲੋਂ ਵੇਖਿਆ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: js/portalHelper/main.js:115
+#: js/portalHelper/main.js:121
 msgid "Hotspot Login"
 msgstr "ਹਾਟਸਪਾਟ ਲਾਗਇਨ"
 
@@ -1157,21 +1294,37 @@ msgstr "ਇਨਕਾਰ"
 msgid "Allow"
 msgstr "ਮਨਜ਼ੂਰ"
 
-#: js/ui/appDisplay.js:1762
+#: js/ui/appDisplay.js:158
+#| msgid "App defined"
+msgid "App grid"
+msgstr "ਐਪ ਗਰਿੱਡ"
+
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "ਬੇਨਾਮ ਫੋਲਡਰ"
 
-#: js/ui/appFavorites.js:163
-#, javascript-format
-msgid "%s has been pinned to the dash."
-msgstr "%s ਨੂੰ ਡੈਸ਼ ਵਿੱਚ ਟੰਗਿਆ ਗਿਆ ਹੈ।"
+#: js/ui/appDisplay.js:2563
+#| msgid "Username"
+msgid "Folder name"
+msgstr "ਫ਼ੋਲਡਰ ਦਾ ਨਾਂ"
 
-#: js/ui/appFavorites.js:194
-#, javascript-format
-msgid "%s has been unpinned from the dash."
-msgstr "%s ਨੂੰ ਡੈਸ਼ ਤੋਂ ਲਾਹਿਆ ਜਾ ਚੁੱਕਾ ਹੈ।"
+#: js/ui/appDisplay.js:2586
+msgid "Edit folder name"
+msgstr "ਫ਼ੋਲਡਰ ਦੇ ਨਾਂ ਨੂੰ ਸੋਧੋ"
 
-#: js/ui/appFavorites.js:208 js/ui/main.js:309
+#: js/ui/appFavorites.js:104
+#, javascript-format
+#| msgid "Pin to Dash"
+msgid "%s Pinned to Dash"
+msgstr "%s ਨੂੰ ਡੈਸ਼ ਵਿੱਚ ਟੰਗਿਆ"
+
+#: js/ui/appFavorites.js:135
+#, javascript-format
+#| msgid "%s has been unpinned from the dash."
+msgid "%s Unpinned From Dash"
+msgstr "%s ਨੂੰ ਡੈਸ਼ ਤੋਂ ਲਾਹਿਆ ਗਿਆ"
+
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "ਵਾਪਸ"
 
@@ -1192,7 +1345,7 @@ msgstr "ਐਪ ਵੇਰਵੇ"
 msgid "Quit"
 msgstr "ਬਾਹਰ"
 
-#: js/ui/appMenu.js:160 js/ui/dash.js:248
+#: js/ui/appMenu.js:160 js/ui/dash.js:244
 msgid "Unpin"
 msgstr "ਲਾਹੋ"
 
@@ -1201,47 +1354,49 @@ msgid "Pin to Dash"
 msgstr "ਡੈਸ਼ ਵਿੱਚ ਟੰਗੋ"
 
 #: js/ui/appMenu.js:178
-msgid "Launch using Integrated Graphics Card"
+#| msgid "Launch using Integrated Graphics Card"
+msgid "Launch Using Integrated Graphics Card"
 msgstr "ਐਂਟੀਗਰੇਟਡ ਗਰਾਫ਼ਿਕਸ ਕਾਰਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਚਲਾਓ"
 
 #: js/ui/appMenu.js:179
-msgid "Launch using Discrete Graphics Card"
+#| msgid "Launch using Discrete Graphics Card"
+msgid "Launch Using Discrete Graphics Card"
 msgstr "ਵੱਖਰੇ (ਡਿਸਕ੍ਰਿਟ) ਗਰਾਫ਼ਿਕਸ ਕਾਰਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਚਲਾਓ"
 
-#: js/ui/audioDeviceSelection.js:46
+#: js/ui/audioDeviceSelection.js:47
 msgid "Select Audio Device"
 msgstr "ਆਡੀਓ ਡਿਵਾਈਸ ਨੂੰ ਚੁਣੋ"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/audioDeviceSelection.js:75
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headphones"
 msgstr "ਹੈੱਡਫ਼ੋਨ"
 
-#: js/ui/audioDeviceSelection.js:77
+#: js/ui/audioDeviceSelection.js:78
 msgid "Headset"
 msgstr "ਹੈੱਡਸੈੱਟ"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:366
+#: js/ui/audioDeviceSelection.js:80 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "ਮਾਈਕਰੋਫੋਨ"
 
-#: js/ui/backgroundMenu.js:13
+#: js/ui/backgroundMenu.js:12
 msgid "Change Background…"
 msgstr "…ਬੈਕਗਰਾਊਂਡ ਬਦਲੋ"
 
-#: js/ui/backgroundMenu.js:15
+#: js/ui/backgroundMenu.js:14
 msgid "Display Settings"
 msgstr "ਡਿਸਪਲੇਅ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/backgroundMenu.js:16
+#: js/ui/backgroundMenu.js:15
 msgid "Settings"
 msgstr "ਸੈਟਿੰਗਾਂ"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:33
+#: js/ui/calendar.js:34
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -1251,43 +1406,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:59
+#: js/ui/calendar.js:60
 msgctxt "grid sunday"
 msgid "S"
 msgstr "ਐ"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:61
+#: js/ui/calendar.js:62
 msgctxt "grid monday"
 msgid "M"
 msgstr "ਸੋ"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:63
+#: js/ui/calendar.js:64
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ਮੰ"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:66
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ਬੁੱ"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:68
 msgctxt "grid thursday"
 msgid "T"
 msgstr "ਵੀ"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:70
 msgctxt "grid friday"
 msgid "F"
 msgstr "ਸ਼ੁੱ"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:72
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ਸ਼"
@@ -1298,7 +1453,7 @@ msgstr "ਸ਼"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:422
+#: js/ui/calendar.js:425
 msgid "%OB"
 msgstr "%OB"
 
@@ -1311,93 +1466,89 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:432
+#: js/ui/calendar.js:435
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:494
+#: js/ui/calendar.js:513
 msgid "Previous month"
 msgstr "ਪਿੱਛੇ ਮਹੀਨੇ"
 
-#: js/ui/calendar.js:512
+#: js/ui/calendar.js:531
 msgid "Next month"
 msgstr "ਅਗਲੇ ਮਹੀਨੇ"
 
-#: js/ui/calendar.js:663
+#: js/ui/calendar.js:676
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:722
+#: js/ui/calendar.js:735
 msgid "Week %V"
 msgstr "ਹਫ਼ਤਾ %V"
 
-#: js/ui/calendar.js:774
+#: js/ui/calendar.js:788
 msgid "No Notifications"
 msgstr "ਕੋਈ ਨੋਟੀਫਿਕੇਸ਼ਨ"
 
-#: js/ui/calendar.js:832
-msgid "Do Not Disturb"
-msgstr "ਤੰਗ ਨਾ ਕਰੋ"
-
-#: js/ui/calendar.js:853
+#: js/ui/calendar.js:829
 msgid "Clear"
 msgstr "ਸਾਫ਼ ਕਰੋ"
 
-#: js/ui/calendar.js:857
+#: js/ui/calendar.js:833
 msgctxt "action"
 msgid "Clear all notifications"
 msgstr "ਸਭ ਸੂਚਨਾਵਾਂ ਨੂੰ ਮਿਟਾਓ"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:42
+#: js/ui/closeDialog.js:40
 #, javascript-format
 msgid "“%s” Is Not Responding"
 msgstr "“%s” ਜਵਾਬ ਨਹੀਂ ਦਿੰਦਾ ਹੈ"
 
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:41
 msgid ""
 "You may choose to wait a short while for it to continue or force the app to "
 "quit entirely"
 msgstr ""
 "ਤੁਸੀਂ ਇਸ ਲਈ ਕੁਝ ਸਮੇਂ ਵਾਸਤੇ ਉਡੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਐਪ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ"
 
-#: js/ui/closeDialog.js:71
+#: js/ui/closeDialog.js:69
 msgid "Force Quit"
 msgstr "ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ"
 
-#: js/ui/closeDialog.js:76
+#: js/ui/closeDialog.js:74
 msgid "Wait"
 msgstr "ਉਡੀਕੋ"
 
-#: js/ui/components/automountManager.js:82
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "ਬਾਹਰੀ ਡਰਾਇਵ ਕਨੈਕਟ ਹੋਈ"
 
-#: js/ui/components/automountManager.js:94
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "ਬਾਹਰੀ ਡਰਾਇਵ ਡਿਸ-ਕਨੈਕਟ ਹੈ"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:214
 msgid "Unable to unlock volume"
 msgstr "ਵਾਲੀਅਮ ਨੂੰ ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:215
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "ਇੰਸਟਾਲ ਕੀਤਾ udisks ਵਰਜ਼ਨ PIM ਸੈਟਿੰਗ ਲਈ ਸਹਾਇਕ ਨਹੀਂ ਹੈ"
 
 #. Translators: %s is the name of a partition on a external drive
-#: js/ui/components/autorunManager.js:189
+#: js/ui/components/autorunManager.js:190
 #, javascript-format
 msgid "“%s” connected"
 msgstr "“%s” ਕਨੈਕਟ ਹੈ"
 
-#: js/ui/components/autorunManager.js:190
+#: js/ui/components/autorunManager.js:191
 msgid "Disk can now be used"
 msgstr "ਡਿਸਕ ਨੂੰ ਹੁਣ ਵਰਤਿਆ ਜਾ ਸਕਦਾ ਹੈ"
 
-#: js/ui/components/autorunManager.js:202
+#: js/ui/components/autorunManager.js:203
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s ਨਾਲ ਖੋਲ੍ਹੋ"
@@ -1408,8 +1559,8 @@ msgid ""
 msgstr ""
 "ਬਦਲੇ ਰੂਪ ਵਿੱਚ ਤੁਸੀਂ ਆਪਣੇ ਰਾਊਂਟਰ ਉੱਤੇ \"WPS\" ਬਟਨ ਨੂੰ ਦਬਾ ਕੇ ਕਨੈਕਟ ਕਰ ਸਕਦੇ ਹੋ"
 
-#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:246
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "ਕਨੈਕਟ ਕਰੋ"
 
@@ -1430,17 +1581,17 @@ msgid "Service"
 msgstr "ਸਰਵਿਸ"
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:407
-#: js/ui/components/networkAgent.js:745 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:744 js/ui/components/networkAgent.js:765
 msgid "Authentication required"
 msgstr "ਪਰਮਾਣੀਕਰਣ ਚਾਹੀਦਾ ਹੈ"
 
-#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:746
+#: js/ui/components/networkAgent.js:372 js/ui/components/networkAgent.js:745
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”"
 msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ “%s” ਵਰਤਣ ਲਈ ਪਾਸਵਰਡ ਜਾਂ ਇੰਕ੍ਰਿਪਸ਼ਨ ਕੁੰਜੀਆਂ ਦੀ ਲੋੜ ਹੈ"
 
-#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:376 js/ui/components/networkAgent.js:749
 msgid "Wired 802.1X authentication"
 msgstr "ਤਾਰ 802.1X ਪਰਮਾਣਕਿਤਾ"
 
@@ -1448,15 +1599,15 @@ msgstr "ਤਾਰ 802.1X ਪਰਮਾਣਕਿਤਾ"
 msgid "Network name"
 msgstr "ਨੈੱਟਵਰਕ ਨਾਂ"
 
-#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:754
+#: js/ui/components/networkAgent.js:387 js/ui/components/networkAgent.js:753
 msgid "DSL authentication"
 msgstr "DSL ਪਰਮਾਣਕਿਤਾ"
 
-#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:759
+#: js/ui/components/networkAgent.js:394 js/ui/components/networkAgent.js:758
 msgid "PIN code required"
 msgstr "PIN ਕੋਡ ਲੋੜੀਦਾ ਹੈ"
 
-#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:760
+#: js/ui/components/networkAgent.js:395 js/ui/components/networkAgent.js:759
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਡਿਵਾਈਸ ਲਈ ਪਿੰਨ ਕੋਡ ਚਾਹੀਦਾ ਹੈ"
 
@@ -1464,14 +1615,14 @@ msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਡਿਵਾਈਸ ਲਈ �
 msgid "PIN"
 msgstr "ਪਿੰਨ"
 
-#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:751
-#: js/ui/components/networkAgent.js:755 js/ui/components/networkAgent.js:767
-#: js/ui/components/networkAgent.js:771
+#: js/ui/components/networkAgent.js:408 js/ui/components/networkAgent.js:750
+#: js/ui/components/networkAgent.js:754 js/ui/components/networkAgent.js:766
+#: js/ui/components/networkAgent.js:770
 #, javascript-format
 msgid "A password is required to connect to “%s”"
 msgstr "“%s” ਨਾਲ ਕਨੈਕਟ ਹੋਣ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ"
 
-#: js/ui/components/networkAgent.js:770
+#: js/ui/components/networkAgent.js:769
 msgid "VPN password"
 msgstr "VPN ਪਾਸਵਰਡ"
 
@@ -1491,21 +1642,21 @@ msgstr "ਪਰਮਾਣਿਤ"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:415
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:430
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "ਅਫਸੋਸ, ਉਹ ਕੰਮ ਨਹੀਂ ਕਰਦਾ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ।"
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "ਵਿੰਡੋ"
 
-#: js/ui/dash.js:204 js/ui/dash.js:250
+#: js/ui/dash.js:200 js/ui/dash.js:246
 msgid "Show Apps"
 msgstr "ਐਪਾਂ ਵੇਖੋ"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:408
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "ਡੈਸ਼"
 
@@ -1527,29 +1678,29 @@ msgid "%A %B %e %Y"
 msgstr "%A, %e %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:172
+#: js/ui/dateMenu.js:173
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:175
+#: js/ui/dateMenu.js:176
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:182
 msgid "Today"
 msgstr "ਅੱਜ"
 
-#: js/ui/dateMenu.js:185
+#: js/ui/dateMenu.js:186
 msgid "Tomorrow"
 msgstr "ਭਲਕ"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:216
+#: js/ui/dateMenu.js:217
 msgctxt "event list time"
 msgid "All Day"
 msgstr "ਸਭ ਦਿਨ"
@@ -1557,39 +1708,39 @@ msgstr "ਸਭ ਦਿਨ"
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
 #.
-#: js/ui/dateMenu.js:238
+#: js/ui/dateMenu.js:239
 msgid "%m/%d"
 msgstr "%d/%m"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:290
 msgid "No Events"
 msgstr "ਕੋਈ ਘਟਨਾ ਨਹੀਂ"
 
-#: js/ui/dateMenu.js:411
+#: js/ui/dateMenu.js:412
 msgid "Add World Clocks…"
 msgstr "…ਸੰਸਾਰ ਘੜੀਆਂ ਨੂੰ ਜੋੜੋ"
 
-#: js/ui/dateMenu.js:412
+#: js/ui/dateMenu.js:413
 msgid "World Clocks"
 msgstr "ਸੰਸਾਰ ਘੜੀਆਂ"
 
-#: js/ui/dateMenu.js:702
+#: js/ui/dateMenu.js:704
 msgid "Loading…"
 msgstr "…ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: js/ui/dateMenu.js:712
+#: js/ui/dateMenu.js:714
 msgid "Go Online for Weather Information"
 msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਆਨਲਾਈਨ ਜਾਓ"
 
-#: js/ui/dateMenu.js:714
+#: js/ui/dateMenu.js:716
 msgid "Weather Information Unavailable"
 msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
 
-#: js/ui/dateMenu.js:724
+#: js/ui/dateMenu.js:726
 msgid "Weather"
 msgstr "ਮੌਸਮ"
 
-#: js/ui/dateMenu.js:726
+#: js/ui/dateMenu.js:728
 msgid "Select Weather Location…"
 msgstr "…ਮੌਸਮ ਦੇ ਟਿਕਾਣਾ ਨੂੰ ਚੁਣੋ"
 
@@ -1623,7 +1774,7 @@ msgctxt "button"
 msgid "Log Out"
 msgstr "ਲਾਗਆਉਟ"
 
-#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:174
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "ਬੰਦ ਕਰੋ"
@@ -1687,7 +1838,7 @@ msgstr[0] ""
 msgstr[1] ""
 "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਅਤੇ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾਣਗੇ"
 
-#: js/ui/endSessionDialog.js:119 js/ui/endSessionDialog.js:140
+#: js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "ਮੁੜ-ਚਾਲੂ ਅਤੇ ਇੰਸਟਾਲ ਕਰੋ"
@@ -1702,71 +1853,53 @@ msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਦੇ ਬਾਅਦ ਬੰਦ ਕਰੋ"
 
-#: js/ui/endSessionDialog.js:129
-msgctxt "title"
-msgid "Restart & Install Upgrade"
-msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਤੇ ਅੱਪਗਰੇਡ ਇੰਸਟਾਲ ਕਰੋ"
-
-#. Translators: This is the text displayed for system upgrades in the
-#. shut down dialog. First %s gets replaced with the distro name and
-#. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:134
-#, javascript-format
-msgid ""
-"%s %s will be installed after restart. Upgrade installation can take a long "
-"time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"ਮੁੜ-ਚਾਲੂ ਹੋਣ ਦੇ ਬਾਅਦ %s %s ਨੂੰ ਇੰਸਟਾਲ ਕੀਤਾ ਜਾਵੇਗਾ। ਅੱਪਗਰੇਡ ਇੰਸਟਾਲੇਸ਼ਨ ਨੂੰ ਲੰਮਾ "
-"ਸਮਾਂ ਲੱਗ ਸਕਦਾ "
-"ਹੈ: ਪੱਕਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਬੈਕਅੱਪ ਲੈ ਲਿਆ ਹੈ ਅਤੇ ਕੰਪਿਊਟਰ ਦਾ ਪਲੱਗ ਲੱਗਾ ਹੈ।"
-
-#: js/ui/endSessionDialog.js:283
+#: js/ui/endSessionDialog.js:263
 msgid "Low battery power: please plug in before installing updates"
 msgstr "ਬੈਟਰੀ ਊਰਜਾ ਘੱਟ ਹੈ: ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਪਲੱਗ ਲਾਓ ਜੀ"
 
-#: js/ui/endSessionDialog.js:292
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr "ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਰੁੱਝੀਆਂ ਹਨ ਜਾਂ ਕੁਝ ਨਾ-ਸੰਭਾਲਿਆ ਕੰਮ ਪਿਆ ਹੈ"
 
-#: js/ui/endSessionDialog.js:297
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "ਹੋਰ ਵਰਤੋਂਕਾਰ ਲਾਗਇਨ ਹਨ"
 
-#: js/ui/endSessionDialog.js:467
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
 msgstr "ਬੂਟ ਚੋਣਾਂ"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:672
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (ਰਿਮੋਟ)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:675
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (ਕਨਸੋਲ)"
 
-#: js/ui/extensionDownloader.js:280
+#: js/ui/extensionDownloader.js:312
 msgid "Install"
 msgstr "ਇੰਸਟਾਲ ਕਰੋ"
 
-#: js/ui/extensionDownloader.js:286
+#: js/ui/extensionDownloader.js:318
 msgid "Install Extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਕਰੋ"
 
-#: js/ui/extensionDownloader.js:287
+#: js/ui/extensionDownloader.js:319
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "ਕੀ extensions.gnome.org ਤੋਂ “%s” ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਉਪਲਬਧ ਹਨ"
 
-#: js/ui/extensionSystem.js:355
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਤਿਆਰ ਹਨ"
 
@@ -1843,7 +1976,7 @@ msgstr "ਚਾਲੂ ਛੱਡੋ"
 msgid "Turn On"
 msgstr "ਚਾਲੂ ਕਰੋ"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "ਬੰਦ ਕਰੋ"
 
@@ -1851,77 +1984,77 @@ msgstr "ਬੰਦ ਕਰੋ"
 msgid "Leave Off"
 msgstr "ਬੰਦ ਰਹਿਣ ਦਿਓ"
 
-#: js/ui/keyboard.js:180 js/ui/status/keyboard.js:901
+#: js/ui/keyboard.js:219 js/ui/status/keyboard.js:895
 msgid "Keyboard Settings"
 msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:753
 msgid "No extensions installed"
 msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:805
+#: js/ui/lookingGlass.js:816
 #, javascript-format
 msgid "%s has not emitted any errors"
 msgstr "%s ਨੇ ਕੋਈ ਗਲਤੀ ਨਹੀਂ ਦਿੱਤੀ"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:822
 msgid "Hide Errors"
 msgstr "ਗਲਤੀਆਂ ਓਹਲੇ ਕਰੋ"
 
-#: js/ui/lookingGlass.js:815 js/ui/lookingGlass.js:895
+#: js/ui/lookingGlass.js:826 js/ui/lookingGlass.js:906
 msgid "Show Errors"
 msgstr "ਗਲਤੀਆਂ ਵੇਖਾਓ"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:835
 msgid "Active"
 msgstr "ਸਰਗਰਮ"
 
-#: js/ui/lookingGlass.js:827
+#: js/ui/lookingGlass.js:838
 msgid "Inactive"
 msgstr "ਨਾ-ਸਰਗਰਮ"
 
-#: js/ui/lookingGlass.js:829
+#: js/ui/lookingGlass.js:840
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: js/ui/lookingGlass.js:831
+#: js/ui/lookingGlass.js:842
 msgid "Out of date"
 msgstr "ਪੁਰਾਣਾ"
 
-#: js/ui/lookingGlass.js:833
+#: js/ui/lookingGlass.js:844
 msgid "Downloading"
 msgstr "ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: js/ui/lookingGlass.js:835
+#: js/ui/lookingGlass.js:846
 msgid "Deactivating"
 msgstr "ਨਾ-ਸਰਗਰਮ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: js/ui/lookingGlass.js:837
+#: js/ui/lookingGlass.js:848
 msgid "Activating"
 msgstr "ਸਰਗਰਮ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: js/ui/lookingGlass.js:873
+#: js/ui/lookingGlass.js:884
 msgid "View Source"
 msgstr "ਸਰੋਤ ਵੇਖੋ"
 
-#: js/ui/lookingGlass.js:884
+#: js/ui/lookingGlass.js:895
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਸਫ਼ਾ"
 
-#: js/ui/main.js:305
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "ਸਿਸਟਮ ਨੂੰ ਗੈਰ-ਸੁਰੱਖਿਅਤ ਢੰਗ ਵਿੱਚ ਰੱਖਿਆ ਗਿਆ ਹੈ"
 
-#: js/ui/main.js:306
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "ਐਪਾਂ ਕੋਲ ਹੁਣ ਬਿਨਾਂ ਰੋਕ-ਟੋਕ ਪਹੁੰਚ ਹੈ"
 
-#: js/ui/main.js:366
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ ਕੀਤਾ"
 
-#: js/ui/main.js:367
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1930,21 +2063,21 @@ msgstr ""
 "ਭਵ ਹੋਵੇ ਤਾਂ "
 "ਤੁਹਾਨੂੰ ਸਧਾਰਨ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।"
 
-#: js/ui/main.js:415
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਅਸਮਰੱਥ ਹੈ"
 
-#: js/ui/main.js:416
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰਨ ਲਈ ਗਨੋਮ ਡਿਸਪਲੇਅ ਮੈਨੇਜਰ ਚਾਹੀਦਾ ਹੈ"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:409
+#: js/ui/messageList.js:407
 msgid "Unknown App"
 msgstr "ਅਣਪਛਾਤੀ ਐਪ"
 
-#: js/ui/messageTray.js:325 js/ui/messageTray.js:327
+#: js/ui/messageTray.js:331 js/ui/messageTray.js:333
 msgid "Notification sound"
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸਾਊਂਡ"
 
@@ -1960,11 +2093,11 @@ msgstr "ਅਣਪਛਾਤਾ ਟਾਈਟਲ"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:328
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "ਲੱਭਣ ਲਈ ਲਿਖੋ"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "ਐਪਾਂ"
 
@@ -1994,214 +2127,203 @@ msgstr "ਮਾਨੀਟਰ ਨੂੰ ਬਦਲੋ"
 msgid "Assign keystroke"
 msgstr "ਕੀ-ਸਟਰੋਕ ਦਿਓ"
 
-#: js/ui/padOsd.js:223
-msgid "Done"
-msgstr "ਮੁਕੰਮਲ"
-
-#: js/ui/padOsd.js:727
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "…ਸੋਧੋ"
 
-#: js/ui/padOsd.js:774
+#: js/ui/padOsd.js:791
 msgid "None"
 msgstr "ਕੋਈ ਨਹੀਂ"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:868
 msgid "Press a button to configure"
 msgstr "ਸੰਰਚਨਾ ਲਈ ਬਟਨ ਨੂੰ ਦੱਬੋ"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:869
 msgid "Press Esc to exit"
 msgstr "ਬਾਹਰ ਜਾਣ ਲਈ ਕੋਈ ਵੀ Esc ਦੱਬੋ"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:872
 msgid "Press any key to exit"
 msgstr "ਬਾਹਰ ਜਾਣ ਲਈ ਕੋਈ ਵੀ ਸਵਿੱਚ ਦੱਬੋ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:423
+#: js/ui/panel.js:226
 msgid "Activities"
 msgstr "ਸਰਗਰਮੀਆਂ"
 
-#: js/ui/panel.js:504
+#: js/ui/panel.js:304
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "ਸਿਸਟਮ"
 
-#: js/ui/panel.js:678
+#: js/ui/panel.js:498
 msgid "Top Bar"
 msgstr "ਉੱਤਲੀ ਪੱਟੀ"
 
-#: js/ui/quickSettings.js:185 js/ui/quickSettings.js:340
+#: js/ui/quickSettings.js:162 js/ui/quickSettings.js:261
 msgid "Open menu"
 msgstr "ਮੇਨੂ ਖੋਲ੍ਹੋ"
 
-#: js/ui/runDialog.js:61
+#: js/ui/runDialog.js:74
 msgid "Run a Command"
 msgstr "ਕਮਾਂਡ ਚਲਾਓ"
 
-#: js/ui/runDialog.js:76
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "ਬੰਦ ਕਰਨ ਲਈ Esc ਦੱਬੋ"
 
-#: js/ui/runDialog.js:253
-msgid "Restart is not available on Wayland"
-msgstr "ਵੇਅਲੈਂਡ ਉੱਤੇ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਉਪਲਬਧ ਨਹੀਂ"
-
-#: js/ui/runDialog.js:258
-msgid "Restarting…"
-msgstr "...ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
-
-#: js/ui/screenShield.js:233
+#: js/ui/screenShield.js:226
 msgid "GNOME needs to lock the screen"
 msgstr "ਗਨੋਮ ਨੂੰ ਸਕਰੀਨ ਲਾਕ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
 
-#: js/ui/screenShield.js:274 js/ui/screenShield.js:667
-msgid "Unable to lock"
-msgstr "ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
+#. Translators: notification source name for screenshots and recordings.
+#: js/ui/screenshot.js:40
+#| msgid "Screenshot captured"
+msgid "Screen Capture"
+msgstr "ਸਕਰੀਨ ਕੈਪਚਰ"
 
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:668
-msgid "Lock was blocked by an app"
-msgstr "ਐਪ ਵਲੋਂ ਲਾਕ ਉੱਤੇ ਪਾਬੰਦੀ ਲਗਾਈ"
-
-#: js/ui/screenshot.js:1250
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "ਚੋਣ"
 
-#: js/ui/screenshot.js:1260
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "ਚੋਣ ਖੇਤਰ"
 
-#: js/ui/screenshot.js:1265
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "ਸਕਰੀਨ"
 
-#: js/ui/screenshot.js:1275
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "ਸਕਰੀਨ ਚੋਣ"
 
-#: js/ui/screenshot.js:1280
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "ਵਿੰਡੋ"
 
-#: js/ui/screenshot.js:1290
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "ਵਿੰਡੋ ਚੋਣ"
 
-#: js/ui/screenshot.js:1315 js/ui/status/system.js:111
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ"
 
-#: js/ui/screenshot.js:1331
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "ਸਕਰੀਨ ਰਿਕਾਰਡ ਕਰੋ"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1348
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "ਕੈਪਚਰ"
 
-#: js/ui/screenshot.js:1370
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "ਪੁਆਇੰਟਰ ਵੇਖਾਓ"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1994
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "ਸਕਰੀਨਕਾਸਟ"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:1999
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "%d %t ਤੋਂ ਸਕਰੀਨਕਾਸਟ"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2045
-msgid "Screencast recorded"
+#: js/ui/screenshot.js:2487
+#| msgid "Screencast recorded"
+msgid "Screencast Recorded"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕੀਤਾ"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2058
-msgid "Screencast failed to start"
+#: js/ui/screenshot.js:2500
+#| msgid "Screencast failed to start"
+msgid "Screencast Failed to Start"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਫੇਲ੍ਹ ਹੈ"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2064
-msgid "Screencast ended: Out of disk space"
-msgstr "ਸਕਰੀਨਕਾਸਟ ਬੰਦ ਹੈ: ਡਿਸਕ ਥਾਂ ਭਰ ਗਈ ਹੈ"
+#: js/ui/screenshot.js:2506
+#| msgid "Screencast ended: Out of disk space"
+msgid "Screencast Failed: Out of Disk Space"
+msgstr "ਸਕਰੀਨਕਾਸਟ ਅਸਫ਼ਲ: ਡਿਸਕ ਥਾਂ ਭਰ ਗਈ ਹੈ"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2070
-msgid "Screencast ended unexpectedly, please try again"
-msgstr "ਸਕਰੀਨਕਾਸਟ ਅਚਾਨਕ ਬੰਦ ਹੋ ਗਿਆ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+#: js/ui/screenshot.js:2512
+#| msgid "Screencast ended unexpectedly, please try again"
+msgid "Screencast Failed, Please Try Again"
+msgstr "ਸਕਰੀਨਕਾਸਟ ਅਸਫ਼ਲ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2073
-msgid "Screencast ended unexpectedly"
-msgstr "ਸਕਰੀਨਕਾਸਟ ਅਚਾਨਕ ਬੰਦ ਹੋ ਗਿਆ"
-
-#. Translators: notification source name.
-#: js/ui/screenshot.js:2083 js/ui/screenshot.js:2327
-msgid "Screenshot"
-msgstr "ਸਕਰੀਨਸ਼ਾਟ"
+#: js/ui/screenshot.js:2515
+#| msgid "Screencast failed to start"
+msgid "Screencast Failed"
+msgstr "ਸਕਰੀਨਕਾਸਟ ਅਸਫ਼ਲ ਹੈ"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2090
-msgid "Click here to view the video."
-msgstr "ਵੀਡੀਓ ਵੇਖਣ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ।"
+#: js/ui/screenshot.js:2528
+#| msgid "Click here to view the video."
+msgid "Click here to view the video"
+msgstr "ਵੀਡੀਓ ਵੇਖਣ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2098 js/ui/screenshot.js:2343
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "ਫ਼ਾਇਲਾਂ ਵਿੱਚ ਵੇਖੋ"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2285
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "%s ਤੋਂ ਸਕਰੀਨਸ਼ਾਟ"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2333
-msgid "Screenshot captured"
+#: js/ui/screenshot.js:2749
+#| msgid "Screenshot captured"
+msgid "Screenshot Captured"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਿਆ ਗਿਆ"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2335
-msgid "You can paste the image from the clipboard."
-msgstr "ਤੁਸੀਂ ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਚਿੱਤਰ ਚੇਪ ਸਕਦੇ ਹੋ।"
+#: js/ui/screenshot.js:2751
+#| msgid "You can paste the image from the clipboard."
+msgid "You can paste the image from the clipboard"
+msgstr "ਤੁਸੀਂ ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਚਿੱਤਰ ਚੇਪ ਸਕਦੇ ਹੋ"
 
-#: js/ui/screenshot.js:2391 js/ui/screenshot.js:2555
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਿਆ"
 
-#: js/ui/search.js:832
-msgid "Searching…"
-msgstr "…ਖੋਜ ਜਾਰੀ ਹੈ"
+#: js/ui/search.js:872
+#| msgid "Searching…"
+msgid "Searching"
+msgstr "ਖੋਜ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: js/ui/search.js:834
+#: js/ui/search.js:875
 msgid "No results"
 msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ"
 
-#: js/ui/search.js:965
+#: js/ui/search.js:1011
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d ਹੋਰ"
 msgstr[1] "%d ਹੋਰ"
 
-#: js/ui/searchController.js:87
-#: subprojects/extensions-app/data/ui/extensions-window.ui:73
+#: js/ui/searchController.js:97
 msgid "Search"
 msgstr "ਖੋਜ"
 
@@ -2213,39 +2335,39 @@ msgstr "ਕਾਪੀ ਕਰੋ"
 msgid "Paste"
 msgstr "ਚੇਪੋ"
 
-#: js/ui/shellEntry.js:78
+#: js/ui/shellEntry.js:81
 msgid "Show Text"
 msgstr "ਟੈਕਸਟ ਵੇਖੋ"
 
-#: js/ui/shellEntry.js:80
+#: js/ui/shellEntry.js:83
 msgid "Hide Text"
 msgstr "ਟੈਕਸਟ ਓਹਲੇ"
 
-#: js/ui/shellEntry.js:174
+#: js/ui/shellEntry.js:172
 msgid "Caps lock is on"
 msgstr "ਕੈਪਸ ਲਾਕ ਚਾਲੂ ਹੈ"
 
-#: js/ui/shellMountOperation.js:286
+#: js/ui/shellMountOperation.js:301
 msgid "Hidden Volume"
 msgstr "ਵਾਲੀਅਮ ਲੁਕਾਓ"
 
-#: js/ui/shellMountOperation.js:289
+#: js/ui/shellMountOperation.js:304
 msgid "Windows System Volume"
 msgstr "ਵਿੰਡੋਜ਼ ਸਿਸਟਮ ਵਾਲੀਅਮ"
 
-#: js/ui/shellMountOperation.js:292
+#: js/ui/shellMountOperation.js:307
 msgid "Uses Keyfiles"
 msgstr "ਕੁੰਜੀ-ਫਾਇਲਾਂ ਵਰਤਦਾ ਹੈ"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:300
+#: js/ui/shellMountOperation.js:315
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
 msgstr ""
 "ਵਾਲੀਅਮ, ਜੋ ਕਿ keyfiles ਵਰਤਦਾ ਹੈ, ਨੂੰ ਅਣ-ਲਾਕ ਕਰਨ ਲਈ <i>%s</i> ਸਹੂਲਤ ਨੂੰ ਵਰਤੋਂ"
 
-#: js/ui/shellMountOperation.js:304
+#: js/ui/shellMountOperation.js:319
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2254,73 +2376,69 @@ msgstr ""
 "ਸਹੂਲਤ "
 "ਦੀ ਲੋੜ ਹੈ"
 
-#: js/ui/shellMountOperation.js:312
+#: js/ui/shellMountOperation.js:327
 msgid "PIM Number"
 msgstr "PIM ਨੰਬਰ"
 
-#: js/ui/shellMountOperation.js:371
+#: js/ui/shellMountOperation.js:386
 msgid "Remember Password"
 msgstr "ਪਾਸਵਰਡ ਯਾਦ ਰੱਖੋ"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:401
 msgid "Unlock"
 msgstr "ਅਣ-ਲਾਕ"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:400
+#: js/ui/shellMountOperation.js:415
 #, javascript-format
 msgid "Open %s"
 msgstr "%s ਨੂੰ ਖੋਲ੍ਹੋ"
 
-#: js/ui/shellMountOperation.js:436
+#: js/ui/shellMountOperation.js:451
 msgid "The PIM must be a number or empty"
 msgstr "PIM ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਖਾਲੀ ਨਹੀਂ ਹੈ"
 
-#: js/ui/status/accessibility.js:34
-msgid "Accessibility"
-msgstr "ਅਸੈੱਸਬਿਲਟੀ"
-
-#: js/ui/status/accessibility.js:44
+#: js/ui/status/accessibility.js:45 js/ui/status/accessibility.js:153
 msgid "High Contrast"
 msgstr "ਵੱਧ ਕਨਟਰਾਸਟ"
 
-#: js/ui/status/accessibility.js:47
+#: js/ui/status/accessibility.js:48 js/ui/status/accessibility.js:169
 msgid "Zoom"
 msgstr "ਜ਼ੂਮ"
 
-#: js/ui/status/accessibility.js:54
+#: js/ui/status/accessibility.js:55 js/ui/status/accessibility.js:221
 msgid "Screen Reader"
 msgstr "ਸਕਰੀਨ ਰੀਡਰ"
 
-#: js/ui/status/accessibility.js:58
+#: js/ui/status/accessibility.js:59 js/ui/status/accessibility.js:237
 msgid "Screen Keyboard"
 msgstr "ਸਕਰੀਨ ਕੀਬੋਰਡ"
 
-#: js/ui/status/accessibility.js:62
+#: js/ui/status/accessibility.js:63 js/ui/status/accessibility.js:253
 msgid "Visual Alerts"
 msgstr "ਦਿੱਖ ਚੇਤਾਵਨੀ"
 
-#: js/ui/status/accessibility.js:66
+#: js/ui/status/accessibility.js:67 js/ui/status/accessibility.js:269
 msgid "Sticky Keys"
 msgstr "ਸਟਿੱਕੀ ਸਵਿੱਚਾਂ"
 
-#: js/ui/status/accessibility.js:70
+#: js/ui/status/accessibility.js:71 js/ui/status/accessibility.js:285
 msgid "Slow Keys"
 msgstr "ਹੌਲੀ ਸਵਿੱਚਾਂ"
 
-#: js/ui/status/accessibility.js:74
+#: js/ui/status/accessibility.js:75 js/ui/status/accessibility.js:301
 msgid "Bounce Keys"
 msgstr "ਬਾਊਂਸ ਸਵਿੱਚਾਂ"
 
-#: js/ui/status/accessibility.js:78
+#: js/ui/status/accessibility.js:79 js/ui/status/accessibility.js:317
 msgid "Mouse Keys"
 msgstr "ਮਾਊਸ ਸਵਿੱਚਾਂ"
 
-#: js/ui/status/accessibility.js:83
+#: js/ui/status/accessibility.js:84
 msgid "Accessibility Settings"
 msgstr "ਅਸੈੱਸਬਿਲਟੀ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/accessibility.js:123
+#: js/ui/status/accessibility.js:122 js/ui/status/accessibility.js:185
 msgid "Large Text"
 msgstr "ਵੱਡੇ ਅੱਖਰ"
 
@@ -2328,24 +2446,24 @@ msgstr "ਵੱਡੇ ਅੱਖਰ"
 msgid "Auto Rotate"
 msgstr "ਆਪੇ-ਘੁੰਮਾਓ"
 
-#: js/ui/status/backgroundApps.js:156
+#: js/ui/status/backgroundApps.js:155
 msgctxt "title"
 msgid "Background Apps"
 msgstr "ਬੈਕਗਰਾਊਂਡ ਐਪਾਂ"
 
-#: js/ui/status/backgroundApps.js:171
+#: js/ui/status/backgroundApps.js:170
 msgid "Apps known to be running without a window"
 msgstr "ਬਿਨਾਂ ਐਪ ਤੋਂ ਚੱਲ ਲਈ ਜਾਣੀਆਂ ਜਾਦੀਆਂ ਐਪਾਂ"
 
-#: js/ui/status/backgroundApps.js:182
+#: js/ui/status/backgroundApps.js:181
 msgid "App Settings"
 msgstr "ਐਪ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/backgroundApps.js:239
+#: js/ui/status/backgroundApps.js:238
 msgid "No Background Apps"
 msgstr "ਕੋਈ ਬੈਕਗਰਾਊਂਡ ਐਪ ਨਹੀਂ"
 
-#: js/ui/status/backgroundApps.js:241
+#: js/ui/status/backgroundApps.js:240
 #, javascript-format
 msgid "%d Background App"
 msgid_plural "%d Background Apps"
@@ -2356,91 +2474,106 @@ msgstr[1] "%d ਬੈਕਗਰਾਊਂਡ ਐਪਾਂ"
 msgid "Keyboard Brightness"
 msgstr "ਕੀਬੋਰਡ ਚਮਕ"
 
-#: js/ui/status/backlight.js:87
+#: js/ui/status/backlight.js:83
 msgid "Off"
 msgstr "ਬੰਦ"
 
-#: js/ui/status/backlight.js:88
+#: js/ui/status/backlight.js:84
 msgid "Low"
 msgstr "ਘੱਟ"
 
-#: js/ui/status/backlight.js:89
+#: js/ui/status/backlight.js:85
 msgid "High"
 msgstr "ਜਿਆਦਾ"
 
-#: js/ui/status/backlight.js:162 js/ui/status/keyboard.js:883
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "ਕੀਬੋਰਡ"
 
-#: js/ui/status/bluetooth.js:246 js/ui/status/network.js:360
+#: js/ui/status/backlight.js:158
+#| msgid "Keyboard Brightness"
+msgid "Open keyboard brightness menu"
+msgstr "ਕੀਬੋਰਡ ਚਮਕ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "ਡਿਸ-ਕਨੈਕਟ"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:265 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "%s ਡਿਸ-ਕਨੈਕਟ ਕਰੋ"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:267 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "%s ਨਾਲ ਕਨੈਕਟ ਕਰੋ"
 
-#: js/ui/status/bluetooth.js:274 js/ui/status/bluetooth.js:276
+#: js/ui/status/bluetooth.js:276 js/ui/status/bluetooth.js:280
 msgid "Bluetooth"
 msgstr "ਬਲੂਟੁੱਥ"
 
-#: js/ui/status/bluetooth.js:299 js/ui/status/network.js:1909
+#: js/ui/status/bluetooth.js:277
+#| msgid "Bluetooth On"
+msgid "Open Bluetooth menu"
+msgstr "ਬਲੂਟੁੱਥ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1942
 msgid "Bluetooth Settings"
 msgstr "ਬਲੂਟੁੱਥ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/bluetooth.js:346
+#: js/ui/status/bluetooth.js:350
 msgid "No available or connected devices"
 msgstr "ਮੌਜੂਦ ਨਹੀਂ ਜਾਂ ਡਿਵਾਈਸ ਕਨੈਕਟ ਨਹੀਂ ਹਨ"
 
-#: js/ui/status/bluetooth.js:347
+#: js/ui/status/bluetooth.js:351
 msgid "Turn on Bluetooth to connect to devices"
 msgstr "ਡਿਵਾਈਸਾਂ ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਲਈ ਬਲੂਟੁੱਥ ਸਮਰੱਥ ਕਰੋ"
 
 #. Translators: This is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:411
+#: js/ui/status/bluetooth.js:415
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d ਕਨੈਕਟ ਹੈ"
 msgstr[1] "%d ਕਨੈਕਟ ਹੈ"
 
-#: js/ui/status/brightness.js:32
-msgid "Brightness"
-msgstr "ਚਮਕ"
+#: js/ui/status/brightness.js:42
+#| msgid "Open menu"
+msgid "Open brightness menu"
+msgstr "ਚਮਕ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
 
 #: js/ui/status/darkMode.js:12
 msgid "Dark Style"
 msgstr "ਗੂੜ੍ਹਾ ਸਟਾਈਲ"
 
-#: js/ui/status/dwellClick.js:15
+#: js/ui/status/doNotDisturb.js:10
+msgid "Do Not Disturb"
+msgstr "ਤੰਗ ਨਾ ਕਰੋ"
+
+#: js/ui/status/dwellClick.js:14
 msgid "Single Click"
 msgstr "ਇੱਕ ਵਾਰ ਕਲਿੱਕ"
 
-#: js/ui/status/dwellClick.js:20
+#: js/ui/status/dwellClick.js:19
 msgid "Double Click"
 msgstr "ਡਬਲ ਕਲਿੱਕੱ"
 
-#: js/ui/status/dwellClick.js:25
+#: js/ui/status/dwellClick.js:24
 msgid "Drag"
 msgstr "ਖਿੱਚੋ"
 
-#: js/ui/status/dwellClick.js:30
+#: js/ui/status/dwellClick.js:29
 msgid "Secondary Click"
 msgstr "ਸੈਕੰਡਰੀ ਦੇਰੀ"
 
-#: js/ui/status/dwellClick.js:39
+#: js/ui/status/dwellClick.js:38
 msgid "Dwell Click"
 msgstr "ਡੀਵੈੱਲ ਕਲਿੱਕ"
 
-#: js/ui/status/keyboard.js:900
+#: js/ui/status/keyboard.js:894
 msgid "Show Keyboard Layout"
 msgstr "ਕੀਬੋਰਡ ਲੇਆਉਟ ਵੇਖਾਓ"
 
@@ -2467,97 +2600,123 @@ msgstr "ਪਹੁੰਚ ਉੱਤ ਪਾਬੰਦੀ"
 msgid "Grant Access"
 msgstr "ਪਹੁੰਚ ਲਈ ਮਨਜ਼ੂਰੀ"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<ਅਣਪਛਾਤਾ>"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "ਸੁਰੱਖਿਅਤ"
 
-#: js/ui/status/network.js:1059
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "ਸੁਰੱਖਿਅਤ ਨਹੀਂ"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "ਸਿਗਨਲ ਮਜ਼ਬੂਤੀ %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1062
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1164
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s ਹਾਟਸਪਾਟ"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1450
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d ਕਨੈਕਟ ਹੈ"
 msgstr[1] "%d ਕਨੈਕਟ ਹਨ"
 
-#: js/ui/status/network.js:1533 js/ui/status/network.js:1549
+#: js/ui/status/network.js:1548 js/ui/status/network.js:1565
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1549
+#| msgid "Open menu"
+msgid "Open VPN menu"
+msgstr "VPN ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/network.js:1550
 msgid "VPN Settings"
 msgstr "VPN ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1811
 msgid "Wi–Fi"
 msgstr "Wi–Fi"
 
-#: js/ui/status/network.js:1796
+#: js/ui/status/network.js:1812
+#| msgid "Open menu"
+msgid "Open Wi–Fi menu"
+msgstr "Wi-Fi ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/network.js:1814
 msgid "All Networks"
 msgstr "ਸਭ ਨੈੱਟਵਰਕ"
 
-#: js/ui/status/network.js:1893
+#: js/ui/status/network.js:1924
 msgid "Wired Connections"
 msgstr "ਤਾਰ ਵਾਲੇ ਕਨੈਕਸ਼ਨ"
 
-#: js/ui/status/network.js:1894
+#: js/ui/status/network.js:1925
+#| msgid "Wired Connections"
+msgid "Open wired connections menu"
+msgstr "ਤਾਰ ਵਾਲੇ ਕਨੈਕਸ਼ਨ ਦੇ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/network.js:1926
 msgid "Wired Settings"
 msgstr "ਤਾਰ ਵਾਲੇ ਲਈ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1940
 msgid "Bluetooth Tethers"
 msgstr "ਬਲੂਟੁੱਥ ਟੀਥਰ"
 
+#: js/ui/status/network.js:1941
+#| msgid "Bluetooth Tethers"
+msgid "Open Bluetooth tethers menu"
+msgstr "ਬਲੂਟੁੱਥ ਟੀਥਰ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1915
+#: js/ui/status/network.js:1948
 msgid "Tether"
 msgstr "ਟੀਥਰ"
 
-#: js/ui/status/network.js:1928
+#: js/ui/status/network.js:1961
 msgid "Mobile Connections"
 msgstr "ਮੋਬਾਇਲ ਕਨੈਕਸ਼ਨ"
 
-#: js/ui/status/network.js:1930
+#: js/ui/status/network.js:1962
+#| msgid "Mobile Connections"
+msgid "Open mobile connections menu"
+msgstr "ਮੋਬਾਇਲ ਕਨੈਕਸ਼ਨ ਮੇਨੂ ਨੂੰ ਕੋਲ੍ਹੋ"
+
+#: js/ui/status/network.js:1964
 msgid "Mobile Broadband Settings"
 msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਸੈਟਿੰਗਾਂ"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1939
+#: js/ui/status/network.js:1973
 msgid "Mobile"
 msgstr "ਮੋਬਾਈਲ"
 
-#: js/ui/status/network.js:1973
-msgid "Sign Into Wi–Fi Network"
-msgstr "ਵਾਈ-ਫਾਈ ਨੈੱਟਵਰਕ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ"
+#: js/ui/status/network.js:2007
+#| msgid "Sign Into Wi–Fi Network"
+msgid "Sign in to Network"
+msgstr "ਨੈੱਟਵਰਕ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ"
 
-#: js/ui/status/network.js:2160
+#: js/ui/status/network.js:2194
 msgid "Connection failed"
 msgstr "ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: js/ui/status/network.js:2161
+#: js/ui/status/network.js:2195
 msgid "Activation of network connection failed"
 msgstr "ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨ ਦੀ ਐਕਟੀਵੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਈ"
 
@@ -2580,61 +2739,77 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "ਪਾਵਰ ਬੱਚਤ"
 
-#: js/ui/status/powerProfiles.js:39 js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:35
+msgctxt "Power profile"
+msgid "Custom"
+msgstr "ਪਸੰਦੀਦਾ"
+
+#: js/ui/status/powerProfiles.js:45
+#| msgid "Power Mode"
+msgctxt "Quick settings button title"
 msgid "Power Mode"
 msgstr "ਪਾਵਰ ਢੰਗ"
 
-#: js/ui/status/powerProfiles.js:71
+#: js/ui/status/powerProfiles.js:46
+msgid "Open power profiles menu"
+msgstr "ਪਾਵਰ ਪਰੋਫ਼ਾਇਲ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/powerProfiles.js:77
+#| msgid "Power Mode"
+msgctxt "Quick settings menu header"
+msgid "Power Mode"
+msgstr "ਪਾਵਰ ਢੰਗ"
+
+#: js/ui/status/powerProfiles.js:79
 msgid "Power Settings"
 msgstr "ਪਾਵਰ ਸੈਟਿੰਗਾਂ"
 
-#: js/ui/status/remoteAccess.js:74
+#: js/ui/status/remoteAccess.js:73
 msgid "Stop Screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਰੋਕੋ"
 
-#: js/ui/status/remoteAccess.js:144
+#: js/ui/status/remoteAccess.js:141
 msgid "Stop Screen Sharing"
 msgstr "ਸਕਰੀਨ ਸਾਂਝਾ ਕਰਨਾ ਰੋਕੋ"
 
-#: js/ui/status/rfkill.js:99
+#: js/ui/status/rfkill.js:97
 msgid "Airplane Mode"
 msgstr "ਏਅਰਪਲੇਨ ਮੋਡ"
 
-#: js/ui/status/system.js:168
+#: js/ui/status/system.js:174
 msgid "Power Off Menu"
 msgstr "ਬੰਦ ਕਰਨ ਮੇਨੂ"
 
-#: js/ui/status/system.js:176
+#: js/ui/status/system.js:182
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ"
 
-#: js/ui/status/system.js:181
+#: js/ui/status/system.js:187
 msgid "Restart…"
 msgstr "...ਮੁੜ-ਚਾਲੂ ਕਰੋ"
 
-#: js/ui/status/system.js:186
+#: js/ui/status/system.js:192
 msgid "Power Off…"
 msgstr "…ਬੰਦ ਕਰੋ"
 
-#: js/ui/status/system.js:193
-#: subprojects/extensions-app/data/ui/extensions-window.ui:124
+#: js/ui/status/system.js:199
 msgid "Log Out…"
 msgstr "ਲਾਗ ਆਉਟ…"
 
-#: js/ui/status/system.js:198
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:676
 msgid "Switch User…"
 msgstr "…ਵਰਤੋਂਂਕਾਰ ਬਦਲੋ"
 
-#: js/ui/status/system.js:242
+#: js/ui/status/system.js:248
 msgctxt "action"
 msgid "Lock Screen"
 msgstr "ਸਕਰੀਨ ਲਾਕ"
 
-#: js/ui/status/thunderbolt.js:308
+#: js/ui/status/thunderbolt.js:310
 msgid "Unknown Thunderbolt device"
 msgstr "ਅਣਪਛਾਤਾ ਥੰਡਰਬੋਲਟ ਡਿਵਾਈਸ"
 
-#: js/ui/status/thunderbolt.js:309
+#: js/ui/status/thunderbolt.js:311
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2643,22 +2818,22 @@ msgstr ""
 "ਸ ਨੂੰ ਡਿਸ-"
 "ਕਨੈਕਟ ਕਰਕੇ ਮੁੜ ਕਨੈਕਟ ਕਰੋ।"
 
-#: js/ui/status/thunderbolt.js:312
+#: js/ui/status/thunderbolt.js:314
 msgid "Unauthorized Thunderbolt device"
 msgstr "ਨਾ-ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ ਥੰਡਰਬੋਲਟ ਯੰਤਰ"
 
-#: js/ui/status/thunderbolt.js:313
+#: js/ui/status/thunderbolt.js:315
 msgid ""
 "New device has been detected and needs to be authorized by an administrator"
 msgstr ""
 "ਨਵਾਂ ਡਿਵਾਈਸ ਖੋਜਿਆ ਜਾ ਚੁੱਕਿਆ ਗਿਆ ਹੈ ਅਤੇ ਪਰਸ਼ਾਸ਼ਕ ਵਲੋਂ ਪਰਮਾਣਿਤ ਕਰਨ ਦੀ ਲੋੜ ਹੁੰਦੀ "
 "ਹੈ"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:321
 msgid "Thunderbolt authorization error"
 msgstr "ਥੰਡਰਬੋਲਟ ਪਰਮਾਣਕਿਤਾ ਗ਼ਲਤੀ"
 
-#: js/ui/status/thunderbolt.js:320
+#: js/ui/status/thunderbolt.js:322
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "ਥੰਡਰਬੋਲਟ ਡਿਵਾਈਸ ਨੂੰ ਪਰਮਾਣਿਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ: %s"
@@ -2675,17 +2850,26 @@ msgstr "ਸੁਣਾਓ"
 msgid "Mute"
 msgstr "ਚੁੱਪ"
 
-#: js/ui/status/volume.js:293
+#: js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "ਵਾਲੀਅਮ"
 
-#: js/ui/status/volume.js:309
+#: js/ui/status/volume.js:314
 msgid "Sound Output"
 msgstr "ਆਵਾਜ਼ ਆਉਟਪੁੱਟ"
 
-#: js/ui/status/volume.js:384
+#: js/ui/status/volume.js:315
+msgid "Open sound output menu"
+msgstr "ਆਵਾਜ਼ ਆਉਟਪੁੱਟ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/status/volume.js:391
 msgid "Sound Input"
 msgstr "ਆਵਾਜ਼ ਇਨਪੁੱਟ"
+
+#: js/ui/status/volume.js:392
+#| msgid "Open menu"
+msgid "Open sound input menu"
+msgstr "ਆਵਾਜ਼ ਇਨਪੁੱਟ ਮੇਨੂ ਨੂੰ ਖੋਲ੍ਹੋ"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2715,27 +2899,41 @@ msgstr "ਕੇਵਲ ਬਾਹਰੀ"
 msgid "Built-in Only"
 msgstr "ਕੇਵਲ ਬਿਲਟ-ਇਨ"
 
+#: js/ui/unlockDialog.js:25
+#| msgctxt "button"
+#| msgid "Boot Options"
+msgid "Unlock Options"
+msgstr "ਅਣ-ਲਾਕ ਚੋਣਾਂ"
+
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:384
+#: js/ui/unlockDialog.js:421
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:390
-msgid "Swipe up to unlock"
-msgstr "ਅਣ-ਲਾਕ ਕਰਨ ਲਈ ਉੱਤੇ ਵੱਲ ਸਰਕਾਓ"
+#: js/ui/unlockDialog.js:436
+#| msgid "Swipe up to unlock"
+msgid "Swipe up"
+msgstr "ਉੱਤੇ ਵੱਲ ਸਰਕਾਓ"
 
-#: js/ui/unlockDialog.js:391
-msgid "Click or press a key to unlock"
-msgstr "ਅਣ-ਲਾਕ ਕਰਨ ਲਈ ਸਵਿੱਚ ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਦਬਾਓ"
+#: js/ui/unlockDialog.js:438
+#| msgid "Click or press a key to unlock"
+msgid "Click or press a key"
+msgstr "ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਕੋਈ ਸਵਿੱਚ ਨੂੰ ਦਬਾਓ"
 
-#: js/ui/unlockDialog.js:576
+#: js/ui/unlockDialog.js:657
 msgid "Unlock Window"
 msgstr "ਵਿੰਡੋ ਨੂੰ ਅਣਲਾਕ ਕਰੋ"
 
-#: js/ui/unlockDialog.js:585
+#: js/ui/unlockDialog.js:671
 msgid "Log in as another user"
 msgstr "ਹੋਰ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ"
+
+#: js/ui/unlockDialog.js:699
+#, fuzzy
+#| msgid "Authentication error"
+msgid "Background Authentication Methods"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਗਲਤੀ"
 
 #: js/ui/welcomeDialog.js:47
 #, javascript-format
@@ -2761,19 +2959,19 @@ msgid "“%s” is ready"
 msgstr "“%s” ਤਿਆਰ ਹੈ"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:68
+#: js/ui/windowManager.js:60
 msgid "Keep these display settings?"
 msgstr "ਇਹ ਡਿਸਪਲੇਅ ਸੈਟਿੰਗਾਂ ਰੱਖਣੀਆਂ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: js/ui/windowManager.js:78
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "ਸੈਟਿੰਗਾਂ ਵਾਪਿਸ ਲਵੋ"
 
-#: js/ui/windowManager.js:83
+#: js/ui/windowManager.js:75
 msgid "Keep Changes"
 msgstr "ਬਦਲਾਅ ਲਾਗੂ ਰੱਖੋ"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:95
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2782,377 +2980,151 @@ msgstr[1] "ਸੈਟਿੰਗਾਂ ਬਦਲਾਅ ਨੂੰ %d ਸਕਿੰਟ
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:500
+#: js/ui/windowManager.js:490
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
 #. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:28
+#: js/ui/windowMenu.js:27
 msgctxt "window-menu"
 msgid "Take Screenshot"
 msgstr "ਸਕਰੀਨਸ਼ਾਟ ਲਵੋ"
 
-#: js/ui/windowMenu.js:40
+#: js/ui/windowMenu.js:39
 msgid "Hide"
 msgstr "ਲੁਕਾਓ"
 
-#: js/ui/windowMenu.js:47
+#: js/ui/windowMenu.js:46
 msgid "Restore"
 msgstr "ਬਹਾਲ ਕਰੋ"
 
-#: js/ui/windowMenu.js:51
+#: js/ui/windowMenu.js:50
 msgid "Maximize"
 msgstr "ਵੱਧੋ-ਵੱਧ"
 
-#: js/ui/windowMenu.js:58
+#: js/ui/windowMenu.js:57
 msgid "Move"
 msgstr "ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:78
+#: js/ui/windowMenu.js:71
 msgid "Resize"
 msgstr "ਮੁੜ-ਆਕਾਰ"
 
-#: js/ui/windowMenu.js:98
+#: js/ui/windowMenu.js:85
 msgid "Always on Top"
 msgstr "ਹਮੇਸ਼ਾ ਉੱਤੇ ਰੱਖੋ"
 
-#: js/ui/windowMenu.js:117
+#: js/ui/windowMenu.js:104
 msgid "Always on Visible Workspace"
 msgstr "ਹਮੇਸ਼ਾ ਵਿਖਾਈ ਦਿੰਦੇ ਵਰਕਸਪੇਸ ਉੱਤੇ"
 
-#: js/ui/windowMenu.js:131
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Left"
 msgstr "ਖੱਬੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:137
+#: js/ui/windowMenu.js:124
 msgid "Move to Workspace Right"
 msgstr "ਸੱਜੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:143
+#: js/ui/windowMenu.js:130
 msgid "Move to Workspace Up"
 msgstr "ਉੱਤਲੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:149
+#: js/ui/windowMenu.js:136
 msgid "Move to Workspace Down"
 msgstr "ਹੇਠਲੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:167
+#: js/ui/windowMenu.js:154
 msgid "Move to Monitor Up"
 msgstr "ਉੱਤਲੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:176
+#: js/ui/windowMenu.js:163
 msgid "Move to Monitor Down"
 msgstr "ਹੇਠਲੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:185
+#: js/ui/windowMenu.js:172
 msgid "Move to Monitor Left"
 msgstr "ਖੱਬੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:194
+#: js/ui/windowMenu.js:181
 msgid "Move to Monitor Right"
 msgstr "ਸੱਜੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
 
-#: js/ui/windowMenu.js:202
+#: js/ui/windowMenu.js:189
 msgid "Close"
 msgstr "ਬੰਦ ਕਰੋ"
 
-#: src/main.c:512 subprojects/extensions-tool/src/main.c:336
+#: src/calendar-server/reminder-watcher.c:130
+msgid "Reminders"
+msgstr "ਰਿਮਾਈਂਡਰ"
+
+#: src/calendar-server/reminder-watcher.c:135
+msgid "Snooze"
+msgstr "ਟਾਲੋ"
+
+#: src/calendar-server/reminder-watcher.c:136
+msgid "Dismiss"
+msgstr "ਖ਼ਾਰਜ ਕਰੋ"
+
+#: src/main.c:515 subprojects/extensions-tool/src/main.c:338
 msgid "Print version"
 msgstr "ਵਰਜ਼ਨ ਛਾਪੋ"
 
-#: src/main.c:518
+#: src/main.c:521
 msgid "Mode used by GDM for login screen"
 msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਲਈ GDM ਵਲੋਂ ਵਰਤਿਆ ਮੋਡ"
 
-#: src/main.c:524
+#: src/main.c:527
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਉੱਤੇ ਖਾਸ ਮੋਡ ਜਿਵੇਂ ਕਿ “gdm“ ਵਰਤੋਂ"
 
-#: src/main.c:530
+#: src/main.c:533
 msgid "List possible modes"
 msgstr "ਸੰਭਵ ਮੋਡ ਵੇਖਾਓ"
 
-#: src/main.c:536
+#: src/main.c:539
 msgid "Force animations to be enabled"
 msgstr "ਐਨੀਮੇਸ਼ਨਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰਨ ਲਈ ਮਜ਼ਬੂਰ ਕਰੋ"
 
-#: src/shell-app.c:267
+#: src/shell-app.c:264
 msgctxt "program"
 msgid "Unknown"
 msgstr "ਅਣਪਛਾਤਾ"
 
-#: src/shell-app.c:518
+#: src/shell-app.c:514
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
 
-#: src/shell-keyring-prompt.c:779
+#: src/shell-keyring-prompt.c:776
 msgid "Passwords do not match"
 msgstr "ਪਾਸਵਰਡ ਮਿਲਦੇ ਨਹੀਂ ਹਨ"
 
-#: src/shell-keyring-prompt.c:787
+#: src/shell-keyring-prompt.c:784
 msgid "Password cannot be blank"
 msgstr "ਪਾਸਵਰਡ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ ਹੈ"
 
-#: src/shell-polkit-authentication-agent.c:344
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਡਾਈਲਾਗ ਵਰਤੋਂਂਕਾਰ ਵਲੋਂ ਰੱਦ ਕੀਤਾ"
 
-#: src/st/st-icon-theme.c:1859
+#: src/st/st-icon-theme.c:1857
 #, c-format
 msgid "Icon '%s' not present in theme %s"
 msgstr "ਆਈਕਾਨ '%s' ਥੀਮ %s ਵਿੱਚ ਮੌਜੂਦ ਨਹੀਂ ਹੈ"
 
-#: src/st/st-icon-theme.c:3452 src/st/st-icon-theme.c:3755
+#: src/st/st-icon-theme.c:3450 src/st/st-icon-theme.c:3754
 msgid "Failed to load icon"
 msgstr "ਆਈਕਾਨ ਲੋਡ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-msgid "Manage your GNOME Extensions"
-msgstr "ਗਨੋਮ ਇਕਸਟੈਸ਼ਨਾਂ ਦਾ ਇੰਤਜ਼ਾਮ ਕਰੋ"
-
-#. developer_name tag deprecated with Appstream 1.0
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:20
-msgid "The GNOME Project"
-msgstr "ਗਨੋਮ ਪਰੋਜੈਕਟ"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:52
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"ਗਨੋਮ ਇਕਸਟੈਨਸ਼ਨਾਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ, ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਦੀ ਸੰਰਚਨਾ ਕਰਨ ਅਤੇ ਬ"
-"ੇਲੋੜੀਆਂ "
-"ਇਕਸਟੈਨਸ਼ਨਾਂ ਹਟਾਉਣ ਜਾਂ ਅਸਮਰੱਥ ਕਰਨ ਦੇ ਕੰਮ ਆਉਂਦੀਆਂ ਹਨ।"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:70
-msgid "Main Window"
-msgstr "ਮੁੱਖ ਵਿੰਡੋ"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:74
-msgid "Available Updates"
-msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
-
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:78
-msgid "Search View"
-msgstr "ਖੋਜ ਝਲਕ"
-
-#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਸ਼ਨਾਂ ਦੀ ਸੰਰਚਨਾ"
-
-#: subprojects/extensions-app/js/extensionManager.js:237
-#, javascript-format
-msgid ""
-"The installed version of this extension (%s) is incompatible with the "
-"current version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"ਇਕਸਟੈਨਸ਼ਨ ਦਾ ਇੰਸਟਾਲ ਕੀਤਾ ਵਰਜ਼ਨ (%s) ਮੌਜੂਦਾ ਗਨੋਮ ਵਰਜ਼ਨ (%s) ਨਾਲ ਅਨੁਕੂਲ ਨਹੀਂ ਹੈ। ਇਕ"
-"ਸਟੈਨਸ਼ਨ ਨੂੰ "
-"ਅਸਮਰੱਥ ਕੀਤਾ ਹੈ।"
-
-#: subprojects/extensions-app/js/extensionManager.js:238
-#, javascript-format
-msgid ""
-"The installed version of this extension is incompatible with the current "
-"version of GNOME (%s). The extension has been disabled."
-msgstr ""
-"ਇਕਸਟੈਨਸ਼ਨ ਦਾ ਇੰਸਟਾਲ ਕੀਤਾ ਵਰਜ਼ਨ ਮੌਜੂਦਾ ਗਨੋਮ ਵਰਜ਼ਨ (%s) ਨਾਲ ਅਨੁਕੂਲ ਨਹੀਂ ਹੈ। ਇਕਸਟੈਨਸ਼"
-"ਨ ਨੂੰ "
-"ਅਸਮਰੱਥ ਕੀਤਾ ਹੈ।"
-
-#: subprojects/extensions-app/js/extensionManager.js:242
-msgid ""
-"An error has occurred in this extension. This could cause issues elsewhere "
-"in the system. It is recommended to turn the extension off until the error "
-"is resolved."
-msgstr ""
-"ਇਸ ਇਕਸਟੈਨਸ਼ਨ ਵਿੱਚ ਗਲਤੀ ਆਈ ਹੈ। ਇਹ ਸਿਸਟਮ ਵਿੱਚ ਕਿਤੇ ਹੋਰ ਮਸਲਾ ਹੋ ਸਕਦਾ ਹੈ। ਗਲਤੀ ਠੀਕ "
-"ਹੋਣ ਤੱਕ "
-"ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਬੰਦ ਰੱਖਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
-
-#. translators: Details for an extension error
-#: subprojects/extensions-app/js/extensionManager.js:248
-msgid "Error details:"
-msgstr "ਗਲਤੀ ਦੇ ਵੇਰਵੇ:"
-
-#: subprojects/extensions-app/js/extensionRow.js:82
-#, javascript-format
-msgid "Version %s"
-msgstr "ਵਰਜ਼ਨ %s"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:113
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "“%s” ਨੂੰ ਹਟਾਉਣਾ ਹੈ?"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:114
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr ""
-"ਜੇ ਤੁਸੀਂ ਇਕਟੈਨਸ਼ਨ ਹਟਾਈ ਤਾਂ ਜੇ ਤੁਹਾਨੂੰ ਮੁੜ ਇਹ ਸਮਰੱਥ ਕਰਨਾ ਦੀ ਲੋੜ ਹੋਈ ਤਾਂ ਤੁਹਾਨੂੰ "
-"ਇਹ ਦੁਬਾਰਾ ਡਾਊਨਲੋਡ "
-"ਕਰਨ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:117
-msgid "_Cancel"
-msgstr "ਰੱਦ ਕਰੋ(_C)"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:118
-msgid "_Remove"
-msgstr "ਹਟਾਓ(_R)"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:158
-msgid "translator-credits"
-msgstr ""
-"ਅ ਸ ਆਲਮ (A S Alam) ੨੦੦੪-੨੦੨੪\n"
-"Punjabi OpenSource Team (POST) www.punlinux.org"
-
-#: subprojects/extensions-app/js/extensionsWindow.js:203
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d ਇਕਟੈਨਸ਼ਨ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
-msgstr[1] "%d ਇਕਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:13
-msgid "Error Details"
-msgstr "ਗਲਤੀ ਦੇ ਵੇਰਵੇ"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:51
-msgid "Updates Details"
-msgstr "ਅੱਪਡੇਟ ਦੇ ਵੇਰਵੇ"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:68
-msgid ""
-"A new version of this extension is ready and will be loaded on next login."
-msgstr "ਇਕਟੈਨਸ਼ਨ ਦਾ ਨਵਾਂ ਵਰਜ਼ਨ ਮੌਜੂਦ ਹੈ ਅਤੇ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਲੋਡ ਕੀਤਾ ਜਾਵੇਗਾ।"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-msgid "Extension Details"
-msgstr "ਇਕਸਟੈਨਸ਼ਨ ਦੇ ਵੇਰਵੇ"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:188
-msgid "_Website"
-msgstr "ਵੈੱਬਸਾਈਟ(_W)"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:215
-msgid "_Settings"
-msgstr "ਸੈਟਿੰਗਾਂ(_S)"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:242
-msgid "_Remove…"
-msgstr "…ਨੂੰ ਹਟਾਓ(_R)"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:6
-msgid "Keyboard Shortcuts"
-msgstr "ਕੀਬੋਰਡ ਸ਼ਾਰਟਕਟ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:10
-msgid "About Extensions"
-msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਬਾਰੇ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:64
-msgid "Main Menu"
-msgstr "ਮੁੱਖ ਮੇਨੂ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:106
-msgid "Search extensions"
-msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਖੋਜ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
-msgid "_Extensions"
-msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ(_E)"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:139
-msgid "More Information"
-msgstr "ਹੋਰ ਜਾਣਕਾਰੀ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:151
-msgid ""
-"Extensions can cause performance and stability issues. It is recommended to "
-"disable all extensions if you experience problems with your system."
-msgstr ""
-"ਇਕਸਟੈਨਸ਼ਨਾਂ ਕਾਰਗੁਜ਼ਾਰੀ ਅਤੇ ਸਥਿਰਤਾਂ ਮਸਲੇ ਖੜ੍ਹੇ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਜੇ ਤੁਹਾਨੂੰ ਆਪਣੇ ਸਿਸਟ"
-"ਮ ਨਾਲ "
-"ਸਮੱਸਿਆਵਾਂ ਆ ਰਹੀਆਂ ਹੋਣ ਤਾਂ ਸਾਰੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਸਮਰੱਥ ਕਰਨ ਦੀ ਸਿਫਾਰਸ਼ ਕੀਤੀ ਜਾਂਦ"
-"ੀ ਹੈ।"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:178
-msgid "User Extensions"
-msgstr "ਵਰਤੋਂਕਾਰ ਦੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:198
-msgid "System Extensions"
-msgstr "ਸਿਸਟਮ ਦੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:233
-msgid "Search Results"
-msgstr "ਖੋਜ ਨਤੀਜੇ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
-msgid "No Results Found"
-msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਾ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:253
-msgid "Try a different search"
-msgstr "ਵੱਖਰੀ ਖੋਜ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:264
-msgid "No Installed Extensions"
-msgstr "ਕੋਈ ਇੰਸਟਾਲ ਕੀਤੀ ਇਕਟੈਨਸ਼ਨ ਨਹੀਂ ਹੈ"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:265
-msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
-msgstr ""
-"ਇਕਸਟੈਨਸ਼ਨ ਲੱਭਣ ਅਤੇ ਜੋੜਨ ਲਈ <a href=\"https://extensions.gnome.org\">extensions."
-"gnome.org</a> ਨੂੰ ਵੇਖੋ।"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:276
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"ਸਾਨੂੰ ਬਹੁਤ ਅਫ਼ਸੋਸ ਹੈ, ਪਰ ਇੰਸਟਾਲ ਹੋਈਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ ਲੈਣਾ ਸੰਭਵ ਨਹੀਂ ਹੈ। ਯਕ"
-"ੀਨੀ ਬਣਾਓ ਕਿ "
-"ਤੁਸੀਂ ਗਨੋਮ ਵਿੱਚ ਲਾਗਇਨ ਕੀਤਾ ਹੈ ਅਤੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
-
-#: subprojects/extensions-app/data/ui/help-overlay.ui:9
-msgctxt "shortcut window"
-msgid "General"
-msgstr "ਆਮ"
-
-#: subprojects/extensions-app/data/ui/help-overlay.ui:12
-msgctxt "shortcut window"
-msgid "Open Menu"
-msgstr "ਮੇਨੂ ਖੋਲ੍ਹੋ"
-
-#: subprojects/extensions-app/data/ui/help-overlay.ui:18
-msgctxt "shortcut window"
-msgid "Toggle Search"
-msgstr "ਖੋਜ ਨੂੰ ਬਦਲੋ"
-
-#: subprojects/extensions-app/data/ui/help-overlay.ui:24
-msgctxt "shortcut window"
-msgid "Show Shortcuts"
-msgstr "ਸ਼ਾਰਟਕੱਟ ਵੇਖਾਓ"
-
-#: subprojects/extensions-app/data/ui/help-overlay.ui:30
-msgctxt "shortcut window"
-msgid "Quit"
-msgstr "ਬਾਹਰ"
-
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:284
+#: subprojects/extensions-tool/src/command-create.c:285
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ %s ਵਿੱਚ ਕਾਮਯਾਬੀ ਨਾਲ ਬਣਾਈ ਗਈ ਸੀ।\n"
 
-#: subprojects/extensions-tool/src/command-create.c:376
+#: subprojects/extensions-tool/src/command-create.c:377
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -3161,12 +3133,12 @@ msgstr ""
 "ਨਾਂ ਬਹੁਤ ਛੋਟੀ ਸਤਰ (ਸਹੀ ਵਰਣਨਾਤਮਿਕ) ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।\n"
 "ਮਿਸਾਲ ਵਜੋਂ: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:382
-#: subprojects/extensions-tool/src/main.c:243
+#: subprojects/extensions-tool/src/command-create.c:383
+#: subprojects/extensions-tool/src/main.c:245
 msgid "Name"
 msgstr "ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:396
+#: subprojects/extensions-tool/src/command-create.c:397
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -3175,205 +3147,215 @@ msgstr ""
 "ਤੁਹਾਡੀ ਇਕਟੈਨਸ਼ਨ ਕੀ ਕਰਦੀ ਹੈ, ਉਸ ਬਾਰੇ ਇੱਕ ਲਾਈਨ ਵਿੱਚ ਜਾਣਕਾਰੀ ਹੈ।\n"
 "ਮਿਸਾਲ ਵਜੋਂ: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:402
-#: subprojects/extensions-tool/src/main.c:246
+#: subprojects/extensions-tool/src/command-create.c:403
+#: subprojects/extensions-tool/src/main.c:248
 msgid "Description"
 msgstr "ਵਰਣਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:416
+#: subprojects/extensions-tool/src/command-create.c:417
+#, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address "
+"(clicktofocus@janedoe.example.com)\n"
 msgstr ""
 "UUID ਤੁਹਾਡੀ ਇਕਟੈਨਸ਼ਨ ਲਈ ਪੂਰੇ ਸਿਸਟਮ ਲਈ ਵਿਲੱਖਣ ਪਛਾਣਕਰਤਾ ਹੈ।\n"
 "ਇਹ ਈਮੇਲ ਸਿਰਨਾਵੇਂ(clicktofocus@janedoe.example.com) ਦੇ ਰੂਪ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
 "\n"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:444
+#, c-format
 msgid "Choose one of the available templates:\n"
 msgstr "ਮੌਜੂਦਾ ਟੈਂਪਲੇਟ ਵਿੱਚੋਂ ਇੱਕ ਚੁਣੋ:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:457
+#: subprojects/extensions-tool/src/command-create.c:458
 msgid "Template"
 msgstr "ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:515
+#: subprojects/extensions-tool/src/command-create.c:516
 msgid "The unique identifier of the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਲਈ ਵਿੱਲਖਣ ਪਛਾਣਕਰਤਾ"
 
-#: subprojects/extensions-tool/src/command-create.c:518
+#: subprojects/extensions-tool/src/command-create.c:519
 msgid "NAME"
 msgstr "ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:519
+#: subprojects/extensions-tool/src/command-create.c:520
 msgid "The user-visible name of the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਦਾ ਵਰਤੋਂਕਾਰ ਨੂੰ ਦਿਸਣ ਵਾਲਾ ਨਾਂ"
 
-#: subprojects/extensions-tool/src/command-create.c:521
+#: subprojects/extensions-tool/src/command-create.c:522
 msgid "DESCRIPTION"
 msgstr "ਵਰਣਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:523
+#: subprojects/extensions-tool/src/command-create.c:524
 msgid "A short description of what the extension does"
 msgstr "ਛੋਟਾ ਵਰਣਨ ਕਿ ਇਕਸਟੈਨਸ਼ਨ ਕੀ ਕਰਦੀ ਹੈ"
 
-#: subprojects/extensions-tool/src/command-create.c:525
+#: subprojects/extensions-tool/src/command-create.c:526
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "DOMAIN"
 msgstr "ਡੋਮੇਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:527
+#: subprojects/extensions-tool/src/command-create.c:528
 msgid "The gettext domain used by the extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵਲੋਂ ਵਰਤੀ ਜਾਂਦੀ gettext ਡੋਮੇਨ"
 
-#: subprojects/extensions-tool/src/command-create.c:529
+#: subprojects/extensions-tool/src/command-create.c:530
 #: subprojects/extensions-tool/src/command-pack.c:448
 msgid "SCHEMA"
 msgstr "ਸਕੀਮਾ"
 
-#: subprojects/extensions-tool/src/command-create.c:531
+#: subprojects/extensions-tool/src/command-create.c:532
 msgid "The GSettings schema used by the extension"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਵਲੋਂ ਵਰਤਿਆ ਜਾਂਦਾ GSettings ਸਕੀਮਾ"
 
-#: subprojects/extensions-tool/src/command-create.c:534
+#: subprojects/extensions-tool/src/command-create.c:535
 msgid "TEMPLATE"
 msgstr "ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:535
+#: subprojects/extensions-tool/src/command-create.c:536
 msgid "The template to use for the new extension"
 msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਲਈ ਵਰਤਣ ਲਈ ਟੈਂਪਲੇਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:538
+#: subprojects/extensions-tool/src/command-create.c:539
 msgid "Include prefs.js template"
 msgstr "prefs.js ਟੈਂਪਲੇਟ ਸਮੇਤ"
 
-#: subprojects/extensions-tool/src/command-create.c:544
+#: subprojects/extensions-tool/src/command-create.c:545
 msgid "Enter extension information interactively"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਤਾਲਮੇਲ ਦਿਓ"
 
-#: subprojects/extensions-tool/src/command-create.c:552
+#: subprojects/extensions-tool/src/command-create.c:553
 msgid "Create a new extension"
 msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ ਬਣਾਓ"
 
-#: subprojects/extensions-tool/src/command-create.c:570
-#: subprojects/extensions-tool/src/command-list.c:190
+#: subprojects/extensions-tool/src/command-create.c:571
+#: subprojects/extensions-tool/src/command-list.c:191
 msgid "Unknown arguments"
 msgstr "ਅਣਪਛਾਤਾ ਆਰਗੂਮੈਂਟ"
 
-#: subprojects/extensions-tool/src/command-create.c:595
+#: subprojects/extensions-tool/src/command-create.c:596
 msgid "UUID, name and description are required"
 msgstr "UUID, ਨਾਂ ਅਤੇ ਵਰਣਨ ਚਾਹੀਦਾ ਹੈ"
 
-#: subprojects/extensions-tool/src/command-disable.c:62
-#: subprojects/extensions-tool/src/command-enable.c:62
+#: subprojects/extensions-tool/src/command-disable.c:63
+#: subprojects/extensions-tool/src/command-enable.c:63
 #, c-format
 msgid "Extension “%s” does not exist\n"
 msgstr "ਇਕਟੈਨਸ਼ਨ “%s” ਮੌਜੂਦ ਨਹੀਂ ਹੈ\n"
 
-#: subprojects/extensions-tool/src/command-disable.c:98
+#: subprojects/extensions-tool/src/command-disable.c:99
 msgid "Disable an extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਸਮਰੱਥ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/command-disable.c:116
-#: subprojects/extensions-tool/src/command-enable.c:116
-#: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:105
-#: subprojects/extensions-tool/src/command-reset.c:76
-#: subprojects/extensions-tool/src/command-uninstall.c:104
+#: subprojects/extensions-tool/src/command-disable.c:117
+#: subprojects/extensions-tool/src/command-enable.c:117
+#: subprojects/extensions-tool/src/command-info.c:104
+#: subprojects/extensions-tool/src/command-prefs.c:106
+#: subprojects/extensions-tool/src/command-reset.c:77
+#: subprojects/extensions-tool/src/command-uninstall.c:105
 msgid "No UUID given"
 msgstr "ਕੋਈ UUID ਨਹੀਂ ਦਿੱਤਾ"
 
-#: subprojects/extensions-tool/src/command-disable.c:121
-#: subprojects/extensions-tool/src/command-enable.c:121
-#: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:110
-#: subprojects/extensions-tool/src/command-reset.c:81
-#: subprojects/extensions-tool/src/command-uninstall.c:109
+#: subprojects/extensions-tool/src/command-disable.c:122
+#: subprojects/extensions-tool/src/command-enable.c:122
+#: subprojects/extensions-tool/src/command-info.c:109
+#: subprojects/extensions-tool/src/command-prefs.c:111
+#: subprojects/extensions-tool/src/command-reset.c:82
+#: subprojects/extensions-tool/src/command-uninstall.c:110
 msgid "More than one UUID given"
 msgstr "ਇੱਕ ਤੋਂ ਵੱਧ UUID ਦਿੱਤਾ"
 
-#: subprojects/extensions-tool/src/command-enable.c:98
+#: subprojects/extensions-tool/src/command-enable.c:99
 msgid "Enable an extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਸਮਰੱਥ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/command-info.c:50
-#: subprojects/extensions-tool/src/command-list.c:66
-#: subprojects/extensions-tool/src/main.c:150
+#: subprojects/extensions-tool/src/command-info.c:51
+#: subprojects/extensions-tool/src/command-list.c:67
+#: subprojects/extensions-tool/src/main.c:152
+#, c-format
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "ਗਨੋਮ ਸ਼ੈੱਲ ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਲਈ ਅਸਫ਼ਲ ਹੈ\n"
 
-#: subprojects/extensions-tool/src/command-info.c:59
-#: subprojects/extensions-tool/src/main.c:159
+#: subprojects/extensions-tool/src/command-info.c:60
+#: subprojects/extensions-tool/src/main.c:161
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
 msgstr "ਇਕਟੈਨਸ਼ਨ “%s” ਮੌਜੂਦ ਨਹੀਂ ਹੈ\n"
 
-#: subprojects/extensions-tool/src/command-info.c:85
+#: subprojects/extensions-tool/src/command-info.c:86
 msgid "Show extensions info"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-install.c:190
+#: subprojects/extensions-tool/src/command-install.c:195
 msgid "Overwrite an existing extension"
 msgstr "ਮੌਜੂਦਾ ਇਕਟੈਨਸ਼ਨ ਉੱਤੇ ਲਿਖੋ"
 
-#: subprojects/extensions-tool/src/command-install.c:192
+#: subprojects/extensions-tool/src/command-install.c:198
+#, fuzzy
+#| msgid "Print extension details"
+msgid "Print extension UUID on success"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵੇਰਵੇ ਛਾਪੋ"
+
+#: subprojects/extensions-tool/src/command-install.c:200
 msgid "EXTENSION_BUNDLE"
 msgstr "EXTENSION_BUNDLE"
 
-#: subprojects/extensions-tool/src/command-install.c:201
+#: subprojects/extensions-tool/src/command-install.c:209
 msgid "Install an extension bundle"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਇੰਸਟਾਲ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/command-install.c:219
+#: subprojects/extensions-tool/src/command-install.c:227
 msgid "No extension bundle specified"
 msgstr "ਕੋਈ ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਨਹੀਂ ਦਿੱਤਾ"
 
-#: subprojects/extensions-tool/src/command-install.c:225
+#: subprojects/extensions-tool/src/command-install.c:233
 msgid "More than one extension bundle specified"
 msgstr "ਇੱਕ ਤੋਂ ਵੱਧ ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਦਿੱਤਾ ਗਿਆ"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:141
 msgid "Show user-installed extensions"
 msgstr "ਵਰਤੋਂਕਾਰ ਵਲੋਂ ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:144
 msgid "Show system-installed extensions"
 msgstr "ਸਿਸਟਮ ਰਾਹੀਂ ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:146
+#: subprojects/extensions-tool/src/command-list.c:147
 msgid "Show enabled extensions"
 msgstr "ਸਮਰੱਥ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:149
+#: subprojects/extensions-tool/src/command-list.c:150
 msgid "Show disabled extensions"
 msgstr "ਅਸਮਰੱਥ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:152
+#: subprojects/extensions-tool/src/command-list.c:153
 msgid "Show extensions in active state"
 msgstr "ਸਰਗਰਮ ਹਾਲਤ ਵਿੱਚ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:155
+#: subprojects/extensions-tool/src/command-list.c:156
 msgid "Show extensions in inactive state"
 msgstr "ਨਾ-ਸਰਗਰਮ ਹਾਲਤ ਵਿੱਚ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:159
 msgid "Show extensions with preferences"
 msgstr "ਪਸੰਦਾਂ ਨਾਲ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:161
+#: subprojects/extensions-tool/src/command-list.c:162
 msgid "Show extensions with updates"
 msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਨਾਲ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/command-list.c:164
+#: subprojects/extensions-tool/src/command-list.c:165
 msgid "Print extension details"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵੇਰਵੇ ਛਾਪੋ"
 
-#: subprojects/extensions-tool/src/command-list.c:172
+#: subprojects/extensions-tool/src/command-list.c:173
 msgid "List installed extensions"
 msgstr "ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ"
 
 #: subprojects/extensions-tool/src/command-pack.c:444
+#: subprojects/extensions-tool/src/command-upload.c:427
 msgid "FILE"
 msgstr "ਫਾਇਲ"
 
@@ -3418,172 +3400,235 @@ msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਬਣਾਓ"
 msgid "More than one source directory specified"
 msgstr "ਇੱਕ ਤੋਂ ਵੱਧ ਸਰੋਤ ਡਾਇਰੈਕਟਰੀ ਦਿੱਤੀ ਗਈ ਸੀ"
 
-#: subprojects/extensions-tool/src/command-prefs.c:47
+#: subprojects/extensions-tool/src/command-prefs.c:48
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "ਇਕਟੈਨਸ਼ਨ “%s” ਲਈ ਪਸੰਦਾਂ ਨਹੀਂ ਹਨ\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:62
+#: subprojects/extensions-tool/src/command-prefs.c:63
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ “%s” ਲਈ ਪਸੰਦ ਖੋਲ੍ਹਣ ਲਈ ਅਸਫ਼ਲ ਹੈ: %s\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:87
+#: subprojects/extensions-tool/src/command-prefs.c:88
 msgid "Opens extension preferences"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਨੂੰ ਖੋਲ੍ਹੋ"
 
-#: subprojects/extensions-tool/src/command-reset.c:58
+#: subprojects/extensions-tool/src/command-reset.c:59
 msgid "Reset an extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਮੁੜ-ਸੈੱਟ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:49
+#: subprojects/extensions-tool/src/command-uninstall.c:50
+#, c-format
 msgid "Cannot uninstall system extensions\n"
 msgstr "ਸਿਸਟਮ ਇਕਟੈਨਸ਼ਨਾਂ ਅਣ-ਇੰਸਟਾਲ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:64
+#: subprojects/extensions-tool/src/command-uninstall.c:65
 #, c-format
 msgid "Failed to uninstall “%s”\n"
 msgstr "“%s” ਅਣ-ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਅਸਫ਼ਲ ਹੈ\n"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:86
+#: subprojects/extensions-tool/src/command-uninstall.c:87
 msgid "Uninstall an extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਣ-ਇੰਸਟਾਲ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:76
+#: subprojects/extensions-tool/src/command-upload.c:226
+#, c-format
+#| msgid "List extensions"
+msgid "Login to extensions.gnome.org\n"
+msgstr "extensions.gnome.org ਵਿੱਚ ਲਾਗਇਨ\n"
+
+#: subprojects/extensions-tool/src/command-upload.c:256
+#, c-format
+msgid "Warning! Password will be echoed"
+msgstr "ਸਾਵਧਾਨ! ਪਾਸਵਰਡ ਨੂੰ ਦੁਹਰਾਇਆ ਜਾਵੇਗਾ"
+
+#: subprojects/extensions-tool/src/command-upload.c:419
+#| msgid "NAME"
+msgid "USERNAME"
+msgstr "ਵਰਤੋਂਕਾਰ-ਨਾਂ"
+
+#: subprojects/extensions-tool/src/command-upload.c:421
+msgid "Username to log into https://extensions.gnome.org"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:423
+msgid "PASSWORD"
+msgstr "ਪਾਸਵਰਡ"
+
+#: subprojects/extensions-tool/src/command-upload.c:425
+msgid "Password to log into https://extensions.gnome.org"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:429
+msgid ""
+"Read https://extensions.gnome.org password from file, use \"-\" for stdin"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:432
+msgid "Accept the terms of service at https://extensions.gnome.org/upload/"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:434
+#| msgid "FILE"
+msgid "FILE…"
+msgstr "ਫ਼ਾਇਲ…"
+
+#: subprojects/extensions-tool/src/command-upload.c:443
+#, fuzzy
+#| msgid "Allow extension installation"
+msgid "Upload new extension versions"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਮਨਜ਼ੂਰੀ"
+
+#: subprojects/extensions-tool/src/command-upload.c:461
+msgid "Only one of --password and --password-file can be used"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:467
+msgid "You must accept the terms of service to upload extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-upload.c:473
+#, fuzzy
+#| msgid "No UUID given"
+msgid "No files given"
+msgstr "ਕੋਈ UUID ਨਹੀਂ ਦਿੱਤਾ"
+
+#: subprojects/extensions-tool/src/main.c:78
 msgid "Do not print error messages"
 msgstr "ਗ਼ਲਤੀ ਸੁਨੇਹੇ ਪਰਿੰਟ ਨਾ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:249
+#: subprojects/extensions-tool/src/main.c:251
 msgid "Path"
 msgstr "ਮਾਰਗ"
 
-#: subprojects/extensions-tool/src/main.c:252
+#: subprojects/extensions-tool/src/main.c:254
 msgid "URL"
 msgstr "URL"
 
-#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:257
 msgid "Original author"
 msgstr "ਅਸਲੀ ਲੇਖਕ"
 
-#: subprojects/extensions-tool/src/main.c:261
 #: subprojects/extensions-tool/src/main.c:263
 #: subprojects/extensions-tool/src/main.c:265
+#: subprojects/extensions-tool/src/main.c:267
 msgid "Version"
 msgstr "ਵਰਜ਼ਨ"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Enabled"
 msgstr "ਚਾਲੂ ਹੈ"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "Yes"
 msgstr "ਹਾਂ"
 
-#: subprojects/extensions-tool/src/main.c:268
+#: subprojects/extensions-tool/src/main.c:270
 msgid "No"
 msgstr "ਨਹੀਂ"
 
-#: subprojects/extensions-tool/src/main.c:271
+#: subprojects/extensions-tool/src/main.c:273
 msgid "State"
 msgstr "ਹਾਲਤ"
 
-#: subprojects/extensions-tool/src/main.c:309
+#: subprojects/extensions-tool/src/main.c:311
 msgid "“version” takes no arguments"
 msgstr "“version” ਲਈ ਕੋਈ ਆਰਗੂਮੈਂਟ ਨਹੀਂ ਹੁੰਦਾ"
 
-#: subprojects/extensions-tool/src/main.c:311
-#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:333
 msgid "Usage:"
 msgstr "ਵਰਤੋ:"
 
-#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Print version information and exit."
 msgstr "ਵਰਜ਼ਨ ਜਾਣਕਾਰੀ ਛਾਪੋ ਅਤੇ ਬੰਦ ਕਰੋ।"
 
-#: subprojects/extensions-tool/src/main.c:329
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:331
+#: subprojects/extensions-tool/src/main.c:334
 msgid "COMMAND"
 msgstr "ਕਮਾਂਡ"
 
-#: subprojects/extensions-tool/src/main.c:332
+#: subprojects/extensions-tool/src/main.c:334
 msgid "[ARGS…]"
 msgstr "[ARGS…]"
 
-#: subprojects/extensions-tool/src/main.c:334
+#: subprojects/extensions-tool/src/main.c:336
 msgid "Commands:"
 msgstr "ਕਮਾਂਡਾਂ:"
 
-#: subprojects/extensions-tool/src/main.c:335
+#: subprojects/extensions-tool/src/main.c:337
 msgid "Print help"
 msgstr "ਮਦਦ ਛਾਪੋ"
 
-#: subprojects/extensions-tool/src/main.c:337
+#: subprojects/extensions-tool/src/main.c:339
 msgid "Enable extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਸਮਰੱਥ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:338
+#: subprojects/extensions-tool/src/main.c:340
 msgid "Disable extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਸਮਰੱਥ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:339
+#: subprojects/extensions-tool/src/main.c:341
 msgid "Reset extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਮੁੜ-ਸੈੱਟ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:340
+#: subprojects/extensions-tool/src/main.c:342
 msgid "Uninstall extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਣ-ਇੰਸਟਾਲ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:341
+#: subprojects/extensions-tool/src/main.c:343
 msgid "List extensions"
 msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ"
 
-#: subprojects/extensions-tool/src/main.c:342
-#: subprojects/extensions-tool/src/main.c:343
+#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:345
 msgid "Show extension info"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: subprojects/extensions-tool/src/main.c:344
+#: subprojects/extensions-tool/src/main.c:346
 msgid "Open extension preferences"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਨੂੰ ਖੋਲ੍ਹੋ"
 
-#: subprojects/extensions-tool/src/main.c:345
+#: subprojects/extensions-tool/src/main.c:347
 msgid "Create extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਬਣਾਓ"
 
-#: subprojects/extensions-tool/src/main.c:346
+#: subprojects/extensions-tool/src/main.c:348
 msgid "Package extension"
 msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪੈਕੇਜ ਬਣਾਓ"
 
-#: subprojects/extensions-tool/src/main.c:347
+#: subprojects/extensions-tool/src/main.c:349
 msgid "Install extension bundle"
 msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਇੰਸਟਾਲ ਕਰੋ"
 
-#: subprojects/extensions-tool/src/main.c:349
+#: subprojects/extensions-tool/src/main.c:351
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "ਵੇਰਵੇ ਸਮੇਤ ਮਦਦ ਲੈਣ ਲਈ “%s“ ਵਰਤੋ।\n"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:3
 msgid "Plain"
 msgstr "ਤਲ"
 
-#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "An empty extension"
 msgstr "ਖਾਲੀ ਇਕਟੈਨਸ਼ਨ"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:3
 msgid "Indicator"
 msgstr "ਸੰਕੇਤਕ"
 
-#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Add an icon to the top bar"
 msgstr "ਸਿਖਰ ਪੱਟੀ ਲਈ ਆਈਕਾਨ ਜੋੜੋ"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:3
 msgid "Quick Settings Item"
 msgstr "ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਚੀਜ਼"
 
-#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:5
+#: subprojects/extensions-tool/src/templates/quick-settings.desktop.in:4
 msgid "Add an item to quick settings"
 msgstr "ਚੀਜ਼ ਫ਼ੌਰੀ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਜੋੜੋ"
 
@@ -3614,6 +3659,256 @@ msgstr[1] "%u ਇਨਪੁੱਟ"
 #: subprojects/gvc/gvc-mixer-control.c:2872
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
+
+#~ msgid "GNOME Shell"
+#~ msgstr "ਗਨੋਮ ਸ਼ੈਲ"
+
+#~ msgid "Window management and application launching"
+#~ msgstr "ਵਿੰਡੋ ਇੰਤਜ਼ਾਮ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣਾ"
+
+#~ msgid "Something’s gone wrong"
+#~ msgstr "ਕੁਝ ਗਲਤ ਵਾਪਰਿਆ"
+
+#~ msgid ""
+#~ "We’re very sorry, but there’s been a problem: the settings for this "
+#~ "extension can’t be displayed. We recommend that you report the issue to "
+#~ "the extension authors."
+#~ msgstr ""
+#~ "ਸਾਨੂੰ ਬਹੁਤ ਅਫ਼ਸੋਸ ਹੈ ਪਰ ਸਮੱਸਿਆ ਆਈ ਹੈ: ਇਸ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਸੈਟਿੰਗਾਂ ਨੂੰ ਦਿਖਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ। "
+#~ "ਅਸੀਂ ਤੁਹਾਨੂੰ ਇਕਸਟੈਨਸ਼ਨ ਲੇਖਕਾਂ ਨਾਲ ਇਸ ਮਸਲੇ ਬਾਰੇ ਰਿਪੋਰਟ ਦੇਣ ਦੀ ਸਿਫਾਰਸ਼ ਕਰਦੇ ਹਾਂ।"
+
+#~ msgid "Technical Details"
+#~ msgstr "ਤਕਨੀਕੀ ਵੇਰਵੇ"
+
+#~ msgid "Homepage"
+#~ msgstr "ਮੁੱਖ ਸਫ਼ਾ"
+
+#~ msgid "Visit extension homepage"
+#~ msgstr "ਇਕਟੈਨਸ਼ਨ ਦੇ ਮੁੱਖ ਸਫ਼ੇ ਨੂੰ ਵੇਖੋ"
+
+#~ msgid "Choose Session"
+#~ msgstr "ਸ਼ੈਸ਼ਨ ਚੁਣੋ"
+
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#, javascript-format
+#~ msgid "%s has been pinned to the dash."
+#~ msgstr "%s ਨੂੰ ਡੈਸ਼ ਵਿੱਚ ਟੰਗਿਆ ਗਿਆ ਹੈ।"
+
+#~ msgctxt "title"
+#~ msgid "Restart & Install Upgrade"
+#~ msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਤੇ ਅੱਪਗਰੇਡ ਇੰਸਟਾਲ ਕਰੋ"
+
+#, javascript-format
+#~ msgid ""
+#~ "%s %s will be installed after restart. Upgrade installation can take a "
+#~ "long time: ensure that you have backed up and that the computer is "
+#~ "plugged in."
+#~ msgstr ""
+#~ "ਮੁੜ-ਚਾਲੂ ਹੋਣ ਦੇ ਬਾਅਦ %s %s ਨੂੰ ਇੰਸਟਾਲ ਕੀਤਾ ਜਾਵੇਗਾ। ਅੱਪਗਰੇਡ ਇੰਸਟਾਲੇਸ਼ਨ ਨੂੰ ਲੰਮਾ ਸਮਾਂ ਲੱਗ "
+#~ "ਸਕਦਾ ਹੈ: ਪੱਕਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਬੈਕਅੱਪ ਲੈ ਲਿਆ ਹੈ ਅਤੇ ਕੰਪਿਊਟਰ ਦਾ ਪਲੱਗ ਲੱਗਾ ਹੈ।"
+
+#~ msgid "Restart is not available on Wayland"
+#~ msgstr "ਵੇਅਲੈਂਡ ਉੱਤੇ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਉਪਲਬਧ ਨਹੀਂ"
+
+#~ msgid "Restarting…"
+#~ msgstr "...ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Unable to lock"
+#~ msgstr "ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
+
+#~ msgid "Lock was blocked by an app"
+#~ msgstr "ਐਪ ਵਲੋਂ ਲਾਕ ਉੱਤੇ ਪਾਬੰਦੀ ਲਗਾਈ"
+
+#~ msgid "Screencast ended unexpectedly"
+#~ msgstr "ਸਕਰੀਨਕਾਸਟ ਅਚਾਨਕ ਬੰਦ ਹੋ ਗਿਆ"
+
+#~ msgid "Screenshot"
+#~ msgstr "ਸਕਰੀਨਸ਼ਾਟ"
+
+#~ msgid "Manage your GNOME Extensions"
+#~ msgstr "ਗਨੋਮ ਇਕਸਟੈਸ਼ਨਾਂ ਦਾ ਇੰਤਜ਼ਾਮ ਕਰੋ"
+
+#~ msgid "The GNOME Project"
+#~ msgstr "ਗਨੋਮ ਪਰੋਜੈਕਟ"
+
+#~ msgid ""
+#~ "GNOME Extensions handles updating extensions, configuring extension "
+#~ "preferences and removing or disabling unwanted extensions."
+#~ msgstr ""
+#~ "ਗਨੋਮ ਇਕਸਟੈਨਸ਼ਨਾਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ, ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਦੀ ਸੰਰਚਨਾ ਕਰਨ ਅਤੇ ਬੇਲੋੜੀਆਂ "
+#~ "ਇਕਸਟੈਨਸ਼ਨਾਂ ਹਟਾਉਣ ਜਾਂ ਅਸਮਰੱਥ ਕਰਨ ਦੇ ਕੰਮ ਆਉਂਦੀਆਂ ਹਨ।"
+
+#~ msgid "Main Window"
+#~ msgstr "ਮੁੱਖ ਵਿੰਡੋ"
+
+#~ msgid "Available Updates"
+#~ msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
+
+#~ msgid "Search View"
+#~ msgstr "ਖੋਜ ਝਲਕ"
+
+#~ msgid "Configure GNOME Shell Extensions"
+#~ msgstr "ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਸ਼ਨਾਂ ਦੀ ਸੰਰਚਨਾ"
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension (%s) is incompatible with the "
+#~ "current version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "ਇਕਸਟੈਨਸ਼ਨ ਦਾ ਇੰਸਟਾਲ ਕੀਤਾ ਵਰਜ਼ਨ (%s) ਮੌਜੂਦਾ ਗਨੋਮ ਵਰਜ਼ਨ (%s) ਨਾਲ ਅਨੁਕੂਲ ਨਹੀਂ ਹੈ। "
+#~ "ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਅਸਮਰੱਥ ਕੀਤਾ ਹੈ।"
+
+#, javascript-format
+#~ msgid ""
+#~ "The installed version of this extension is incompatible with the current "
+#~ "version of GNOME (%s). The extension has been disabled."
+#~ msgstr ""
+#~ "ਇਕਸਟੈਨਸ਼ਨ ਦਾ ਇੰਸਟਾਲ ਕੀਤਾ ਵਰਜ਼ਨ ਮੌਜੂਦਾ ਗਨੋਮ ਵਰਜ਼ਨ (%s) ਨਾਲ ਅਨੁਕੂਲ ਨਹੀਂ ਹੈ। ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ "
+#~ "ਅਸਮਰੱਥ ਕੀਤਾ ਹੈ।"
+
+#~ msgid ""
+#~ "An error has occurred in this extension. This could cause issues "
+#~ "elsewhere in the system. It is recommended to turn the extension off "
+#~ "until the error is resolved."
+#~ msgstr ""
+#~ "ਇਸ ਇਕਸਟੈਨਸ਼ਨ ਵਿੱਚ ਗਲਤੀ ਆਈ ਹੈ। ਇਹ ਸਿਸਟਮ ਵਿੱਚ ਕਿਤੇ ਹੋਰ ਮਸਲਾ ਹੋ ਸਕਦਾ ਹੈ। ਗਲਤੀ ਠੀਕ ਹੋਣ "
+#~ "ਤੱਕ ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਬੰਦ ਰੱਖਣ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
+
+#~ msgid "Error details:"
+#~ msgstr "ਗਲਤੀ ਦੇ ਵੇਰਵੇ:"
+
+#, javascript-format
+#~ msgid "Version %s"
+#~ msgstr "ਵਰਜ਼ਨ %s"
+
+#, javascript-format
+#~ msgid "Remove “%s”?"
+#~ msgstr "“%s” ਨੂੰ ਹਟਾਉਣਾ ਹੈ?"
+
+#~ msgid ""
+#~ "If you remove the extension, you need to return to download it if you "
+#~ "want to enable it again"
+#~ msgstr ""
+#~ "ਜੇ ਤੁਸੀਂ ਇਕਟੈਨਸ਼ਨ ਹਟਾਈ ਤਾਂ ਜੇ ਤੁਹਾਨੂੰ ਮੁੜ ਇਹ ਸਮਰੱਥ ਕਰਨਾ ਦੀ ਲੋੜ ਹੋਈ ਤਾਂ ਤੁਹਾਨੂੰ ਇਹ ਦੁਬਾਰਾ "
+#~ "ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ"
+
+#~ msgid "_Cancel"
+#~ msgstr "ਰੱਦ ਕਰੋ(_C)"
+
+#~ msgid "_Remove"
+#~ msgstr "ਹਟਾਓ(_R)"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "ਅ ਸ ਆਲਮ (A S Alam) ੨੦੦੪-੨੦੨੪\n"
+#~ "Punjabi OpenSource Team (POST) www.punlinux.org"
+
+#, javascript-format
+#~ msgid "%d extension will be updated on next login."
+#~ msgid_plural "%d extensions will be updated on next login."
+#~ msgstr[0] "%d ਇਕਟੈਨਸ਼ਨ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+#~ msgstr[1] "%d ਇਕਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#~ msgid "Updates Details"
+#~ msgstr "ਅੱਪਡੇਟ ਦੇ ਵੇਰਵੇ"
+
+#~ msgid ""
+#~ "A new version of this extension is ready and will be loaded on next login."
+#~ msgstr "ਇਕਟੈਨਸ਼ਨ ਦਾ ਨਵਾਂ ਵਰਜ਼ਨ ਮੌਜੂਦ ਹੈ ਅਤੇ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਲੋਡ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#~ msgid "Extension Details"
+#~ msgstr "ਇਕਸਟੈਨਸ਼ਨ ਦੇ ਵੇਰਵੇ"
+
+#~ msgid "_Website"
+#~ msgstr "ਵੈੱਬਸਾਈਟ(_W)"
+
+#~ msgid "_Settings"
+#~ msgstr "ਸੈਟਿੰਗਾਂ(_S)"
+
+#~ msgid "_Remove…"
+#~ msgstr "…ਨੂੰ ਹਟਾਓ(_R)"
+
+#~ msgid "Keyboard Shortcuts"
+#~ msgstr "ਕੀਬੋਰਡ ਸ਼ਾਰਟਕਟ"
+
+#~ msgid "About Extensions"
+#~ msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਬਾਰੇ"
+
+#~ msgid "Main Menu"
+#~ msgstr "ਮੁੱਖ ਮੇਨੂ"
+
+#~ msgid "Search extensions"
+#~ msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਖੋਜ"
+
+#~ msgid "_Extensions"
+#~ msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ(_E)"
+
+#~ msgid "More Information"
+#~ msgstr "ਹੋਰ ਜਾਣਕਾਰੀ"
+
+#~ msgid ""
+#~ "Extensions can cause performance and stability issues. It is recommended "
+#~ "to disable all extensions if you experience problems with your system."
+#~ msgstr ""
+#~ "ਇਕਸਟੈਨਸ਼ਨਾਂ ਕਾਰਗੁਜ਼ਾਰੀ ਅਤੇ ਸਥਿਰਤਾਂ ਮਸਲੇ ਖੜ੍ਹੇ ਕਰ ਸਕਦੀਆਂ ਹਨ। ਜੇ ਤੁਹਾਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਨਾਲ "
+#~ "ਸਮੱਸਿਆਵਾਂ ਆ ਰਹੀਆਂ ਹੋਣ ਤਾਂ ਸਾਰੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਸਮਰੱਥ ਕਰਨ ਦੀ ਸਿਫਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
+
+#~ msgid "User Extensions"
+#~ msgstr "ਵਰਤੋਂਕਾਰ ਦੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ"
+
+#~ msgid "System Extensions"
+#~ msgstr "ਸਿਸਟਮ ਦੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ"
+
+#~ msgid "Search Results"
+#~ msgstr "ਖੋਜ ਨਤੀਜੇ"
+
+#~ msgid "No Results Found"
+#~ msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਲੱਭਾ"
+
+#~ msgid "Try a different search"
+#~ msgstr "ਵੱਖਰੀ ਖੋਜ ਨਾਲ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+
+#~ msgid "No Installed Extensions"
+#~ msgstr "ਕੋਈ ਇੰਸਟਾਲ ਕੀਤੀ ਇਕਟੈਨਸ਼ਨ ਨਹੀਂ ਹੈ"
+
+#~ msgid ""
+#~ "To find and add extensions, visit <a href=\"https://"
+#~ "extensions.gnome.org\">extensions.gnome.org</a>."
+#~ msgstr ""
+#~ "ਇਕਸਟੈਨਸ਼ਨ ਲੱਭਣ ਅਤੇ ਜੋੜਨ ਲਈ <a href=\"https://"
+#~ "extensions.gnome.org\">extensions.gnome.org</a> ਨੂੰ ਵੇਖੋ।"
+
+#~ msgid ""
+#~ "We’re very sorry, but it was not possible to get the list of installed "
+#~ "extensions. Make sure you are logged into GNOME and try again."
+#~ msgstr ""
+#~ "ਸਾਨੂੰ ਬਹੁਤ ਅਫ਼ਸੋਸ ਹੈ, ਪਰ ਇੰਸਟਾਲ ਹੋਈਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ ਲੈਣਾ ਸੰਭਵ ਨਹੀਂ ਹੈ। ਯਕੀਨੀ ਬਣਾਓ ਕਿ "
+#~ "ਤੁਸੀਂ ਗਨੋਮ ਵਿੱਚ ਲਾਗਇਨ ਕੀਤਾ ਹੈ ਅਤੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "ਆਮ"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Open Menu"
+#~ msgstr "ਮੇਨੂ ਖੋਲ੍ਹੋ"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle Search"
+#~ msgstr "ਖੋਜ ਨੂੰ ਬਦਲੋ"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show Shortcuts"
+#~ msgstr "ਸ਼ਾਰਟਕੱਟ ਵੇਖਾਓ"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Quit"
+#~ msgstr "ਬਾਹਰ"
 
 #~ msgid "Could not parse command:"
 #~ msgstr "ਕਮਾਂਡ ਪਾਰਸ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ:"
@@ -3730,9 +4025,6 @@ msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
 #~ msgid "Bluetooth Off"
 #~ msgstr "ਬਲੂਟੁੱਥ ਬੰਦ ਕਰੋ"
-
-#~ msgid "Bluetooth On"
-#~ msgstr "ਬਲੂਟੁੱਥ ਚਾਲੂ ਕਰੋ"
 
 #~ msgid "Location In Use"
 #~ msgstr "ਟਿਕਾਣਾ ਵਰਤੋਂ ਵਿੱਚ ਹੈ"
@@ -3920,9 +4212,6 @@ msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
 #~ msgid "Index of the currently selected view in the application picker."
 #~ msgstr "ਐਪਲੀਕੇਸ਼ਨ ਚੋਣਕਾਰ ਵਿੱਚ ਮੌਜੂਦਾ ਚੁਣੀ ਝਲਕ ਦਾ ਇੰਡੈਕਸ।"
-
-#~ msgid "Copy Error"
-#~ msgstr "ਗਲਤੀ ਕਾਪੀ ਕਰੋ"
 
 #~ msgid "Frequently used applications will appear here"
 #~ msgstr "ਆਮ ਵਰਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਇੱਥੇ ਵਿਖਾਈ ਦੇਣਗੀਆਂ"
@@ -4125,9 +4414,6 @@ msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
 #~ msgid "Eject"
 #~ msgstr "ਬਾਹਰ ਕੱਢੋ"
-
-#~ msgid "Invitation"
-#~ msgstr "ਸੱਦਾ"
 
 #~ msgid "Call"
 #~ msgstr "ਕਾਲ ਕਰੋ"
@@ -4617,14 +4903,6 @@ msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
 #~ msgid "More..."
 #~ msgstr "ਹੋਰ..."
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%l:%M %p"
 
 #~ msgid "United Kingdom"
 #~ msgstr "ਬਰਤਾਨੀਆ"
