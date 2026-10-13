@@ -197,13 +197,13 @@ export const AuthPrompt = GObject.registerClass({
 
         this._userWell = new St.Bin({
             x_expand: true,
-            y_expand: true,
         });
         this.add_child(this._userWell);
 
         this._inputWell = new St.BoxLayout({
             style_class: 'login-dialog-input-well',
             orientation: Clutter.Orientation.VERTICAL,
+            y_align: Clutter.ActorAlign.START,
         });
         this.add_child(this._inputWell);
         this._mainContent = this._inputWell;
@@ -226,9 +226,7 @@ export const AuthPrompt = GObject.registerClass({
         this._message = new St.Label({
             opacity: 0,
             styleClass: 'login-dialog-message',
-            y_expand: true,
             x_expand: true,
-            y_align: Clutter.ActorAlign.START,
             x_align: Clutter.ActorAlign.CENTER,
         });
         this._message.clutter_text.line_wrap = true;
@@ -263,6 +261,7 @@ export const AuthPrompt = GObject.registerClass({
         this._mainBox = new St.BoxLayout({
             style_class: 'login-dialog-button-box',
             orientation: Clutter.Orientation.HORIZONTAL,
+            y_expand: false,
         });
         this._inputWell.add_child(this._mainBox);
 

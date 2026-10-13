@@ -65,7 +65,6 @@ export class WebLoginPrompt extends St.BoxLayout {
         super({
             styleClass: 'web-login-prompt',
             orientation: Clutter.Orientation.VERTICAL,
-            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._urlTitleLabel = new St.Label({
@@ -199,7 +198,6 @@ export class WebLoginDialog extends St.Widget {
         this._contentBox = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             x_expand: true,
-            y_expand: true,
         });
         this.add_child(this._contentBox);
 

@@ -194,7 +194,6 @@ export class AuthList extends St.BoxLayout {
         super({
             orientation: Clutter.Orientation.VERTICAL,
             style_class: 'login-dialog-auth-list-layout',
-            y_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
         });
 
@@ -207,6 +206,7 @@ export class AuthList extends St.BoxLayout {
         this._scrollView = new St.ScrollView({
             style_class: 'login-dialog-auth-list-view',
             child: this._box,
+            y_expand: true,
         });
         this.add_child(this._scrollView);
 
