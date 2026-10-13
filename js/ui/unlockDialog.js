@@ -444,6 +444,49 @@ class UnlockDialogClock extends St.BoxLayout {
     }
 });
 
+class UnlockStack extends Shell.Stack {
+    static {
+        GObject.registerClass(this);
+    }
+
+    constructor(promptBox, clock) {
+        super();
+
+        this._promptBox = promptBox;
+        this._clock = clock;
+        this._progress = 0;
+
+        this.add_child(this._promptBox);
+        this.add_child(this._clock);
+    }
+
+    get progress() {
+        return this._progress;
+    }
+
+    set progress(progress) {
+        if (this._progress === progress)
+            return;
+
+        this._progress = progress;
+        this.queue_relayout();
+    }
+
+    vfunc_get_preferred_height(forWidth) {
+        const [clockMinHeight, clockNatHeight] =
+            this._clock.get_preferred_height(forWidth);
+        const [promptMinHeight, promptNatHeight] =
+            this._promptBox.get_preferred_height(forWidth);
+
+        const minHeight =
+            clockMinHeight + (promptMinHeight - clockMinHeight) * this._progress;
+        const natHeight =
+            clockNatHeight + (promptNatHeight - clockNatHeight) * this._progress;
+
+        return [minHeight, natHeight];
+    }
+}
+
 const UnlockDialogLayout = GObject.registerClass(
 class UnlockDialogLayout extends Clutter.LayoutManager {
     _init(stack, notifications, authIndicatorButton, bottomButtonGroup) {
@@ -632,18 +675,16 @@ export const UnlockDialog = GObject.registerClass({
         this._user = this._userManager.get_user(this._userName);
 
         // Authentication & Clock stack
-        this._stack = new Shell.Stack();
-
         this._promptBox = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
         });
         this._promptBox.set_pivot_point(0.5, 0.5);
         this._promptBox.hide();
-        this._stack.add_child(this._promptBox);
 
         this._clock = new Clock();
         this._clock.set_pivot_point(0.5, 0.5);
-        this._stack.add_child(this._clock);
+
+        this._stack = new UnlockStack(this._promptBox, this._clock);
         this._showClock();
 
         this.allowCancel = false;
@@ -892,6 +933,8 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     _setTransitionProgress(progress) {
+        this._stack.progress = progress;
+
         this._promptBox.visible = progress > 0;
         this._clock.visible = progress < 1;
 
