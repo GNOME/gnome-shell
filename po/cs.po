@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-08-01 18:43+0000\n"
-"PO-Revision-Date: 2026-08-02 13:04+0200\n"
+"POT-Creation-Date: 2026-10-10 23:08+0000\n"
+"PO-Revision-Date: 2026-10-14 00:46+0200\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
@@ -109,7 +109,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Otevřít nové okno aplikace 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2694
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "Snímky obrazovky"
 
@@ -606,7 +606,7 @@ msgstr "Podrobnosti o chybě"
 msgid "Copy Error"
 msgstr "Zkopírovat chybu"
 
-#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "Dosažen limit času stráveného u obrazovky"
 
@@ -622,19 +622,19 @@ msgstr ""
 msgid "Ignore"
 msgstr "Ignorovat"
 
-#: js/gdm/authPrompt.js:269
+#: js/gdm/authPrompt.js:271
 msgid "Back"
 msgstr "Zpět"
 
-#: js/gdm/authPrompt.js:366
+#: js/gdm/authPrompt.js:368
 msgid "Submit"
 msgstr "Odeslat"
 
-#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/gdm/authPrompt.js:535 js/gdm/authServicesLegacy.js:25
 #: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
 #: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
-#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:347
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Heslo"
@@ -671,19 +671,19 @@ msgstr "(nebo přejeďte prstem přes čtečku)"
 msgid "(or place finger on reader)"
 msgstr "(nebo přiložte prst na čtečku)"
 
-#: js/gdm/authServicesSSSDSwitchable.js:467
+#: js/gdm/authServicesSSSDSwitchable.js:471
 msgid "Insert Smartcard"
 msgstr "Vložte čipovou kartu"
 
-#: js/gdm/authServicesSSSDSwitchable.js:468
+#: js/gdm/authServicesSSSDSwitchable.js:472
 msgid "Select Identity"
 msgstr "Vyberte identitu"
 
-#: js/gdm/authServicesSSSDSwitchable.js:507
+#: js/gdm/authServicesSSSDSwitchable.js:511
 msgid "Organization"
 msgstr "Organizace"
 
-#: js/gdm/authServicesSSSDSwitchable.js:534
+#: js/gdm/authServicesSSSDSwitchable.js:538
 #, javascript-format
 msgid ""
 "You have %d attempts left. If the passkey gets locked, you may not able to "
@@ -692,7 +692,7 @@ msgstr ""
 "Zbývá vám %d pokusů. Pokud se přístupový klíč zablokuje, pravděpodobně se "
 "nebudete moci přihlásit ke svému účtu."
 
-#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+#: js/gdm/authServicesSSSDSwitchable.js:565 js/ui/padOsd.js:223
 msgid "Done"
 msgstr "Hotovo"
 
@@ -753,11 +753,11 @@ msgstr ""
 "Vynucené zastavení ukončí všechny spuštěné aplikace a procesy a může vést ke "
 "ztrátě dat"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
-#: js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:234
+#: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
+#: js/ui/extensionDownloader.js:308 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:407
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -765,52 +765,52 @@ msgstr "Zrušit"
 msgid "Force Stop"
 msgstr "Vynutit zastavení"
 
-#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+#: js/gdm/loginDialog.js:54 js/gdm/loginDialog.js:538 js/ui/unlockDialog.js:683
 msgid "Login Options"
 msgstr "Volby přihlášení"
 
-#: js/gdm/loginDialog.js:54
+#: js/gdm/loginDialog.js:55
 msgid "Session Type"
 msgstr "Typ sezení"
 
-#: js/gdm/loginDialog.js:332 js/ui/status/accessibility.js:35
+#: js/gdm/loginDialog.js:333 js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "Přístupnost"
 
-#: js/gdm/loginDialog.js:450
+#: js/gdm/loginDialog.js:454
 msgid "Not listed?"
 msgstr "Nejste na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1100
+#: js/gdm/loginDialog.js:1104
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(např. uživatel nebo %s)"
 
-#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1111 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: js/gdm/loginDialog.js:1171
+#: js/gdm/loginDialog.js:1175
 msgid "Login Attempt Timed Out"
 msgstr "Časový limit při pokusu o přihlášení vypršel"
 
-#: js/gdm/loginDialog.js:1172
+#: js/gdm/loginDialog.js:1176
 msgid "Login took too long, please try again"
 msgstr "Přihlašování trvalo příliš dlouho, zkuste to prosím znovu"
 
-#: js/gdm/loginDialog.js:1534
+#: js/gdm/loginDialog.js:1539
 msgid "Login Window"
 msgstr "Přihlašovací okno"
 
-#: js/gdm/userVerifier.js:306
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "Chyba ověření"
 
-#: js/gdm/webLogin.js:63
+#: js/gdm/webLogin.js:105
 msgid "Login code: "
 msgstr "Přihlašovací kód: "
 
@@ -1007,7 +1007,7 @@ msgstr[0] "Přestávka za %d sekundu"
 msgstr[1] "Přestávka za %d sekundy"
 msgstr[2] "Přestávka za %d sekund"
 
-#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:294 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Jas"
 
@@ -1119,15 +1119,15 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zamknout otočení obrazovky"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "GNOME potřebuje uložit údaje o čase stráveném u obrazovky"
 
-#: js/misc/timeLimitsManager.js:1392
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "Limit času stráveného u obrazovky se blíží k vypršení"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
@@ -1135,7 +1135,7 @@ msgstr[0] "Počítač se uzamkne za %d sekundu."
 msgstr[1] "Počítač se uzamkne za %d sekundy."
 msgstr[2] "Počítač se uzamkne za %d sekund."
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
@@ -1143,11 +1143,11 @@ msgstr[0] "Limit času stráveného u obrazovky za %d minutu"
 msgstr[1] "Limit času stráveného u obrazovky za %d minuty"
 msgstr[2] "Limit času stráveného u obrazovky za %d minut"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "Blíží se váš limit času stráveného u obrazovky"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "Je čas přestat zařízení používat"
 
@@ -1318,15 +1318,15 @@ msgstr "Povolit"
 msgid "App grid"
 msgstr "Mřížka aplikací"
 
-#: js/ui/appDisplay.js:1737
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "Nepojmenovaná složka"
 
-#: js/ui/appDisplay.js:2564
+#: js/ui/appDisplay.js:2563
 msgid "Folder name"
 msgstr "Název složky"
 
-#: js/ui/appDisplay.js:2587
+#: js/ui/appDisplay.js:2586
 msgid "Edit folder name"
 msgstr "Upravit název složky"
 
@@ -1340,7 +1340,7 @@ msgstr "Aplikace %s přidána mezi oblíbené"
 msgid "%s Unpinned From Dash"
 msgstr "Aplikace %s odebrána z oblíbených"
 
-#: js/ui/appFavorites.js:149 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "Zpět"
 
@@ -1377,23 +1377,23 @@ msgstr "Spustit pomocí integrované grafické karty"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Spustit pomocí samostatné grafické karty"
 
-#: js/ui/audioDeviceSelection.js:46
+#: js/ui/audioDeviceSelection.js:47
 msgid "Select Audio Device"
 msgstr "Výběr zvukového zařízení"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Nastavení zvuku"
 
-#: js/ui/audioDeviceSelection.js:75
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headphones"
 msgstr "Sluchátka"
 
-#: js/ui/audioDeviceSelection.js:77
+#: js/ui/audioDeviceSelection.js:78
 msgid "Headset"
 msgstr "Sluchátka s mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
+#: js/ui/audioDeviceSelection.js:80 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1537,19 +1537,19 @@ msgstr "Vynutit ukončení"
 msgid "Wait"
 msgstr "Počkat"
 
-#: js/ui/components/automountManager.js:82
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "Externí svazek připojen"
 
-#: js/ui/components/automountManager.js:95
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:214
 msgid "Unable to unlock volume"
 msgstr "Nelze odemknout svazek"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:215
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Nainstalovaná verze udisks nepodporuje nastavení PIM"
 
@@ -1575,7 +1575,7 @@ msgstr ""
 "Případně se můžete připojit zmáčknutím tlačítka „WPS“ na svém směrovači"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "Připojit"
 
@@ -1658,11 +1658,11 @@ msgstr "Ověřit"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:432
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:430
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:408
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "Okna"
 
@@ -1672,7 +1672,7 @@ msgstr "Zobrazit aplikace"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:400
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "Oblíbené"
 
@@ -1764,18 +1764,18 @@ msgstr "Počasí"
 msgid "Select Weather Location…"
 msgstr "Vybrat místo pro počasí…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásit uživatele %s"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odhlášení"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
@@ -1783,7 +1783,7 @@ msgstr[0] "Uživatel %s bude automaticky odhlášen za %d sekundu"
 msgstr[1] "Uživatel %s bude automaticky odhlášen za %d sekundy"
 msgstr[2] "Uživatel %s bude automaticky odhlášen za %d sekund"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:57
 #, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
@@ -1791,22 +1791,22 @@ msgstr[0] "Budete automaticky odhlášeni za %d sekundu"
 msgstr[1] "Budete automaticky odhlášeni za %d sekundy"
 msgstr[2] "Budete automaticky odhlášeni za %d sekund"
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásit"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutí"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Nainstalování aktualizací a vypnutí"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
@@ -1814,27 +1814,27 @@ msgstr[0] "Systém bude automaticky vypnut za %d sekundu"
 msgstr[1] "Systém bude automaticky vypnut za %d sekundy"
 msgstr[2] "Systém bude automaticky vypnut za %d sekund"
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Nainstalovat čekající aktualizace softwaru"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnout"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Restart"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Nainstalování aktualizací a restart"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
@@ -1842,17 +1842,17 @@ msgstr[0] "Systém bude automaticky restartován za %d sekundu"
 msgstr[1] "Systém bude automaticky restartován za %d sekundy"
 msgstr[2] "Systém bude automaticky restartován za %d sekund"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Restartovat"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Restart a nainstalování aktualizací"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:112
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
@@ -1867,68 +1867,68 @@ msgstr[2] ""
 "Systém bude automaticky restartován za %d sekund a poté se nainstalují "
 "aktualizace"
 
-#: js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Restartovat a nainstalovat"
 
-#: js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Nainstalovat a vypnout"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Po nainstalování aktualizací vypnout"
 
-#: js/ui/endSessionDialog.js:262
+#: js/ui/endSessionDialog.js:263
 msgid "Low battery power: please plug in before installing updates"
 msgstr "Nízký stav baterie: před instalací prosím připojte k napájení"
 
-#: js/ui/endSessionDialog.js:271
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr "Některé aplikace jsou zaneprázdněné nebo obsahují neuloženou práci"
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "Jsou přihlášeni jiní uživatelé"
 
-#: js/ui/endSessionDialog.js:432
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
-msgstr "Volby zavedení systému"
+msgstr "Volby zavedení"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:637
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdálený)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:640
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
 
-#: js/ui/extensionDownloader.js:280
+#: js/ui/extensionDownloader.js:312
 msgid "Install"
 msgstr "Nainstalovat"
 
-#: js/ui/extensionDownloader.js:286
+#: js/ui/extensionDownloader.js:318
 msgid "Install Extension"
 msgstr "Instalace rozšíření"
 
-#: js/ui/extensionDownloader.js:287
+#: js/ui/extensionDownloader.js:319
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Stáhnout a nainstalovat „%s“ z extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "Jsou dostupné aktualizace rozšíření"
 
-#: js/ui/extensionSystem.js:355
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "Aktualizace rozšíření jsou připravené k instalaci"
 
@@ -2004,7 +2004,7 @@ msgstr "Ponechat zapnuté"
 msgid "Turn On"
 msgstr "Zapnout"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "Vypnout"
 
@@ -2070,19 +2070,19 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "Systém byl přepnut do nebezpečného režimu"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "Aplikace mají nyní neomezený přístup"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "Přihlášeni jako privilegovaný uživatel"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -2091,17 +2091,17 @@ msgstr ""
 "bezpečnostních důvodů vyhýbat. Pokud je to možné, přihlaste se jako běžný "
 "uživatel."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "Zamykání obrazovky je vypnuto"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Zamykání obrazovky vyžaduje správce displeje GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:405
+#: js/ui/messageList.js:407
 msgid "Unknown App"
 msgstr "Neznámá aplikace"
 
@@ -2121,11 +2121,11 @@ msgstr "Neznámý název"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:331
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "vyhledávejte psaním"
 
-#: js/ui/overviewControls.js:396
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "Aplikace"
 
@@ -2198,7 +2198,7 @@ msgstr "Otevřít nabídku"
 msgid "Run a Command"
 msgstr "Spuštění příkazu"
 
-#: js/ui/runDialog.js:92
+#: js/ui/runDialog.js:93
 msgid "Press ESC to close"
 msgstr "Zmáčknutím Esc zavřete"
 
@@ -2211,130 +2211,130 @@ msgstr "GNOME potřebuje uzamknout obrazovku"
 msgid "Screen Capture"
 msgstr "Záznam obrazovky"
 
-#: js/ui/screenshot.js:1690
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "Výběr"
 
-#: js/ui/screenshot.js:1700
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "Výběr oblasti"
 
-#: js/ui/screenshot.js:1705
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "Obrazovka"
 
-#: js/ui/screenshot.js:1715
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "Výběr obrazovky"
 
-#: js/ui/screenshot.js:1720
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1730
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "Výběr okna"
 
-#: js/ui/screenshot.js:1755 js/ui/status/system.js:117
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "Pořídit snímek obrazovky"
 
-#: js/ui/screenshot.js:1771
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "Nahrávat obrazovku"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1788
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "Zachytit"
 
-#: js/ui/screenshot.js:1810
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "Zobrazit ukazatel"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2443
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "Záznamy obrazovky"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2448
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Záznam obrazovky z %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2494
+#: js/ui/screenshot.js:2487
 msgid "Screencast Recorded"
 msgstr "Byl pořízen záznam obrazovky"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2507
+#: js/ui/screenshot.js:2500
 msgid "Screencast Failed to Start"
 msgstr "Započetí záznamu obrazovky se nezdařilo"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2513
+#: js/ui/screenshot.js:2506
 msgid "Screencast Failed: Out of Disk Space"
 msgstr "Záznam obrazovky se nezdařil: nedostatek místa na disku"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2519
+#: js/ui/screenshot.js:2512
 msgid "Screencast Failed, Please Try Again"
 msgstr "Záznam obrazovky se nezdařil, zkuste to prosím znovu"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2522
+#: js/ui/screenshot.js:2515
 msgid "Screencast Failed"
 msgstr "Záznam obrazovky se nezdařil"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2535
+#: js/ui/screenshot.js:2528
 msgid "Click here to view the video"
 msgstr "Kliknutím zde video zobrazíte"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2543 js/ui/screenshot.js:2761
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "Zobrazit v Souborech"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2707
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Snímek obrazovky z %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2751
+#: js/ui/screenshot.js:2749
 msgid "Screenshot Captured"
 msgstr "Byl pořízen snímek obrazovky"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2753
+#: js/ui/screenshot.js:2751
 msgid "You can paste the image from the clipboard"
 msgstr "Obrázek můžete vložit ze schránky"
 
-#: js/ui/screenshot.js:2812 js/ui/screenshot.js:2975
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "Byl pořízen snímek obrazovky"
 
-#: js/ui/search.js:884
+#: js/ui/search.js:872
 msgid "Searching"
 msgstr "Hledá se"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:875
 msgid "No results"
 msgstr "Žádné výsledky"
 
-#: js/ui/search.js:1023
+#: js/ui/search.js:1011
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2366,20 +2366,20 @@ msgstr "Skrýt text"
 msgid "Caps lock is on"
 msgstr "Je zapnutý Caps Lock"
 
-#: js/ui/shellMountOperation.js:303
+#: js/ui/shellMountOperation.js:301
 msgid "Hidden Volume"
 msgstr "Skrytý svazek"
 
-#: js/ui/shellMountOperation.js:306
+#: js/ui/shellMountOperation.js:304
 msgid "Windows System Volume"
 msgstr "Systémový svazek Windows"
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:307
 msgid "Uses Keyfiles"
 msgstr "Používat soubory s klíči"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:315
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
@@ -2387,7 +2387,7 @@ msgstr ""
 "K odemknutí svazku, který používá soubory s klíči, místo toho použijte "
 "pomůcku <i>%s</i>"
 
-#: js/ui/shellMountOperation.js:321
+#: js/ui/shellMountOperation.js:319
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2395,25 +2395,25 @@ msgstr ""
 "K odemčení svazku, který používá soubory s klíči, potřebujete externí "
 "nástroj, například <i>Disky</i>"
 
-#: js/ui/shellMountOperation.js:329
+#: js/ui/shellMountOperation.js:327
 msgid "PIM Number"
 msgstr "Číslo PIM"
 
-#: js/ui/shellMountOperation.js:388
+#: js/ui/shellMountOperation.js:386
 msgid "Remember Password"
 msgstr "Pamatovat si heslo"
 
-#: js/ui/shellMountOperation.js:403
+#: js/ui/shellMountOperation.js:401
 msgid "Unlock"
 msgstr "Odemknout"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:417
+#: js/ui/shellMountOperation.js:415
 #, javascript-format
 msgid "Open %s"
 msgstr "Otevřít %s"
 
-#: js/ui/shellMountOperation.js:453
+#: js/ui/shellMountOperation.js:451
 msgid "The PIM must be a number or empty"
 msgstr "PIM musí být číslo nebo prázdné"
 
@@ -2506,26 +2506,26 @@ msgstr "Nízké"
 msgid "High"
 msgstr "Vysoké"
 
-#: js/ui/status/backlight.js:158 js/ui/status/keyboard.js:877
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: js/ui/status/backlight.js:160
+#: js/ui/status/backlight.js:158
 msgid "Open keyboard brightness menu"
 msgstr "Otevřít nabídku podsvícení klávesnice"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "Odpojit"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Odpojit %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Připojit %s"
@@ -2538,7 +2538,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Otevřít nabídku Bluetooth"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1942
 msgid "Bluetooth Settings"
 msgstr "Nastavení Bluetooth"
 
@@ -2619,36 +2619,36 @@ msgstr "Zamítnout přístup"
 msgid "Grant Access"
 msgstr "Schválit přístup"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<neznámé>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Zabezpečená"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Nezabezpečená"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Síla signálu %s %%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Přístupový bod %s"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1450
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
@@ -2656,81 +2656,81 @@ msgstr[0] "%d připojený"
 msgstr[1] "%d připojení"
 msgstr[2] "%d připojených"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1548 js/ui/status/network.js:1565
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1549
 msgid "Open VPN menu"
 msgstr "Otevřít nabídku VPN"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1550
 msgid "VPN Settings"
 msgstr "Nastavení VPN"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1811
 msgid "Wi–Fi"
 msgstr "Wi-Fi"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1812
 msgid "Open Wi–Fi menu"
 msgstr "Otevřít nabídku Wi–Fi"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1814
 msgid "All Networks"
 msgstr "Všechny sítě"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1924
 msgid "Wired Connections"
 msgstr "Drátová připojení"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1925
 msgid "Open wired connections menu"
 msgstr "Otevřít nabídku drátových připojení"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1926
 msgid "Wired Settings"
 msgstr "Nastavení drátových připojení"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1940
 msgid "Bluetooth Tethers"
 msgstr "Sdílená připojení přes Bluetooth"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1941
 msgid "Open Bluetooth tethers menu"
 msgstr "Otevřít nabídku sdílených připojení přes Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1948
 msgid "Tether"
 msgstr "Sdílení připojení"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1961
 msgid "Mobile Connections"
 msgstr "Mobilní připojení"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1962
 msgid "Open mobile connections menu"
 msgstr "Otevřít nabídku mobilních připojení"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1964
 msgid "Mobile Broadband Settings"
 msgstr "Nastavení mobilního připojení"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1973
 msgid "Mobile"
 msgstr "Mobilní"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2007
 msgid "Sign in to Network"
 msgstr "Přihlásit se k síti"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2194
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2195
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
@@ -2808,7 +2808,7 @@ msgstr "Vypnout…"
 msgid "Log Out…"
 msgstr "Odhlásit se…"
 
-#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:676
 msgid "Switch User…"
 msgstr "Přepnout uživatele…"
 
@@ -2914,27 +2914,27 @@ msgstr "Volby odemknutí"
 # Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:420
+#: js/ui/unlockDialog.js:421
 msgid "%A %B %-d"
 msgstr "%A, %-e. %B"
 
-#: js/ui/unlockDialog.js:435
+#: js/ui/unlockDialog.js:436
 msgid "Swipe up"
 msgstr "Přejeďte prstem nahoru"
 
-#: js/ui/unlockDialog.js:437
+#: js/ui/unlockDialog.js:438
 msgid "Click or press a key"
 msgstr "Klikněte nebo stiskněte klávesu"
 
-#: js/ui/unlockDialog.js:653
+#: js/ui/unlockDialog.js:657
 msgid "Unlock Window"
 msgstr "Odemykací okno"
 
-#: js/ui/unlockDialog.js:667
+#: js/ui/unlockDialog.js:671
 msgid "Log in as another user"
 msgstr "Přihlásit se jako jiný uživatel"
 
-#: js/ui/unlockDialog.js:695
+#: js/ui/unlockDialog.js:699
 msgid "Background Authentication Methods"
 msgstr "Metody ověření na pozadí"
 
@@ -3059,15 +3059,15 @@ msgstr "Přesunout o monitor doprava"
 msgid "Close"
 msgstr "Zavřít"
 
-#: src/calendar-server/reminder-watcher.c:124
+#: src/calendar-server/reminder-watcher.c:130
 msgid "Reminders"
 msgstr "Připomenutí"
 
-#: src/calendar-server/reminder-watcher.c:129
+#: src/calendar-server/reminder-watcher.c:135
 msgid "Snooze"
 msgstr "Odložit"
 
-#: src/calendar-server/reminder-watcher.c:130
+#: src/calendar-server/reminder-watcher.c:136
 msgid "Dismiss"
 msgstr "Zavřít"
 
@@ -3109,7 +3109,7 @@ msgstr "Hesla si neodpovídají"
 msgid "Password cannot be blank"
 msgstr "Heslo nemůže být prázdné"
 
-#: src/shell-polkit-authentication-agent.c:342
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
 
