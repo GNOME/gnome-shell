@@ -37,6 +37,8 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
+const AUTH_PROMPT_VERTICAL_CENTER_OFFSET = 50;
+
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
 }, class NotificationsBox extends St.BoxLayout {
@@ -536,8 +538,12 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox);
 
         // Authentication Box
+        // Offset applies only to the authPrompt, not the clock, so it fades
+        // in/out together with the crossfade between the two.
+        const progress = this._stack.progress;
+        const offsetY = AUTH_PROMPT_VERTICAL_CENTER_OFFSET * progress;
         const stackY = Math.min(
-            Math.floor(centerY - stackHeight / 2.0),
+            Math.floor(centerY - stackHeight / 2.0) + offsetY,
             height - stackHeight - maxNotificationsHeight);
 
         actorBox.x1 = columnX1;
