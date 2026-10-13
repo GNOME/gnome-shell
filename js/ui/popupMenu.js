@@ -1048,7 +1048,11 @@ export class PopupMenu extends PopupMenuBase {
                 'notify::mapped', () => {
                     if (!this.sourceActor.mapped)
                         this.close();
-                }, this);
+                },
+                'destroy', () => {
+                    this._sourceActorDestroyed = true;
+                },
+                this);
             this.sourceActor.add_action(this._keyController);
         }
 
@@ -1179,6 +1183,9 @@ export class PopupMenu extends PopupMenuBase {
 
     destroy() {
         this.sourceActor?.disconnectObject(this);
+
+        if (!this._sourceActorDestroyed)
+            this.sourceActor?.remove_action(this._keyController);
 
         if (this._systemModalOpenedId)
             Main.layoutManager.disconnect(this._systemModalOpenedId);
