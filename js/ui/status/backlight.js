@@ -169,7 +169,7 @@ class KeyboardBrightnessToggle extends QuickMenuToggle {
                 if (error)
                     console.error(error.message);
                 else
-                    this._proxy.connect('g-properties-changed', () => this._sync());
+                    this._proxy.connectObject('g-properties-changed', () => this._sync(), this);
                 this._sync();
             });
 
