@@ -62,6 +62,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         this._mechanismsStatus = MechanismsStatus.WAITING;
         this._promptStatus = PromptStatus.NONE;
+        this._usernameLessLogin = null;
     }
 
     async beginVerification(userName, userVerifierProxies) {
@@ -146,6 +147,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     _handleReset() {
         this._savedMechanism = null;
         this._mechanismsStatus = MechanismsStatus.WAITING;
+        this._usernameLessLogin = null;
     }
 
     _handleCancel() {
@@ -635,6 +637,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
                 serviceName: SWITCHABLE_AUTH_SERVICE_NAME,
                 role,
             };
+            this._usernameLessLogin = role;
             this.emit('reset', {noUsername: true});
             return;
         }
@@ -654,6 +657,14 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
         if (!this._selectedMechanism ||
             !this._enabledMechanisms.some(({role}) => role === Role.SMARTCARD))
             return;
+
+        // we need to do a full reset to get to the userList when the
+        // authentication started from smartcard insertion and now
+        // the smartcard is removed
+        if (this._usernameLessLogin === Role.SMARTCARD && !this._smartcardManager.hasInsertedTokens()) {
+            this.emit('reset', {});
+            return;
+        }
 
         this.emit('reset', {softReset: true, reuseEntryText: true});
     }

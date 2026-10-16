@@ -87,6 +87,7 @@ export class AuthServicesLegacy extends AuthServices {
         this._fingerprintReadyTimeoutId = 0;
 
         this._promptStatus = PromptStatus.NONE;
+        this._usernameLessLogin = null;
     }
 
     async beginVerification(userName, userVerifierProxies) {
@@ -131,6 +132,7 @@ export class AuthServicesLegacy extends AuthServices {
 
     _handleReset() {
         this._selectedMechanism = null;
+        this._usernameLessLogin = null;
     }
 
     _handleClear() {
@@ -461,6 +463,7 @@ export class AuthServicesLegacy extends AuthServices {
         if (this._canAttemptUsernamelessLogin(role)) {
             this._selectedMechanism = this._enabledMechanisms
                 .find(m => m.role === role);
+            this._usernameLessLogin = role;
             this.emit('reset', {noUsername: true});
             return;
         }
@@ -476,6 +479,14 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _onSmartcardChanged() {
+        // we need to do a full reset to get to the userList when the
+        // authentication started from smartcard insertion and now
+        // the smartcard is removed
+        if (this._usernameLessLogin === Role.SMARTCARD && !this._smartcardManager.hasInsertedTokens()) {
+            this.emit('reset', {});
+            return;
+        }
+
         if (this._selectedMechanism?.role !== Role.SMARTCARD ||
             this._smartcardInProgress && this._smartcardManager.hasInsertedTokens())
             return;
