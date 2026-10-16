@@ -233,7 +233,7 @@ class Indicator extends SystemIndicator {
 
         this.connect('destroy', () => this._onDestroy());
 
-        Main.sessionMode.connect('updated', this._sync.bind(this));
+        Main.sessionMode.connectObject('updated', this._sync.bind(this), this);
         this._sync();
 
         this._perm = null;
