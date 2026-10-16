@@ -402,7 +402,7 @@ export class AuthServicesLegacy extends AuthServices {
         delete this._credentialManagers[serviceName];
 
         if (this._selectedMechanism?.serviceName === serviceName)
-            this.emit('reset');
+            this.emit('reset', {});
     }
 
     _connectSmartcardManager() {
