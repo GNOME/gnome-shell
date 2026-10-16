@@ -43,7 +43,7 @@ const PowerToggle = GObject.registerClass({
                 if (error)
                     console.error(error.message);
                 else
-                    this._proxy.connect('g-properties-changed', () => this._sync());
+                    this._proxy.connectObject('g-properties-changed', () => this._sync(), this);
                 this._sync();
             });
 
@@ -58,7 +58,7 @@ const PowerToggle = GObject.registerClass({
             app.activate();
         });
 
-        Main.sessionMode.connect('updated', () => this._sessionUpdated());
+        Main.sessionMode.connectObject('updated', () => this._sessionUpdated(), this);
         this._sessionUpdated();
         this._sync();
     }
