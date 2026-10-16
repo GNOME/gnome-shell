@@ -967,9 +967,13 @@ export const LoginDialog = GObject.registerClass({
             }, this);
 
             this._greeter.connectObject(
-                'default-session-name-changed', this._onDefaultSessionChanged.bind(this),
-                'session-opened', this._onSessionOpened.bind(this),
-                'timed-login-requested', this._onTimedLoginRequested.bind(this), this);
+                'default-session-name-changed',
+                (_, ...args) => this._onDefaultSessionChanged(...args),
+                'session-opened',
+                (_, ...args) => this._onSessionOpened(...args),
+                'timed-login-requested',
+                (_, ...args) => this._onTimedLoginRequested(...args),
+                this);
         }
     }
 
@@ -1050,7 +1054,7 @@ export const LoginDialog = GObject.registerClass({
             this._authMenuButton.setActiveItem(selectedMechanism);
     }
 
-    _onDefaultSessionChanged(client, sessionId) {
+    _onDefaultSessionChanged(sessionId) {
         this._authMenuButton.setActiveItem({
             sectionName: _SESSION_TYPE_SECTION_NAME,
             id: sessionId,
@@ -1240,7 +1244,7 @@ export const LoginDialog = GObject.registerClass({
         return null;
     }
 
-    async _onSessionOpened(client, serviceName, sessionId) {
+    async _onSessionOpened(serviceName, sessionId) {
         try {
             if (sessionId) {
                 const conflictingSession = await this._findConflictingSession(sessionId);
@@ -1381,7 +1385,7 @@ export const LoginDialog = GObject.registerClass({
         return this._timedLoginBatch.run();
     }
 
-    _onTimedLoginRequested(client, userName, seconds) {
+    _onTimedLoginRequested(userName, seconds) {
         if (this._timedLoginBatch)
             return;
 
