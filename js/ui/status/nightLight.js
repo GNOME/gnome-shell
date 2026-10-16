@@ -52,11 +52,11 @@ class Indicator extends SystemIndicator {
             g_interface_name: colorInfo.name,
             g_interface_info: colorInfo,
         });
-        this._proxy.connect('g-properties-changed', (p, properties) => {
+        this._proxy.connectObject('g-properties-changed', (p, properties) => {
             const nightLightActiveChanged = !!properties.lookup_value('NightLightActive', null);
             if (nightLightActiveChanged)
                 this._sync();
-        });
+        }, this);
         this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)
             .catch(e => console.error(e.message));
 
