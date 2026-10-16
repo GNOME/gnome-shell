@@ -160,7 +160,7 @@ class BackgroundAppsToggle extends QuickToggle {
             DBUS_OBJECT_PATH,
             proxy => {
                 this._proxy = proxy;
-                proxy?.connect('g-properties-changed', () => this._sync());
+                proxy?.connectObject('g-properties-changed', () => this._sync(), this);
                 this._sync();
             },
             null,
@@ -184,7 +184,7 @@ class BackgroundAppsToggle extends QuickToggle {
         this.connect('popup-menu', () => this.menu.open());
 
         this.menu.connect('open-state-changed', () => this._syncVisibility());
-        Main.sessionMode.connect('updated', () => this._syncVisibility());
+        Main.sessionMode.connectObject('updated', () => this._syncVisibility(), this);
     }
 
     _syncVisibility() {
