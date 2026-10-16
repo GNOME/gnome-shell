@@ -59,12 +59,12 @@ class PowerProfilesToggle extends QuickMenuToggle {
                 if (error) {
                     log(error.message);
                 } else {
-                    this._proxy.connect('g-properties-changed', (p, properties) => {
+                    this._proxy.connectObject('g-properties-changed', (p, properties) => {
                         const profilesChanged = !!properties.lookup_value('Profiles', null);
                         if (profilesChanged)
                             this._syncProfiles();
                         this._sync();
-                    });
+                    }, this);
 
                     if (this._proxy.g_name_owner)
                         this._syncProfiles();
