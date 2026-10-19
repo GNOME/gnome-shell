@@ -68,8 +68,8 @@ export class InputSource extends Signals.EventEmitter {
         if (!engineDesc)
             return this.id;
 
-        if (engineDesc.variant && engineDesc.variant.length > 0)
-            return `${engineDesc.layout}+${engineDesc.variant}`;
+        if (engineDesc.layout_variant && engineDesc.layout_variant.length > 0)
+            return `${engineDesc.layout}+${engineDesc.layout_variant}`;
         else
             return engineDesc.layout;
     }
