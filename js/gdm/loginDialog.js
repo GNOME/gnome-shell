@@ -973,22 +973,26 @@ export const LoginDialog = GObject.registerClass({
         }
     }
 
+    get _user() {
+        return this._userName ? this._userManager.get_user(this._userName) : null;
+    }
+
     _onReset(authPrompt, resetType) {
         this._ensureGreeterProxy();
         this._showBottomButtonGroup();
 
-        const previousUser = this._user;
-        this._user = null;
+        const previousUserName = this._userName;
+        this._userName = null;
 
         if (this._nextSignalId) {
             this._authPrompt.disconnect(this._nextSignalId);
             this._nextSignalId = 0;
         }
 
-        if (previousUser && resetType === AuthPrompt.ResetType.REUSE_USERNAME) {
-            this._user = previousUser;
+        if (previousUserName && resetType === AuthPrompt.ResetType.REUSE_USERNAME) {
+            this._userName = previousUserName;
             this._authPrompt.setUser(this._user);
-            this._authPrompt.begin({userName: previousUser.get_user_name()});
+            this._authPrompt.begin({userName: this._userName});
         } else if (resetType === AuthPrompt.ResetType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
@@ -1095,7 +1099,7 @@ export const LoginDialog = GObject.registerClass({
                 this._nextSignalId = 0;
                 this._authPrompt.updateSensitivity({sensitive: false});
                 const answer = this._authPrompt.getAnswer();
-                this._user = this._userManager.get_user(answer);
+                this._userName = answer;
                 this._updateSessions();
                 this._authPrompt.clear();
                 this._authPrompt.begin({userName: answer});
@@ -1446,7 +1450,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     _onUserListActivated(activatedItem) {
-        this._user = activatedItem.user;
+        this._userName = activatedItem.user.get_user_name();
 
         this._updateSessions();
 
