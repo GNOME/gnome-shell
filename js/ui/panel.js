@@ -126,7 +126,7 @@ const WorkspaceDot = GObject.registerClass({
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             scale_x: 0.0,
             scale_y: 0.0,
-            onComplete: () => this.destroy(),
+            onStopped: () => this.destroy(),
         });
     }
 
