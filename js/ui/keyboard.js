@@ -1581,7 +1581,7 @@ export const Keyboard = GObject.registerClass({
 
         this._languagePopup = new LanguageSelectionPopup(keyActor);
         Main.layoutManager.addTopChrome(this._languagePopup.actor);
-        this._languagePopup.open(BoxPointer.AnimationMode.FULL);
+        this._languagePopup.open(BoxPointer.PopupAnimation.FULL);
     }
 
     _updateCurrentPageVisible() {
