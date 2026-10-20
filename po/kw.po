@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-08-02 12:05+0000\n"
-"PO-Revision-Date: 2026-08-03 17:23+0100\n"
+"POT-Creation-Date: 2026-10-20 08:21+0000\n"
+"PO-Revision-Date: 2026-10-21 00:13+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
-"Language-Team: kw\n"
+"Language-Team: Cornish\n"
 "Language: kw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -102,7 +102,7 @@ msgid "Open new window of pinned app 9"
 msgstr "Ygeri fenester nowydh a app pynnys 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2694
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2692
 msgid "Screenshots"
 msgstr "Skrin-skeusennow"
 
@@ -153,7 +153,8 @@ msgstr "Diskwedhes oll appys"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "Bywhe toulys a-bervedh gwerek rag awtours ha provoryon gans Alt-F2"
+msgstr ""
+"Bywhe toulys a-bervedh gwerek rag displegyoryon ha provoryon gans Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
@@ -175,9 +176,9 @@ msgid ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "Yma dhe ystynansow GNOME Shell enworrans manylyon \"UUID\"; an alwedh ma a "
-"rol ystynansow may kodh bos kargys. Res yw dhe neb ystynnans ow mynnes dhe "
-"vos kargys rag bos y'n rol ma. Ynwedh, hwi a yll handla an rol ma gans an "
-"methodys D-Bus EnableExtension ha DisableExtension war org.gnome.Shell."
+"rol ystynansow rag karga. Yma edhom a vos y'n rol ma dhe neb ystynnans neb a "
+"vynn bos kargys. Ynwedh, hwi a yll handla an rol ma gans an methodys D-Bus "
+"EnableExtension ha DisableExtension war org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -600,7 +601,7 @@ msgstr "Manylyon Kamm"
 msgid "Copy Error"
 msgstr "Kopia Kamm"
 
-#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1427
+#: js/gdm/authPrompt.js:61 js/misc/timeLimitsManager.js:1443
 msgid "Screen Time Limit Reached"
 msgstr "Finweth Termyn Skrin Hedhys"
 
@@ -616,19 +617,19 @@ msgstr ""
 msgid "Ignore"
 msgstr "Skonya Aswon"
 
-#: js/gdm/authPrompt.js:269
+#: js/gdm/authPrompt.js:270
 msgid "Back"
 msgstr "Dehweles"
 
-#: js/gdm/authPrompt.js:366
+#: js/gdm/authPrompt.js:367
 msgid "Submit"
 msgstr "Danvon"
 
-#: js/gdm/authPrompt.js:533 js/gdm/authServicesLegacy.js:25
+#: js/gdm/authPrompt.js:534 js/gdm/authServicesLegacy.js:25
 #: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:299
 #: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:351
-#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:349
+#: js/ui/components/polkitAgent.js:286 js/ui/shellMountOperation.js:347
 #: subprojects/extensions-tool/src/command-upload.c:252
 msgid "Password"
 msgstr "Ger-tremena"
@@ -665,19 +666,19 @@ msgstr "(po tevewgh bys a-dreus redyer)"
 msgid "(or place finger on reader)"
 msgstr "(po lewgh bys war redyer)"
 
-#: js/gdm/authServicesSSSDSwitchable.js:467
+#: js/gdm/authServicesSSSDSwitchable.js:471
 msgid "Insert Smartcard"
 msgstr "Gorra "
 
-#: js/gdm/authServicesSSSDSwitchable.js:468
+#: js/gdm/authServicesSSSDSwitchable.js:472
 msgid "Select Identity"
 msgstr "Dewis Honanieth"
 
-#: js/gdm/authServicesSSSDSwitchable.js:507
+#: js/gdm/authServicesSSSDSwitchable.js:511
 msgid "Organization"
 msgstr "Kowethyans"
 
-#: js/gdm/authServicesSSSDSwitchable.js:534
+#: js/gdm/authServicesSSSDSwitchable.js:538
 #, javascript-format
 msgid ""
 "You have %d attempts left. If the passkey gets locked, you may not able to "
@@ -686,7 +687,7 @@ msgstr ""
 "Yma dhywgh %d assayys remenant. Mars alwhedhys yw an alhwedh-tremena, "
 "martesen ny vythydh galladow dhe hedhes agas akont."
 
-#: js/gdm/authServicesSSSDSwitchable.js:561 js/ui/padOsd.js:223
+#: js/gdm/authServicesSSSDSwitchable.js:565 js/ui/padOsd.js:223
 msgid "Done"
 msgstr "Deu"
 
@@ -748,11 +749,11 @@ msgstr ""
 "Owth astel gans nerth a wra kwytya neb appys hag argerdhow owth eksekutya, "
 "hag a wra omsewya martesen yn koll data"
 
-#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:191
-#: js/ui/audioDeviceSelection.js:60 js/ui/components/networkAgent.js:114
-#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:402
-#: js/ui/extensionDownloader.js:276 js/ui/shellMountOperation.js:399
-#: js/ui/shellMountOperation.js:409
+#: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:232
+#: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
+#: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
+#: js/ui/extensionDownloader.js:308 js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:407
 msgid "Cancel"
 msgstr "Hedhi"
 
@@ -760,7 +761,7 @@ msgstr "Hedhi"
 msgid "Force Stop"
 msgstr "Astel gans Nerth"
 
-#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:534 js/ui/unlockDialog.js:679
+#: js/gdm/loginDialog.js:53 js/gdm/loginDialog.js:537 js/ui/unlockDialog.js:724
 msgid "Login Options"
 msgstr "Dewisyow Omgelmi"
 
@@ -772,40 +773,40 @@ msgstr "Eghen Esedhek"
 msgid "Accessibility"
 msgstr "Hedhadewder"
 
-#: js/gdm/loginDialog.js:450
+#: js/gdm/loginDialog.js:453
 msgid "Not listed?"
-msgstr "Na hwi rolys?"
+msgstr "Nyns esowgh hwi rolys?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:1100
+#: js/gdm/loginDialog.js:1083
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(r.e., devnydhyer po %s)"
 
-#: js/gdm/loginDialog.js:1107 js/ui/components/networkAgent.js:258
+#: js/gdm/loginDialog.js:1090 js/ui/components/networkAgent.js:258
 #: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:327
 #: subprojects/extensions-tool/src/command-upload.c:234
 msgid "Username"
 msgstr "Hanow Devnydhyer"
 
-#: js/gdm/loginDialog.js:1171
+#: js/gdm/loginDialog.js:1154
 msgid "Login Attempt Timed Out"
 msgstr "Assay Omgelmyans yn Termyn Yn-Mes"
 
-#: js/gdm/loginDialog.js:1172
+#: js/gdm/loginDialog.js:1155
 msgid "Login took too long, please try again"
 msgstr "Omgelmyans kemerys re hir, assayewgh arta mar pleg"
 
-#: js/gdm/loginDialog.js:1534
+#: js/gdm/loginDialog.js:1518
 msgid "Login Window"
 msgstr "Fenester Omgelmyans"
 
-#: js/gdm/userVerifier.js:306
+#: js/gdm/userVerifier.js:315
 msgid "Authentication error"
 msgstr "Kamm omgelmyans"
 
-#: js/gdm/webLogin.js:63
+#: js/gdm/webLogin.js:104
 msgid "Login code: "
 msgstr "Koden-omgelmi:"
 
@@ -986,7 +987,7 @@ msgid_plural "Break in %d seconds"
 msgstr[0] "Powes yn %d eylen"
 msgstr[1] "Powes yn %d eylennow"
 
-#: js/misc/brightnessManager.js:292 js/ui/status/brightness.js:10
+#: js/misc/brightnessManager.js:294 js/ui/status/brightness.js:10
 msgid "Brightness"
 msgstr "Golewder"
 
@@ -1082,33 +1083,33 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Alhwedha Rosellans Skrin"
 
-#: js/misc/timeLimitsManager.js:468
+#: js/misc/timeLimitsManager.js:473
 msgid "GNOME needs to save screen time data"
 msgstr "Res yw dhe GNOME sawya data termyn skrin"
 
-#: js/misc/timeLimitsManager.js:1392
+#: js/misc/timeLimitsManager.js:1408
 msgid "Screen Time Limit is almost up"
 msgstr "Finweth Dermyn Skrin yw ogas deu"
 
-#: js/misc/timeLimitsManager.js:1394
+#: js/misc/timeLimitsManager.js:1410
 #, javascript-format
 msgid "The computer will lock in %d second."
 msgid_plural "The computer will lock in %d seconds."
 msgstr[0] "An amontyell a wra alhwedha yn %d eylen."
 msgstr[1] "An amontyell a wra alhwedha yn %d eylennow."
 
-#: js/misc/timeLimitsManager.js:1402
+#: js/misc/timeLimitsManager.js:1418
 #, javascript-format
 msgid "Screen Time Limit in %d Minute"
 msgid_plural "Screen Time Limit in %d Minutes"
 msgstr[0] "Finweth Termyn Skrin yn %d Mynysen"
 msgstr[1] "Finweth Dermyn Skrin yn %d Mynysennow"
 
-#: js/misc/timeLimitsManager.js:1406
+#: js/misc/timeLimitsManager.js:1422
 msgid "Your screen time limit is approaching"
 msgstr "Agas finweth dermyn skrin yw ow neshe"
 
-#: js/misc/timeLimitsManager.js:1428
+#: js/misc/timeLimitsManager.js:1444
 msgid "It’s time to stop using the device"
 msgstr "Termyn yw rag astel ow tevnydhya an devis"
 
@@ -1274,15 +1275,15 @@ msgstr "Gasa"
 msgid "App grid"
 msgstr "Rastell app"
 
-#: js/ui/appDisplay.js:1737
+#: js/ui/appDisplay.js:1736
 msgid "Unnamed Folder"
 msgstr "Restrenva Dhihenwys"
 
-#: js/ui/appDisplay.js:2564
+#: js/ui/appDisplay.js:2563
 msgid "Folder name"
 msgstr "Hanow restrenva"
 
-#: js/ui/appDisplay.js:2587
+#: js/ui/appDisplay.js:2586
 msgid "Edit folder name"
 msgstr "Golegi hanow restrenva"
 
@@ -1296,7 +1297,7 @@ msgstr "%s Pynnys war Skostel"
 msgid "%s Unpinned From Dash"
 msgstr "%s Dispynnys dhyworth Skostel"
 
-#: js/ui/appFavorites.js:149 js/ui/main.js:304
+#: js/ui/appFavorites.js:149 js/ui/main.js:302
 msgid "Undo"
 msgstr "Digelmi"
 
@@ -1333,23 +1334,23 @@ msgstr "Lonchya Ow Tevnydhya Karten Wrafek A-Bervedh"
 msgid "Launch Using Discrete Graphics Card"
 msgstr "Lonchya Ow Tevnydhya Karten Wrafek Synsys"
 
-#: js/ui/audioDeviceSelection.js:46
+#: js/ui/audioDeviceSelection.js:47
 msgid "Select Audio Device"
 msgstr "Dewis Devis Son"
 
-#: js/ui/audioDeviceSelection.js:67 js/ui/status/volume.js:81
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:81
 msgid "Sound Settings"
 msgstr "Settyansow Sownd"
 
-#: js/ui/audioDeviceSelection.js:75
+#: js/ui/audioDeviceSelection.js:76
 msgid "Headphones"
 msgstr "Skovarnigow"
 
-#: js/ui/audioDeviceSelection.js:77
+#: js/ui/audioDeviceSelection.js:78
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:79 js/ui/status/volume.js:372
+#: js/ui/audioDeviceSelection.js:80 js/ui/status/volume.js:372
 msgid "Microphone"
 msgstr "Korrgewsell"
 
@@ -1492,19 +1493,19 @@ msgstr "Ynia Kwytyans"
 msgid "Wait"
 msgstr "Gortos"
 
-#: js/ui/components/automountManager.js:82
+#: js/ui/components/automountManager.js:87
 msgid "External drive connected"
 msgstr "Kov a-ves junys"
 
-#: js/ui/components/automountManager.js:95
+#: js/ui/components/automountManager.js:100
 msgid "External drive disconnected"
 msgstr "Kov a-ves disjunys"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:214
 msgid "Unable to unlock volume"
 msgstr "Ny yllir dialhwedha kevrol"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:215
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "An dyllans leys a udisks ny skoodhya an settyans PIM"
 
@@ -1530,7 +1531,7 @@ msgstr ""
 "Yn tereylys hwi a yll junya gans ow tava an boton “WPS” war agas routyell"
 
 #: js/ui/components/networkAgent.js:108 js/ui/status/bluetooth.js:245
-#: js/ui/status/network.js:360 js/ui/status/network.js:444
+#: js/ui/status/network.js:361 js/ui/status/network.js:445
 msgid "Connect"
 msgstr "Junya"
 
@@ -1613,11 +1614,11 @@ msgstr "Omgelmi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:432
+#: js/ui/components/polkitAgent.js:263 js/ui/shellMountOperation.js:430
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Soweth, ny oberys henna. Assayewgh arta mar pleg."
 
-#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:408
+#: js/ui/ctrlAltTab.js:23 js/ui/overviewControls.js:411
 msgid "Windows"
 msgstr "Fenestri"
 
@@ -1627,7 +1628,7 @@ msgstr "Diskwedhes Appys"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the bottom of the overview
-#: js/ui/dash.js:400
+#: js/ui/dash.js:401
 msgid "Dash"
 msgstr "Skostel"
 
@@ -1715,91 +1716,91 @@ msgstr "Kewer"
 msgid "Select Weather Location…"
 msgstr "Dewis Tyller Kewer…"
 
-#: js/ui/endSessionDialog.js:46
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Omdhigelmi %s"
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:48
 msgctxt "title"
 msgid "Log Out"
 msgstr "Omdhigelmi"
 
-#: js/ui/endSessionDialog.js:50
+#: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "%s will be logged out automatically in %d second"
 msgid_plural "%s will be logged out automatically in %d seconds"
 msgstr[0] "%s a vydh omdhigelmys yn awtomatek yn %d eylen"
 msgstr[1] "%s a vydh omdhigelmys yn awtomatek yn %d eylennow"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:57
 #, javascript-format
 msgid "You will be logged out automatically in %d second"
 msgid_plural "You will be logged out automatically in %d seconds"
 msgstr[0] "Hwi a vydh omdhigelmys yn awtomatek yn %d eylen"
 msgstr[1] "Hwi a vydh omdhigelmys yn awtomatek yn %d eylennow"
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:64
 msgctxt "button"
 msgid "Log Out"
 msgstr "Omdhigelmi"
 
-#: js/ui/endSessionDialog.js:69 js/ui/status/system.js:180
+#: js/ui/endSessionDialog.js:70 js/ui/status/system.js:180
 msgctxt "title"
 msgid "Power Off"
 msgstr "Marowhe"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:71
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Lea Nowdhyansow & Marowhe"
 
-#: js/ui/endSessionDialog.js:73
+#: js/ui/endSessionDialog.js:74
 #, javascript-format
 msgid "The system will power off automatically in %d second"
 msgid_plural "The system will power off automatically in %d seconds"
 msgstr[0] "An system a wra marowhe yn awtomatek yn %d eylen"
 msgstr[1] "An system a wra marowhe yn awtomatek yn %d eylennow"
 
-#: js/ui/endSessionDialog.js:77 js/ui/endSessionDialog.js:96
+#: js/ui/endSessionDialog.js:78 js/ui/endSessionDialog.js:97
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Lea nowedhyansow medhelweyth ow kortos"
 
-#: js/ui/endSessionDialog.js:81
+#: js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Power Off"
 msgstr "Marowhe"
 
-#: js/ui/endSessionDialog.js:88
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart"
 msgstr "Dastalleth"
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:90
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Lea Nowedhyansow & Dastalleth"
 
-#: js/ui/endSessionDialog.js:92
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will restart automatically in %d second"
 msgid_plural "The system will restart automatically in %d seconds"
 msgstr[0] "An system a wra dastalleth yn awtomatek yn %d eylen"
 msgstr[1] "An system a wra dastalleth yn awtomatek yn %d eylennow"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:101
 msgctxt "button"
 msgid "Restart"
 msgstr "Dastalleth"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:109
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Dastalleth & Lea Nowedhyansow"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:112
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second"
 msgid_plural ""
@@ -1809,68 +1810,68 @@ msgstr[0] ""
 msgstr[1] ""
 "An system a wra dastalleth yn awtomatek ha lea nowedhyansow yn %d eylennow"
 
-#: js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:119
 msgctxt "button"
 msgid "Restart & Install"
 msgstr "Dastalleth & Lea"
 
-#: js/ui/endSessionDialog.js:120
+#: js/ui/endSessionDialog.js:121
 msgctxt "button"
 msgid "Install & Power Off"
 msgstr "Lea & Marowhe"
 
-#: js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:122
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Marowhe wosa nowedhyansow yw leys"
 
-#: js/ui/endSessionDialog.js:262
+#: js/ui/endSessionDialog.js:263
 msgid "Low battery power: please plug in before installing updates"
 msgstr "Batri isel: ebilyewgh kyns ow lea nowedhyansow mar pleg"
 
-#: js/ui/endSessionDialog.js:271
+#: js/ui/endSessionDialog.js:272
 msgid "Some applications are busy or have unsaved work"
 msgstr "Nebes appys yw bysi po yma ober ansawys dhedha"
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:277
 msgid "Other users are logged in"
 msgstr "Yma devnydhyoryon erel omgelmys"
 
-#: js/ui/endSessionDialog.js:432
+#: js/ui/endSessionDialog.js:436
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Dewisyow Dalleth"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:637
+#: js/ui/endSessionDialog.js:641
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (pell)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:640
+#: js/ui/endSessionDialog.js:644
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsolen)"
 
-#: js/ui/extensionDownloader.js:280
+#: js/ui/extensionDownloader.js:312
 msgid "Install"
 msgstr "Lea"
 
-#: js/ui/extensionDownloader.js:286
+#: js/ui/extensionDownloader.js:318
 msgid "Install Extension"
 msgstr "Lea Ystynnans"
 
-#: js/ui/extensionDownloader.js:287
+#: js/ui/extensionDownloader.js:319
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Iskarga ha lea “%s” dhyworth extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:354
+#: js/ui/extensionSystem.js:356
 msgid "Extension Updates Available"
 msgstr "Yma Nowedhyansow Ystynansow Kavadow"
 
-#: js/ui/extensionSystem.js:355
+#: js/ui/extensionSystem.js:357
 msgid "Extension updates are ready to be installed"
 msgstr "Nowedhyansow ystynansow yw kavadow dhe lea"
 
@@ -1946,7 +1947,7 @@ msgstr "Gwitha Byw"
 msgid "Turn On"
 msgstr "Bywhe"
 
-#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:455
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/network.js:456
 msgid "Turn Off"
 msgstr "Marowhe"
 
@@ -2012,19 +2013,19 @@ msgstr "Gweles Pennfenten God"
 msgid "Web Page"
 msgstr "Gwiasva"
 
-#: js/ui/main.js:300
+#: js/ui/main.js:298
 msgid "System was put in unsafe mode"
 msgstr "System o gorrys yn fordh dhiantel"
 
-#: js/ui/main.js:301
+#: js/ui/main.js:299
 msgid "Apps now have unrestricted access"
 msgstr "Yma dhe appys hedhas anstroth lemmyn"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:360
 msgid "Logged in as a privileged user"
 msgstr "Omgelmys avel devndyhyer pryvylejek"
 
-#: js/ui/main.js:363
+#: js/ui/main.js:361
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -2032,17 +2033,17 @@ msgstr ""
 "Owth eksekutya esedhek avel devndyhyer pryvylejek a kodh avodys rag resons "
 "sawder. Mars yw galladow, res yw dhywgh omgelmi avel devnydhyer normal."
 
-#: js/ui/main.js:411
+#: js/ui/main.js:409
 msgid "Screen Lock disabled"
 msgstr "Floren Skrin marowhes"
 
-#: js/ui/main.js:412
+#: js/ui/main.js:410
 msgid "Screen Locking requires the GNOME display manager"
 msgstr "Owth Alhwedha Skrin a rekwir an dyghtyer displetyans GNOME"
 
 #. Translators: this is the string displayed in the header when a message
 #. source doesn't have a name
-#: js/ui/messageList.js:405
+#: js/ui/messageList.js:407
 msgid "Unknown App"
 msgstr "App Ankoth"
 
@@ -2062,11 +2063,11 @@ msgstr "Titel ankoth"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:331
+#: js/ui/overviewControls.js:332
 msgid "Type to search"
 msgstr "Jynnskrifewgh rag hwilas"
 
-#: js/ui/overviewControls.js:396
+#: js/ui/overviewControls.js:399
 msgid "Apps"
 msgstr "Appys"
 
@@ -2152,130 +2153,130 @@ msgstr "Res yw dhe GNOME alhwedha an skrin"
 msgid "Screen Capture"
 msgstr "Rekord Skrin"
 
-#: js/ui/screenshot.js:1690
+#: js/ui/screenshot.js:1683
 msgid "Selection"
 msgstr "Dewis"
 
-#: js/ui/screenshot.js:1700
+#: js/ui/screenshot.js:1693
 msgid "Area Selection"
 msgstr "Dewis Arenebedh"
 
-#: js/ui/screenshot.js:1705
+#: js/ui/screenshot.js:1698
 msgid "Screen"
 msgstr "Skrin"
 
-#: js/ui/screenshot.js:1715
+#: js/ui/screenshot.js:1708
 msgid "Screen Selection"
 msgstr "Dewis Skrin"
 
-#: js/ui/screenshot.js:1720
+#: js/ui/screenshot.js:1713
 msgid "Window"
 msgstr "Fenester"
 
-#: js/ui/screenshot.js:1730
+#: js/ui/screenshot.js:1723
 msgid "Window Selection"
 msgstr "Dewis Fenester"
 
-#: js/ui/screenshot.js:1755 js/ui/status/system.js:117
+#: js/ui/screenshot.js:1748 js/ui/status/system.js:117
 msgid "Take Screenshot"
 msgstr "Kemeres Skrin-Skeusen"
 
-#: js/ui/screenshot.js:1771
+#: js/ui/screenshot.js:1764
 msgid "Record Screen"
 msgstr "Rekordya Skrin"
 
 #. Translators: since this string refers to an action,
 #. it needs to be phrased as a verb.
-#: js/ui/screenshot.js:1788
+#: js/ui/screenshot.js:1781
 msgid "Capture"
 msgstr "Rekordya"
 
-#: js/ui/screenshot.js:1810
+#: js/ui/screenshot.js:1803
 msgid "Show Pointer"
 msgstr "Diskwedhes Resell"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:2443
+#: js/ui/screenshot.js:2436
 msgid "Screencasts"
 msgstr "Skrin-Gwydhyowyow"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast From 07-17-2013 10:00:46 PM"
-#: js/ui/screenshot.js:2448
+#: js/ui/screenshot.js:2441
 #, no-c-format
 msgid "Screencast From %d %t"
 msgstr "Skrin-Deghesyans a-dhia %d %t"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2494
+#: js/ui/screenshot.js:2487
 msgid "Screencast Recorded"
 msgstr "Skrin-Deghesyans Rekordys"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2507
+#: js/ui/screenshot.js:2500
 msgid "Screencast Failed to Start"
 msgstr "Skrin-Deghesyans re Fyllis dhe Dhalleth"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2513
+#: js/ui/screenshot.js:2506
 msgid "Screencast Failed: Out of Disk Space"
 msgstr "Skrin-Deghesyans re Fyllis: Ow Tifygya Efander Plasen"
 
 #. We can encourage user to try again on service crashes since the
 #. recorder will auto-blocklist the pipeline that crashed.
 #. Translators: notification title.
-#: js/ui/screenshot.js:2519
+#: js/ui/screenshot.js:2512
 msgid "Screencast Failed, Please Try Again"
 msgstr "Skrin-Deghesyans re Fyllis, Assayewgh Arta Mar Pleg"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2522
+#: js/ui/screenshot.js:2515
 msgid "Screencast Failed"
 msgstr "Skrin-Deghesyans re Fyllis"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2535
+#: js/ui/screenshot.js:2528
 msgid "Click here to view the video"
 msgstr "Klyckyewgh omma rag gweles an gwydhyow"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:2543 js/ui/screenshot.js:2761
+#: js/ui/screenshot.js:2536 js/ui/screenshot.js:2759
 msgid "Show in Files"
 msgstr "Diskwedhes yn Restrennow"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2707
+#: js/ui/screenshot.js:2705
 #, javascript-format
 msgid "Screenshot From %s"
 msgstr "Skrin-Skeusen a-dhia %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2751
+#: js/ui/screenshot.js:2749
 msgid "Screenshot Captured"
 msgstr "Skrin-Skeusen Kemerys"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2753
+#: js/ui/screenshot.js:2751
 msgid "You can paste the image from the clipboard"
 msgstr "Hwi a yll dasskrifa an skeusen dhyworth an astel glypp"
 
-#: js/ui/screenshot.js:2812 js/ui/screenshot.js:2975
+#: js/ui/screenshot.js:2810 js/ui/screenshot.js:2973
 msgid "Screenshot taken"
 msgstr "Skrin-Skeusen kemerys"
 
-#: js/ui/search.js:887
+#: js/ui/search.js:872
 msgid "Searching"
 msgstr "Ow Hwilas"
 
-#: js/ui/search.js:890
+#: js/ui/search.js:875
 msgid "No results"
 msgstr "Nyns eus sewyansow"
 
-#: js/ui/search.js:1026
+#: js/ui/search.js:1011
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2306,20 +2307,20 @@ msgstr "Kudha Tekst"
 msgid "Caps lock is on"
 msgstr "Floren bennlytherennow yw byw"
 
-#: js/ui/shellMountOperation.js:303
+#: js/ui/shellMountOperation.js:301
 msgid "Hidden Volume"
 msgstr "Kevrol Gudh"
 
-#: js/ui/shellMountOperation.js:306
+#: js/ui/shellMountOperation.js:304
 msgid "Windows System Volume"
 msgstr "Kevrol System Windows"
 
-#: js/ui/shellMountOperation.js:309
+#: js/ui/shellMountOperation.js:307
 msgid "Uses Keyfiles"
 msgstr "Devnydhya Alhwedh-Restrennow"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:317
+#: js/ui/shellMountOperation.js:315
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead"
@@ -2327,7 +2328,7 @@ msgstr ""
 "Rag dialhwedha kevrol ow tevnydhya alhwedh-restrennow, devnydhyewgh an les "
 "<i>%s</i> yn le"
 
-#: js/ui/shellMountOperation.js:321
+#: js/ui/shellMountOperation.js:319
 msgid ""
 "You need an external utility like <i>Disks</i> to unlock a volume that uses "
 "keyfiles"
@@ -2335,25 +2336,25 @@ msgstr ""
 "Yma edhom dhywgh les a-ves kepar ha <i>Plasennow</i> rag dialhwedha kevrol "
 "ow tevnydha alhwedh-restrennow"
 
-#: js/ui/shellMountOperation.js:329
+#: js/ui/shellMountOperation.js:327
 msgid "PIM Number"
 msgstr "Niver PIM"
 
-#: js/ui/shellMountOperation.js:388
+#: js/ui/shellMountOperation.js:386
 msgid "Remember Password"
 msgstr "Remembra Ger-tremena"
 
-#: js/ui/shellMountOperation.js:403
+#: js/ui/shellMountOperation.js:401
 msgid "Unlock"
 msgstr "Dialhwedha"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:417
+#: js/ui/shellMountOperation.js:415
 #, javascript-format
 msgid "Open %s"
 msgstr "Ygeri %s"
 
-#: js/ui/shellMountOperation.js:453
+#: js/ui/shellMountOperation.js:451
 msgid "The PIM must be a number or empty"
 msgstr "Res yw dhe'n PIM bos niver po gwag"
 
@@ -2445,26 +2446,26 @@ msgstr "Isel"
 msgid "High"
 msgstr "Ughel"
 
-#: js/ui/status/backlight.js:158 js/ui/status/keyboard.js:877
+#: js/ui/status/backlight.js:156 js/ui/status/keyboard.js:877
 msgid "Keyboard"
 msgstr "Bysowek"
 
-#: js/ui/status/backlight.js:160
+#: js/ui/status/backlight.js:158
 msgid "Open keyboard brightness menu"
 msgstr "Ygeri rol golewder bysowek"
 
-#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:360
+#: js/ui/status/bluetooth.js:245 js/ui/status/network.js:361
 msgid "Disconnect"
 msgstr "Disjunya"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:354
+#: js/ui/status/bluetooth.js:266 js/ui/status/network.js:355
 #, javascript-format
 msgid "Disconnect %s"
 msgstr "Disjunya %s"
 
 #. Translators: %s is a device name like "MyPhone"
-#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:356
+#: js/ui/status/bluetooth.js:268 js/ui/status/network.js:357
 #, javascript-format
 msgid "Connect to %s"
 msgstr "Junya dhe %s"
@@ -2477,7 +2478,7 @@ msgstr "Bluetooth"
 msgid "Open Bluetooth menu"
 msgstr "Ygeri rol Bluetooth"
 
-#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1925
+#: js/ui/status/bluetooth.js:303 js/ui/status/network.js:1942
 msgid "Bluetooth Settings"
 msgstr "Settyansow Bluetooth"
 
@@ -2555,117 +2556,117 @@ msgstr "Nagha Hedhas"
 msgid "Grant Access"
 msgstr "Grontya Hedhas"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:63
 msgid "<unknown>"
 msgstr "<unknown>"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Secure"
 msgstr "Saw"
 
-#: js/ui/status/network.js:1060
+#: js/ui/status/network.js:1061
 msgid "Not secure"
 msgstr "Ansaw"
 
-#: js/ui/status/network.js:1061
+#: js/ui/status/network.js:1062
 #, javascript-format
 msgid "Signal strength %s%%"
 msgstr "Krefter sinell %s%%"
 
 #. translators: The first placeholder is the network name, the second and indication whether it is secure, and the last the signal strength indication
-#: js/ui/status/network.js:1063
+#: js/ui/status/network.js:1064
 #, javascript-format
 msgid "%s, %s, %s"
 msgstr "%s, %s, %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1166
+#: js/ui/status/network.js:1167
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Hotspot %s"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1450
 #, javascript-format
 msgid "%d connected"
 msgid_plural "%d connected"
 msgstr[0] "%d junys"
 msgstr[1] "%d junys"
 
-#: js/ui/status/network.js:1545 js/ui/status/network.js:1562
+#: js/ui/status/network.js:1548 js/ui/status/network.js:1565
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1549
 msgid "Open VPN menu"
 msgstr "Ygeri rol VPN"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1550
 msgid "VPN Settings"
 msgstr "Settyansow VPN"
 
-#: js/ui/status/network.js:1807
+#: js/ui/status/network.js:1811
 msgid "Wi–Fi"
 msgstr "DiWi"
 
-#: js/ui/status/network.js:1808
+#: js/ui/status/network.js:1812
 msgid "Open Wi–Fi menu"
 msgstr "Ygeri rol DhiWi"
 
-#: js/ui/status/network.js:1810
+#: js/ui/status/network.js:1814
 msgid "All Networks"
 msgstr "Oll Rosweythyow"
 
-#: js/ui/status/network.js:1907
+#: js/ui/status/network.js:1924
 msgid "Wired Connections"
 msgstr "Junyansow Wivrys"
 
-#: js/ui/status/network.js:1908
+#: js/ui/status/network.js:1925
 msgid "Open wired connections menu"
 msgstr "Ygeri rol junyansow wivrys"
 
-#: js/ui/status/network.js:1909
+#: js/ui/status/network.js:1926
 msgid "Wired Settings"
 msgstr "Settyansow Junyansow Wivrys"
 
-#: js/ui/status/network.js:1923
+#: js/ui/status/network.js:1940
 msgid "Bluetooth Tethers"
 msgstr "Stagow Bluetooth"
 
-#: js/ui/status/network.js:1924
+#: js/ui/status/network.js:1941
 msgid "Open Bluetooth tethers menu"
 msgstr "Ygeri rol stagow Bluetooth"
 
 #. Translators: "Tether" from "Bluetooth Tether"
-#: js/ui/status/network.js:1931
+#: js/ui/status/network.js:1948
 msgid "Tether"
 msgstr "Stag"
 
-#: js/ui/status/network.js:1944
+#: js/ui/status/network.js:1961
 msgid "Mobile Connections"
 msgstr "Junyansow Klapkodh"
 
-#: js/ui/status/network.js:1945
+#: js/ui/status/network.js:1962
 msgid "Open mobile connections menu"
 msgstr "Ygeri rol junyansow klapkodh"
 
-#: js/ui/status/network.js:1947
+#: js/ui/status/network.js:1964
 msgid "Mobile Broadband Settings"
 msgstr "Settyansow Bond Ledan Klapkodh"
 
 #. Translators: "Mobile" from "Mobile Broadband"
-#: js/ui/status/network.js:1956
+#: js/ui/status/network.js:1973
 msgid "Mobile"
 msgstr "Klapkodh"
 
-#: js/ui/status/network.js:1990
+#: js/ui/status/network.js:2007
 msgid "Sign in to Network"
 msgstr "Omgelmi dhe Rosweyth"
 
-#: js/ui/status/network.js:2177
+#: js/ui/status/network.js:2194
 msgid "Connection failed"
 msgstr "Junyans re fyllis"
 
-#: js/ui/status/network.js:2178
+#: js/ui/status/network.js:2195
 msgid "Activation of network connection failed"
 msgstr "Bywheans a junyans rosweyth re fyllis"
 
@@ -2743,7 +2744,7 @@ msgstr "Marowhe…"
 msgid "Log Out…"
 msgstr "Omdhigelmi…"
 
-#: js/ui/status/system.js:204 js/ui/unlockDialog.js:672
+#: js/ui/status/system.js:204 js/ui/unlockDialog.js:717
 msgid "Switch User…"
 msgstr "Skwychella Devnydhyer…"
 
@@ -2861,15 +2862,15 @@ msgstr "Skubyewgh war-vann"
 msgid "Click or press a key"
 msgstr "Klyckyewgh po tevewgh alhwedhen"
 
-#: js/ui/unlockDialog.js:653
+#: js/ui/unlockDialog.js:698
 msgid "Unlock Window"
 msgstr "Fenester Dhialhwedha"
 
-#: js/ui/unlockDialog.js:667
+#: js/ui/unlockDialog.js:712
 msgid "Log in as another user"
 msgstr "Omgelmi avel devnydhyer aral"
 
-#: js/ui/unlockDialog.js:695
+#: js/ui/unlockDialog.js:740
 msgid "Background Authentication Methods"
 msgstr "Methodys Gwirheans Kilva"
 
@@ -2993,15 +2994,15 @@ msgstr "Gwaya dhe Skrin War-Dyghow"
 msgid "Close"
 msgstr "Kwytya"
 
-#: src/calendar-server/reminder-watcher.c:124
+#: src/calendar-server/reminder-watcher.c:130
 msgid "Reminders"
 msgstr "Kofhoryon"
 
-#: src/calendar-server/reminder-watcher.c:129
+#: src/calendar-server/reminder-watcher.c:135
 msgid "Snooze"
 msgstr "Koska"
 
-#: src/calendar-server/reminder-watcher.c:130
+#: src/calendar-server/reminder-watcher.c:136
 msgid "Dismiss"
 msgstr "Tenwena"
 
@@ -3043,7 +3044,7 @@ msgstr "Geryow-tremena nag a omdhesedh"
 msgid "Password cannot be blank"
 msgstr "Ger-tremena ny allas bos gwag"
 
-#: src/shell-polkit-authentication-agent.c:342
+#: src/shell-polkit-authentication-agent.c:347
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Fenester omgelmyans o deges gans an devnydhyer"
 
