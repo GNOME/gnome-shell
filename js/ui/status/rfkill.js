@@ -55,11 +55,14 @@ const RfkillManager = GObject.registerClass({
             throw new Error('Airplane mode is hardware-locked');
 
         this._proxy.AirplaneMode = v;
+        this._applyingAirplaneMode = true;
+        this.notify('can-toggle-airplane-mode');
     }
 
     get can_toggle_airplane_mode() {
         return !this._proxy.HardwareAirplaneMode &&
-            this._proxy.HasAirplaneMode;
+            this._proxy.HasAirplaneMode &&
+            !this._applyingAirplaneMode;
     }
 
     get show_airplane_mode() {
@@ -71,6 +74,10 @@ const RfkillManager = GObject.registerClass({
         for (const prop in properties.deepUnpack()) {
             switch (prop) {
             case 'AirplaneMode':
+                if (this._applyingAirplaneMode) {
+                    delete this._applyingAirplaneMode;
+                    this.notify('can-toggle-airplane-mode');
+                }
                 this.notify('airplane-mode');
                 break;
             case 'HardwareAirplaneMode':
