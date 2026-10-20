@@ -18,10 +18,10 @@ const RfkillManager = GObject.registerClass({
             'airplane-mode', null, null,
             GObject.ParamFlags.READWRITE,
             false),
-        'hw-airplane-mode': GObject.ParamSpec.boolean(
-            'hw-airplane-mode', null, null,
+        'can-toggle-airplane-mode': GObject.ParamSpec.boolean(
+            'can-toggle-airplane-mode', null, null,
             GObject.ParamFlags.READABLE,
-            false),
+            true),
         'show-airplane-mode': GObject.ParamSpec.boolean(
             'show-airplane-mode', null, null,
             GObject.ParamFlags.READABLE,
@@ -44,19 +44,27 @@ const RfkillManager = GObject.registerClass({
     }
 
     get airplane_mode() {
-        return this._proxy.AirplaneMode;
+        return this._proxy.HardwareAirplaneMode || this._proxy.AirplaneMode;
     }
 
     set airplane_mode(v) {
+        if (!this._proxy.HasAirplaneMode)
+            throw new Error('Airplane mode is not available');
+
+        if (this._proxy.HardwareAirplaneMode)
+            throw new Error('Airplane mode is hardware-locked');
+
         this._proxy.AirplaneMode = v;
     }
 
-    get hw_airplane_mode() {
-        return this._proxy.HardwareAirplaneMode;
+    get can_toggle_airplane_mode() {
+        return !this._proxy.HardwareAirplaneMode &&
+            this._proxy.HasAirplaneMode;
     }
 
     get show_airplane_mode() {
-        return this._proxy.HasAirplaneMode && this._proxy.ShouldShowAirplaneMode;
+        return this._proxy.ShouldShowAirplaneMode &&
+            (this._proxy.HardwareAirplaneMode || this._proxy.HasAirplaneMode);
     }
 
     _changed(proxy, properties) {
@@ -66,9 +74,11 @@ const RfkillManager = GObject.registerClass({
                 this.notify('airplane-mode');
                 break;
             case 'HardwareAirplaneMode':
-                this.notify('hw-airplane-mode');
-                break;
+                this.notify('airplane-mode');
+                /* fallthrough */
             case 'HasAirplaneMode':
+                this.notify('can-toggle-airplane-mode');
+                /* fallthrough */
             case 'ShouldShowAirplaneMode':
                 this.notify('show-airplane-mode');
                 break;
@@ -101,6 +111,9 @@ class RfkillToggle extends QuickToggle {
         this._manager = getRfkillManager();
         this._manager.bind_property('show-airplane-mode',
             this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._manager.bind_property('can-toggle-airplane-mode',
+            this, 'reactive',
             GObject.BindingFlags.SYNC_CREATE);
         this._manager.bind_property('airplane-mode',
             this, 'checked',
