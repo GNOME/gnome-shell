@@ -471,9 +471,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     }
 
     async _onMechanismsChanged() {
-        if (this._redistributingRoles)
+        if (this._redistributingRoles || this._updatingMechanisms)
             return;
 
+        this._updatingMechanisms = true;
         await this._waitForCurrentBegin();
 
         this._redistributeRoles();
@@ -496,6 +497,7 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             {};
 
         this.emit('mechanisms-changed', {mechanisms, selectedMechanism});
+        this._updatingMechanisms = false;
     }
 
     async _waitPendingMessages({task}) {
