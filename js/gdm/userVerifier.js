@@ -89,12 +89,16 @@ export class ShellUserVerifier extends Signals.EventEmitter {
     async begin(userName, hold) {
         this._cancellable?.cancel();
         this._cancellable = new Gio.Cancellable();
+        const cancellable = this._cancellable;
 
+        const previousBegin = this._beginPromise;
         const {promise, resolve} = Promise.withResolvers();
         this._beginPromise = promise;
+        await previousBegin;
 
         try {
-            const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
+            const proxies = await this._getUserVerifierProxies(userName, cancellable);
+
             this._setUserVerifier(proxies.userVerifier);
             for (const s of this._authServices) {
                 // eslint-disable-next-line no-await-in-loop
@@ -108,8 +112,6 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         }
 
         resolve();
-        this._beginPromise = null;
-
         hold?.release();
     }
 
@@ -451,11 +453,22 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._redistributingRoles = false;
     }
 
+    // Wait until no begin() is in flight any more, including ones
+    // started while we were waiting for the current one
+    async _waitForCurrentBegin() {
+        let current;
+        do {
+            current = this._beginPromise;
+            // eslint-disable-next-line no-await-in-loop
+            await current;
+        } while (current !== this._beginPromise);
+    }
+
     async _onMechanismsChanged() {
         if (this._redistributingRoles)
             return;
 
-        await this._beginPromise;
+        await this._waitForCurrentBegin();
 
         this._redistributeRoles();
 
