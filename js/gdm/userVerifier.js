@@ -88,29 +88,37 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     async begin(userName, hold) {
         this._cancellable?.cancel();
-        this._cancellable = new Gio.Cancellable();
+        const cancellable = new Gio.Cancellable();
+        this._cancellable = cancellable;
 
+        const previousBegin = this._beginPromise;
         const {promise, resolve} = Promise.withResolvers();
         this._beginPromise = promise;
+        await previousBegin;
 
         try {
-            const proxies = await this._getUserVerifierProxies(userName, this._cancellable);
+            const proxies = await this._getUserVerifierProxies(userName, cancellable);
+            if (cancellable.is_cancelled())
+                return;
+
             this._setUserVerifier(proxies.userVerifier);
             for (const s of this._authServices) {
+                if (cancellable.is_cancelled())
+                    return;
                 // eslint-disable-next-line no-await-in-loop
                 await s.beginVerification(userName, proxies);
             }
         } catch (e) {
+            if (cancellable.is_cancelled())
+                return;
             if (e instanceof InitError)
                 this._reportInitError(e);
             else
                 logErrorUnlessCancelled(e);
+        } finally {
+            resolve();
+            hold?.release();
         }
-
-        resolve();
-        this._beginPromise = null;
-
-        hold?.release();
     }
 
     selectMechanism(mechanism) {
@@ -451,11 +459,22 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         this._redistributingRoles = false;
     }
 
+    // Wait until no begin() is in flight any more, including ones
+    // started while we were waiting for the current one
+    async _waitForCurrentBegin() {
+        let current;
+        do {
+            current = this._beginPromise;
+            // eslint-disable-next-line no-await-in-loop
+            await current;
+        } while (current !== this._beginPromise);
+    }
+
     async _onMechanismsChanged() {
         if (this._redistributingRoles)
             return;
 
-        await this._beginPromise;
+        await this._waitForCurrentBegin();
 
         this._redistributeRoles();
 
