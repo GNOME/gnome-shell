@@ -508,6 +508,10 @@ export class ScreenShield extends Signals.EventEmitter {
         return this._isActive;
     }
 
+    get lockScreenShown() {
+        return this._lockScreenState === MessageTray.State.SHOWN;
+    }
+
     get activationTime() {
         return this._activationTime;
     }

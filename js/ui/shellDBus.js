@@ -533,6 +533,14 @@ export class ScreenSaverDBus {
     }
 
     LockAsync(parameters, invocation) {
+        // lock() won't show the lock screen again if it is already
+        // shown, so there will be no ::lock-screen-shown to wait for
+        if (this._screenShield.lockScreenShown) {
+            this._screenShield.lock(true);
+            invocation.return_value(null);
+            return;
+        }
+
         const tmpId = this._screenShield.connect('lock-screen-shown', () => {
             this._screenShield.disconnect(tmpId);
 
