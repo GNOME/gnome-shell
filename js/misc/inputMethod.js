@@ -254,11 +254,7 @@ export const InputMethod = GObject.registerClass({
         state &= ~IBus.ModifierType.RELEASE_MASK;
 
         const curEvent = Clutter.get_current_event();
-        let time;
-        if (curEvent)
-            time = curEvent.get_time();
-        else
-            time = global.display.get_current_time_roundtrip();
+        const time = curEvent?.get_time_us() ?? GLib.get_monotonic_time();
 
         this.forward_key(keyval, keycode + 8, state & Clutter.ModifierType.MODIFIER_MASK, time, press);
     }
