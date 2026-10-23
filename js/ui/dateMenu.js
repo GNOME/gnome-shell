@@ -142,8 +142,8 @@ class EventsSection extends St.Button {
         this.child.add_child(this._eventsList);
 
         this._appSys = Shell.AppSystem.get_default();
-        this._appSys.connect('installed-changed',
-            this._appInstalledChanged.bind(this));
+        this._appSys.connectObject('installed-changed',
+            () => this._appInstalledChanged(), this);
         this._appInstalledChanged();
     }
 
@@ -368,8 +368,7 @@ class WorldClocksSection extends St.Button {
         this._clocksChanged();
 
         this._appSystem = Shell.AppSystem.get_default();
-        this._appSystem.connect('installed-changed',
-            this._sync.bind(this));
+        this._appSystem.connectObject('installed-changed', () => this._sync(), this);
         this._sync();
     }
 

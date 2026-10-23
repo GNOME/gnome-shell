@@ -576,7 +576,8 @@ export const SearchResultsView = GObject.registerClass({
         });
 
         this._parentalControlsManager = ParentalControlsManager.getDefault();
-        this._parentalControlsManager.connect('app-filter-changed', this._reloadRemoteProviders.bind(this));
+        this._parentalControlsManager.connectObject('app-filter-changed',
+            () => this._reloadRemoteProviders(), this);
 
         this._content = new MaxWidthBox({
             name: 'searchResultsContent',
@@ -639,7 +640,8 @@ export const SearchResultsView = GObject.registerClass({
         this._registerProvider(new AppDisplay.AppSearchProvider());
 
         const appSystem = Shell.AppSystem.get_default();
-        appSystem.connect('installed-changed', this._reloadRemoteProviders.bind(this));
+        appSystem.connectObject('installed-changed',
+            () => this._reloadRemoteProviders(), this);
         this._reloadRemoteProviders();
     }
 

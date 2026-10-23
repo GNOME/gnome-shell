@@ -1340,9 +1340,8 @@ class AppDisplay extends BaseAppView {
                 this._overviewHiddenId = Main.overview.connect('hidden', () => this.goToPage(0));
         });
 
-        Shell.AppSystem.get_default().connect('installed-changed', () => {
-            Main.queueDeferredWork(this._redisplayWorkId);
-        });
+        Shell.AppSystem.get_default().connectObject('installed-changed',
+            () => Main.queueDeferredWork(this._redisplayWorkId), this);
         this._folderSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.app-folders'});
         this._ensureDefaultFolders();
         this._folderSettings.connect('changed::folder-children', () => {
