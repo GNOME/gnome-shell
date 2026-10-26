@@ -1873,12 +1873,18 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     destroy() {
+        if (!this._virtualDevice)
+            return;
+
+        const virtualDevice = this._virtualDevice;
+        this._virtualDevice = null;
+
         this._inputSourceManager.disconnectObject(this);
         Main.inputMethod.disconnectObject(this);
 
         // Make sure any buttons pressed by the virtual device are released
         // immediately instead of waiting for the next GC cycle
-        this._virtualDevice.run_dispose();
+        virtualDevice.run_dispose();
     }
 
     _onSourcesModified() {
@@ -1944,6 +1950,9 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     async commit(str, modifiers) {
+        if (!this._virtualDevice)
+            return;
+
         const keyvals = this._getKeyvalsFromString(str);
 
         // If there is no IM focus (e.g. with X11 clients), or modifiers
@@ -1969,7 +1978,11 @@ class KeyboardController extends Signals.EventEmitter {
             this._currentSource.type === InputSourceManager.INPUT_SOURCE_TYPE_IBUS) {
             for (const keyval of keyvals) {
                 // eslint-disable-next-line no-await-in-loop
-                if (!await Main.inputMethod.handleVirtualKey(keyval)) {
+                const handled = await Main.inputMethod.handleVirtualKey(keyval);
+                if (!this._virtualDevice)
+                    return;
+
+                if (!handled) {
                     this.keyvalPress(keyval);
                     this.keyvalRelease(keyval);
                 }
@@ -1991,12 +2004,12 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     keyvalPress(keyval) {
-        this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
+        this._virtualDevice?.notify_keyval(Clutter.get_current_event_time() * 1000,
             keyval, Clutter.KeyState.PRESSED);
     }
 
     keyvalRelease(keyval) {
-        this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
+        this._virtualDevice?.notify_keyval(Clutter.get_current_event_time() * 1000,
             keyval, Clutter.KeyState.RELEASED);
     }
 
