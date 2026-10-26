@@ -1104,6 +1104,17 @@ export const Keyboard = GObject.registerClass({
         }
 
         this._clearShowIdle();
+        this._clearKeyboardRestTimer();
+
+        if (this._keyboardHeightNotifyId) {
+            Main.layoutManager.keyboardBox.disconnect(this._keyboardHeightNotifyId);
+            this._keyboardHeightNotifyId = 0;
+        }
+
+        if (this._surroundingTextId) {
+            Main.inputMethod.disconnect(this._surroundingTextId);
+            this._surroundingTextId = 0;
+        }
 
         this._keyboardController.setOskCompletion(false);
         this._keyboardController.destroy();
