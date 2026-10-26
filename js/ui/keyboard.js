@@ -1374,14 +1374,12 @@ export const Keyboard = GObject.registerClass({
                         this._keyboardController.toggleDelete(true);
                         this._keyboardController.toggleDelete(false);
                         this._updateLevelFromHints(true);
-                    } else if (!this._longPressed && key.action === 'levelSwitch') {
+                    } else if (key.action === 'levelSwitch') {
                         this._setActiveLevel(key.level);
                         this._setLatched(
                             key.level === 1 &&
                                 key.iconName === 'osk-caps-lock-symbolic');
                     }
-
-                    this._longPressed = false;
                 });
             } else if (key.keyval) {
                 button.connect('keyval', (_actor, keyval) => {
@@ -1405,7 +1403,6 @@ export const Keyboard = GObject.registerClass({
                     button.connect('long-press', () => {
                         this._setActiveLevel(key.level);
                         this._setLatched(true);
-                        this._longPressed = true;
                     });
                 }
             }
