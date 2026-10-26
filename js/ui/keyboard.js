@@ -1879,6 +1879,7 @@ class KeyboardController extends Signals.EventEmitter {
         const virtualDevice = this._virtualDevice;
         this._virtualDevice = null;
 
+        this.toggleDelete(false);
         this._inputSourceManager.disconnectObject(this);
         Main.inputMethod.disconnectObject(this);
 
@@ -2021,6 +2022,9 @@ class KeyboardController extends Signals.EventEmitter {
     }
 
     toggleDelete(enabled) {
+        if (enabled && !this._virtualDevice)
+            return;
+
         if (this._deleteEnabled === enabled)
             return;
 
@@ -2033,14 +2037,14 @@ class KeyboardController extends Signals.EventEmitter {
             (!Main.inputMethod.currentFocus ||
              Main.inputMethod.hasPreedit() ||
              this._purpose === Clutter.InputContentPurpose.TERMINAL)) {
-            this.keyvalPress(Clutter.KEY_BackSpace);
             this._backspacePressed = true;
+            this.keyvalPress(Clutter.KEY_BackSpace);
             return;
         }
 
         if (!enabled && this._backspacePressed) {
-            this.keyvalRelease(Clutter.KEY_BackSpace);
             delete this._backspacePressed;
+            this.keyvalRelease(Clutter.KEY_BackSpace);
             return;
         }
 
@@ -2081,8 +2085,8 @@ class KeyboardController extends Signals.EventEmitter {
                         }
                         this._surroundingUpdateTimeoutId =
                             GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
-                                func(text, cursor, cursor);
                                 this._surroundingUpdateTimeoutId = 0;
+                                func(text, cursor, cursor);
                             });
                     }
                 });
