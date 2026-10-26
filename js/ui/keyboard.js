@@ -224,6 +224,7 @@ class LanguageSelectionPopup extends NoGrabPopup {
 const Key = GObject.registerClass({
     Signals: {
         'long-press': {},
+        'long-press-end': {},
         'released': {},
         'keyval': {param_types: [GObject.TYPE_UINT]},
         'commit': {param_types: [GObject.TYPE_STRING]},
@@ -233,6 +234,7 @@ const Key = GObject.registerClass({
         const {label, iconName, commitString, keyval, hasAction} = {keyval: 0, ...params};
         super._init({style_class: 'key-container'});
 
+        this._longPress = false;
         this._keyval = parseInt(keyval, 16);
         this.keyButton = this._makeKey(commitString, label, iconName);
 
@@ -256,10 +258,11 @@ const Key = GObject.registerClass({
     }
 
     _onDestroy() {
-        if (this._menu) {
-            this._menu.destroy();
-            this._menu = null;
-        }
+        this._endLongPress();
+
+        const menu = this._menu;
+        this._menu = null;
+        menu?.destroy();
     }
 
     _ensureExtendedKeysPopup() {
@@ -293,6 +296,15 @@ const Key = GObject.registerClass({
         this._menu?.close(BoxPointer.PopupAnimation.FULL);
     }
 
+    _endLongPress() {
+        if (this._longPress) {
+            this._longPress = false;
+            // Long presses consume the click, so finish them without activating
+            // the key's normal release action.
+            this.emit('long-press-end');
+        }
+    }
+
     _makeKey(commitString, label, icon) {
         const button = new St.Button({
             style_class: 'keyboard-key',
@@ -310,14 +322,35 @@ const Key = GObject.registerClass({
         }
 
         const longPressGesture = new Clutter.LongPressGesture();
+        const cancelThreshold = longPressGesture.cancel_threshold;
+        const endLongPress = () => {
+            longPressGesture.cancel_threshold = cancelThreshold;
+            this._endLongPress();
+        };
         longPressGesture.connect('recognize', () => {
+            // Allow the finger to move from the key toward its variants.
+            longPressGesture.cancel_threshold = -1;
+            this._longPress = true;
             this.emit('long-press');
-            if (this._extendedKeys.length > 0) {
+
+            if (this._longPress && this._extendedKeys.length > 0) {
                 this._ensureExtendedKeysPopup();
                 this._showSubkeys();
             }
         });
+        longPressGesture.connect('end', endLongPress);
+        longPressGesture.connect('cancel', () => {
+            endLongPress();
+            this._hideSubkeys();
+        });
         button.add_action(longPressGesture);
+
+        button.connect('notify::mapped', () => {
+            if (!button.mapped) {
+                longPressGesture.cancel();
+                endLongPress();
+            }
+        });
 
         button.connect('clicked', () => {
             if (this._keyval && button === this.keyButton)
@@ -1413,6 +1446,8 @@ export const Keyboard = GObject.registerClass({
             if (key.action === 'delete') {
                 button.connect('long-press',
                     () => this._keyboardController.toggleDelete(true));
+                button.connect('long-press-end',
+                    () => this._keyboardController.toggleDelete(false));
             }
 
             if (key.action === 'modifier') {
