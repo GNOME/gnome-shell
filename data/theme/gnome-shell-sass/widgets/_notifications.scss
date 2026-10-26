@@ -20,6 +20,82 @@ $notification_banner_width: 34em;
   spacing: 0;
 }
 
+// One panel for a burst of ordinary notifications. The colors are inline
+// on the actor as well, so a theme that restyles .notification-banner
+// (Yaru) still gets the dark card.
+.notification-group-banner {
+  min-height: 0;
+  width: 460px;
+  min-width: 460px;
+  max-width: 460px;
+  padding: 6px 8px 10px;
+  background-color: rgba(32, 32, 32, 0.98);
+  color: #f5f5f5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+
+  @if $contrast == 'high' {
+    border: 2px solid white;
+  }
+
+  .notification-group-header-label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #ffffff;
+  }
+
+  .notification-group-section {
+    font-weight: bold;
+    font-size: 14px;
+    color: #f5f5f5;
+    padding: 8px 8px 4px;
+  }
+
+  .notification-group-row {
+    border-radius: 12px;
+    padding: 6px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  .notification-group-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #f5f5f5;
+    max-height: 64px;
+  }
+
+  .notification-group-time {
+    font-size: 12px;
+    color: #9aa0a6;
+  }
+
+  .notification-group-dot {
+    background-color: #3ea6ff;
+    border-radius: 4px;
+  }
+
+  .notification-group-avatar {
+    border-radius: 20px;
+  }
+
+  .notification-group-thumb {
+    border-radius: 8px;
+  }
+
+  .button,
+  .notification-group-button {
+    background-color: transparent;
+    box-shadow: none;
+    border-width: 0;
+    padding: 4px;
+    min-height: 0;
+    border-radius: 18px;
+  }
+}
+
 .notification-button {
   @extend %notification_button;
 }

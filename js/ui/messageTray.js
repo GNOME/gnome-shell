@@ -3,25 +3,35 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import {formatTimeSpan} from '../misc/dateUtils.js';
 import * as GnomeSession from '../misc/gnomeSession.js';
 import * as Layout from './layout.js';
 import * as Main from './main.js';
 import * as MessageList from './messageList.js';
+import * as PopupMenu from './popupMenu.js';
 import * as SignalTracker from '../misc/signalTracker.js';
+import * as Util from '../misc/util.js';
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
 export const ANIMATION_TIME = 200;
 
 const NOTIFICATION_TIMEOUT = 4000;
+// A burst stays up long enough to scan several rows. One notification
+// still uses NOTIFICATION_TIMEOUT.
+const GROUP_NOTIFICATION_TIMEOUT = 14000;
 
 const HIDE_TIMEOUT = 200;
 const LONGER_HIDE_TIMEOUT = 600;
 
-const MAX_NOTIFICATIONS_IN_QUEUE = 3;
+// The group banner absorbs the queue in one pass. The old cap of 3
+// dropped the rest of a burst before they could be drawn.
+const MAX_NOTIFICATIONS_IN_QUEUE = 30;
+const GROUP_BANNER_WIDTH = 460;
 const MAX_NOTIFICATIONS_PER_SOURCE = 10;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
@@ -693,6 +703,593 @@ GObject.registerClass({
 }, Notification);
 SignalTracker.registerDestroyableType(Notification);
 
+const GROUP_CARD_STYLE = [
+    'background-color: rgba(32, 32, 32, 0.98)',
+    'color: #f5f5f5',
+    'border-radius: 16px',
+    'border: 1px solid rgba(255, 255, 255, 0.08)',
+    'box-shadow: 0 8px 28px 0 rgba(0, 0, 0, 0.45)',
+    'padding: 6px 8px 10px 8px',
+    `width: ${GROUP_BANNER_WIDTH}px`,
+    `min-width: ${GROUP_BANNER_WIDTH}px`,
+    `max-width: ${GROUP_BANNER_WIDTH}px`,
+    'min-height: 0',
+    'margin-top: 8px',
+].join('; ');
+
+const GROUP_BUTTON_STYLE = [
+    'background-color: transparent',
+    'box-shadow: none',
+    'border-width: 0',
+    'padding: 6px',
+    'min-height: 0',
+    'border-radius: 18px',
+].join('; ');
+
+const GROUP_BUTTON_HOVER_STYLE = `${GROUP_BUTTON_STYLE}; background-color: rgba(255, 255, 255, 0.10)`;
+
+function notificationPlainText(text, useMarkup) {
+    if (!text)
+        return '';
+    if (!useMarkup)
+        return text;
+    try {
+        const [ok, , stripped] = Pango.parse_markup(text, -1, '\0');
+        return ok && stripped != null ? stripped : text;
+    } catch {
+        return text.replace(/<[^>]*>/g, '');
+    }
+}
+
+function clipNotificationText(text, max) {
+    const flat = text.replace(/\s+/g, ' ').trim();
+    if (flat.length <= max)
+        return flat;
+    return `${flat.slice(0, max - 1)}…`;
+}
+
+function notificationHeadline(notification) {
+    const app = notification.source?.title?.trim() ?? '';
+    const title = notification.title?.trim() ?? '';
+    const body = clipNotificationText(
+        notificationPlainText(notification.body, notification.useBodyMarkup), 180);
+    let line = title;
+    if (app && title && !title.toLowerCase().startsWith(app.toLowerCase()))
+        line = `${app}: ${title}`;
+    else if (!title)
+        line = app || _('Notification');
+    if (body && body !== title && body !== line)
+        return `${line}\n${body}`;
+    return line || _('Notification');
+}
+
+function sameGIcon(a, b) {
+    if (!a || !b)
+        return false;
+    if (a === b)
+        return true;
+    try {
+        return a.equal(b);
+    } catch {
+        return false;
+    }
+}
+
+function wireGroupButton(button) {
+    button.style = GROUP_BUTTON_STYLE;
+    button.connect('notify::hover', () => {
+        button.style = button.hover ? GROUP_BUTTON_HOVER_STYLE : GROUP_BUTTON_STYLE;
+    });
+}
+
+// One dark panel for a burst of ordinary notifications. Critical
+// notifications and feedback banners stay on the single-banner path.
+const BannerGroup = GObject.registerClass(
+class BannerGroup extends St.BoxLayout {
+    constructor(xAlign) {
+        super({
+            orientation: Clutter.Orientation.VERTICAL,
+            style_class: 'notification-banner notification-group-banner',
+            style: GROUP_CARD_STYLE,
+            reactive: true,
+            can_focus: false,
+            x_expand: false,
+            y_expand: false,
+            x_align: xAlign,
+            y_align: Clutter.ActorAlign.START,
+        });
+
+        this.isGroup = true;
+        // The tray expands a banner when the pointer enters it. This
+        // panel is already expanded; expand() is a no-op.
+        this.expanded = true;
+        this._rows = new Map();
+        this._closing = false;
+        this._fitId = 0;
+        this.onActivated = null;
+        this.holdOpen = null;
+        this.menuClosed = null;
+
+        const header = new St.BoxLayout({
+            style_class: 'notification-group-header',
+            x_expand: true,
+        });
+        header.spacing = 8;
+        header.add_child(new St.Label({
+            text: _('Notifications'),
+            style_class: 'notification-group-header-label',
+            style: 'font-weight: bold; font-size: 18px; color: #ffffff;',
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        }));
+
+        const gear = new St.Button({
+            style_class: 'notification-group-button',
+            can_focus: true,
+            y_align: Clutter.ActorAlign.CENTER,
+            accessible_name: _('Notification settings'),
+        });
+        gear.set_child(new St.Icon({
+            icon_name: 'emblem-system-symbolic',
+            fallback_icon_name: 'preferences-system-symbolic',
+            icon_size: 18,
+        }));
+        wireGroupButton(gear);
+        gear.connect('clicked', () => {
+            this.closeMenus();
+            Util.spawn(['gnome-control-center', 'notifications']);
+        });
+        header.add_child(gear);
+        this.add_child(header);
+
+        this._list = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+        });
+        this._importantHeader = new St.Label({
+            text: _('Important'),
+            style_class: 'notification-group-section',
+            style: 'font-weight: bold; font-size: 14px; color: #f5f5f5; padding: 8px 8px 4px 8px;',
+            visible: false,
+            x_expand: true,
+        });
+        this._importantBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+        });
+        this._newHeader = new St.Label({
+            text: _('New'),
+            style_class: 'notification-group-section',
+            style: 'font-weight: bold; font-size: 14px; color: #f5f5f5; padding: 8px 8px 4px 8px;',
+            visible: false,
+            x_expand: true,
+        });
+        this._newBox = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+        });
+        this._list.add_child(this._importantHeader);
+        this._list.add_child(this._importantBox);
+        this._list.add_child(this._newHeader);
+        this._list.add_child(this._newBox);
+
+        this._scroll = new St.ScrollView({
+            style_class: 'notification-group-scroll',
+            style: 'background-color: transparent;',
+            overlay_scrollbars: true,
+            x_expand: true,
+            y_expand: false,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.AUTOMATIC,
+            child: this._list,
+        });
+        this.add_child(this._scroll);
+
+        this.connect('destroy', () => {
+            this._closing = true;
+            if (this._fitId) {
+                GLib.source_remove(this._fitId);
+                this._fitId = 0;
+            }
+            this.closeMenus();
+        });
+    }
+
+    expand() {
+    }
+
+    get notificationCount() {
+        return this._rows.size;
+    }
+
+    get primary() {
+        return this._rows.keys().next().value ?? null;
+    }
+
+    get notifications() {
+        return [...this._rows.keys()];
+    }
+
+    get menuIsOpen() {
+        if (this._closing)
+            return false;
+        for (const row of this._rows.values()) {
+            if (row.isMenuOpen)
+                return true;
+        }
+        return false;
+    }
+
+    has(notification) {
+        return this._rows.has(notification);
+    }
+
+    addNotification(notification) {
+        if (this._closing || !notification || notification._destroyed)
+            return;
+        let row = this._rows.get(notification);
+        if (!row) {
+            row = new BannerGroupRow(notification, this);
+            this._rows.set(notification, row);
+        } else {
+            row.refresh();
+        }
+        this.place(row);
+        notification.acknowledged = true;
+    }
+
+    syncNotification(notification) {
+        const row = this._rows.get(notification);
+        if (!row)
+            return;
+        row.refresh();
+        this.place(row);
+        if (!notification._destroyed)
+            notification.acknowledged = true;
+    }
+
+    place(row) {
+        if (this._closing || !row?.widget || row.notification?._destroyed)
+            return;
+        const important = row.notification.urgency >= Urgency.HIGH;
+        const box = important ? this._importantBox : this._newBox;
+        const parent = row.widget.get_parent();
+        if (parent === box) {
+            box.set_child_at_index(row.widget, 0);
+        } else {
+            parent?.remove_child(row.widget);
+            box.insert_child_at_index(row.widget, 0);
+        }
+        this._syncSections();
+        this._fitSoon();
+    }
+
+    remove(notification) {
+        const row = this._rows.get(notification);
+        if (!row)
+            return this._rows.size === 0;
+        this._rows.delete(notification);
+        row.destroy();
+        this._syncSections();
+        this._fitSoon();
+        return this._rows.size === 0;
+    }
+
+    // Drop widget state and return the notifications still on screen.
+    // The caller decides which of them expire.
+    detachAll() {
+        this._closing = true;
+        const notifications = [...this._rows.keys()];
+        for (const row of this._rows.values())
+            row.detach();
+        this._rows.clear();
+        return notifications;
+    }
+
+    refreshTimes() {
+        if (this._closing)
+            return;
+        for (const row of this._rows.values())
+            row.updateTime();
+    }
+
+    closeMenus(except = null) {
+        for (const row of this._rows.values()) {
+            if (row !== except)
+                row.closeMenu();
+        }
+    }
+
+    fitScroll() {
+        if (this._closing || !this._scroll)
+            return;
+        const monitor = Main.layoutManager.primaryMonitor;
+        const max = Math.max(140, Math.floor(((monitor?.height ?? 800) * 0.62) - 52));
+        const width = this._list.width > 1 ? this._list.width : GROUP_BANNER_WIDTH - 24;
+        let nat = 0;
+        try {
+            nat = this._list.get_preferred_height(width)[1];
+        } catch {
+            nat = 0;
+        }
+        if (!(nat > 1))
+            nat = Math.max(this._rows.size, 1) * 76;
+        const height = Math.min(Math.max(nat, 1), max);
+        if (Math.abs((this._scroll.height || 0) - height) > 1)
+            this._scroll.height = height;
+    }
+
+    _syncSections() {
+        const important = this._importantBox.get_n_children();
+        const fresh = this._newBox.get_n_children();
+        this._importantHeader.visible = important > 0;
+        this._newHeader.visible = fresh > 0;
+    }
+
+    _fitSoon() {
+        if (this._closing || this._fitId)
+            return;
+        this._fitId = GLib.idle_add_once(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            this._fitId = 0;
+            this.fitScroll();
+        });
+    }
+});
+
+class BannerGroupRow {
+    constructor(notification, group) {
+        this.notification = notification;
+        this._group = group;
+        this._menu = null;
+        this._gone = false;
+
+        this.widget = new St.BoxLayout({
+            style_class: 'notification-group-row',
+            style: 'border-radius: 12px; padding: 6px; background-color: transparent;',
+            x_expand: true,
+            reactive: true,
+        });
+        this.widget.spacing = 2;
+
+        this._main = new St.Button({
+            style_class: 'notification-group-button',
+            x_expand: true,
+            can_focus: true,
+        });
+        wireGroupButton(this._main);
+        const content = new St.BoxLayout({
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        content.spacing = 10;
+        this._main.set_child(content);
+
+        content.add_child(new St.Widget({
+            style_class: 'notification-group-dot',
+            style: 'background-color: #3ea6ff; border-radius: 4px;',
+            width: 8,
+            height: 8,
+            y_align: Clutter.ActorAlign.CENTER,
+        }));
+
+        this._avatar = new St.Icon({
+            style_class: 'notification-group-avatar',
+            style: 'border-radius: 20px; background-color: rgba(255, 255, 255, 0.08);',
+            icon_size: 40,
+            y_align: Clutter.ActorAlign.CENTER,
+            fallback_icon_name: 'preferences-desktop-notification-symbolic',
+        });
+        content.add_child(this._avatar);
+
+        const text = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._title = new St.Label({
+            style_class: 'notification-group-title',
+            style: 'font-weight: bold; font-size: 14px; color: #f5f5f5; max-height: 64px;',
+            x_expand: true,
+        });
+        this._title.clutter_text.line_wrap = true;
+        this._title.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        text.add_child(this._title);
+
+        this._time = new St.Label({
+            style_class: 'notification-group-time',
+            style: 'font-size: 12px; color: #9aa0a6;',
+            x_expand: true,
+        });
+        text.add_child(this._time);
+        content.add_child(text);
+
+        this._thumb = new St.Icon({
+            style_class: 'notification-group-thumb',
+            style: 'border-radius: 8px;',
+            icon_size: 64,
+            y_align: Clutter.ActorAlign.CENTER,
+            visible: false,
+        });
+        content.add_child(this._thumb);
+
+        this._kebab = new St.Button({
+            style_class: 'notification-group-button',
+            can_focus: true,
+            y_align: Clutter.ActorAlign.CENTER,
+            accessible_name: _('Notification actions'),
+        });
+        this._kebab.set_child(new St.Icon({
+            icon_name: 'view-more-symbolic',
+            icon_size: 16,
+        }));
+        wireGroupButton(this._kebab);
+
+        this.widget.add_child(this._main);
+        this.widget.add_child(this._kebab);
+
+        this._main.connect('clicked', () => {
+            const current = this.notification;
+            if (!current || current._destroyed)
+                return;
+            this._group.onActivated?.(current);
+        });
+        this._kebab.connect('clicked', () => this._toggleMenu());
+        this._main.connect('notify::hover', () => this._syncHover());
+        this._kebab.connect('notify::hover', () => this._syncHover());
+        this.widget.connect('destroy', () => this._onWidgetDestroy());
+
+        notification.connectObject(
+            'notify::title', () => this.refresh(),
+            'notify::body', () => this.refresh(),
+            'notify::gicon', () => this.refresh(),
+            'notify::datetime', () => this.updateTime(),
+            'notify::urgency', () => this._group.place(this),
+            this.widget);
+        notification.source?.connectObject(
+            'notify::title', () => this.refresh(),
+            'notify::icon', () => this.refresh(),
+            this.widget);
+
+        this.refresh();
+    }
+
+    get isMenuOpen() {
+        return !!this._menu?.isOpen;
+    }
+
+    refresh() {
+        const notification = this.notification;
+        if (!notification || notification._destroyed)
+            return;
+        const text = notificationHeadline(notification);
+        this._title.text = text;
+        this._main.accessible_name = text;
+        this.updateTime();
+
+        const sourceIcon = notification.source?.icon ?? null;
+        const image = notification.gicon ?? null;
+        if (sourceIcon)
+            this._avatar.gicon = sourceIcon;
+        else if (image)
+            this._avatar.gicon = image;
+        else
+            this._avatar.icon_name = 'preferences-desktop-notification-symbolic';
+
+        const showThumb = image && !sameGIcon(image, sourceIcon);
+        this._thumb.visible = !!showThumb;
+        if (showThumb)
+            this._thumb.gicon = image;
+    }
+
+    updateTime() {
+        const notification = this.notification;
+        if (!notification || notification._destroyed || !this._time)
+            return;
+        try {
+            this._time.text = notification.datetime
+                ? formatTimeSpan(notification.datetime)
+                : '';
+        } catch {
+            this._time.text = '';
+        }
+    }
+
+    closeMenu() {
+        this._menu?.close(false);
+    }
+
+    detach() {
+        this._destroyMenu();
+        const notification = this.notification;
+        const widget = this.widget;
+        this.notification = null;
+        if (!notification || !widget)
+            return;
+        // The source disposes itself with its last notification, which
+        // can happen before this row drops its signal handlers.
+        try {
+            notification.disconnectObject(widget);
+            notification.source?.disconnectObject(widget);
+        } catch {
+        }
+    }
+
+    destroy() {
+        if (this._gone)
+            return;
+        this.detach();
+        const widget = this.widget;
+        this.widget = null;
+        this._gone = true;
+        widget?.destroy();
+    }
+
+    _onWidgetDestroy() {
+        if (this._gone)
+            return;
+        this._gone = true;
+        const notification = this.notification;
+        this.detach();
+        this.widget = null;
+        if (notification)
+            this._group._rows.delete(notification);
+    }
+
+    _syncHover() {
+        const hovering = this._main.hover || this._kebab.hover;
+        this.widget.style = hovering
+            ? 'border-radius: 12px; padding: 6px; background-color: rgba(255, 255, 255, 0.06);'
+            : 'border-radius: 12px; padding: 6px; background-color: transparent;';
+    }
+
+    _toggleMenu() {
+        if (this._gone || !this.notification || this.notification._destroyed)
+            return;
+        if (this.isMenuOpen) {
+            this.closeMenu();
+            return;
+        }
+        this._group.closeMenus(this);
+        if (!this._menu) {
+            this._menu = new PopupMenu.PopupMenu(this._kebab, 1.0, St.Side.TOP);
+            Main.uiGroup.add_child(this._menu.actor);
+            this._menu.actor.hide();
+            this._menu.connect('open-state-changed', (_menu, isOpen) => {
+                if (isOpen)
+                    this._group.holdOpen?.();
+                else
+                    this._group.menuClosed?.();
+            });
+        }
+        this._menu.removeAll();
+        for (const action of this.notification.actions) {
+            if (!action.label)
+                continue;
+            this._menu.addAction(action.label, () => {
+                try {
+                    action.activate();
+                } catch (e) {
+                    logError(e, 'Failed to run a grouped notification action');
+                }
+            });
+        }
+        this._menu.addAction(_('Dismiss'), () => {
+            const notification = this.notification;
+            if (notification && !notification._destroyed)
+                notification.destroy(NotificationDestroyedReason.DISMISSED);
+        });
+        this._menu.open(true);
+        this._group.holdOpen?.();
+    }
+
+    _destroyMenu() {
+        this.closeMenu();
+        this._menu?.destroy();
+        this._menu = null;
+    }
+}
+
 export const MessageTray = GObject.registerClass({
     Signals: {
         'queue-changed': {},
@@ -820,6 +1417,8 @@ export const MessageTray = GObject.registerClass({
 
     set bannerAlignment(align) {
         this._bannerBin.set_x_align(align);
+        if (this._banner?.isGroup)
+            this._banner.x_align = align;
     }
 
     _onNotificationKeyRelease(actor, event) {
@@ -900,7 +1499,132 @@ export const MessageTray = GObject.registerClass({
         }
     }
 
+    _shouldGroup(notification) {
+        return !!notification &&
+            !notification._destroyed &&
+            !notification.forFeedback &&
+            notification.urgency !== Urgency.CRITICAL &&
+            notification.urgency !== Urgency.LOW &&
+            !!notification.source?.policy?.showBanners;
+    }
+
+    _groupTimeout() {
+        const count = this._banner?.isGroup ? this._banner.notificationCount : 1;
+        return count > 1 ? GROUP_NOTIFICATION_TIMEOUT : NOTIFICATION_TIMEOUT;
+    }
+
+    _holdGroupOpen() {
+        this._pointerInNotification = true;
+        this._resetNotificationLeftTimeout();
+        if (this._banner?.isGroup &&
+            (this._notificationState === State.SHOWING ||
+             this._notificationState === State.SHOWN))
+            this._updateNotificationTimeout(this._groupTimeout());
+    }
+
+    _onGroupMenuClosed() {
+        if (this._banner?.menuIsOpen || this._bannerBin.hover)
+            return;
+        if (this._notificationState !== State.SHOWING &&
+            this._notificationState !== State.SHOWN)
+            return;
+        this._pointerInNotification = false;
+        this._updateNotificationTimeout(0);
+        this._updateState();
+    }
+
+    // A grouped notification no longer belongs in the panel (it became
+    // critical, or it is feedback). Queue it for the classic banner.
+    // The panel hides, and its remaining transient notifications expire.
+    _releaseGroupedNotification(notification) {
+        this._banner.remove(notification);
+        if (this._notification === notification)
+            this._notification = this._banner.primary ?? null;
+
+        // Clearing acknowledged asks the source to request a banner
+        // again. Ignore that re-entry; we queue it ourselves.
+        this._requeueing = true;
+        try {
+            notification.acknowledged = false;
+        } finally {
+            this._requeueing = false;
+        }
+
+        if (!this._notificationQueue.includes(notification)) {
+            this._notificationQueue.push(notification);
+            this._notificationQueue.sort(
+                (n1, n2) => n2.urgency - n1.urgency);
+            this.emit('queue-changed');
+        }
+
+        if (!this._notification)
+            this._notificationRemoved = true;
+        this._notificationExpired = true;
+        this._updateState();
+    }
+
+    _onBannerGroupActivated(notification) {
+        if (this._notificationState === State.HIDING ||
+            this._notificationState === State.HIDDEN)
+            return;
+
+        this._activatedNotification = notification;
+        // activate() destroys a non-resident notification, which asks
+        // the tray to drop it. Don't tear the panel down from that signal.
+        this._groupClosing = true;
+        try {
+            notification.activate();
+        } catch (e) {
+            logError(e, 'Failed to activate grouped notification');
+        } finally {
+            this._groupClosing = false;
+        }
+
+        // A resident notification stays. Anything else is destroyed, and
+        // the source may already be disposed if it was the last one.
+        let destroyed = true;
+        try {
+            destroyed = !!notification._destroyed;
+        } catch {
+            destroyed = true;
+        }
+        if (!destroyed) {
+            this._activatedNotification = null;
+            this._banner?.syncNotification?.(notification);
+            return;
+        }
+
+        if (this._banner?.has?.(notification))
+            this._banner.remove(notification);
+        if (this._notification === notification)
+            this._notification = this._banner?.primary ?? null;
+        if (!this._notification)
+            this._notificationRemoved = true;
+        this._notificationExpired = true;
+        this._updateState();
+    }
+
     _onNotificationRemoved(source, notification) {
+        if (this._groupClosing)
+            return;
+
+        if (this._banner?.isGroup && this._banner.has(notification)) {
+            const wasPrimary = this._notification === notification;
+            const empty = this._banner.remove(notification);
+            if (empty) {
+                this._notificationRemoved = true;
+                this._pointerInNotification = false;
+                this._updateNotificationTimeout(0);
+                if (this._notificationState === State.SHOWN ||
+                    this._notificationState === State.SHOWING)
+                    this._updateState();
+                return;
+            }
+            if (wasPrimary)
+                this._notification = this._banner.primary;
+            return;
+        }
+
         if (this._notification === notification) {
             this._notificationRemoved = true;
             if (this._notificationState === State.SHOWN ||
@@ -919,6 +1643,9 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onNotificationRequestBanner(_source, notification) {
+        if (this._requeueing)
+            return;
+
         // We never display a banner for already acknowledged notifications
         if (notification.acknowledged)
             return;
@@ -929,12 +1656,31 @@ export const MessageTray = GObject.registerClass({
         if (!notification.source.policy.showBanners && notification.urgency !== Urgency.CRITICAL)
             return;
 
+        const groupShowing = this._banner?.isGroup &&
+            (this._notificationState === State.SHOWING ||
+             this._notificationState === State.SHOWN);
+
+        if (groupShowing && this._banner.has(notification)) {
+            if (!this._shouldGroup(notification))
+                this._releaseGroupedNotification(notification);
+            else {
+                notification.acknowledged = true;
+                this._banner.syncNotification(notification);
+                this._updateNotificationTimeout(this._groupTimeout());
+            }
+            return;
+        }
+
         if (this._notification === notification) {
             // If a notification that is being shown is updated, we update
             // how it is shown and extend the time until it auto-hides.
             // If a new notification is updated while it is being hidden,
             // we stop hiding it and show it again.
             this._updateShowingNotification();
+        } else if (groupShowing && this._shouldGroup(notification)) {
+            this._banner.addNotification(notification);
+            this._updateNotificationTimeout(this._groupTimeout());
+            return;
         } else if (!this._notificationQueue.includes(notification)) {
             // If the queue is "full", we skip banner mode and just show a small
             // indicator in the panel; however do make an exception for CRITICAL
@@ -948,6 +1694,12 @@ export const MessageTray = GObject.registerClass({
                 this.emit('queue-changed');
             }
         }
+
+        // A critical alert should not wait out a burst. Close the panel,
+        // then show the alert on the classic banner.
+        if (groupShowing && notification.urgency === Urgency.CRITICAL)
+            this._notificationExpired = true;
+
         this._updateState();
     }
 
@@ -1021,6 +1773,12 @@ export const MessageTray = GObject.registerClass({
     }
 
     _onNotificationLeftTimeout() {
+        if (this._banner?.menuIsOpen) {
+            this._pointerInNotification = true;
+            this._notificationLeftTimeoutId = 0;
+            return;
+        }
+
         const [x, y] = global.get_pointer();
         // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side.
         if (this._notificationLeftMouseX > -1 &&
@@ -1061,52 +1819,57 @@ export const MessageTray = GObject.registerClass({
 
         this._updatingState = true;
 
-        // Filter out acknowledged notifications.
-        let changed = false;
-        this._notificationQueue = this._notificationQueue.filter(n => {
-            changed ||= n.acknowledged;
-            return !n.acknowledged;
-        });
+        try {
+            // Filter out acknowledged notifications.
+            let changed = false;
+            this._notificationQueue = this._notificationQueue.filter(n => {
+                changed ||= n.acknowledged;
+                return !n.acknowledged;
+            });
 
-        if (changed)
-            this.emit('queue-changed');
+            if (changed)
+                this.emit('queue-changed');
 
-        const hasNotifications = Main.sessionMode.hasNotifications;
+            const hasNotifications = Main.sessionMode.hasNotifications;
 
-        if (this._notificationState === State.HIDDEN) {
-            const nextNotification = this._notificationQueue[0] || null;
-            if (hasNotifications && nextNotification) {
-                const limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
-                const showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency === Urgency.CRITICAL;
-                if (showNextNotification)
-                    this._showNotification();
+            if (this._notificationState === State.HIDDEN) {
+                const nextNotification = this._notificationQueue[0] || null;
+                if (hasNotifications && nextNotification) {
+                    const limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
+                    const showNextNotification = !limited || nextNotification.forFeedback || nextNotification.urgency === Urgency.CRITICAL;
+                    if (showNextNotification)
+                        this._showNotification();
+                }
+            } else if (this._notificationState === State.SHOWING ||
+                       this._notificationState === State.SHOWN) {
+                const notificationUrgency = this._notification?.urgency;
+                const expired = ((this._userActiveWhileNotificationShown &&
+                               this._notificationState === State.SHOWN &&
+                               this._notificationTimeoutId === 0 &&
+                               notificationUrgency !== Urgency.CRITICAL &&
+                               !this._pointerInNotification &&
+                               !this._banner?.menuIsOpen) ||
+                               this._notificationExpired);
+                const mustClose = this._notificationRemoved || !hasNotifications || expired;
+
+                if (mustClose) {
+                    const animate = hasNotifications && !this._notificationRemoved;
+                    this._hideNotification(animate);
+                } else if (this._notificationState === State.SHOWN &&
+                           this._pointerInNotification &&
+                           this._banner) {
+                    if (!this._banner.expanded)
+                        this._expandBanner(false);
+                    else
+                        this._ensureBannerFocused();
+                }
             }
-        } else if (this._notificationState === State.SHOWING ||
-                   this._notificationState === State.SHOWN) {
-            const expired = (this._userActiveWhileNotificationShown &&
-                           this._notificationState === State.SHOWN &&
-                           this._notificationTimeoutId === 0 &&
-                           this._notification.urgency !== Urgency.CRITICAL &&
-                           !this._pointerInNotification) || this._notificationExpired;
-            const mustClose = this._notificationRemoved || !hasNotifications || expired;
-
-            if (mustClose) {
-                const animate = hasNotifications && !this._notificationRemoved;
-                this._hideNotification(animate);
-            } else if (this._notificationState === State.SHOWN &&
-                       this._pointerInNotification) {
-                if (!this._banner.expanded)
-                    this._expandBanner(false);
-                else
-                    this._ensureBannerFocused();
-            }
+        } finally {
+            this._updatingState = false;
+            // Clean transient variables that are used to communicate actions
+            // to updateState()
+            this._notificationExpired = false;
         }
-
-        this._updatingState = false;
-
-        // Clean transient variables that are used to communicate actions
-        // to updateState()
-        this._notificationExpired = false;
     }
 
     _onIdleMonitorBecameActive() {
@@ -1126,15 +1889,45 @@ export const MessageTray = GObject.registerClass({
             this.idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         }
 
-        this._banner = new MessageList.NotificationMessage(this._notification);
-        this._banner.can_focus = false;
-        this._banner._header.expandButton.visible = false;
-        this._banner.add_style_class_name('notification-banner');
+        if (this._shouldGroup(this._notification)) {
+            const extras = [];
+            this._notificationQueue = this._notificationQueue.filter(candidate => {
+                if (this._shouldGroup(candidate)) {
+                    extras.push(candidate);
+                    return false;
+                }
+                return true;
+            });
+            this.emit('queue-changed');
+
+            const group = new BannerGroup(this.bannerAlignment);
+            group.onActivated = notification => this._onBannerGroupActivated(notification);
+            group.holdOpen = () => this._holdGroupOpen();
+            group.menuClosed = () => this._onGroupMenuClosed();
+            group.addNotification(this._notification);
+            for (const extra of extras)
+                group.addNotification(extra);
+            this._banner = group;
+        } else {
+            this._banner = new MessageList.NotificationMessage(this._notification);
+            this._banner.can_focus = false;
+            this._banner._header.expandButton.visible = false;
+            this._banner.add_style_class_name('notification-banner');
+        }
 
         this._bannerBin.add_child(this._banner);
+        this._banner.fitScroll?.();
 
         this._bannerBin.opacity = 0;
-        this._bannerBin.y = -this._banner.height;
+        let slide = this._banner.height;
+        if (!(slide > 0)) {
+            try {
+                slide = this._banner.get_preferred_height(-1)[1];
+            } catch {
+                slide = 0;
+            }
+        }
+        this._bannerBin.y = -Math.max(slide, 48);
         this.show();
 
         global.compositor.disable_unredirect();
@@ -1159,12 +1952,17 @@ export const MessageTray = GObject.registerClass({
 
     _updateShowingNotification() {
         this._notification.acknowledged = true;
+        if (this._banner?.isGroup)
+            this._banner.syncNotification(this._notification);
+        // One sound for the banner. Rows added to an open group do not
+        // come through here, so a burst does not play once per notification.
         this._notification.playSound();
 
         // We auto-expand notifications with CRITICAL urgency, or for which the relevant setting
-        // is on in the control center.
-        if (this._notification.urgency === Urgency.CRITICAL ||
-            this._notification.source.policy.forceExpanded)
+        // is on in the control center. The group panel already shows its rows.
+        if (!this._banner?.isGroup &&
+            (this._notification.urgency === Urgency.CRITICAL ||
+             this._notification.source.policy.forceExpanded))
             this._expandBanner(true);
 
         // We tween all notifications to full opacity. This ensures that both new notifications and
@@ -1203,6 +2001,10 @@ export const MessageTray = GObject.registerClass({
     }
 
     _showNotificationCompleted() {
+        if (this._banner?.isGroup) {
+            this._updateNotificationTimeout(this._groupTimeout());
+            return;
+        }
         if (this._notification.urgency !== Urgency.CRITICAL)
             this._updateNotificationTimeout(NOTIFICATION_TIMEOUT);
     }
@@ -1221,6 +2023,12 @@ export const MessageTray = GObject.registerClass({
     }
 
     _notificationTimeout() {
+        this._banner?.refreshTimes?.();
+        if (this._banner?.menuIsOpen) {
+            this._updateNotificationTimeout(1000);
+            return;
+        }
+
         const [x, y] = global.get_pointer();
         if (y < this._lastSeenMouseY - 10 && !this._notificationHovered) {
             // The mouse is moving towards the notification, so don't
@@ -1271,10 +2079,32 @@ export const MessageTray = GObject.registerClass({
     }
 
     _hideNotificationCompleted() {
+        if (!this._banner)
+            return;
+
         const notification = this._notification;
+        const grouped = this._banner?.isGroup ? this._banner.detachAll() : null;
+        const activated = this._activatedNotification;
         this._notification = null;
-        if (!this._notificationRemoved && notification.isTransient)
-            notification.destroy(NotificationDestroyedReason.EXPIRED);
+        this._activatedNotification = null;
+
+        this._groupClosing = true;
+        try {
+            if (grouped) {
+                for (const item of grouped) {
+                    if (!item || item._destroyed || item === activated)
+                        continue;
+                    if (item.isTransient)
+                        item.destroy(NotificationDestroyedReason.EXPIRED);
+                }
+            } else if (!this._notificationRemoved &&
+                       notification?.isTransient &&
+                       !notification._destroyed) {
+                notification.destroy(NotificationDestroyedReason.EXPIRED);
+            }
+        } finally {
+            this._groupClosing = false;
+        }
 
         this._pointerInNotification = false;
         this._notificationRemoved = false;
