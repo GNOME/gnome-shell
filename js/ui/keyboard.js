@@ -1043,6 +1043,7 @@ export const Keyboard = GObject.registerClass({
             text_direction: Clutter.TextDirection.LTR,
             orientation: Clutter.Orientation.VERTICAL,
         });
+        this._destroyed = false;
         this._focusInExtendedKeys = false;
         this._emojiActive = false;
 
@@ -1093,6 +1094,8 @@ export const Keyboard = GObject.registerClass({
     }
 
     _onDestroy() {
+        this._destroyed = true;
+
         if (this._windowMovedId) {
             this._focusTracker.disconnect(this._windowMovedId);
             delete this._windowMovedId;
@@ -1403,8 +1406,10 @@ export const Keyboard = GObject.registerClass({
             } else {
                 button.connect('commit', (_actor, str) => {
                     this._keyboardController.commit(str, this._modifiers).then(() => {
-                        this._disableAllModifiers();
-                        this._updateLevelFromHints(true);
+                        if (!this._destroyed) {
+                            this._disableAllModifiers();
+                            this._updateLevelFromHints(true);
+                        }
                     }).catch(console.error);
                 });
             }
