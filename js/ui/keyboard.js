@@ -1096,15 +1096,14 @@ export const Keyboard = GObject.registerClass({
     _onDestroy() {
         this._destroyed = true;
 
+        const focusTracker = this._focusTracker;
+        this._focusTracker = null;
         if (this._windowMovedId) {
-            this._focusTracker.disconnect(this._windowMovedId);
+            focusTracker?.disconnect(this._windowMovedId);
             delete this._windowMovedId;
         }
 
-        if (this._focusTracker) {
-            this._focusTracker.destroy();
-            delete this._focusTracker;
-        }
+        focusTracker?.destroy();
 
         this._clearShowIdle();
         this._clearKeyboardRestTimer();
@@ -1775,10 +1774,11 @@ export const Keyboard = GObject.registerClass({
 
         frameRect.y = finalY;
 
-        this._focusTracker.disconnect(this._windowMovedId);
+        this._focusTracker?.disconnect(this._windowMovedId);
+        this._windowMovedId = 0;
         window.move_frame(true, frameRect.x, frameRect.y);
-        this._windowMovedId = this._focusTracker.connect('window-moved',
-            this._onFocusWindowMoving.bind(this));
+        this._windowMovedId = this._focusTracker?.connect('window-moved',
+            () => this._onFocusWindowMoving());
     }
 
     _animateWindow(window, show) {
