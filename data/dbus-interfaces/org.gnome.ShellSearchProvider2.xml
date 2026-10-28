@@ -83,5 +83,18 @@
       <arg type="as" name="terms" direction="in" />
       <arg type="u" name="timestamp" direction="in" />
     </method>
+
+    <!--
+        Cancel:
+
+        Called when the results of a pending GetInitialResultSet() or
+        GetSubsearchResultSet() call are no longer needed, for example
+        because the user closed the overview or cleared the search entry.
+        The provider should stop the search and may reply to the pending
+        call with an empty result set.
+
+        Implementing this method is optional.
+    -->
+    <method name="Cancel" />
   </interface>
 </node>

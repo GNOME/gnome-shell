@@ -56,6 +56,7 @@ const SearchProvider2Iface = `
     <arg type="as" direction="in" />
     <arg type="u" direction="in" />
 </method>
+<method name="Cancel" />
 </interface>
 </node>`;
 
@@ -253,6 +254,7 @@ class RemoteSearchProvider {
     }
 
     async getInitialResultSet(terms, cancellable) {
+        const cancelId = cancellable.connect(() => this.cancelSearch());
         try {
             const [results] = await this.proxy.GetInitialResultSetAsync(terms, cancellable);
             return results;
@@ -260,10 +262,13 @@ class RemoteSearchProvider {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 log(`Received error from D-Bus search provider ${this.id}: ${error}`);
             return [];
+        } finally {
+            cancellable.disconnect(cancelId);
         }
     }
 
     async getSubsearchResultSet(previousResults, newTerms, cancellable) {
+        const cancelId = cancellable.connect(() => this.cancelSearch());
         try {
             const [results] = await this.proxy.GetSubsearchResultSetAsync(previousResults, newTerms, cancellable);
             return results;
@@ -271,7 +276,13 @@ class RemoteSearchProvider {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 log(`Received error from D-Bus search provider ${this.id}: ${error}`);
             return [];
+        } finally {
+            cancellable.disconnect(cancelId);
         }
+    }
+
+    cancelSearch() {
+        // Version 1 of the interface has no way to cancel a search
     }
 
     async getResultMetas(ids, cancellable) {
@@ -320,6 +331,19 @@ class RemoteSearchProvider2 extends RemoteSearchProvider {
         super(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 
         this.canLaunchSearch = true;
+        this._canCancel = true;
+    }
+
+    cancelSearch() {
+        if (!this._canCancel)
+            return;
+
+        this.proxy.CancelAsync().catch(error => {
+            if (error.matches(Gio.DBusError, Gio.DBusError.UNKNOWN_METHOD))
+                this._canCancel = false;
+            else
+                logError(error);
+        });
     }
 
     activateResult(id, terms) {
