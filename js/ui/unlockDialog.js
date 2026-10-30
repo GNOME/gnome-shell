@@ -1122,7 +1122,8 @@ export const UnlockDialog = GObject.registerClass({
     }
 
     async finish() {
-        await this._authPrompt?.finish();
+        await this._authPrompt?.stop();
+        this._authPrompt?.finish();
     }
 
     open() {

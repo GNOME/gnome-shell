@@ -180,18 +180,7 @@ export const AuthPrompt = GObject.registerClass({
             reauthenticationOnly = false;
 
         this._userVerifier = this._createUserVerifier(this._gdmClient, {reauthenticationOnly});
-
-        this._userVerifier.connectObject(
-            'ask-question', (_, args) => this._onAskQuestion(args),
-            'show-message', (_, args) => this._onShowMessage(args),
-            'show-choice-list', (_, args) => this._onShowChoiceList(args),
-            'show-button', (_, args) => this._onShowButton(args),
-            'mechanisms-changed', (_, args) => this.emit('mechanisms-changed', args),
-            'web-login', (_, args) => this._onWebLogin(args),
-            'verification-failed', (_, args) => this._onVerificationFailed(args),
-            'verification-complete', () => this._onVerificationComplete(),
-            'reset', (_, args) => this._onReset(args),
-            this);
+        this._connectUserVerifier();
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -236,6 +225,21 @@ export const AuthPrompt = GObject.registerClass({
 
     _createUserVerifier(gdmClient, params) {
         return new UserVerifier.ShellUserVerifier(gdmClient, params);
+    }
+
+    _connectUserVerifier() {
+        this._userVerifier.connectObject(
+            'ask-question', (_, args) => this._onAskQuestion(args),
+            'show-message', (_, args) => this._onShowMessage(args),
+            'show-choice-list', (_, args) => this._onShowChoiceList(args),
+            'show-button', (_, args) => this._onShowButton(args),
+            'mechanisms-changed', (_, args) => this.emit('mechanisms-changed', args),
+            'web-login', (_, args) => this._onWebLogin(args),
+            'verification-failed', (_, args) => this._onVerificationFailed(args),
+            'verification-complete', () => this._onVerificationComplete(),
+            'reset', (_, args) => this._onReset(args),
+            this);
+        this._connectedFromVerifier = true;
     }
 
     _onDestroy() {
@@ -956,6 +960,9 @@ export const AuthPrompt = GObject.registerClass({
             this._preemptiveAnswer = null;
         this.promptStep = 0;
 
+        if (!this._connectedFromVerifier)
+            this._connectUserVerifier();
+
         if (softReset)
             this._userVerifier?.cancel();
         else
@@ -1045,19 +1052,25 @@ export const AuthPrompt = GObject.registerClass({
         this.verificationStatus = AuthPromptStatus.VERIFYING;
     }
 
-    async finish() {
+    async stop() {
         if (!this._userVerifier.hasPendingMessages) {
-            this._userVerifier.clear();
+            this._userVerifier.disconnectObject(this);
+            this._connectedFromVerifier = false;
             return;
         }
 
         const {promise, resolve} = Promise.withResolvers();
         const signalId = this._userVerifier.connect('no-more-messages', () => {
             this._userVerifier.disconnect(signalId);
-            this._userVerifier.clear();
+            this._userVerifier.disconnectObject(this);
+            this._connectedFromVerifier = false;
             resolve();
         });
         await promise;
+    }
+
+    finish() {
+        this._userVerifier.clear();
     }
 
     _handleCancel() {

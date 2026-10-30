@@ -1093,9 +1093,10 @@ export const LoginDialog = GObject.registerClass({
     async _finishAndStartSession(serviceName) {
         this._authMenuButton.updateVisibility({visible: false});
         try {
-            await this._authPrompt.finish();
+            await this._authPrompt.stop();
             await this._fadeOutAuthPrompt();
             await this._waitForAcknowledgement();
+            this._authPrompt.finish();
             this._startSession(serviceName);
         } catch (e) {
             logError(e);
@@ -1472,6 +1473,7 @@ export const LoginDialog = GObject.registerClass({
     }
 
     async finish() {
-        await this._authPrompt.finish();
+        await this._authPrompt.stop();
+        this._authPrompt.finish();
     }
 });
