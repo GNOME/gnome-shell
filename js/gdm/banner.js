@@ -319,6 +319,7 @@ export class InlineBanner extends Banner {
 export class AcknowledgementBanner extends Banner {
     static [GObject.signals] = {
         'acknowledged': {},
+        'went-back': {},
     };
 
     static {
@@ -330,6 +331,23 @@ export class AcknowledgementBanner extends Banner {
             style_class: 'acknowledgement-banner',
         });
 
+        const buttonBox = new St.BoxLayout({
+            style_class: 'banner-button-box',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(buttonBox);
+
+        this._backButton = new St.Button({
+            style_class: 'banner-back-button',
+            accessible_name: _('Back'),
+            button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
+            can_focus: true,
+            icon_name: 'go-previous-symbolic',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._backButton.connect('clicked', () => this.emit('went-back'));
+        buttonBox.add_child(this._backButton);
+
         this._button = new St.Button({
             style_class: 'banner-button',
             button_mask: St.ButtonMask.PRIMARY | St.ButtonMask.SECONDARY,
@@ -337,7 +355,14 @@ export class AcknowledgementBanner extends Banner {
             x_align: Clutter.ActorAlign.CENTER,
         });
         this._button.connect('clicked', () => this.emit('acknowledged'));
-        this.add_child(this._button);
+        buttonBox.add_child(this._button);
+
+        buttonBox.add_child(new Clutter.Actor({
+            constraints: new Clutter.BindConstraint({
+                source: this._backButton,
+                coordinate: Clutter.BindCoordinate.WIDTH,
+            }),
+        }));
 
         this._config.bind_property('button-text', this._button, 'label',
             GObject.BindingFlags.SYNC_CREATE);

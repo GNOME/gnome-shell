@@ -35,6 +35,7 @@ import * as CtrlAltTab from '../ui/ctrlAltTab.js';
 import * as GdmUtil from './util.js';
 import * as Settings from './settings.js';
 import * as Layout from '../ui/layout.js';
+import {logErrorUnlessCancelled} from '../misc/errorUtils.js';
 import * as LoginManager from '../misc/loginManager.js';
 import * as Main from '../ui/main.js';
 import * as MessageTray from '../ui/messageTray.js';
@@ -1099,7 +1100,8 @@ export const LoginDialog = GObject.registerClass({
             this._authPrompt.finish();
             this._startSession(serviceName);
         } catch (e) {
-            logError(e);
+            logErrorUnlessCancelled(e);
+            this._authPrompt.reset();
         }
     }
 
@@ -1120,11 +1122,17 @@ export const LoginDialog = GObject.registerClass({
 
         banner.open();
 
-        const {promise, resolve} = Promise.withResolvers();
+        const {promise, resolve, reject} = Promise.withResolvers();
         banner.connectObject(
             'acknowledged', () => {
                 banner.disconnectObject(this);
                 resolve();
+            },
+            'went-back', () => {
+                banner.disconnectObject(this);
+                banner.close();
+                reject(new GLib.Error(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                    'Back from acknowledgement banner'));
             },
             'destroy', () => resolve(),
             this);

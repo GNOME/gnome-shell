@@ -195,6 +195,22 @@ $_gdm_dialog_width: 25em;
     @extend %title_1;
   }
 
+  .banner-button-box {
+    spacing: $base_padding * 3;
+    margin-top: $base_margin * 4;
+  }
+
+  .banner-back-button {
+    @include login_dialog_item_button();
+    border-radius: $forced_circular_radius;
+    padding: $base_padding * 2.5;
+
+    StIcon {
+      icon-size: $scalable_icon_size;
+      -st-icon-style: symbolic;
+    }
+  }
+
   .banner-button {
     @include login_dialog_item_button();
     @include fontsize($base_font_size + 2);
