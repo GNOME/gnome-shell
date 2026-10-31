@@ -1269,6 +1269,10 @@ export const MessageTray = GObject.registerClass({
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_BACK,
             onStopped: () => {
+                // The hide was cancelled to show the banner again
+                if (this._notificationState !== State.HIDING)
+                    return;
+
                 this._notificationState = State.HIDDEN;
                 this._hideNotificationCompleted();
                 this._updateState();
