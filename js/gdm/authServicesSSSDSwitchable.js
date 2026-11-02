@@ -647,10 +647,16 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
     }
 
     _canAttemptUsernamelessLogin(role) {
+        if (this._reauthOnly) {
+            return role === Role.SMARTCARD &&
+                this._mechanismsStatus === MechanismsStatus.FOUND &&
+                this._enabledMechanisms.some(m => m.role === role) &&
+                this._smartcardManager.hasInsertedLoginToken();
+        }
+
         return this._enabledRoles.includes(role) &&
             this._promptStatus === PromptStatus.NONE &&
-            this._mechanismsStatus === MechanismsStatus.WAITING &&
-            !this._reauthOnly;
+            this._mechanismsStatus === MechanismsStatus.WAITING;
     }
 
     _onSmartcardChanged() {

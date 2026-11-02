@@ -473,9 +473,14 @@ export class AuthServicesLegacy extends AuthServices {
     }
 
     _canAttemptUsernamelessLogin(role) {
+        if (this._reauthOnly) {
+            return role === Role.SMARTCARD &&
+                this._enabledMechanisms.some(m => m.role === role) &&
+                this._smartcardManager.hasInsertedLoginToken();
+        }
+
         return this._enabledMechanisms.some(m => m.role === role) &&
-            this._promptStatus === PromptStatus.NONE &&
-            !this._reauthOnly;
+            this._promptStatus === PromptStatus.NONE;
     }
 
     _onSmartcardChanged() {
