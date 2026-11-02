@@ -1098,6 +1098,7 @@ export const LoginDialog = GObject.registerClass({
             await this._fadeOutAuthPrompt();
             await this._waitForAcknowledgement();
             this._authPrompt.finish();
+            this._hideBottomButtonGroup();
             this._startSession(serviceName);
         } catch (e) {
             logErrorUnlessCancelled(e);
@@ -1120,6 +1121,7 @@ export const LoginDialog = GObject.registerClass({
         if (!banner?.enabled)
             return;
 
+        this._showBottomButtonGroup();
         banner.open();
 
         const {promise, resolve, reject} = Promise.withResolvers();
