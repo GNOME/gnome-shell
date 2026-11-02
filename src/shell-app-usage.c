@@ -5,8 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include <meta/display.h>
