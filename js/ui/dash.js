@@ -398,6 +398,19 @@ export const Dash = GObject.registerClass({
         // Translators: this is the name of the dock/favorites area on
         // the bottom of the overview
         Main.ctrlAltTabManager.addGroup(this, _('Dash'), 'shell-focus-dash-symbolic');
+
+        this.connect('destroy', () => this._onDestroy());
+    }
+
+    _onDestroy() {
+        if (this._showLabelTimeoutId > 0) {
+            GLib.source_remove(this._showLabelTimeoutId);
+            this._showLabelTimeoutId = 0;
+        }
+        if (this._resetHoverTimeoutId > 0) {
+            GLib.source_remove(this._resetHoverTimeoutId);
+            this._resetHoverTimeoutId = 0;
+        }
     }
 
     _onItemDragBegin() {
