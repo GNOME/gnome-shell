@@ -559,7 +559,7 @@ export const Dash = GObject.registerClass({
                 GLib.source_remove(this._showLabelTimeoutId);
             this._showLabelTimeoutId = 0;
             item.hideLabel();
-            if (this._labelShowing) {
+            if (this._labelShowing && this._resetHoverTimeoutId === 0) {
                 this._resetHoverTimeoutId = GLib.timeout_add_once(GLib.PRIORITY_DEFAULT, DASH_ITEM_HOVER_TIMEOUT,
                     () => {
                         this._labelShowing = false;
