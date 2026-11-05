@@ -541,7 +541,7 @@ const NMDeviceItem = GObject.registerClass({
     }
 
     deactivateConnection(_activeConnection) {
-        this._device.disconnect(null);
+        this._device.disconnect_async(null, null);
     }
 
     _onConnectionChanged(connection) {
@@ -1645,7 +1645,7 @@ class NMVpnToggle extends NMToggle {
     }
 
     deactivateConnection(activeConnection) {
-        this._client.deactivate_connection(activeConnection, null);
+        this._client.deactivate_connection_async(activeConnection, null, null);
     }
 });
 
