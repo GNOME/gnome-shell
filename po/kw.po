@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues/\n"
-"POT-Creation-Date: 2026-10-20 08:21+0000\n"
-"PO-Revision-Date: 2026-10-21 00:13+0100\n"
+"POT-Creation-Date: 2026-10-29 11:02+0000\n"
+"PO-Revision-Date: 2026-11-09 00:12+0000\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: Cornish\n"
 "Language: kw\n"
@@ -129,7 +129,7 @@ msgstr "Rekordya skrin-gwydhyow yn kesvewek"
 #: data/50-gnome-shell-system.xml:6
 #: data/X-GNOME-Shell-System.directory.desktop.in:2 js/ui/messageTray.js:1328
 msgid "System"
-msgstr "System"
+msgstr "Kevreyth"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
@@ -752,7 +752,7 @@ msgstr ""
 #: js/gdm/conflictingSessionDialog.js:94 js/gdm/webLogin.js:232
 #: js/ui/audioDeviceSelection.js:61 js/ui/components/networkAgent.js:114
 #: js/ui/components/polkitAgent.js:144 js/ui/endSessionDialog.js:406
-#: js/ui/extensionDownloader.js:308 js/ui/shellMountOperation.js:397
+#: js/ui/extensionDownloader.js:306 js/ui/shellMountOperation.js:397
 #: js/ui/shellMountOperation.js:407
 msgid "Cancel"
 msgstr "Hedhi"
@@ -775,7 +775,7 @@ msgstr "Hedhadewder"
 
 #: js/gdm/loginDialog.js:453
 msgid "Not listed?"
-msgstr "Nyns esowgh hwi rolys?"
+msgstr "A nyns esowgh rolys?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -1854,15 +1854,15 @@ msgstr "%s (pell)"
 msgid "%s (console)"
 msgstr "%s (konsolen)"
 
-#: js/ui/extensionDownloader.js:312
+#: js/ui/extensionDownloader.js:310
 msgid "Install"
 msgstr "Lea"
 
-#: js/ui/extensionDownloader.js:318
+#: js/ui/extensionDownloader.js:316
 msgid "Install Extension"
 msgstr "Lea Ystynnans"
 
-#: js/ui/extensionDownloader.js:319
+#: js/ui/extensionDownloader.js:317
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Iskarga ha lea “%s” dhyworth extensions.gnome.org?"
