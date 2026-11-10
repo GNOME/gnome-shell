@@ -977,10 +977,10 @@ class InputSourceIndicator extends PanelMenu.Button {
 
             this._menuItems[indicatorIndex] = menuItem;
             this._indicatorLabels[indicatorIndex] = indicatorLabel;
-            is.connect('changed', () => {
+            is.connectObject('changed', () => {
                 menuItem.indicator.set_text(is.shortName);
                 indicatorLabel.set_text(is.shortName);
-            });
+            }, menuItem);
 
             this.menu.addMenuItem(menuItem, indicatorIndex);
             this._container.add_child(indicatorLabel);
