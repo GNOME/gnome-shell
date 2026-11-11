@@ -166,6 +166,13 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             return false;
 
         case Role.SMARTCARD:
+            // Keypad PIN is auto-submitted on cert selection, so with no
+            // other cert to offer, a soft reset would just loop back to the
+            // same keypad prompt: hard reset instead.
+            if (this._promptStatus === PromptStatus.PIN_WAITING &&
+                this._selectedSmartcard?.usesKeypad &&
+                this._selectedMechanism.certificates.length <= 1)
+                return false;
             // Waiting for PIN verification response: soft reset
             if (this._promptStatus === PromptStatus.PIN_WAITING) {
                 this.emit('reset', {softReset: true});
@@ -391,8 +398,8 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
             break;
         }
         case Role.SMARTCARD: {
-            const {tokenName, moduleName, keyId, label} = this._selectedSmartcard;
-            response = {pin: answer, tokenName, moduleName, keyId, label};
+            const {tokenName, moduleName, keyId, label, usesKeypad} = this._selectedSmartcard;
+            response = {pin: answer, usesKeypad, tokenName, moduleName, keyId, label};
             break;
         }
         case Role.PASSKEY: {
@@ -453,13 +460,7 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
 
         if (certificates.length === 1) {
             this._selectedSmartcard = certificates[0];
-            this._promptStatus = PromptStatus.PIN_PROMPT;
-            this.emit('ask-question', {
-                serviceName,
-                question: certificates[0].pinPrompt,
-                secret: true,
-                answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
-            });
+            this._promptSmartcardPin(serviceName, certificates[0]);
             return;
         }
 
@@ -483,16 +484,31 @@ export class AuthServicesSSSDSwitchable extends AuthServices {
                 if (this._selectedMechanism.role === Role.SMARTCARD) {
                     const cert = this._selectedMechanism.certificates.find(c => c.keyId === key);
                     this._selectedSmartcard = cert;
-                    this._promptStatus = PromptStatus.PIN_PROMPT;
-                    this.emit('ask-question', {
-                        serviceName,
-                        question: cert.pinPrompt,
-                        secret: true,
-                        answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
-                    });
+                    this._promptSmartcardPin(serviceName, cert);
                 }
             },
         });
+    }
+
+    _promptSmartcardPin(serviceName, cert) {
+        this._promptStatus = PromptStatus.PIN_PROMPT;
+
+        if (cert.usesKeypad) {
+            this.emit('show-choice-list', {
+                serviceName,
+                promptMessage: cert.pinPrompt,
+            });
+            // PIN is entered on the reader's keypad, not here.
+            // Due to how PAM works we need to submit immediately
+            this._handleAnswerQuery(serviceName, '');
+        } else {
+            this.emit('ask-question', {
+                serviceName,
+                question: cert.pinPrompt,
+                secret: true,
+                answerHandler: answer => this._handleAnswerQuery(serviceName, answer),
+            });
+        }
     }
 
     _parseCertInstruction(certInstruction) {
