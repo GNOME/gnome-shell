@@ -801,7 +801,7 @@ export const UnlockDialog = GObject.registerClass({
 
         this._showPrompt();
 
-        if (GLib.unichar_isprint(unichar))
+        if (GLib.unichar_isgraph(unichar))
             this._authPrompt.startPreemptiveInput(unichar);
 
         return Clutter.EVENT_PROPAGATE;
