@@ -46,8 +46,8 @@ build_container() {
   buildah run $build_cntr rm -rf /var/lib/cache/dnf
 
   # somehow the sysusers trigger from the flatpak package messes up the
-  # permissions of /etc/passwd to be only readable by root
-  buildah run $build_cntr chmod 644 /etc/passwd
+  # permissions of /etc/passwd and /etc/group to be only readable by root
+  buildah run $build_cntr chmod 644 /etc/passwd /etc/group
 
   local srcdir=$(realpath $(dirname $0))
   buildah copy --chmod 755 $build_cntr $srcdir/install-meson-project.sh /usr/libexec

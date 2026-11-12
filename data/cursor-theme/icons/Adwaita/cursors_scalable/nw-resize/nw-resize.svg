@@ -110,7 +110,7 @@
    transform="translate(-240,-48)">
   <path
    id="path541"
-   style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
    d="m 259,68.984375 a 0.76417954,0.76417954 0 0 1 -0.54102,-0.224609 L 253.09961,63.400391 249.5,67 v -9.5 h 9.5 l -3.59961,3.599609 5.35938,5.359375 a 0.76417786,0.76417786 0 0 1 0,1.082032 l -1.21875,1.21875 A 0.76417954,0.76417954 0 0 1 259,68.984375 Z M 245,68.5 A 0.5,0.5 0 0 1 244.5,68 V 52.5 H 260 a 0.5003943,0.5003943 0 0 1 0.5,0.5 v 1.949219 A 0.550857,0.550857 0 0 1 259.94922,55.5 H 247.5 V 68 a 0.5,0.5 0 0 1 -0.5,0.5 z" />
   </g>
     <path

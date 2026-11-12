@@ -110,12 +110,12 @@
    transform="translate(-80.00029,-80)">
   <path
    id="rect277"
-   style="opacity:1;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+   style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
    d="m 94.5,83 v 7.5 H 87 A 0.5,0.5 135 0 0 86.5,91 l 0,2 a 0.5,0.5 45 0 0 0.5,0.5 h 7.5 v 7.5 a 0.5,0.5 45 0 0 0.5,0.5 h 2 A 0.5,0.5 135 0 0 97.5,101 V 93.5 H 105 A 0.5,0.5 135 0 0 105.5,93 V 91 A 0.5,0.5 45 0 0 105,90.5 H 97.5 V 83 A 0.5,0.5 45 0 0 97,82.5 H 95 A 0.5,0.5 135 0 0 94.5,83 Z"
    transform="translate(-5,-1)" />
   <path
    id="path278"
-   style="opacity:1;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+   style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
    d="m 94.5,83 v 7.5 H 87 A 0.5,0.5 135 0 0 86.5,91 l 0,2 a 0.5,0.5 45 0 0 0.5,0.5 h 7.5 v 7.5 a 0.5,0.5 45 0 0 0.5,0.5 h 2 A 0.5,0.5 135 0 0 97.5,101 V 93.5 H 105 A 0.5,0.5 135 0 0 105.5,93 V 91 A 0.5,0.5 45 0 0 105,90.5 H 97.5 V 83 A 0.5,0.5 45 0 0 97,82.5 H 95 A 0.5,0.5 135 0 0 94.5,83 Z"
    transform="translate(-5,-1)" />
   </g>

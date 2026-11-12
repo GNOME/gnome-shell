@@ -166,7 +166,7 @@
    transform="matrix(1.0444787,0,0,1.0444787,-36.802006,136.47097)">
   <circle
    id="path5737"
-   style="color:#000000;display:block;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.957415;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+   style="color:#ffffff;display:block;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.957415;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
    cx="62.042439"
    cy="56.985283"
    r="8.138031" />
@@ -177,26 +177,26 @@
    transform="matrix(0.86083508,-0.43861737,0.43861737,0.86083508,-98.077887,-144.44547)"
    style="stroke-width:1.03505;stroke-dasharray:none">
   <g
-   style="display:inline;fill:none;stroke:#ffffff;stroke-width:4.11489;stroke-dasharray:none;stroke-opacity:0.154003"
+   style="display:inline;fill:none;stroke:#000000;stroke-width:4.11489;stroke-dasharray:none;stroke-opacity:0.154003"
    id="g12246"
    transform="matrix(0.25175634,0,0,0.25131793,148.23784,-155.08947)">
   <ellipse
    transform="matrix(-0.96566631,-0.25978565,0.25785543,-0.96618351,0,0)"
    id="path5779-0-1"
-   style="font-variation-settings:normal;display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.22979;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.51;stop-color:#000000;stop-opacity:1"
+   style="font-variation-settings:normal;display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:8.22979;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.51;stop-color:#ffffff;stop-opacity:1"
    cx="101.23598"
    cy="-1473.0776"
    rx="19.734579"
    ry="19.79213" />
   </g>
   <g
-   style="display:inline;fill:none;stroke:#ffffff;stroke-width:4.09282;stroke-dasharray:none;stroke-opacity:0.154003"
+   style="display:inline;fill:none;stroke:#000000;stroke-width:4.09282;stroke-dasharray:none;stroke-opacity:0.154003"
    id="g2"
    transform="matrix(0.25311418,0,0,0.25267341,148.88634,-156.98302)">
   <path
    transform="matrix(-0.25894237,0.96589277,-0.96595887,-0.25869568,0,0)"
    id="ellipse1"
-   style="display:inline;fill:none;stroke:#ffffff;stroke-width:8.18565;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+   style="display:inline;fill:none;stroke:#000000;stroke-width:8.18565;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
    d="m 1490.0793,89.697369 a 19.76437,19.762259 0 0 1 1.9745,14.995981 19.76437,19.762259 0 0 1 -9.2087,11.99977" />
   </g>
   </g>  <path

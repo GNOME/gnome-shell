@@ -114,23 +114,23 @@
    transform="translate(114.98833,21)">
   <path
    d="m 7.51169,3 c 0,-0.82843 -0.67158,-1.5 -1.5,-1.5 -0.82843,0 -1.5,0.67157 -1.5,1.5 V 5 C 4.01169,4.5 3,4.5 1.99998,5.5 c 0,0 -0.999994,1 -0.5,2 l 2.01172,4.4 c 0.49999,1.1 1.5,1.6 2.49999,1.6 h 8.00001 c 1.6046,0 2.5,-1.3954 2.5,-3 V 4 c 0,-0.82843 -1.1833,-1.5 -2.0117,-1.5 -0.8284,0 -0.9883,0.17157 -0.9883,1 V 2 c 0,-0.82843 -0.6716,-1.5 -1.5,-1.5 -0.8284,0 -1.5,0.67157 -1.5,1.5 V 4.5 L 10.5,2 C 10.5065,1.1716 9.84011,0.5 9.01169,0.5 c -0.82843,0 -1.5,0.67157 -1.5,1.5 z"
-   fill="#000000"
+   fill="#ffffff"
    id="path1-2"
-   style="fill:#000000;fill-opacity:1" />
+   style="fill:#ffffff;fill-opacity:1" />
   <path
    d="M 4.51169,6.5 V 5 m 0,0 C 4.01169,4.5 3,4.5 1.99998,5.5 c 0,0 -0.999994,1 -0.5,2 l 2.01172,4.4 c 0.49999,1.1 1.5,1.6 2.49999,1.6 h 8.00001 c 1.6046,0 2.5,-1.3954 2.5,-3 V 4 c 0,-0.82843 -1.1833,-1.5 -2.0117,-1.5 -0.8284,0 -0.9883,0.17157 -0.9883,1 M 4.51169,5 V 3 c 0,-0.82843 0.67157,-1.5 1.5,-1.5 0.82842,0 1.5,0.67157 1.5,1.5 V 2 m 0,0 c 0,-0.82843 0.67157,-1.5 1.5,-1.5 C 9.84011,0.5 10.5065,1.1716 10.5,2 l 0.0117,2.5 V 2 c 0,-0.82843 0.6716,-1.5 1.5,-1.5 0.8284,0 1.5,0.67157 1.5,1.5 V 3.5 M 7.51169,2 v 2.5 m 6.00001,-1 -3e-5,1.5"
-   stroke="#ffffff"
+   stroke="#000000"
    stroke-linecap="round"
    stroke-linejoin="round"
    id="path2-61"
-   style="stroke:#ffffff;stroke-opacity:1" />
+   style="stroke:#000000;stroke-opacity:1" />
   </g>
   <path
-   style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
    d="m 122.50876,25 v 1.5"
    id="path41" />
   <path
-   style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
    d="m 125.50872,24 v 2"
    id="path42" />
   </g>

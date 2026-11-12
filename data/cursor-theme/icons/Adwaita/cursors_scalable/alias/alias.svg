@@ -77,7 +77,7 @@
    y="0"
    x="0" /><path
    id="path5824-4"
-   style="color:#000000;display:block;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+   style="color:#ffffff;display:block;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
    d="m 7.58957,3.5 3.20951,3.218991 C 6.87864,10.639434 6.01352,16.57566 11.32981,20.60547 9.32008,15.30617 10.13502,13.935547 14.11592,9.954646 L 17.49973,13.4375 V 3.5 Z" />  <path
    id="hotspot"
    d="M18 5h1v1h-1z"

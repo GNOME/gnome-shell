@@ -144,8 +144,8 @@
    transform="translate(292.5,39.6088)">
   <path
    d="M 1,18 V 2 L 6.28675,7.28675 C 7.30821,6.4809 8.59795,6 10,6 c 3.3137,0 6,2.68629 6,6 0,3.3137 -2.6863,6 -6,6 -2.4333,0 -4.52829,-1.4485 -5.46974,-3.5303 z"
-   fill="#000000"
-   stroke="#ffffff"
+   fill="#ffffff"
+   stroke="#000000"
    id="path1-356" />
   </g>
   </g>
@@ -155,7 +155,7 @@
    id="g12252"
    style="display:inline">
   <ellipse
-   style="display:inline;fill:none;stroke:#ffffff;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.5"
+   style="display:inline;fill:none;stroke:#000000;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.5"
    id="path12254"
    transform="matrix(-0.25897377,0.96588435,-0.96596727,-0.25866432,0,0)"
    cx="1460.5298"
@@ -163,7 +163,7 @@
    rx="15.24345"
    ry="15.243538" />
   <path
-   style="display:inline;fill:none;stroke:#ffffff;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+   style="display:inline;fill:none;stroke:#000000;stroke-width:10.0818;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
    id="ellipse319"
    transform="matrix(-0.25897377,0.96588435,-0.96596727,-0.25866432,0,0)"
    d="m 1475.7733,101.53752 a 15.243538,15.243538 0 0 1 -7.6217,13.20129" />

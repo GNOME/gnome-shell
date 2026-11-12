@@ -114,11 +114,11 @@
    transform="translate(214,18)">
   <path
    d="m 0.5,2.5 h 2 a 1,1 45 0 1 1,1 v 13 a 1,1 135 0 1 -1,1 h -2 v 2 h 2 c 0.78237,0 1.48951,-0.3618 2,-0.8385 0.51049,0.4767 1.21763,0.8385 2,0.8385 h 2 v -2 h -2 a 1,1 45 0 1 -1,-1 v -13 a 1,1 135 0 1 1,-1 h 2 v -2 h -2 c -0.78237,4e-6 -1.48951,0.361823 -2,0.83855 C 3.98951,0.861823 3.28237,0.500004 2.5,0.5 h -2 z"
-   fill="#000000"
-   stroke="#ffffff"
+   fill="#ffffff"
+   stroke="#000000"
    stroke-linejoin="round"
    id="path1-3675"
-   style="fill:#000000;fill-opacity:1;stroke-linejoin:miter" />
+   style="fill:#ffffff;fill-opacity:1;stroke-linejoin:miter" />
   </g>
   </g>
     <path

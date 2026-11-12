@@ -114,22 +114,22 @@
    transform="translate(145.99712,20)">
   <path
    d="M 5.51164,2 5.48232,11.128 3.26061,9.90633 C 2.49994,9.5 1.72508,9.32054 1.13929,9.90633 c -0.585786,0.58577 -0.585785,1.53557 0,2.12137 L 5.01166,15.9 c 0.5,0.6 1.5,1.6 2.49998,1.6 h 7.49996 c 1.6046,0 2.5,-1.3954 2.5,-3 V 8 c 0,-0.82843 -0.6715,-1.5 -1.5,-1.5 -0.8284,0 -1.5,0.67157 -1.5,1.5 V 7 c 0,-0.82843 -0.6715,-1.5 -1.5,-1.5 -0.8284,0 -1.5,0.67157 -1.5,1.5 0,-0.82843 -0.6715,-1.5 -1.5,-1.5 C 9.18322,5.5 8.51164,6.17157 8.51164,7 V 2 c 0,-0.82843 -0.67157,-1.5 -1.5,-1.5 -0.82842,0 -1.5,0.67157 -1.5,1.5 z"
-   fill="#000000"
-   stroke="#ffffff"
+   fill="#ffffff"
+   stroke="#000000"
    stroke-linejoin="round"
    id="path1-3"
-   style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+   style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
   </g>
   <path
-   style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
    d="m 154.50876,27 v 1.5"
    id="path38" />
   <path
-   style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
    d="M 157.50872,27 157.5,28.5"
    id="path39" />
   <path
-   style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+   style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
    d="m 160.50872,27.5 2.8e-4,1"
    id="path40" />
   </g>

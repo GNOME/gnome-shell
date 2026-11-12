@@ -114,12 +114,12 @@
    transform="translate(147.03086,81.997107)">
   <path
    d="m 0.5,17.5 v -16 l 11,11 -6.53086,0.0029 z"
-   fill="#000000"
-   stroke="#ffffff"
+   fill="#ffffff"
+   stroke="#000000"
    id="path133" />
   </g>
   <ellipse
-   style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffffff;stroke:none;stroke-width:0.999992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;paint-order:normal;stop-color:#000000;stop-opacity:1"
+   style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#000000;stroke:none;stroke-width:0.999992;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;paint-order:normal;stop-color:#ffffff;stop-opacity:1"
    id="path134"
    cx="96"
    cy="-160"
@@ -127,7 +127,7 @@
    ry="6.0000024"
    transform="rotate(90)" />
   <rect
-   style="font-variation-settings:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;paint-order:normal"
+   style="font-variation-settings:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;paint-order:normal"
    id="rect136"
    width="1.9973907"
    height="7.9987259"
@@ -136,7 +136,7 @@
    ry="0.99869537"
    rx="0.99869537" />
   <rect
-   style="font-variation-settings:normal;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;paint-order:normal"
+   style="font-variation-settings:normal;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;paint-order:normal"
    id="rect137"
    width="1.9999999"
    height="8"
