@@ -1353,8 +1353,15 @@ const NMVpnConnectionItem = GObject.registerClass({
     _activeConnectionStateChanged() {
         const state = this._activeConnection?.get_state();
         const reason = this._activeConnection?.get_state_reason();
+        const flags = this._activeConnection?.get_state_flags() ?? 0;
+
+        // External connections represent devices that are configured
+        // outside of NetworkManager, so there was no activation that
+        // could have failed when they go away
+        const isExternal = (flags & NM.ActivationStateFlags.EXTERNAL) !== 0;
 
         if (state === NM.ActiveConnectionState.DEACTIVATED &&
+            !isExternal &&
             reason !== NM.ActiveConnectionStateReason.NO_SECRETS &&
             reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
             this.emit('activation-failed');
