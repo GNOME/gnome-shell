@@ -953,7 +953,7 @@ export const AuthPrompt = GObject.registerClass({
 
         const oldStatus = this.verificationStatus;
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
-        if (oldStatus !== AuthPromptStatus.VERIFICATION_IN_PROGRESS)
+        if (oldStatus !== AuthPromptStatus.VERIFYING)
             this._preemptiveAnswer = null;
         this.promptStep = 0;
 
