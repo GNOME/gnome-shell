@@ -452,7 +452,6 @@ export const AuthPrompt = GObject.registerClass({
         if (!this._entry.reactive)
             return;
 
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity({sensitive: false});
 
         if (this._entry === this._passwordEntry)
@@ -504,6 +503,8 @@ export const AuthPrompt = GObject.registerClass({
         const callback = this._pendingCallback;
         this._pendingCallback = null;
 
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
+
         this._userVerifier.handlePendingMessages()
             .then(() => callback(...args))
             .catch(logErrorUnlessCancelled);
@@ -518,6 +519,14 @@ export const AuthPrompt = GObject.registerClass({
 
         this._setPendingCallback(answerHandler);
 
+        // Hack: The question string comes directly from PAM, if it's "Password:"
+        // we replace it with our own to allow localization, if it's something
+        // else we remove the last colon and any trailing or leading spaces.
+        if (question === 'Password:' || question === 'Password: ')
+            this.setQuestion(_('Password'));
+        else
+            this.setQuestion(question.replace(/[:：] *$/, '').trim());
+
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
         if (preemptiveAnswer) {
@@ -526,14 +535,6 @@ export const AuthPrompt = GObject.registerClass({
         }
 
         this.updateEntry(secret);
-
-        // Hack: The question string comes directly from PAM, if it's "Password:"
-        // we replace it with our own to allow localization, if it's something
-        // else we remove the last colon and any trailing or leading spaces.
-        if (question === 'Password:' || question === 'Password: ')
-            this.setQuestion(_('Password'));
-        else
-            this.setQuestion(question.replace(/[:：] *$/, '').trim());
 
         this.emit('prompted');
     }
