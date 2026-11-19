@@ -79,9 +79,11 @@ class FdoNotificationDaemon {
         const appSys = Shell.AppSystem.get_default();
         let app;
 
-        app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
-        if (!app && appId)
+        if (appId)
             app = appSys.lookup_app(`${appId}.desktop`);
+
+        if (!app)
+            app = Shell.WindowTracker.get_default().get_app_from_pid(pid);
 
         if (!app)
             app = appSys.lookup_app(`${appName}.desktop`);
