@@ -167,10 +167,33 @@
 
 	A signal emitted when PipeWire stream for the screen cast stream has
 	been created. The @node_id corresponds to the PipeWire stream node.
+
+	Deprecated since API version 5: use PipeWireStreamAddedV2.
     -->
     <signal name="PipeWireStreamAdded">
+      <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
       <annotation name="org.gtk.GDBus.C.Name" value="pipewire-stream-added"/>
       <arg name="node_id" type="u" direction="out" />
+    </signal>
+
+    <!--
+	PipeWireStreamAddedV2:
+	@short_description: Pipewire stream added
+
+	Like PipeWireStreamAdded, and emitted along with it, with the
+	properties of the PipeWire stream node.
+
+	Its properties, always present:
+
+	* "node-id" (u): The id of the node.
+	* "node-serial" (t): The object serial of the node, which unlike its
+	                     id is never reused.
+
+	Available since API version 5.
+    -->
+    <signal name="PipeWireStreamAddedV2">
+      <annotation name="org.gtk.GDBus.C.Name" value="pipewire-stream-added-v2"/>
+      <arg name="properties" type="a{sv}" direction="out" />
     </signal>
 
     <!--

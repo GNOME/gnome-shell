@@ -307,7 +307,7 @@ class Recorder extends Signals.EventEmitter {
 
         try {
             console.debug(`Creating pipeline for config ${pipelineConfig.id}`);
-            this._pipeline = this._createPipeline(this._nodeId, pipelineConfig,
+            this._pipeline = this._createPipeline(this._nodeSerial, pipelineConfig,
                 this._framerate);
             console.debug('Pipeline created successfully');
 
@@ -371,10 +371,10 @@ class Recorder extends Signals.EventEmitter {
                 'org.gnome.Mutter.ScreenCast',
                 streamPath);
 
-            this._streamProxy.connectSignal('PipeWireStreamAdded',
+            this._streamProxy.connectSignal('PipeWireStreamAddedV2',
                 (_proxy, _sender, params) => {
-                    const [nodeId] = params;
-                    this._nodeId = nodeId;
+                    const [properties] = params;
+                    this._nodeSerial = properties['node-serial'].unpack();
 
                     this._pipelineState = PipelineState.STARTING;
                     this._pipelineConfigs = this._getPipelineConfigs();
@@ -504,13 +504,13 @@ class Recorder extends Signals.EventEmitter {
         return pipelineDescr.replaceAll('%T', numThreads).replaceAll('%F', framerate);
     }
 
-    _createPipeline(nodeId, pipelineConfig, framerate) {
+    _createPipeline(nodeSerial, pipelineConfig, framerate) {
         const {fileExtension, pipelineString} = pipelineConfig;
         const finalPipelineString = this._substituteVariables(pipelineString, framerate);
         this._filePath = `${this._filePathStem}.${fileExtension}`;
 
         const fullPipeline = `
-            pipewiresrc path=${nodeId}
+            pipewiresrc target-object=${nodeSerial}
                         do-timestamp=true
                         keepalive-time=1000
                         resend-last=true !
