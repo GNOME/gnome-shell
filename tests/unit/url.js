@@ -136,4 +136,15 @@ describe('findUrls()', () => {
             expect(findUrls(input)).toEqual(output);
         });
     }
+
+    it('handles long runs of trailing junk without exponential backtracking', () => {
+        const url = 'http://www.gnome.org/';
+        const expected = [{url, pos: 0}];
+
+        expect(findUrls(url + '.'.repeat(30))).toEqual(expected);
+        expect(findUrls(url + '!'.repeat(30))).toEqual(expected);
+        expect(findUrls(url + '}'.repeat(30))).toEqual(expected);
+        expect(findUrls(url + '.,!"};:'.repeat(5))).toEqual(expected);
+        expect(findUrls(url + '('.repeat(30))).toEqual(expected);
+    });
 });
