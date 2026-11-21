@@ -23,7 +23,7 @@ const _urlRegexp = new RegExp(
             '([a-z0-9\\-]+[.])+[a-z]{2,4}/' +     // foo.xx/
         ')' +
         '(?:' +                                   // one or more:
-            '[^\\s()<>]+' +                       // run of non-space non-()
+            '[^\\s()<>]' +                        // non-space non-() char
             '|' +                                 // or
             `${_balancedParens}` +                // balanced parens
         ')+' +
