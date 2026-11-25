@@ -458,7 +458,7 @@ export const AuthPrompt = GObject.registerClass({
             this.startSpinning({animate: true});
 
         if (this._queryingService)
-            this._completePendingCallback(this._entry.text);
+            this._submitAnswer(this._entry.text);
         else
             this._preemptiveAnswer = this._entry.text;
 
@@ -490,6 +490,11 @@ export const AuthPrompt = GObject.registerClass({
         this._capsLockWarningLabel.visible = secret;
     }
 
+    _submitAnswer(answer) {
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
+        this._completePendingCallback(answer);
+    }
+
     _setPendingCallback(callback) {
         if (this._pendingCallback)
             throw new Error('A pending request is already active');
@@ -502,8 +507,6 @@ export const AuthPrompt = GObject.registerClass({
 
         const callback = this._pendingCallback;
         this._pendingCallback = null;
-
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
 
         this._userVerifier.handlePendingMessages()
             .then(() => callback(...args))
@@ -530,7 +533,7 @@ export const AuthPrompt = GObject.registerClass({
         const preemptiveAnswer = this._preemptiveAnswer;
         this._clearPreemptiveState();
         if (preemptiveAnswer) {
-            this._completePendingCallback(preemptiveAnswer);
+            this._submitAnswer(preemptiveAnswer);
             return;
         }
 
