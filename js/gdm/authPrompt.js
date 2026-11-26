@@ -574,7 +574,6 @@ export const AuthPrompt = GObject.registerClass({
         this._setPendingCallback(choiceHandler);
 
         this.setChoiceList(promptMessage, choiceList);
-        this.updateSensitivity({sensitive: true});
         this.emit('prompted');
     }
 
