@@ -37,8 +37,6 @@ const FADE_OUT_SCALE = 0.3;
 const BLUR_BRIGHTNESS = 0.65;
 const BLUR_RADIUS = 90;
 
-const AUTH_PROMPT_VERTICAL_CENTER_OFFSET = 50;
-
 const NotificationsBox = GObject.registerClass({
     Signals: {'wake-up-screen': {}},
 }, class NotificationsBox extends St.BoxLayout {
@@ -474,6 +472,23 @@ class UnlockStack extends Shell.Stack {
         this.queue_relayout();
     }
 
+    /**
+     * Get the Y offset from the stack's top to the point aligned with the
+     * screen's vertical center.
+     *
+     * @param {number} forWidth
+     * @returns {number}
+     */
+    getYAlignmentOffset(forWidth) {
+        const [, clockHeight] = this._clock.get_preferred_height(forWidth);
+        const prompt = this._promptBox.get_first_child();
+        const promptOffset = prompt?.getYAlignmentOffset(forWidth) ?? 0;
+
+        // Interpolate between the clock's midpoint and the prompt's alignment point.
+        const clockOffset = clockHeight / 2;
+        return clockOffset + (promptOffset - clockOffset) * this._progress;
+    }
+
     vfunc_get_preferred_height(forWidth) {
         const [clockMinHeight, clockNatHeight] =
             this._clock.get_preferred_height(forWidth);
@@ -511,7 +526,6 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
     vfunc_allocate(container, box) {
         const [width, height] = box.get_size();
 
-        const tenthOfHeight = height / 10.0;
         const centerY = height / 2.0;
 
         const [, , stackWidth, stackHeight] =
@@ -525,10 +539,14 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         const columnX1 = Math.floor((width - columnWidth) / 2.0);
         const actorBox = new Clutter.ActorBox();
 
+        // Neither authentication content nor notifications affect the top anchor.
+        const stackY = Math.max(0,
+            Math.floor(centerY - this._stack.getYAlignmentOffset(columnWidth)));
+
         // Notifications
         const maxNotificationsHeight = Math.min(
             notificationsHeight,
-            height - tenthOfHeight - stackHeight);
+            Math.max(0, height - stackY - stackHeight));
 
         actorBox.x1 = columnX1;
         actorBox.y1 = height - maxNotificationsHeight;
@@ -538,14 +556,6 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         this._notifications.allocate(actorBox);
 
         // Authentication Box
-        // Offset applies only to the authPrompt, not the clock, so it fades
-        // in/out together with the crossfade between the two.
-        const progress = this._stack.progress;
-        const offsetY = AUTH_PROMPT_VERTICAL_CENTER_OFFSET * progress;
-        const stackY = Math.min(
-            Math.floor(centerY - stackHeight / 2.0) + offsetY,
-            height - stackHeight - maxNotificationsHeight);
-
         actorBox.x1 = columnX1;
         actorBox.y1 = stackY;
         actorBox.x2 = columnX1 + columnWidth;

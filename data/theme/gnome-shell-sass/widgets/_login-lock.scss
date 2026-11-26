@@ -14,7 +14,7 @@ $_gdm_dialog_width: 25em;
 
   .login-dialog-prompt-layout {
     width: $_gdm_dialog_width * 1.2;
-    height: 550px;
+    max-height: 550px;
   }
 
   .login-dialog-input-well {

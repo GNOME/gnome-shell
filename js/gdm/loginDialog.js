@@ -47,7 +47,6 @@ import * as A11y from '../ui/status/accessibility.js';
 
 const _FADE_ANIMATION_TIME = 250;
 const _SCROLL_ANIMATION_TIME = 500;
-const _AUTH_PROMPT_VERTICAL_CENTER_OFFSET = 50;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
 const _PRIMARY_LOGIN_METHOD_SECTION_NAME = _('Login Options');
@@ -643,7 +642,7 @@ export const LoginDialog = GObject.registerClass({
         return actorBox;
     }
 
-    _getCenterActorAllocation(dialogBox, actor, offsetY = 0) {
+    _getCenterActorAllocation(dialogBox, actor) {
         const actorBox = new Clutter.ActorBox();
 
         let [, , natWidth, natHeight] = actor.get_preferred_size();
@@ -654,9 +653,22 @@ export const LoginDialog = GObject.registerClass({
         natHeight = Math.min(natHeight, dialogBox.y2 - dialogBox.y1);
 
         actorBox.x1 = Math.floor(centerX - natWidth / 2);
-        actorBox.y1 = Math.floor(centerY - natHeight / 2) + offsetY;
+        actorBox.y1 = Math.floor(centerY - natHeight / 2);
         actorBox.x2 = actorBox.x1 + natWidth;
         actorBox.y2 = actorBox.y1 + natHeight;
+
+        return actorBox;
+    }
+
+    _getAuthPromptAllocation(dialogBox) {
+        const actorBox = this._getCenterActorAllocation(dialogBox, this._authPrompt);
+        const width = actorBox.x2 - actorBox.x1;
+        const height = actorBox.y2 - actorBox.y1;
+        const centerY = actorBox.y1 + height / 2;
+        const yAlignmentOffset = this._authPrompt.getYAlignmentOffset(width);
+
+        actorBox.y1 = Math.max(dialogBox.y1, Math.floor(centerY - yAlignmentOffset));
+        actorBox.y2 = actorBox.y1 + height;
 
         return actorBox;
     }
@@ -681,8 +693,7 @@ export const LoginDialog = GObject.registerClass({
         let authPromptAllocation = null;
         let authPromptWidth = 0;
         if (this._authPrompt.visible) {
-            authPromptAllocation = this._getCenterActorAllocation(
-                dialogBox, this._authPrompt, _AUTH_PROMPT_VERTICAL_CENTER_OFFSET);
+            authPromptAllocation = this._getAuthPromptAllocation(dialogBox);
             authPromptWidth = authPromptAllocation.x2 - authPromptAllocation.x1;
         }
 

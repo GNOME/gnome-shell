@@ -234,6 +234,24 @@ export const AuthPrompt = GObject.registerClass({
         this._inputWell.add_child(this._message);
     }
 
+    /**
+     * Get the Y offset from the prompt's top to the point aligned with the
+     * screen's vertical center: the bottom of the identity header for normal
+     * prompts, or the midpoint of the whole prompt for web login.
+     *
+     * @param {number} forWidth
+     * @returns {number}
+     */
+    getYAlignmentOffset(forWidth) {
+        if (this._webLoginDialog.visible) {
+            const [, naturalHeight] = this.get_preferred_height(forWidth);
+            return naturalHeight / 2;
+        }
+
+        const [, naturalHeight] = this._userWell.get_preferred_height(forWidth);
+        return naturalHeight;
+    }
+
     _createUserVerifier(gdmClient, params) {
         return new UserVerifier.ShellUserVerifier(gdmClient, params);
     }
