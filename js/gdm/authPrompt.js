@@ -641,8 +641,6 @@ export const AuthPrompt = GObject.registerClass({
 
         this._userWell.get_child()?.showAvatar();
         this._mainBox.show();
-
-        this.webLoginActive = false;
     }
 
     _openWebLoginDialog() {
@@ -652,8 +650,6 @@ export const AuthPrompt = GObject.registerClass({
         this._webLoginDialog.update(this._webLoginParams);
         this._fadeInElement(this._webLoginDialog);
         this.updateSensitivity({sensitive: true});
-
-        this.webLoginActive = true;
     }
 
     _onVerificationFailed({serviceName, canRetry}) {
