@@ -26,6 +26,7 @@ const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 export const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+const CONTENT_RESIZE_TIME = 150;
 const CONTENT_FADE_IN_TIME = 180;
 
 // A widget displayed instead of the unlock prompt
@@ -831,6 +832,26 @@ export const AuthPrompt = GObject.registerClass({
         element?.show();
     }
 
+    async _resizeContent() {
+        const inputWell = this._inputWell;
+        if (!inputWell.mapped)
+            return;
+
+        const content = inputWell.child;
+        const previousHeight = inputWell.allocation.get_height();
+        content.height = -1;
+        // Force layout to measure the height constrained by the parent.
+        const targetHeight = inputWell.get_allocation_box().get_height();
+        content.height = previousHeight;
+
+        await content.easeAsync({
+            height: targetHeight,
+            duration: CONTENT_RESIZE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+        content.height = -1;
+    }
+
     async _fadeInElement(element) {
         if (!element?.visible)
             return;
@@ -846,6 +867,7 @@ export const AuthPrompt = GObject.registerClass({
         try {
             element?.set_opacity(0);
             this._setAuthWidget(element);
+            await this._resizeContent();
             await this._fadeInElement(element);
         } catch (e) {
             logErrorUnlessCancelled(e);
