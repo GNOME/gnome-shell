@@ -134,6 +134,31 @@ export const ResetType = {
     REUSE_USERNAME: 2,
 };
 
+export const AuthPromptInputWell = GObject.registerClass(
+class AuthPromptInputWell extends St.Bin {
+    _init() {
+        super._init({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
+            clip_to_allocation: true,
+            // Allow the well to shrink even while animating the content's height
+            min_height: 0,
+        });
+
+        this._content = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
+            orientation: Clutter.Orientation.VERTICAL,
+        });
+        this.child = this._content;
+    }
+
+    add_child(child) {
+        this._content.add_child(child);
+    }
+});
+
 export const AuthPrompt = GObject.registerClass({
     Signals: {
         'cancelled': {},
@@ -201,11 +226,7 @@ export const AuthPrompt = GObject.registerClass({
         });
         this.add_child(this._userWell);
 
-        this._inputWell = new St.BoxLayout({
-            style_class: 'login-dialog-input-well',
-            orientation: Clutter.Orientation.VERTICAL,
-            y_align: Clutter.ActorAlign.START,
-        });
+        this._inputWell = new AuthPromptInputWell();
         this.add_child(this._inputWell);
         this._mainContent = this._inputWell;
 
