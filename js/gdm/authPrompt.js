@@ -26,6 +26,7 @@ const TimerChildProxy = Gio.DBusProxy.makeProxyWrapper(TimerChildIface);
 export const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 export const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 export const MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+const CONTENT_FADE_IN_TIME = 180;
 
 // A widget displayed instead of the unlock prompt
 // when parental controls session limits are reached
@@ -589,7 +590,7 @@ export const AuthPrompt = GObject.registerClass({
             !this._authList.visible &&
             !this._authButton.visible &&
             !this._webLoginDialog.visible) {
-            this._fadeInElement(this._entryArea);
+            this._showElement(this._entryArea);
             this.updateSensitivity({sensitive: true});
         }
 
@@ -613,7 +614,7 @@ export const AuthPrompt = GObject.registerClass({
 
         this._authButton.set_label(label);
 
-        this._fadeInElement(this._authButton);
+        this._showElement(this._authButton);
         this.updateSensitivity({sensitive: true});
         this.emit('prompted');
     }
@@ -625,31 +626,13 @@ export const AuthPrompt = GObject.registerClass({
         this._queryingService = serviceName;
         this.promptStep++;
 
-        this._webLoginParams = {message, url, code, buttons};
-
-        this._entryArea.hide();
-
         this._clearPreemptiveState();
 
-        this._openWebLoginDialog();
+        this._webLoginDialog.update({message, url, code, buttons});
+        this._showElement(this._webLoginDialog);
+        this.updateSensitivity({sensitive: true});
 
         this.emit('prompted');
-    }
-
-    _closeWebLoginDialog() {
-        this._webLoginDialog.hide();
-
-        this._userWell.get_child()?.showAvatar();
-        this._mainBox.show();
-    }
-
-    _openWebLoginDialog() {
-        this._userWell.get_child()?.hideAvatar();
-        this._mainBox.hide();
-
-        this._webLoginDialog.update(this._webLoginParams);
-        this._fadeInElement(this._webLoginDialog);
-        this.updateSensitivity({sensitive: true});
     }
 
     _onVerificationFailed({serviceName, canRetry}) {
@@ -769,7 +752,6 @@ export const AuthPrompt = GObject.registerClass({
         if (!reuseEntryText) {
             this._entry.hint_text = '';
             this._inactiveEntry.hint_text = '';
-            this._entryArea.hide();
             this._entry.text = '';
             this._inactiveEntry.text = '';
             this.stopSpinning();
@@ -777,11 +759,10 @@ export const AuthPrompt = GObject.registerClass({
 
         this._authListTitle.child.text = '';
         this._authList.clear();
-        this._authList.hide();
         this._disconnectAuthListActivate();
-        this._authButton.hide();
-        this._closeWebLoginDialog();
         this._pendingCallback = null;
+
+        this._setAuthWidget(reuseEntryText ? this._entryArea : null);
 
         [this._mainBox, this._webLoginDialog].forEach(widget => {
             widget.opacity = 255;
@@ -792,11 +773,7 @@ export const AuthPrompt = GObject.registerClass({
     setQuestion(question) {
         this._entry.hint_text = question;
 
-        this._authList.hide();
-        this._authButton.hide();
-        this._closeWebLoginDialog();
-
-        this._fadeInElement(this._entryArea);
+        this._showElement(this._entryArea);
         this.updateSensitivity({sensitive: true});
     }
 
@@ -807,17 +784,7 @@ export const AuthPrompt = GObject.registerClass({
         this._authListActivateId =
             this._authList.connect('activate', (list, key) => {
                 this._authList.reactive = false;
-                this._authList.ease({
-                    opacity: 0,
-                    duration: MESSAGE_FADE_OUT_ANIMATION_TIME * 0.5,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onComplete: () => {
-                        this._authListTitle.child.text = '';
-                        this._authList.clear();
-                        this._authList.hide();
-                        this._completePendingCallback(key);
-                    },
-                });
+                this._completePendingCallback(key);
             });
     }
 
@@ -828,19 +795,41 @@ export const AuthPrompt = GObject.registerClass({
         }
     }
 
-    _fadeInElement(element) {
-        if (element.visible)
+    _setAuthWidget(element) {
+        [this._entryArea, this._authList, this._authButton, this._webLoginDialog]
+            .filter(widget => widget !== element)
+            .forEach(widget => widget.hide());
+
+        if (element === this._webLoginDialog) {
+            this._userWell.get_child()?.hideAvatar();
+            this._mainBox.hide();
+        } else {
+            this._userWell.get_child()?.showAvatar();
+            this._mainBox.show();
+        }
+
+        element?.show();
+    }
+
+    async _fadeInElement(element) {
+        if (!element?.visible)
             return;
 
-        element.set({
-            opacity: 0,
-            visible: true,
-        });
-        element.ease({
+        await element.easeAsync({
             opacity: 255,
-            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+            duration: CONTENT_FADE_IN_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+    }
+
+    async _showElement(element) {
+        try {
+            element?.set_opacity(0);
+            this._setAuthWidget(element);
+            await this._fadeInElement(element);
+        } catch (e) {
+            logErrorUnlessCancelled(e);
+        }
     }
 
     setChoiceList(promptMessage, choiceList) {
@@ -851,8 +840,7 @@ export const AuthPrompt = GObject.registerClass({
             this._authList.addItem(key, content);
         }
 
-        this._entryArea.hide();
-        this._fadeInElement(this._authList);
+        this._showElement(this._authList);
         this.updateSensitivity({sensitive: true});
     }
 
